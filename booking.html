@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Session - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #0A0A0A;
+            background: #FAFAFA;
+        }
+        
+        /* Header */
+        .header {
+            background: #0A0A0A;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header-brand {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .header-brand .v-accent {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .header-brand:hover {
+            opacity: 0.8;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Section */
+        .section {
+            padding: 80px 20px;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+        
+        .section-title .accent {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+        
+        /* Why Vedarion */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .why-card {
+            background: white;
+            padding: 40px;
+            border-left: 4px solid #C65D3B;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .why-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #0A0A0A;
+        }
+        
+        .why-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        /* Free Call CTA Section */
+        .free-call-section {
+            background: #0A0A0A;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .free-call-section .section-title {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .free-call-section .section-title .accent {
+            color: #C65D3B;
+        }
+        
+        .free-call-subtitle {
+            font-size: 22px;
+            color: #C65D3B;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .free-call-description {
+            color: #CCCCCC;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            line-height: 1.7;
+        }
+        
+        .free-call-button {
+            background: #C65D3B;
+            color: white;
+            padding: 20px 50px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            border-radius: 4px;
+        }
+        
+        .free-call-button:hover {
+            background: #A04D2E;
+            transform: translateY(-2px);
+        }
+        
+        .free-call-note {
+            color: #888;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* Intro Session Banner */
+        .intro-banner {
+            background: white;
+            border: 2px solid #C65D3B;
+            border-radius: 8px;
+            padding: 40px 50px;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .intro-banner-badge {
+            background: #C65D3B;
+            color: white;
+            padding: 8px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .intro-banner-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 10px;
+        }
+        
+        .intro-banner-price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 15px;
+        }
+        
+        .intro-banner-description {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+            border-top: 4px solid #E0E0E0;
+        }
+        
+        .pricing-card.featured {
+            border-top-color: #C65D3B;
+            transform: scale(1.02);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.02) translateY(-5px);
+        }
+        
+        .pricing-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #0A0A0A;
+        }
+        
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-period {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 12px 0;
+            color: #555;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-features strong {
+            color: #C65D3B;
+        }
+        
+        .pricing-badge {
+            background: #C65D3B;
+            color: white;
+            padding: 8px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        /* Book Now Button */
+        .book-button {
+            background: #C65D3B;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        .book-button:hover {
+            background: #A04D2E;
+            transform: translateY(-2px);
+        }
+        
+        /* About */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .about-content p {
+            color: #555;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .credential-item {
+            text-align: center;
+            padding: 30px;
+            background: #FAFAFA;
+            border-left: 3px solid #C65D3B;
+        }
+        
+        .credential-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 10px;
+        }
+        
+        .credential-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Policies */
+        .policies {
+            background: white;
+            padding: 60px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .policies h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #0A0A0A;
+            font-weight: 600;
+        }
+        
+        .policies ul {
+            list-style-position: inside;
+            color: #555;
+            line-height: 2;
+        }
+        
+        .policies ul li {
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0A0A0A;
+            color: #888;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-email {
+            color: #C65D3B;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer-email:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            color: #C65D3B;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            .about-content,
+            .policies {
+                padding: 40px 30px;
+            }
+            
+            .section {
+                padding: 60px 20px;
+            }
+            
+            .header-brand {
+                font-size: 28px;
+                letter-spacing: 4px;
+            }
+            
+            .free-call-section {
+                padding: 60px 20px;
+            }
+            
+            .free-call-subtitle {
+                font-size: 18px;
+            }
+            
+            .free-call-description {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="header-brand">
+            <span class="v-accent">V</span>EDARION
+        </a>
+    </header>
+
+    <!-- Why Vedarion -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Why <span class="accent">Vedarion</span>?</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <h3>Pattern Recognition</h3>
+                    <p>Learn to identify recurring LSAT patterns, not just memorize questions. Understand the test's underlying logic structure.</p>
+                </div>
+                <div class="why-card">
+                    <h3>Targeted Strategies</h3>
+                    <p>Personalized approach based on your specific weaknesses. No generic curriculum—every session adapts to your needs.</p>
+                </div>
+                <div class="why-card">
+                    <h3>Proven Track Record</h3>
+                    <p>Six years teaching experience with a 173 LSAT score. Real expertise, not just theory.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Free Call CTA -->
+    <section class="free-call-section">
+        <div class="container">
+            <h2 class="section-title">Not Sure Where to <span class="accent">Start</span>?</h2>
+            <p class="free-call-subtitle">Book a Free 15-Minute LSAT Approach Review</p>
+            <p class="free-call-description">Identify the specific habit, strategy, or reasoning pattern limiting your score.</p>
+            <a href="YOUR_CALENDLY_LINK_HERE" target="_blank" class="free-call-button">Book Your Free Call</a>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="pricing" style="background: white;">
+        <div class="container">
+            <h2 class="section-title">Investment in Your <span class="accent">Success</span></h2>
+            
+            <!-- First Session Banner -->
+            <div class="intro-banner">
+                <div class="intro-banner-badge">LIMITED TIME — $50 OFF</div>
+                <h3 class="intro-banner-title">Your First Session</h3>
+                <div class="intro-banner-price"><span style="text-decoration: line-through; color: #999; font-size: 32px;">$200</span> $150</div>
+                <p class="intro-banner-description">One 60-minute session. New clients only.</p>
+                <a href="YOUR_INTRO_SESSION_STRIPE_LINK" target="_blank" class="book-button">Book Your First Session</a>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Single Session -->
+                <div class="pricing-card">
+                    <h3 class="pricing-name">Single Session</h3>
+                    <div class="pricing-price">$200</div>
+                    <div class="pricing-period">per 60-minute session</div>
+                    <ul class="pricing-features">
+                        <li>One-on-one personalized tutoring</li>
+                        <li>Targeted strategy development</li>
+                        <li>Pattern recognition training</li>
+                        <li>Session recording provided</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/dRm4gs8A5eBpblP3LV7bW00" target="_blank" class="book-button">Book Now</a>
+                </div>
+
+                <!-- 5-Session Package -->
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">MOST POPULAR</div>
+                    <h3 class="pricing-name">5-Session Package</h3>
+                    <div class="pricing-price">$950</div>
+                    <div class="pricing-period">$190 per session</div>
+                    <ul class="pricing-features">
+                        <li><strong>FREE 30-min strategy assessment</strong></li>
+                        <li>Five 60-minute tutoring sessions</li>
+                        <li>Personalized session roadmap</li>
+                        <li>Email support (24-hour response time)</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/28EfZadUp1OD4Xr2HR7bW01" target="_blank" class="book-button">Book Now</a>
+                </div>
+
+                <!-- 10-Session Package -->
+                <div class="pricing-card">
+                    <div class="pricing-badge">BEST VALUE</div>
+                    <h3 class="pricing-name">10-Session Package</h3>
+                    <div class="pricing-price">$1,800</div>
+                    <div class="pricing-period">$180 per session</div>
+                    <ul class="pricing-features">
+                        <li><strong>FREE 30-min strategy assessment</strong></li>
+                        <li>Ten 60-minute tutoring sessions</li>
+                        <li>Personalized session roadmap</li>
+                        <li>Email support (24-hour response time)</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/00wfZa03z2SHdtX6Y77bW02" target="_blank" class="book-button">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Meet Your <span class="accent">Instructor</span></h2>
+            <div class="about-content">
+                <p>
+                    With six years of LSAT teaching experience and a 173 score, I've developed a methodology 
+                    that goes beyond generic test prep. My approach focuses on pattern recognition and strategic 
+                    thinking—teaching you to see the test's underlying logic rather than just memorizing techniques.
+                </p>
+                <p>
+                    Every student is different. Some struggle with timing, others with specific question types, 
+                    and many need help breaking ingrained habits. I tailor each session to your specific challenges, 
+                    ensuring every minute of tutoring drives measurable improvement.
+                </p>
+                <p>
+                    My students learn to approach the LSAT strategically, not through brute force. This is about 
+                    smarter preparation, not more preparation.
+                </p>
+                
+                <div class="credentials">
+                    <div class="credential-item">
+                        <div class="credential-number">173</div>
+                        <div class="credential-label">LSAT Score</div>
+                    </div>
+                    <div class="credential-item">
+                        <div class="credential-number">6</div>
+                        <div class="credential-label">Years Teaching</div>
+                    </div>
+                    <div class="credential-item">
+                        <div class="credential-number">1:1</div>
+                        <div class="credential-label">Personalized</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Policies -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <h2 class="section-title">Policies & <span class="accent">Details</span></h2>
+            <div class="policies">
+                <h3>Session Details</h3>
+                <ul>
+                    <li><strong>Platform:</strong> All sessions conducted via Zoom (link provided upon booking)</li>
+                    <li><strong>Availability:</strong> Monday-Friday and Sunday, 9 AM - 8 PM CST</li>
+                    <li><strong>Session Length:</strong> 60 minutes</li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">Cancellation & Rescheduling</h3>
+                <ul>
+                    <li>No refunds on purchased sessions or packages</li>
+                    <li>Sessions may be rescheduled with 48-hour advance notice</li>
+                    <li>Late cancellations (less than 48 hours) forfeit that session</li>
+                </ul>
+                
+                <h3 style="margin-top: 30px;">Package Expiration</h3>
+                <ul>
+                    <li>All package sessions must be used within 6 months of purchase</li>
+                    <li>Sessions cannot be transferred or refunded after expiration</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Questions? Email <a href="mailto:vedarion.tutoring@gmail.com" class="footer-email">vedarion.tutoring@gmail.com</a></p>
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <p style="margin-top: 20px; font-size: 14px;">© 2025 VEDARION. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
