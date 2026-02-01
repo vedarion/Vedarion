@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strengthen & Weaken - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #C65D3B;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            transition: opacity 0.2s;
+        }
+        
+        .back-link:hover {
+            opacity: 0.7;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .step {
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 12px;
+            padding: 20px 24px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #C65D3B;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #0A0A0A;
+        }
+        
+        .step-content {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #C65D3B 0%, #8B3A1D 100%);
+            border-color: #C65D3B;
+            color: white;
+        }
+        
+        .highlight .step-title,
+        .highlight .step-content {
+            color: white;
+        }
+        
+        .highlight .step-number {
+            background: white;
+            color: #C65D3B;
+        }
+        
+        .final-step {
+            background: #0A0A0A;
+            border-color: #0A0A0A;
+            color: white;
+        }
+        
+        .final-step .step-title,
+        .final-step .step-content {
+            color: white;
+        }
+        
+        .arrow {
+            color: #C65D3B;
+            font-size: 1.5rem;
+            margin: 8px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #999;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+        }
+        
+        .video-placeholder {
+            margin-top: 40px;
+            padding: 40px;
+            background: #F0F0F0;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px dashed #DDD;
+        }
+        
+        .video-placeholder p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../lr-flowchart.html" class="back-link">← Back to all question types</a>
+        
+        <div class="header">
+            <h1>STRENGTHEN & WEAKEN</h1>
+            <div class="subtitle">Assumption Family</div>
+        </div>
+        
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-title">Identify the Question Type</div>
+                <div class="step-content">
+                    Strengthen: "supports," "strengthens," "most justifies"<br>
+                    Weaken: "undermines," "weakens," "calls into question"
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-title">Analyze the Argument</div>
+                <div class="step-content">
+                    Find premises and conclusion. What's the evidence? What's being claimed?
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-title">Write the Core</div>
+                <div class="step-content">
+                    Simplify: Premise → Conclusion
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step highlight">
+                <div class="step-number">4</div>
+                <div class="step-title">Find the Gap / Assumption</div>
+                <div class="step-content">
+                    What's the logical leap? What must be assumed? Strengthen fills the gap; Weaken exploits it.
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-title">Review Answers</div>
+                <div class="step-content">
+                    Strengthen: Makes the conclusion more likely<br>
+                    Weaken: Makes the conclusion less likely<br>
+                    Must connect to the core argument.
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step final-step">
+                <div class="step-title">Correct Answer Check</div>
+                <div class="step-content">
+                    Directly impacts the argument's gap · Even a small effect counts
+                </div>
+            </div>
+        </div>
+        
+        <div class="video-placeholder">
+            <p>📹 Video walkthrough coming soon</p>
+        </div>
+        
+        <div class="footer">
+            vedarion.com
+        </div>
+    </div>
+</body>
+</html>
