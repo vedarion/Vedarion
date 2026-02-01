@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            color: white;
+        }
+        
+        /* Nav */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-brand .v-accent {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        
+        .page-title .accent {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+        
+        .content p {
+            color: #888;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .credentials {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 80px;
+            margin: 60px 0;
+        }
+        
+        .credential-item {
+            text-align: center;
+        }
+        
+        .credential-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 10px;
+        }
+        
+        .credential-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .credential-note {
+            font-size: 11px;
+            color: #888;
+            margin-top: 8px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 300;
+            margin: 50px 0 20px;
+            color: white;
+            letter-spacing: 1px;
+        }
+        
+        /* CTA */
+        .cta-section {
+            margin-top: 60px;
+        }
+        
+        .cta-section p {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        
+        .cta-button {
+            background: #C65D3B;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .cta-button:hover {
+            background: #A04D2E;
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        .footer {
+            color: #888;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #C65D3B;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 550px) {
+            .nav {
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .main {
+                padding: 50px 20px;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+            
+            .credentials {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="learn.html">Learn</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <h1 class="page-title">The <span class="accent">Approach</span></h1>
+        
+        <div class="content">
+            <p>
+                Step-by-step methods for every question type. Learn to recognize argument patterns, spot traps, and find correct answers faster.
+            </p>
+        </div>
+        
+        <div class="credentials">
+            <div class="credential-item">
+                <div class="credential-number">173</div>
+                <div class="credential-label">LSAT Score</div>
+                <div class="credential-note">35 min/section timed</div>
+            </div>
+            <div class="credential-item">
+                <div class="credential-number">6</div>
+                <div class="credential-label">Years Teaching</div>
+            </div>
+            <div class="credential-item">
+                <div class="credential-number">1:1</div>
+                <div class="credential-label">Personalized</div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Book a Free Game Plan Call</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+</body>
+</html>
