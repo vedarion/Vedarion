@@ -67,6 +67,44 @@
             border-bottom: 1px solid #222;
         }
         
+        /* Intro Banner */
+        .intro-banner {
+            background: #C65D3B;
+            padding: 16px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .intro-banner p {
+            color: white;
+            font-size: 14px;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .intro-banner .banner-button {
+            background: white;
+            color: #C65D3B;
+            padding: 10px 24px;
+            border: none;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .intro-banner .banner-button:hover {
+            background: #F5F5F5;
+        }
+        
         .hero-spacer {
             background: #FAFAFA;
             height: 40px;
@@ -175,10 +213,6 @@
             font-size: 14px;
         }
         
-        .lesson-item.available .lesson-icon {
-            color: #C65D3B;
-        }
-        
         .lesson-title {
             font-size: 15px;
         }
@@ -197,8 +231,14 @@
         }
         
         .lesson-status.ready {
-            color: #C65D3B;
+            color: #0A0A0A;
             font-weight: 600;
+            text-decoration: none;
+            transition: text-decoration 0.2s ease;
+        }
+        
+        .lesson-item.available:hover .lesson-status.ready {
+            text-decoration: underline;
         }
         
         /* CTA Section */
@@ -297,6 +337,12 @@
         <p class="page-subtitle">Master LSAT Logical Reasoning step by step</p>
     </section>
 
+    <!-- Intro Banner -->
+    <section class="intro-banner">
+        <p>Want 1-on-1 tutoring to master these steps?</p>
+        <a href="pricing.html" class="banner-button">Book a Session</a>
+    </section>
+
     <div class="hero-spacer"></div>
 
     <!-- Section 1: Foundations -->
@@ -364,8 +410,7 @@
                             <span class="lesson-title">Sufficient Assumption</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -376,8 +421,7 @@
                             <span class="lesson-title">Necessary Assumption</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -388,8 +432,7 @@
                             <span class="lesson-title">Strengthen & Weaken</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -400,8 +443,7 @@
                             <span class="lesson-title">Flaw</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -412,8 +454,7 @@
                             <span class="lesson-title">Must Be True</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -437,8 +478,7 @@
                             <span class="lesson-title">Most Strongly Supported</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -449,8 +489,7 @@
                             <span class="lesson-title">Resolve / Reconcile / Explain</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -461,8 +500,7 @@
                             <span class="lesson-title">Argument Part / Role of Statement</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -473,8 +511,7 @@
                             <span class="lesson-title">Evaluate</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -485,8 +522,7 @@
                             <span class="lesson-title">Agree / Disagree (Point at Issue)</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Flowchart</span>
-                            <span class="lesson-status ready">View →</span>
+                            <span class="lesson-status ready">Flowchart →</span>
                         </div>
                     </a>
                 </li>
@@ -557,7 +593,7 @@
 
     <!-- CTA -->
     <section class="cta-section">
-        <p>Want personalized help with your prep?</p>
+        <p>Want personalized tutoring with your prep?</p>
         <a href="pricing.html" class="cta-button">Book a Session</a>
     </section>
 
