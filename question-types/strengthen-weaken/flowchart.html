@@ -5,237 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strengthen & Weaken - VEDARION</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: #FAFAFA;
-            color: #0A0A0A;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #C65D3B;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-            transition: opacity 0.2s;
-        }
-        
-        .back-link:hover {
-            opacity: 0.7;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-        
-        .header .subtitle {
-            color: #666;
-            font-size: 0.95rem;
-        }
-        
-        .flowchart {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-        }
-        
-        .step {
-            background: white;
-            border: 2px solid #E5E5E5;
-            border-radius: 12px;
-            padding: 20px 24px;
-            width: 100%;
-            position: relative;
-        }
-        
-        .step-number {
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: #C65D3B;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .step-title {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 8px;
-            color: #0A0A0A;
-        }
-        
-        .step-content {
-            color: #555;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .highlight {
-            background: linear-gradient(135deg, #C65D3B 0%, #8B3A1D 100%);
-            border-color: #C65D3B;
-            color: white;
-        }
-        
-        .highlight .step-title,
-        .highlight .step-content {
-            color: white;
-        }
-        
-        .highlight .step-number {
-            background: white;
-            color: #C65D3B;
-        }
-        
-        .final-step {
-            background: #0A0A0A;
-            border-color: #0A0A0A;
-            color: white;
-        }
-        
-        .final-step .step-title,
-        .final-step .step-content {
-            color: white;
-        }
-        
-        .arrow {
-            color: #C65D3B;
-            font-size: 1.5rem;
-            margin: 8px 0;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #999;
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
-        }
-        
-        .video-placeholder {
-            margin-top: 40px;
-            padding: 40px;
-            background: #F0F0F0;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px dashed #DDD;
-        }
-        
-        .video-placeholder p {
-            color: #888;
-            font-size: 0.9rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
+        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #888; text-decoration: none; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
+        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
+        .flowchart-container { max-width: 500px; width: 100%; }
+        .flowchart { display: flex; flex-direction: column; gap: 0; }
+        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .step.highlight { border-color: #C65D3B; border-width: 2px; }
+        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
+        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-content ul { list-style: none; margin-top: 8px; }
+        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
+        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
+        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
+        .final-step { background: #0A0A0A; border: none; text-align: center; }
+        .final-step .step-title { margin-bottom: 5px; color: white; }
+        .final-step .step-content { color: #888; }
+        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
+        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
+        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="../../lr-flowchart.html" class="back-link">← Back to all question types</a>
-        
-        <div class="header">
-            <h1>STRENGTHEN & WEAKEN</h1>
-            <div class="subtitle">Assumption Family</div>
+    <nav class="nav">
+        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../About.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../Learn.html" class="active">Learn</a>
         </div>
-        
-        <div class="flowchart">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-title">Identify the Question Type</div>
-                <div class="step-content">
-                    Strengthen: "supports," "strengthens," "most justifies"<br>
-                    Weaken: "undermines," "weakens," "calls into question"
+    </nav>
+
+    <section class="hero">
+        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Strengthen & Weaken</div>
+        <h1 class="page-title">Strengthen & Weaken</h1>
+    </section>
+
+    <section class="flowchart-section">
+        <div class="flowchart-container">
+            <div class="flowchart">
+                <div class="step">
+                    <div class="step-number">STEP 1</div>
+                    <div class="step-title">Read the Question Stem</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Identify whether it's Strengthen or Weaken</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-title">Analyze the Argument</div>
-                <div class="step-content">
-                    Find premises and conclusion. What's the evidence? What's being claimed?
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step">
+                    <div class="step-number">STEP 2</div>
+                    <div class="step-title">Break Down the Stimulus</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Identify conclusion and support as you read</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-title">Write the Core</div>
-                <div class="step-content">
-                    Simplify: Premise → Conclusion
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step">
+                    <div class="step-number">STEP 3</div>
+                    <div class="step-title">Core Argument</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Simplify into premise → conclusion in plain form</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="step highlight">
-                <div class="step-number">4</div>
-                <div class="step-title">Find the Gap / Assumption</div>
-                <div class="step-content">
-                    What's the logical leap? What must be assumed? Strengthen fills the gap; Weaken exploits it.
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step highlight">
+                    <div class="step-number">STEP 4</div>
+                    <div class="step-title">Analysis</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Predict: Why does the conclusion fall short of the support?</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="step">
-                <div class="step-number">5</div>
-                <div class="step-title">Review Answers</div>
-                <div class="step-content">
-                    Strengthen: Makes the conclusion more likely<br>
-                    Weaken: Makes the conclusion less likely<br>
-                    Must connect to the core argument.
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step">
+                    <div class="step-number">STEP 5</div>
+                    <div class="step-title">Answer Choices (Loop)</div>
+                    <div class="step-content">
+                        <ul>
+                            <li><strong>Relevance Test:</strong> Does it connect to premise/conclusion? If it ignores or negates a premise → discard</li>
+                            <li><strong>Effect Test:</strong> If true, does it push the conclusion? (↑ Strengthen / ↓ Weaken)</li>
+                            <li><strong>Extra Tip:</strong> If AC is tough, shallow dip → ask if it's on-topic and in the right direction before deep analysis</li>
+                            <li><strong>Selection:</strong> Pick the strongest relevant effect</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="step final-step">
-                <div class="step-title">Correct Answer Check</div>
-                <div class="step-content">
-                    Directly impacts the argument's gap · Even a small effect counts
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step final-step">
+                    <div class="step-title">Final Choice</div>
+                    <div class="step-content">
+                        Confirm the selected answer is both relevant and produces the required effect
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="video-placeholder">
-            <p>📹 Video walkthrough coming soon</p>
-        </div>
-        
-        <div class="footer">
-            vedarion.com
-        </div>
-    </div>
-</body>
-</html>
+    </section>
+
+    <section class="cta-section">
+        <p>Want to work through this together?</p>
+        <a href="../../pricing.html" class="cta-button">Book a Session</a>
+        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="/cdn-cgi/l/email-protection#394f5c5d584b505657174d4c4d564b50575e795e54585055175a5654"><span class="__c
