@@ -13,16 +13,19 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: #0A0A0A;
-            color: white;
+            background: #FAFAFA;
+            color: #0A0A0A;
         }
         
         /* Nav */
         .nav {
+            background: #0A0A0A;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 25px 50px;
+            flex-direction: row;
+            border-bottom: 1px solid #222;
         }
         
         .nav-brand {
@@ -55,10 +58,9 @@
             color: white;
         }
         
-        /* Main Content */
-        .main {
-            max-width: 800px;
-            margin: 0 auto;
+        /* Hero Section */
+        .hero {
+            background: #0A0A0A;
             padding: 80px 20px;
             text-align: center;
         }
@@ -66,7 +68,7 @@
         .page-title {
             font-size: 42px;
             font-weight: 300;
-            margin-bottom: 30px;
+            color: white;
             letter-spacing: 2px;
         }
         
@@ -75,11 +77,47 @@
             font-weight: 600;
         }
         
-        .content p {
-            color: #888;
-            font-size: 18px;
+        /* Cards Section */
+        .cards-section {
+            padding: 80px 20px;
+            background: #FAFAFA;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        
+        .card {
+            background: white;
+            padding: 40px;
+            border-left: 4px solid #C65D3B;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #0A0A0A;
+        }
+        
+        .card p {
+            color: #555;
             line-height: 1.8;
-            margin-bottom: 25px;
+        }
+        
+        /* Credentials Section */
+        .credentials-section {
+            background: #0A0A0A;
+            padding: 80px 20px;
+            text-align: center;
         }
         
         .credentials {
@@ -87,7 +125,7 @@
             flex-direction: row;
             justify-content: center;
             gap: 80px;
-            margin: 60px 0;
+            margin-bottom: 50px;
         }
         
         .credential-item {
@@ -114,31 +152,12 @@
             margin-top: 8px;
         }
         
-        .section-title {
-            font-size: 24px;
-            font-weight: 300;
-            margin: 50px 0 20px;
-            color: white;
-            letter-spacing: 1px;
-        }
-        
-        /* CTA */
-        .cta-section {
-            margin-top: 60px;
-        }
-        
-        .cta-section p {
-            color: #888;
-            font-size: 16px;
-            margin-bottom: 25px;
-        }
-        
         .cta-button {
             background: #C65D3B;
             color: white;
-            padding: 16px 40px;
+            padding: 18px 50px;
             border: none;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
@@ -155,6 +174,7 @@
         
         /* Footer */
         .footer {
+            background: #0A0A0A;
             color: #888;
             text-align: center;
             padding: 30px 20px;
@@ -182,12 +202,16 @@
                 gap: 25px;
             }
             
-            .main {
-                padding: 50px 20px;
+            .hero {
+                padding: 60px 20px;
             }
             
             .page-title {
                 font-size: 32px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
             }
             
             .credentials {
@@ -208,16 +232,33 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main">
+    <!-- Hero -->
+    <section class="hero">
         <h1 class="page-title">The <span class="accent">Approach</span></h1>
-        
-        <div class="content">
-            <p>
-                Step-by-step methods for every question type. Learn to recognize argument patterns, spot traps, and find correct answers faster.
-            </p>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="cards-section">
+        <div class="container">
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Step-by-Step Methods</h3>
+                    <p>Systematic approach to every question type. No guessing, no vague intuition—clear steps you can repeat.</p>
+                </div>
+                <div class="card">
+                    <h3>Pattern Recognition</h3>
+                    <p>Learn to see the argument structures that repeat across the test. Once you recognize them, questions become predictable.</p>
+                </div>
+                <div class="card">
+                    <h3>Trap Recognition</h3>
+                    <p>Spot wrong answers before they fool you. Understand how the test designs traps and stop falling for them.</p>
+                </div>
+            </div>
         </div>
-        
+    </section>
+
+    <!-- Credentials Section -->
+    <section class="credentials-section">
         <div class="credentials">
             <div class="credential-item">
                 <div class="credential-number">173</div>
@@ -233,11 +274,8 @@
                 <div class="credential-label">Personalized</div>
             </div>
         </div>
-        
-        <div class="cta-section">
-            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Book a Free Game Plan Call</a>
-        </div>
-    </main>
+        <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Book a Free Game Plan Call</a>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
