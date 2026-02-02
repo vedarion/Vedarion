@@ -13,11 +13,18 @@
         .nav-links { display: flex; gap: 40px; }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; }
         .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
         .breadcrumb a { color: #888; text-decoration: none; }
         .breadcrumb a:hover { color: #C65D3B; }
         .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
+        
+        /* Tab Navigation */
+        .tab-nav { display: flex; justify-content: center; gap: 0; background: #0A0A0A; padding: 20px 20px 0; }
+        .tab-link { padding: 12px 30px; color: #666; text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
+        .tab-link:hover { color: #888; }
+        .tab-link.active { color: #C65D3B; border-bottom-color: #C65D3B; }
+        
         .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
         .flowchart-container { max-width: 500px; width: 100%; }
         .flowchart { display: flex; flex-direction: column; gap: 0; }
@@ -35,29 +42,42 @@
         .final-step .step-content { color: #888; }
         .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
         .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
+        .cta-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
         .cta-button:hover { background: #A04D2E; }
-        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
+        .cta-button.secondary { background: transparent; border: 1px solid #C65D3B; color: #C65D3B; }
+        .cta-button.secondary:hover { background: #C65D3B; color: white; }
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+        @media (max-width: 650px) { 
+            .nav { padding: 20px; flex-direction: column; gap: 20px; } 
+            .nav-links { gap: 25px; } 
+            .page-title { font-size: 22px; } 
+            .cta-button { display: block; margin: 10px auto; max-width: 250px; }
+            .tab-link { padding: 10px 15px; font-size: 11px; }
+        }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
+            <a href="../../about.html">About</a>
             <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+            <a href="../../learn.html" class="active">Learn</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Strengthen & Weaken</div>
+        <div class="breadcrumb"><a href="../../learn.html">Learn</a> → Strengthen & Weaken</div>
         <h1 class="page-title">Strengthen & Weaken</h1>
     </section>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <a href="flowchart.html" class="tab-link active">Flowchart</a>
+        <a href="worksheet.html" class="tab-link">Worksheet</a>
+    </div>
 
     <section class="flowchart-section">
         <div class="flowchart-container">
@@ -115,10 +135,9 @@
                     <div class="step-title">Answer Choices (Loop)</div>
                     <div class="step-content">
                         <ul>
-                            <li><strong>Relevance Test:</strong> Does it connect to premise/conclusion? If it ignores or negates a premise → discard</li>
-                            <li><strong>Effect Test:</strong> If true, does it push the conclusion? (↑ Strengthen / ↓ Weaken)</li>
-                            <li><strong>Extra Tip:</strong> If AC is tough, shallow dip → ask if it's on-topic and in the right direction before deep analysis</li>
-                            <li><strong>Selection:</strong> Pick the strongest relevant effect</li>
+                            <li><strong>1. Relevance Test:</strong> Does it connect to the premise in any way? (low bar) If yes, how?</li>
+                            <li><strong>2. Impact Test:</strong> Premise + Answer = What impact on conclusion? Keep if any impact in the right direction.</li>
+                            <li><strong>Tip:</strong> If AC is tough, shallow dip → ask if it's on-topic and in the right direction before deep analysis</li>
                         </ul>
                     </div>
                 </div>
@@ -126,9 +145,9 @@
                 <div class="arrow">↓</div>
                 
                 <div class="step final-step">
-                    <div class="step-title">Final Choice</div>
+                    <div class="step-title">Final Selection</div>
                     <div class="step-content">
-                        Confirm the selected answer is both relevant and produces the required effect
+                        Pick the one with fewest linguistic issues. No unreasonable assumptions between words and reasoning.
                     </div>
                 </div>
             </div>
@@ -136,10 +155,15 @@
     </section>
 
     <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+        <p>Want feedback on your approach?</p>
+        <div class="cta-buttons">
+            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Free 15-Min Consultation</a>
+            <a href="../../pricing.html" class="cta-button secondary">Book a Session</a>
+        </div>
     </section>
 
     <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#394f5c5d584b505657174d4c4d564b50575e795e54585055175a5654"><span class="__c
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strengthen/Weaken Worksheet - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            color: #E0E0E0;
+            min-height: 100vh;
+        }
+        
+        /* Nav */
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-brand .v-accent {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        /* Hero */
+        .hero {
+            background: #0A0A0A;
+            padding: 30px 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: #0A0A0A;
+            padding: 20px 20px 0;
+        }
+        
+        .tab-link {
+            padding: 12px 30px;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-link:hover {
+            color: #888;
+        }
+        
+        .tab-link.active {
+            color: #C65D3B;
+            border-bottom-color: #C65D3B;
+        }
+        
+        /* Main Content */
+        .main-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+            min-height: calc(100vh - 200px);
+        }
+        
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Worksheet Content */
+        .worksheet {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #C65D3B;
+        }
+        
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: #333;
+        }
+        
+        .section-break {
+            background: #FAFAFA;
+            height: 30px;
+            margin: 30px -20px;
+            width: calc(100% + 40px);
+        }
+        
+        .core-instructions {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            border-left: 3px solid #C65D3B;
+            border-radius: 4px;
+            padding: 15px 18px;
+            margin-bottom: 20px;
+        }
+        
+        .instruction-main {
+            font-size: 13px;
+            color: #B0B0B0;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .instruction-detail {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        
+        .instruction-detail .highlight {
+            color: #E0E0E0;
+            font-weight: 600;
+        }
+        
+        .instruction-warning {
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-field {
+            width: 100%;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px 15px;
+            color: #E0E0E0;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #C65D3B;
+        }
+        
+        .input-field::placeholder {
+            color: #444;
+        }
+        
+        .input-field.input-short {
+            font-size: 15px;
+            padding: 14px 15px;
+        }
+        
+        textarea.input-field {
+            min-height: 70px;
+        }
+        
+        /* Argument Types */
+        .argument-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .argument-type {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .argument-type:hover {
+            border-color: #555;
+        }
+        
+        .argument-type.selected {
+            border-color: #C65D3B;
+            background: #1a1210;
+        }
+        
+        .argument-type-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #E0E0E0;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .argument-type-name::after {
+            content: '→';
+            font-size: 12px;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+        
+        .argument-type:hover .argument-type-name::after {
+            color: #C65D3B;
+        }
+        
+        div.argument-type .argument-type-name::after {
+            content: none;
+        }
+        
+        .argument-type-gap {
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Answer Choice */
+        .answer-choice {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
+        
+        .answer-choice.eliminated {
+            opacity: 0.3;
+        }
+        
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #0d0d0d;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        
+        .answer-letter {
+            font-size: 14px;
+            font-weight: 600;
+            color: #E0E0E0;
+        }
+        
+        .answer-status {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .status-btn {
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid #333;
+            border-radius: 3px;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .status-btn:hover {
+            border-color: #555;
+            color: #888;
+        }
+        
+        .status-btn.keep.active {
+            background: #1a2e1a;
+            border-color: #2d5a2d;
+            color: #5a9a5a;
+        }
+        
+        .status-btn.eliminate.active {
+            background: #2e1a1a;
+            border-color: #5a2d2d;
+            color: #9a5a5a;
+        }
+        
+        .answer-body {
+            padding: 15px;
+        }
+        
+        .test-step {
+            margin-bottom: 15px;
+        }
+        
+        .test-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .test-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        
+        .test-label span {
+            color: #E0E0E0;
+        }
+        
+        .test-description {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .test-key {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        /* Final Selection */
+        .final-selection {
+            background: #111;
+            border: 1px solid #C65D3B;
+            border-radius: 4px;
+            padding: 20px;
+        }
+        
+        .final-instruction {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .final-answer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .final-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #E0E0E0;
+        }
+        
+        .final-input {
+            width: 60px;
+            background: #0A0A0A;
+            border: 2px solid #C65D3B;
+            border-radius: 4px;
+            padding: 10px;
+            color: #C65D3B;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .final-input:focus {
+            outline: none;
+        }
+        
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #C65D3B;
+            border: none;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #A04D2E;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #555;
+            color: #E0E0E0;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .cta-section p {
+            color: #888;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            background: #C65D3B;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .cta-button:hover {
+            background: #A04D2E;
+        }
+        
+        .cta-button-secondary {
+            background: transparent;
+            border: 1px solid #C65D3B;
+            color: #C65D3B;
+        }
+        
+        .cta-button-secondary:hover {
+            background: #C65D3B;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        
+        .footer a {
+            color: #C65D3B;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 650px) {
+            .nav {
+                padding: 20px;
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 25px;
+            }
+            
+            .page-title {
+                font-size: 22px;
+            }
+            
+            .argument-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .watermark {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .tab-link {
+                padding: 10px 15px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="learn.html">← Back to Learn</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1 class="page-title">STRENGTHEN / WEAKEN</h1>
+        <p class="page-subtitle">Interactive Practice Worksheet</p>
+    </section>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <a href="question-types/strengthen-weaken/flowchart.html" class="tab-link">Flowchart</a>
+        <a href="question-types/strengthen-weaken/worksheet.html" class="tab-link active">Worksheet</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Watermark -->
+        <svg class="watermark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+            <defs>
+                <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF8C5A"/>
+                    <stop offset="45%" stop-color="#C65D3B"/>
+                    <stop offset="100%" stop-color="#8B3A1D"/>
+                </linearGradient>
+            </defs>
+            <circle cx="200" cy="200" r="185" fill="none" stroke="#C65D3B" stroke-width="2.5"/>
+            <circle cx="200" cy="200" r="160" fill="none" stroke="#333" stroke-width="1.5"/>
+            <polygon points="200,305 80,95 130,95 200,235 270,95 320,95" fill="url(#vGradient)"/>
+            <rect x="182" y="320" width="36" height="4" fill="#C65D3B" rx="2"/>
+        </svg>
+
+        <!-- Worksheet -->
+        <div class="worksheet">
+            <!-- Core Argument -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Core Argument</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="core-instructions">
+                    <p class="instruction-main">Cannot look back at the stimulus. From memory, write in as few words as possible.</p>
+                    <p class="instruction-detail">Clearly note: <span class="highlight">Noun</span>, <span class="highlight">Verb</span>, <span class="highlight">Predicate</span></p>
+                    <p class="instruction-warning">No referential phrasing allowed</p>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Premise</label>
+                    <input type="text" class="input-field input-short" id="premise" placeholder="Noun + Verb + Predicate" maxlength="150">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Conclusion</label>
+                    <input type="text" class="input-field input-short" id="conclusion" placeholder="Noun + Verb + Predicate" maxlength="150">
+                </div>
+            </div>
+
+            <!-- White break -->
+            <div class="section-break"></div>
+
+            <!-- Analysis -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Analysis</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">What's the gap between them?</label>
+                    <textarea class="input-field" id="gap" placeholder="What must be assumed for the conclusion to follow from the premise?"></textarea>
+                </div>
+            </div>
+
+            <!-- Helpful Tools -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Helpful Tools</span>
+                    <div class="section-line"></div>
+                </div>
+                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">Argument type (if recognizable):</p>
+                <div class="argument-types">
+                    <a href="learn/argument-patterns/correlation-causation.html" class="argument-type" onclick="toggleArgType(event, this)">
+                        <div class="argument-type-name">Correlation → Causation</div>
+                        <div class="argument-type-gap">Gap: reversed cause, third cause, coincidence</div>
+                    </a>
+                    <a href="learn/argument-patterns/sample-population.html" class="argument-type" onclick="toggleArgType(event, this)">
+                        <div class="argument-type-name">Sample → Population</div>
+                        <div class="argument-type-gap">Gap: is the sample representative?</div>
+                    </a>
+                    <a href="learn/argument-patterns/analogy.html" class="argument-type" onclick="toggleArgType(event, this)">
+                        <div class="argument-type-name">Analogy</div>
+                        <div class="argument-type-gap">Gap: are the two things comparable?</div>
+                    </a>
+                    <div class="argument-type" onclick="toggleArgType(event, this)">
+                        <div class="argument-type-name">Other</div>
+                        <div class="argument-type-gap">Gap: identify the specific assumption</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- White break -->
+            <div class="section-break"></div>
+
+            <!-- Answer Choices -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Answer Choices</span>
+                    <div class="section-line"></div>
+                </div>
+                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">For each answer, complete the test. Move on if any step fails.</p>
+                
+                <!-- Answer A -->
+                <div class="answer-choice">
+                    <div class="answer-header">
+                        <span class="answer-letter">Answer Choice A</span>
+                        <div class="answer-status">
+                            <button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button>
+                            <button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button>
+                        </div>
+                    </div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Relevance Test</div>
+                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <input type="text" class="input-field" placeholder="If yes, how does it connect?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> Impact Test</div>
+                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
+                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
+                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer B -->
+                <div class="answer-choice">
+                    <div class="answer-header">
+                        <span class="answer-letter">Answer Choice B</span>
+                        <div class="answer-status">
+                            <button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button>
+                            <button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button>
+                        </div>
+                    </div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Relevance Test</div>
+                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <input type="text" class="input-field" placeholder="If yes, how does it connect?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> Impact Test</div>
+                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
+                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer C -->
+                <div class="answer-choice">
+                    <div class="answer-header">
+                        <span class="answer-letter">Answer Choice C</span>
+                        <div class="answer-status">
+                            <button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button>
+                            <button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button>
+                        </div>
+                    </div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Relevance Test</div>
+                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <input type="text" class="input-field" placeholder="If yes, how does it connect?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> Impact Test</div>
+                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
+                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
+                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer D -->
+                <div class="answer-choice">
+                    <div class="answer-header">
+                        <span class="answer-letter">Answer Choice D</span>
+                        <div class="answer-status">
+                            <button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button>
+                            <button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button>
+                        </div>
+                    </div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Relevance Test</div>
+                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <input type="text" class="input-field" placeholder="If yes, how does it connect?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> Impact Test</div>
+                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
+                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
+                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer E -->
+                <div class="answer-choice">
+                    <div class="answer-header">
+                        <span class="answer-letter">Answer Choice E</span>
+                        <div class="answer-status">
+                            <button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button>
+                            <button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button>
+                        </div>
+                    </div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Relevance Test</div>
+                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <input type="text" class="input-field" placeholder="If yes, how does it connect?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> Impact Test</div>
+                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
+                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
+                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- White break -->
+            <div class="section-break"></div>
+
+            <!-- Final Selection -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Final Selection</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="final-selection">
+                    <p class="final-instruction">From remaining answers, pick the one with:<br>
+                    • Fewest linguistic issues<br>
+                    • No unreasonable assumptions between words and reasoning</p>
+                    <div class="final-answer">
+                        <span class="final-label">Final Answer:</span>
+                        <input type="text" class="final-input" id="finalAnswer" maxlength="1" placeholder="?">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-primary" onclick="clearWorksheet()">Clear & Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <p>Want feedback on your approach?</p>
+        <div class="cta-buttons">
+            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Free 15-Min Consultation</a>
+            <a href="pricing.html" class="cta-button cta-button-secondary">Book a Session</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function toggleArgType(event, element) {
+            // Only toggle selection, don't navigate (user can right-click or ctrl+click to open link)
+            event.preventDefault();
+            element.classList.toggle('selected');
+        }
+
+        function toggleStatus(button, type) {
+            const parent = button.closest('.answer-status');
+            const answerChoice = button.closest('.answer-choice');
+            const keepBtn = parent.querySelector('.keep');
+            const elimBtn = parent.querySelector('.eliminate');
+            
+            if (type === 'keep') {
+                keepBtn.classList.toggle('active');
+                elimBtn.classList.remove('active');
+                answerChoice.classList.remove('eliminated');
+            } else {
+                elimBtn.classList.toggle('active');
+                keepBtn.classList.remove('active');
+                if (elimBtn.classList.contains('active')) {
+                    answerChoice.classList.add('eliminated');
+                } else {
+                    answerChoice.classList.remove('eliminated');
+                }
+            }
+        }
+
+        function clearWorksheet() {
+            // Clear all text inputs and textareas
+            document.querySelectorAll('.input-field, .final-input').forEach(input => {
+                input.value = '';
+            });
+            
+            // Reset all argument type selections
+            document.querySelectorAll('.argument-type').forEach(type => {
+                type.classList.remove('selected');
+            });
+            
+            // Reset all keep/eliminate buttons and eliminated state
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.answer-choice').forEach(choice => {
+                choice.classList.remove('eliminated');
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Auto-uppercase final answer
+        document.getElementById('finalAnswer').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>
