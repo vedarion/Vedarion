@@ -58,14 +58,6 @@
             color: white;
         }
         
-        .nav-links a.nav-cta {
-            color: #C65D3B;
-        }
-        
-        .nav-links a.nav-cta:hover {
-            color: #E07050;
-        }
-        
         /* Hero Section */
         .hero {
             color: white;
@@ -75,7 +67,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px 20px;
+            padding: 120px 20px 60px;
         }
         
         .hero-brand {
@@ -93,7 +85,7 @@
         .hero-tagline {
             font-size: 20px;
             color: #B0B0B0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             letter-spacing: 2px;
         }
         
@@ -103,6 +95,21 @@
             max-width: 700px;
             margin: 0 auto 40px;
             line-height: 1.8;
+        }
+        
+        /* Video */
+        .video-container {
+            max-width: 300px;
+            margin: 0 auto 40px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            aspect-ratio: 9/16;
+            border: none;
         }
         
         .cta-container {
@@ -139,16 +146,23 @@
             letter-spacing: 0.5px;
         }
         
-        .cta-secondary {
-            color: #888;
-            font-size: 14px;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
+        /* Footer */
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
         }
         
-        .cta-secondary:hover {
+        .footer a {
             color: #C65D3B;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
         }
         
         /* Mobile responsive */
@@ -163,6 +177,10 @@
                 gap: 25px;
             }
             
+            .hero {
+                padding: 100px 20px 40px;
+            }
+            
             .hero-brand {
                 font-size: 48px;
                 letter-spacing: 6px;
@@ -174,6 +192,10 @@
             
             .hero-description {
                 font-size: 16px;
+            }
+            
+            .video-container {
+                max-width: 260px;
             }
         }
     </style>
@@ -196,10 +218,26 @@
         <p class="hero-description">
             Master the LSAT through pattern recognition.
         </p>
+        
+        <!-- Video -->
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/CcdsMjdUP-M" 
+                title="Meet Rahela - VEDARION"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        
         <div class="cta-container">
             <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Book a Free 15-Min Consultation</a>
             <p class="cta-subtext">Let's map your path to a 170+.</p>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
 </body>
 </html>
