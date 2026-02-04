@@ -897,10 +897,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#5224373633203b3d3c7c2627263d203b3c3512353f333b3e7c313d3f"><span class="__cf_email__" data-cfemail="1d6b78797c6f74727333696869726f74737a5d7a707c7471337e7270">[email&#160;protected]</span></a></p>
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         function setQuestionType(button, type) {
             document.querySelectorAll('.type-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -957,4 +957,13 @@
             });
             
             // Scroll to top
-            window.scrollTo({ t
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Auto-uppercase final answer
+        document.getElementById('finalAnswer').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>
