@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Reasoning - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            min-height: 100vh;
+        }
+        
+        .v-accent {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+        
+        .nav {
+            background: #0A0A0A;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #999;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .page-header {
+            background: #0A0A0A;
+            padding: 30px 40px 20px;
+            text-align: center;
+        }
+        
+        .breadcrumb {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: white;
+            margin: 0;
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            background: #0A0A0A;
+            padding: 20px 20px 0;
+        }
+        
+        .tab-link {
+            padding: 12px 30px;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-link:hover {
+            color: #888;
+        }
+        
+        .tab-link.active {
+            color: #C65D3B;
+            border-bottom-color: #C65D3B;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .step {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 20px 25px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .step.highlight {
+            border-color: #C65D3B;
+            border-width: 2px;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #C65D3B;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            letter-spacing: 1px;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .step-content {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .step-content ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+        
+        .step-content li {
+            padding-left: 15px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        
+        .step-content li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #999;
+        }
+        
+        .arrow {
+            text-align: center;
+            padding: 8px 0;
+            color: #CCC;
+            font-size: 18px;
+        }
+        
+        .inner-question {
+            background: #F9F9F9;
+            border: 1px dashed #DDD;
+            padding: 12px 15px;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+        
+        .inner-question ul {
+            margin-top: 8px;
+        }
+        
+        .warning-box {
+            background: #FFF8F0;
+            border: 1px solid #C65D3B;
+            padding: 10px 15px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #0A0A0A;
+        }
+        
+        .branch-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .branch {
+            flex: 1;
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 15px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .branch .step-title {
+            font-size: 11px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .branch .step-content {
+            font-size: 11px;
+        }
+        
+        .branch .step-content li {
+            margin-bottom: 3px;
+        }
+        
+        .section-divider {
+            background: #0A0A0A;
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .final-step {
+            background: #0A0A0A;
+            border: none;
+            text-align: center;
+        }
+        
+        .final-step .step-title {
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .final-step .step-content {
+            color: #888;
+        }
+        
+        .tip-box {
+            background: #F5F5F5;
+            border: 1px dashed #CCC;
+            padding: 15px 20px;
+            margin-top: 0;
+        }
+        
+        .tip-box .step-title {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .tip-box .step-content {
+            font-size: 12px;
+        }
+        
+        .slim-divider {
+            height: 0;
+            border-top: 1px solid #E0E0E0;
+            margin: 0;
+        }
+        
+        .cta-section {
+            background: #0A0A0A;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        .cta-text {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #C65D3B;
+            color: white;
+            border: 1px solid #C65D3B;
+        }
+        
+        .btn-primary:hover {
+            background: #A84D31;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #C65D3B;
+            border: 1px solid #C65D3B;
+        }
+        
+        .btn-secondary:hover {
+            background: #C65D3B;
+            color: white;
+        }
+        
+        .site-footer {
+            background: #0A0A0A;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .site-footer a {
+            color: #C65D3B;
+            text-decoration: none;
+        }
+        
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 650px) {
+            .nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .tab-link {
+                padding: 10px 15px;
+                font-size: 11px;
+            }
+            
+            .branch-container {
+                flex-direction: column;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../Index.html" class="nav-logo"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../About.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+        </div>
+    </nav>
+    
+    <div class="page-header">
+        <div class="breadcrumb">Learn → Parallel Reasoning</div>
+        <h1 class="page-title">PARALLEL REASONING</h1>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <a href="video.html" class="tab-link">Video</a>
+        <a href="worksheet.html" class="tab-link">Worksheet</a>
+        <a href="flowchart.html" class="tab-link active">Flowchart</a>
+    </div>
+    
+    <div class="container">
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">STEP 1</div>
+                <div class="step-title">Identify Question Type from Stem</div>
+                <div class="step-content">
+                    <div class="branch-container">
+                        <div class="branch">
+                            <div class="step-title">Parallel Reasoning</div>
+                            <div class="step-content">
+                                <ul>
+                                    <li>"most similar in its reasoning"</li>
+                                    <li>"most similar in its pattern of reasoning"</li>
+                                    <li>"most closely parallels"</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="branch">
+                            <div class="step-title">Parallel Flaw</div>
+                            <div class="step-content">
+                                <ul>
+                                    <li>"most similar in its flawed reasoning"</li>
+                                    <li>"contains a flaw most similar to"</li>
+                                    <li>"exhibits flawed reasoning most similar to"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="section-divider">Stimulus</div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">STEP 2</div>
+                <div class="step-title">Identify Premise and Conclusion</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Find the conclusion first</li>
+                        <li>Identify all premises supporting it</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">STEP 3</div>
+                <div class="step-title">Evaluate the Argument</div>
+                <div class="step-content">
+                    Ask: What would YOU conclude from these premises?
+                    <div class="inner-question">
+                        <strong>Do the premises connect?</strong>
+                        <ul>
+                            <li><strong>YES</strong> → What's the valid inference from the combination? Use that to evaluate the conclusion.</li>
+                            <li><strong>NO</strong> → Think about each premise separately when evaluating support for the conclusion.</li>
+                        </ul>
+                    </div>
+                    <div class="inner-question">
+                        <em>Note: No gaps in Parallel Reasoning (gaps = Parallel Flaw)</em>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="section-divider">Abstract the Pattern</div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step highlight">
+                <div class="step-number">STEP 4</div>
+                <div class="step-title">Write the Abstract Structure</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Describe how argument goes from premises → conclusion</li>
+                        <li>Use abstract words that have <strong>nothing to do with the content</strong></li>
+                        <li>Doesn't have to be pretty — can be in your own words</li>
+                    </ul>
+                    <div class="inner-question">
+                        <strong>Parallel Reasoning:</strong> Match the structure.
+                        <ul>
+                            <li>Example: "All A are B. X is A. Therefore, X is B." (valid)</li>
+                        </ul>
+                    </div>
+                    <div class="inner-question">
+                        <strong>Parallel Flaw:</strong> You're not matching structure — you're matching the FLAW.
+                        <ul>
+                            <li>Note the exact flaw (e.g., part to whole, sufficient/necessary mistake)</li>
+                        </ul>
+                    </div>
+                    <div class="warning-box">
+                        <strong>DO NOT SKIP THIS STEP.</strong> If you're having trouble here, it will be worse in the answer choices. This is what cuts down time and improves accuracy.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="tip-box">
+                <div class="step-content">
+                    <strong>Strategy to help with time:</strong><br>
+                    Shallow dip = quick scan before committing to a full read
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">STEP 5</div>
+                <div class="step-title">Strategize: Shallow Dip Markers</div>
+                <div class="step-content">
+                    Based on YOUR abstract structure, what can you scan for first?
+                    <div class="inner-question">
+                        <strong>Example:</strong> If your structure is "All A are B. X is A. Therefore, X is B."
+                        <ul>
+                            <li>Look for strong language indicating "all" in premise AND conclusion</li>
+                        </ul>
+                    </div>
+                    <div class="inner-question">
+                        <strong>Example:</strong> If your structure is correlation to causation
+                        <ul>
+                            <li>Look for causal language in conclusion first</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="section-divider">Answer Choices</div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">STEP 6</div>
+                <div class="step-title">Shallow Dip</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Does this answer have your markers?</li>
+                        <li><strong>If NO</strong> → Don't eliminate, just move to next answer</li>
+                        <li><strong>If YES</strong> → Proceed to Step 7</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step">
+                <div class="step-number">STEP 7</div>
+                <div class="step-title">Read in Small Pieces</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Read first part of answer</li>
+                        <li><strong>STOP and predict: "What does it need to say NEXT to be correct?"</strong></li>
+                        <li>Predicting helps you spot subtle trap answer choices</li>
+                        <li>If it matches your prediction → read next small piece</li>
+                        <li>Continue piece by piece until done</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="step final-step">
+                <div class="step-number">STEP 8</div>
+                <div class="step-title">Pick and Go</div>
+                <div class="step-content">
+                    If an answer choice works → Select it and move on<br>
+                    Don't second-guess • Saves significant time
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="slim-divider"></div>
+    
+    <div class="cta-section">
+        <p class="cta-text">Want to solidify this and work through more questions together?</p>
+        <div class="cta-buttons">
+            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="btn btn-primary">FREE 15-MIN CONSULTATION</a>
+            <a href="../../pricing.html" class="btn btn-secondary">BOOK A SESSION</a>
+        </div>
+    </div>
+    
+    <div class="site-footer">
+        Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a>
+    </div>
+</body>
+</html>
