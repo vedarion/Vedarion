@@ -93,10 +93,59 @@
             font-size: 18px;
             color: #888;
             max-width: 700px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             line-height: 1.8;
         }
         
+        /* Dual CTA buttons */
+        .hero-cta-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .btn-primary {
+            background: #C65D3B;
+            color: white;
+            padding: 16px 36px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover {
+            background: #A04D2E;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #B0B0B0;
+            padding: 16px 36px;
+            border: 1px solid #444;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-secondary:hover {
+            border-color: #888;
+            color: white;
+            transform: translateY(-2px);
+        }
+
         /* Video */
         .video-container {
             max-width: 300px;
@@ -193,6 +242,11 @@
             .hero-description {
                 font-size: 16px;
             }
+
+            .hero-cta-row {
+                flex-direction: column;
+                gap: 14px;
+            }
             
             .video-container {
                 max-width: 260px;
@@ -218,6 +272,12 @@
         <p class="hero-description">
             Master the LSAT through pattern recognition.
         </p>
+
+        <!-- Dual CTA -->
+        <div class="hero-cta-row">
+            <a href="learn.html" class="btn-primary">Start Learning</a>
+            <a href="pricing.html" class="btn-secondary">Book a Session</a>
+        </div>
         
         <!-- Video -->
         <div class="video-container">
