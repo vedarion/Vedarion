@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEDARION - Advanced LSAT Preparation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -67,7 +68,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 120px 20px 60px;
+            padding: 120px 20px 40px;
         }
         
         .hero-brand {
@@ -146,19 +147,41 @@
             transform: translateY(-2px);
         }
 
-        /* Video */
-        .video-container {
-            max-width: 300px;
-            margin: 0 auto 40px;
-            border-radius: 12px;
+        /* Photo */
+        .photo-container {
+            max-width: 260px;
+            margin: 0 auto 12px;
+            border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        
-        .video-container iframe {
+
+        .hero-photo {
             width: 100%;
-            aspect-ratio: 9/16;
-            border: none;
+            display: block;
+            filter: brightness(0.95);
+            transition: filter 0.3s ease;
+        }
+
+        .photo-container:hover .hero-photo {
+            filter: brightness(1);
+        }
+
+        .watch-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .watch-link:hover {
+            color: #C65D3B;
         }
         
         .cta-container {
@@ -188,11 +211,244 @@
             transform: translateY(-2px);
         }
         
+        .hero-cta-group {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
         .cta-subtext {
             font-size: 15px;
             color: #888;
             font-style: italic;
             letter-spacing: 0.5px;
+            margin-top: 14px;
+        }
+
+        .hero-credentials {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .hero-credentials-sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.3px;
+            margin-bottom: 0;
+        }
+
+        /* ======================== */
+        /* TESTIMONIALS SECTION     */
+        /* ======================== */
+        .testimonials {
+            padding: 80px 20px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .testimonials-inner {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .testimonials-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 12px;
+        }
+
+        .testimonials-experience {
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.3px;
+            margin-bottom: 16px;
+        }
+
+        .testimonials-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 38px;
+            font-weight: 400;
+            color: #fff;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+
+        .testimonials-title em {
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .testimonials-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(198,93,59,0.4);
+            margin: 20px auto 0;
+        }
+
+        /* Cards */
+        .testimonial-card {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            margin-bottom: 18px;
+            transition: border-color 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(198,93,59,0.3);
+        }
+
+        .card-top {
+            padding: 28px 28px 22px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .card-name {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.02em;
+            margin-bottom: 4px;
+        }
+
+        .card-tagline {
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .card-score {
+            background: linear-gradient(135deg, #C65D3B 0%, #A04D2E 100%);
+            padding: 7px 14px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Quote icon */
+        .quote-icon {
+            color: rgba(198,93,59,0.2);
+            margin-bottom: 6px;
+        }
+
+        .pull-quote {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.82);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Expand toggle */
+        .expand-btn {
+            width: 100%;
+            padding: 14px 28px;
+            background: rgba(255,255,255,0.015);
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .expand-btn:hover {
+            color: #C65D3B;
+            background: rgba(198,93,59,0.05);
+        }
+
+        .expand-btn.active {
+            color: #C65D3B;
+            background: rgba(198,93,59,0.06);
+        }
+
+        .expand-btn svg {
+            transition: transform 0.3s ease;
+        }
+
+        .expand-btn.active svg {
+            transform: rotate(180deg);
+        }
+
+        /* Expanded story */
+        .full-story {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .full-story.open {
+            max-height: 800px;
+        }
+
+        .full-story-inner {
+            padding: 22px 28px 28px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .full-story-inner p {
+            font-size: 14.5px;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 14px;
+        }
+
+        .full-story-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Bottom CTA */
+        .testimonials-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .testimonials-cta a {
+            display: inline-block;
+            padding: 14px 36px;
+            background: transparent;
+            border: 1px solid rgba(198,93,59,0.5);
+            color: #C65D3B;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .testimonials-cta a:hover {
+            background: #C65D3B;
+            color: #fff;
         }
         
         /* Footer */
@@ -248,8 +504,37 @@
                 gap: 14px;
             }
             
-            .video-container {
-                max-width: 260px;
+            .photo-container {
+                max-width: 220px;
+            }
+
+            .testimonials {
+                padding: 60px 16px;
+            }
+
+            .testimonials-title {
+                font-size: 30px;
+            }
+
+            .card-top {
+                padding: 22px 20px 18px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card-score {
+                align-self: flex-start;
+            }
+
+            .pull-quote {
+                font-size: 16px;
+            }
+
+            .full-story-inner {
+                padding: 18px 20px 22px;
             }
         }
     </style>
@@ -262,6 +547,7 @@
             <a href="about.html">About</a>
             <a href="pricing.html">Pricing</a>
             <a href="learn.html">Learn</a>
+            <a href="index.html#results">Results</a>
         </div>
     </nav>
 
@@ -273,25 +559,124 @@
             Master the LSAT through pattern recognition.
         </p>
 
-        <!-- Dual CTA -->
-        <div class="hero-cta-row">
-            <a href="learn.html" class="btn-primary">Start Learning</a>
-            <a href="pricing.html" class="btn-secondary">Book a Session</a>
+        <!-- CTA -->
+        <div class="hero-cta-group">
+            <div class="hero-cta-row">
+                <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="btn-primary">Book a Free 30-Min Session</a>
+                <a href="learn.html" class="btn-secondary">Start Learning</a>
+            </div>
+            <p class="cta-subtext">Talk to me about anything LSAT. No strings attached.</p>
         </div>
         
-        <!-- Video -->
-        <div class="video-container">
-            <iframe 
-                src="https://www.youtube.com/embed/CcdsMjdUP-M" 
-                title="Meet Rahela - VEDARION"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
+        <!-- Photo + Video -->
+        <div class="photo-container">
+            <img src="rahela.jpeg" alt="Rahela - VEDARION LSAT Tutor" class="hero-photo">
         </div>
+        <a href="https://www.youtube.com/watch?v=CcdsMjdUP-M" target="_blank" class="watch-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Watch: Meet Rahela
+        </a>
+        <p class="hero-credentials">173 scorer&ensp;&middot;&ensp;6 years of teaching experience</p>
+        <p class="hero-credentials-sub">Extensive experience teaching: tutoring, courses, and live classes.</p>
         
-        <div class="cta-container">
-            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Book a Free 15-Min Consultation</a>
-            <p class="cta-subtext">Let's map your path to a 170+.</p>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="results">
+        <div class="testimonials-inner">
+            
+            <div class="testimonials-header">
+                <div class="testimonials-label">Student Results</div>
+                <h2 class="testimonials-title">Real breakthroughs.<br><em>In their words.</em></h2>
+                <div class="testimonials-divider"></div>
+            </div>
+
+            <!-- Mia -->
+            <div class="testimonial-card">
+                <div class="card-top">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-name">Mia</div>
+                            <div class="card-tagline">UChicago &middot; UPenn &middot; UCLA &middot; USC &middot; Harvard Waitlist</div>
+                        </div>
+                        <div class="card-score">Mid 160s &rarr; 175</div>
+                    </div>
+                    <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M10 8H6C4.9 8 4 8.9 4 10V14C4 15.1 4.9 16 6 16H8L6 20H8.5L10.5 16H10C11.1 16 12 15.1 12 14V10C12 8.9 11.1 8 10 8Z"/><path d="M20 8H16C14.9 8 14 8.9 14 10V14C14 15.1 14.9 16 16 16H18L16 20H18.5L20.5 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8Z"/></svg>
+                    <p class="pull-quote">"Rahela was able to identify the smallest breakdowns in my process and the smallest assumptions I was making&hellip; One of the best investments I made in my law school application process."</p>
+                </div>
+                <button class="expand-btn" onclick="toggleStory(this)">
+                    Read full story
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="full-story">
+                    <div class="full-story-inner">
+                        <p>I would ABSOLUTELY recommend working with Rahela! I started out with a more hands-off program which was really great and allowed me to move consistently into the mid/high 160s. But I felt really, really stuck there. I felt like I was taking all of the advice for review and practice but I wasn't able to fully break into the 170s before I started having sessions with Rahela.</p>
+                        <p>She was able to identify the smallest breakdowns in my process and the smallest assumptions I was making and then help me address them so that I could move faster and with more confidence through each question.</p>
+                        <p>One thing that is unique to Rahela's approach is how she thought through the test. With other tutors or friends, they would work on either timing strategies or small details in the questions. Rahela was able to help me think about both of these concepts at the same time which is what I ultimately credit to being able to score highly on the exam.</p>
+                        <p>I also want to say that it felt like Rahela truly cared about me and the outcome of my score. Every single minute of the session felt planned and thought through, and it didn't feel like I was just being pushed through a generic lesson plan.</p>
+                        <p>Before committing to private tutoring with Rahela (because it is expensive!), I tried two other tutoring services which really, really illuminated how great Rahela was for me. One of the best investments I made in my law school application process.</p>
+                        <p><strong style="color:rgba(255,255,255,0.75);">Update:</strong> I have gotten into UChicago, UPenn, UCLA, and USC! I'm on the waitlist at Harvard and waiting for a few more decisions + scholarship offers!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ruben -->
+            <div class="testimonial-card">
+                <div class="card-top">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-name">Ruben</div>
+                            <div class="card-tagline">Broke through a late-stage plateau</div>
+                        </div>
+                        <div class="card-score">167 &rarr; 170</div>
+                    </div>
+                    <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M10 8H6C4.9 8 4 8.9 4 10V14C4 15.1 4.9 16 6 16H8L6 20H8.5L10.5 16H10C11.1 16 12 15.1 12 14V10C12 8.9 11.1 8 10 8Z"/><path d="M20 8H16C14.9 8 14 8.9 14 10V14C14 15.1 14.9 16 16 16H18L16 20H18.5L20.5 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8Z"/></svg>
+                    <p class="pull-quote">"A major turning point in my preparation was learning her approach of 'shallow dipping' into answer choices before committing to a deep analysis — it significantly improved both my accuracy and efficiency."</p>
+                </div>
+                <button class="expand-btn" onclick="toggleStory(this)">
+                    Read full story
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="full-story">
+                    <div class="full-story-inner">
+                        <p>I would highly recommend working with Rahela for the LSAT. She has a great ability to teach from the student perspective, anticipating where confusion might arise, addressing it directly, and making complex concepts feel manageable.</p>
+                        <p>A major turning point in my preparation was learning her approach of "shallow dipping" into answer choices before committing to a deep analysis — it significantly improved both my accuracy and efficiency.</p>
+                        <p>I began working with Rahela after hitting a major plateau later in my studies, and with her guidance, I was able to break through and improve by a very valuable 3 points on my LSAT.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grace -->
+            <div class="testimonial-card">
+                <div class="card-top">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-name">Grace</div>
+                            <div class="card-tagline">Non-traditional student &middot; Out of school 10+ years</div>
+                        </div>
+                        <div class="card-score">+8 points</div>
+                    </div>
+                    <svg class="quote-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M10 8H6C4.9 8 4 8.9 4 10V14C4 15.1 4.9 16 6 16H8L6 20H8.5L10.5 16H10C11.1 16 12 15.1 12 14V10C12 8.9 11.1 8 10 8Z"/><path d="M20 8H16C14.9 8 14 8.9 14 10V14C14 15.1 14.9 16 16 16H18L16 20H18.5L20.5 16H20C21.1 16 22 15.1 22 14V10C22 8.9 21.1 8 20 8Z"/></svg>
+                    <p class="pull-quote">"After spending over 6 months studying with two different prep courses without any score improvement, I was exhausted and nearly gave up. Studying with Rahela changed everything."</p>
+                </div>
+                <button class="expand-btn" onclick="toggleStory(this)">
+                    Read full story
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="full-story">
+                    <div class="full-story-inner">
+                        <p>As a non-traditional student who has been out of school for over a decade, the LSAT was extremely difficult for me — I couldn't even understand what the test was about and had to start from scratch. After spending over 6 months studying with two different prep courses without any score improvement, I was exhausted, felt devastated, lost all confidence in myself, and nearly gave up on the LSAT.</p>
+                        <p>Studying with Rahela changed EVERYTHING. I am so grateful to have met such a kind and exceptional tutor like Rahela. Rahela truly cares about her students. From the very first session, she immediately recognized what I was struggling with and worked very closely with me.</p>
+                        <p>Not only is she knowledgeable, but she also knows exactly how to teach in a way that makes sense to me and fits how I learn best. After working with Rahela, I began to see test patterns, became faster, and much more comfortable with reading in general, and ended up improving my score by 8 points!</p>
+                        <p>I now enjoy reading and often think about the skills I gained from the LSAT prep, which I know will be invaluable in law school. Thank you, Rahela, for all your support and guidance throughout this journey!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonials-cta">
+                <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall">Book a Free 30-Min Session</a>
+            </div>
+
         </div>
     </section>
 
@@ -299,5 +684,25 @@
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
+
+    <script>
+        function toggleStory(btn) {
+            const story = btn.nextElementSibling;
+            const isOpen = story.classList.contains('open');
+            
+            // Close all others
+            document.querySelectorAll('.full-story.open').forEach(s => {
+                s.classList.remove('open');
+                s.previousElementSibling.classList.remove('active');
+                s.previousElementSibling.innerHTML = 'Read full story <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+            });
+            
+            if (!isOpen) {
+                story.classList.add('open');
+                btn.classList.add('active');
+                btn.innerHTML = 'Close <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+            }
+        }
+    </script>
 </body>
 </html>
