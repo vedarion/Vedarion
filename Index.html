@@ -102,7 +102,7 @@
         .hero-cta-row {
             display: flex;
             gap: 20px;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 50px;
         }
 
@@ -217,11 +217,17 @@
         }
 
         .cta-subtext {
-            font-size: 15px;
+            font-size: 13px;
             color: #888;
             font-style: italic;
-            letter-spacing: 0.5px;
-            margin-top: 14px;
+            letter-spacing: 0.3px;
+            margin-top: 10px;
+        }
+
+        .cta-primary-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .hero-credentials {
@@ -502,6 +508,11 @@
             .hero-cta-row {
                 flex-direction: column;
                 gap: 14px;
+                align-items: center;
+            }
+
+            .cta-primary-group {
+                align-items: center;
             }
             
             .photo-container {
@@ -560,12 +571,12 @@
         </p>
 
         <!-- CTA -->
-        <div class="hero-cta-group">
-            <div class="hero-cta-row">
+        <div class="hero-cta-row">
+            <div class="cta-primary-group">
                 <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="btn-primary">Book a Free 30-Min Session</a>
-                <a href="learn.html" class="btn-secondary">Start Learning</a>
+                <p class="cta-subtext">Talk to me about anything LSAT. No strings attached.</p>
             </div>
-            <p class="cta-subtext">Talk to me about anything LSAT. No strings attached.</p>
+            <a href="learn.html" class="btn-secondary">Start Learning</a>
         </div>
         
         <!-- Photo + Video -->
@@ -682,10 +693,10 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+        <p>Questions? <a href="/cdn-cgi/l/email-protection#b7c1d2d3d6c5ded8d999c3c2c3d8c5ded9d0f7d0dad6dedb99d4d8da"><span class="__cf_email__" data-cfemail="5a2c3f3e3b28333534742e2f2e352833343d1a3d373b333674393537">[email&#160;protected]</span></a></p>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         function toggleStory(btn) {
             const story = btn.nextElementSibling;
             const isOpen = story.classList.contains('open');
@@ -700,9 +711,3 @@
             if (!isOpen) {
                 story.classList.add('open');
                 btn.classList.add('active');
-                btn.innerHTML = 'Close <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
-            }
-        }
-    </script>
-</body>
-</html>
