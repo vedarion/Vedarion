@@ -269,6 +269,18 @@
         .lesson-item.available:hover .lesson-status.ready {
             text-decoration: underline;
         }
+
+        .ai-badge {
+            background: #C65D3B;
+            color: white;
+            font-size: 8px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            letter-spacing: .5px;
+            font-weight: 700;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
         
         /* CTA Section */
         .cta-section {
@@ -421,17 +433,18 @@
                         </div>
                     </div>
                 </li>
-                <li class="lesson-item">
-                    <a href="#" class="lesson-link">
+                <li class="lesson-item available">
+                    <div class="lesson-content">
                         <div class="lesson-info">
                             <span class="lesson-icon">▶</span>
                             <span class="lesson-title">Conditional Logic Basics</span>
                         </div>
                         <div class="lesson-meta">
-                            <span>Video + Worksheet</span>
-                            <span class="lesson-status">Coming soon</span>
+                            <a href="foundations/conditional-logic/lesson.html">Lesson</a>
+                            <span class="separator">|</span>
+                            <a href="foundations/conditional-logic/lesson.html" onclick="localStorage.setItem('vm_tab','vedamark')"><span class="ai-badge">AI</span>VedaMark</a>
                         </div>
-                    </a>
+                    </div>
                 </li>
                 <li class="lesson-item">
                     <a href="#" class="lesson-link">
