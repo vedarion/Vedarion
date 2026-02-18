@@ -112,6 +112,40 @@
             color: #555;
             line-height: 1.8;
         }
+
+        /* Brand Statement Section */
+        .brand-section {
+            background: #0A0A0A;
+            padding: 80px 20px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .brand-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .brand-block {
+            text-align: left;
+        }
+
+        .brand-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 16px;
+        }
+
+        .brand-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.55);
+        }
         
         /* Credentials Section */
         .credentials-section {
@@ -227,10 +261,19 @@
             .cards-grid {
                 grid-template-columns: 1fr;
             }
+
+            .brand-inner {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
             
             .credentials {
                 flex-direction: column;
                 gap: 40px;
+            }
+
+            .brand-text {
+                font-size: 16px;
             }
         }
     </style>
@@ -268,6 +311,30 @@
                     <h3>Trap Recognition</h3>
                     <p>Spot wrong answers before they fool you. Understand how the test designs traps and stop falling for them.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Statement -->
+    <section class="brand-section">
+        <div class="brand-inner">
+            <div class="brand-block">
+                <div class="brand-label">A Smarter Way to Study</div>
+                <p class="brand-text">
+                    Finally, a smarter way to learn the LSAT. VedaMark is built on Rahela's proven pattern recognition methodology. Six years of teaching — one-on-one tutoring, courses, and live classes — gave her a clear picture of how students actually learn and what they need to reach their highest potential fast.
+                </p>
+            </div>
+            <div class="brand-block">
+                <div class="brand-label">AI Guided by a Real Tutor</div>
+                <p class="brand-text">
+                    She built VEDARION to put that approach in your hands. The AI doesn't teach on its own — it follows Rahela's methodology, delivering her lessons and practice exactly where and how she designed them.
+                </p>
+            </div>
+            <div class="brand-block">
+                <div class="brand-label">Built Different</div>
+                <p class="brand-text">
+                    Most platforms just throw questions at you and tell you which question types you're weak at — but they don't teach you how to get better. With VedaMark, every explanation, every lesson, every step comes from an actual tutor who knows exactly where students get stuck.
+                </p>
             </div>
         </div>
     </section>
