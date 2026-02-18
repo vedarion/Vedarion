@@ -106,11 +106,6 @@
             background: #A04D2E;
         }
         
-        .hero-spacer {
-            background: #FAFAFA;
-            height: 40px;
-        }
-        
         .page-title {
             font-size: 32px;
             font-weight: 400;
@@ -122,6 +117,65 @@
         .page-subtitle {
             color: #666;
             font-size: 15px;
+        }
+
+        /* Path Selector */
+        .path-selector {
+            background: #0A0A0A;
+            padding: 40px 20px 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .path-card {
+            border: 1px solid #333;
+            padding: 28px 32px;
+            max-width: 320px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            background: transparent;
+        }
+
+        .path-card:hover {
+            border-color: #C65D3B;
+        }
+
+        .path-card.active {
+            border-color: #C65D3B;
+            background: rgba(198, 93, 59, 0.05);
+        }
+
+        .path-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 10px;
+        }
+
+        .path-name {
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .path-desc {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Hero spacer */
+        .hero-spacer {
+            background: #FAFAFA;
+            height: 40px;
         }
         
         /* Section Header (black strip) */
@@ -281,6 +335,15 @@
             margin-right: 4px;
             vertical-align: middle;
         }
+
+        /* Path content visibility */
+        .path-content {
+            display: none;
+        }
+
+        .path-content.active {
+            display: block;
+        }
         
         /* CTA Section */
         .cta-section {
@@ -371,6 +434,16 @@
             .page-title {
                 font-size: 26px;
             }
+
+            .path-selector {
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 20px 40px;
+            }
+
+            .path-card {
+                max-width: 100%;
+            }
             
             .lesson-content,
             .lesson-link {
@@ -409,280 +482,360 @@
         <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="banner-button">Book a Free 30-Min Session</a>
     </section>
 
-    <div class="hero-spacer"></div>
-
-    <!-- Section 1: Foundations -->
-    <div class="section-header">
-        <div class="section-number">1</div>
-        <h2 class="section-title">Foundations</h2>
-    </div>
-    <section class="lessons-section">
-        <div class="lessons-container">
-            <p class="section-description">Build the core skills everything else depends on.</p>
-            <ul class="lessons-list">
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Identifying Conclusions</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="foundations/identifying-conclusions/lesson.html">Lesson</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Video coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Conditional Logic Basics</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="foundations/conditional-logic/lesson.html">Lesson</a>
-                            <span class="separator">|</span>
-                            <a href="foundations/conditional-logic/lesson.html" onclick="localStorage.setItem('vm_tab','vedamark')"><span class="ai-badge">AI</span>VedaMark</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Translating Words on the Test</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="foundations/translating-words-on-the-test/lesson.html">Lesson</a>
-                            <span class="separator">|</span>
-                            <a href="foundations/translating-words-on-the-test/vedamark.html"><span class="ai-badge">AI</span>VedaMark</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+    <!-- Path Selector -->
+    <div class="path-selector">
+        <div class="path-card active" onclick="switchPath('core')">
+            <div class="path-label">Start Here</div>
+            <div class="path-name">CORE PATTERN</div>
+            <p class="path-desc">Build your foundation. Learn the logic, the language, and every question type — one at a time.</p>
         </div>
-    </section>
-
-    <!-- Section 2: Most Frequent Question Types -->
-    <div class="section-header">
-        <div class="section-number">2</div>
-        <h2 class="section-title">Most Frequent Question Types</h2>
-    </div>
-    <section class="lessons-section">
-        <div class="lessons-container">
-            <p class="section-description">Master the question types you'll see most often.</p>
-            <ul class="lessons-list">
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Sufficient Assumption</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Necessary Assumption</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/necessary-assumption/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Strengthen & Weaken</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/strengthen-weaken/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <a href="question-types/strengthen-weaken/worksheet.html">Worksheet</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Flaw</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/flaw/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Must Be True</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/must-be-true/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+        <div class="path-card" onclick="switchPath('advanced')">
+            <div class="path-label">Level Up</div>
+            <div class="path-name">ADVANCED PATTERN</div>
+            <p class="path-desc">Go deeper. Handle complex logic, harder translations, and learn to see the patterns beneath the questions.</p>
         </div>
-    </section>
-
-    <!-- Section 3: Complete Your Toolkit -->
-    <div class="section-header">
-        <div class="section-number">3</div>
-        <h2 class="section-title">Complete Your Toolkit</h2>
     </div>
-    <section class="lessons-section">
-        <div class="lessons-container">
-            <p class="section-description">Round out your skills with the remaining question types.</p>
-            <ul class="lessons-list">
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Most Strongly Supported</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Resolve / Reconcile / Explain</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/resolve-reconcile-explain/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Argument Part / Role of Statement</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/argument-part/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Evaluate</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/evaluate/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Agree / Disagree (Point at Issue)</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/agree-disagree/flowchart.html">Flowchart</a>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item available">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Parallel Reasoning</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <a href="question-types/parallel-reasoning/video.html">Video</a>
-                            <span class="separator">|</span>
-                            <a href="question-types/parallel-reasoning/worksheet.html">Worksheet</a>
-                            <span class="separator">|</span>
-                            <a href="question-types/parallel-reasoning/flowchart.html">Flowchart</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="lesson-item">
-                    <div class="lesson-content">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Method of Reasoning</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <span class="coming-soon">Flowchart coming soon</span>
-                            <span class="separator">|</span>
-                            <span class="coming-soon">Worksheet coming soon</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
 
-    <!-- Section 4: Advanced Strategies -->
-    <div class="section-header">
-        <div class="section-number">4</div>
-        <h2 class="section-title">Advanced Strategies</h2>
-    </div>
-    <section class="lessons-section">
-        <div class="lessons-container">
-            <p class="section-description">Refine your approach and see the patterns beneath the questions.</p>
-            <ul class="lessons-list">
-                <li class="lesson-item">
-                    <a href="#" class="lesson-link">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Argument Pattern Recognition</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <span>Video + Worksheet</span>
-                            <span class="lesson-status">Coming soon</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="lesson-item">
-                    <a href="#" class="lesson-link">
-                        <div class="lesson-info">
-                            <span class="lesson-icon">▶</span>
-                            <span class="lesson-title">Trap Answer Patterns</span>
-                        </div>
-                        <div class="lesson-meta">
-                            <span>Video + Worksheet</span>
-                            <span class="lesson-status">Coming soon</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+    <!-- ======================== -->
+    <!-- CORE PATTERN             -->
+    <!-- ======================== -->
+    <div id="core-path" class="path-content active">
+
+        <div class="hero-spacer"></div>
+
+        <!-- Core 1: Foundations -->
+        <div class="section-header">
+            <div class="section-number">1</div>
+            <h2 class="section-title">Foundations</h2>
         </div>
-    </section>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Build the core skills everything else depends on.</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Identifying Conclusions and Premises</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="foundations/identifying-conclusions/lesson.html">Lesson</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Video coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Conditional Logic Basics</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="foundations/conditional-logic/lesson.html">Lesson</a>
+                                <span class="separator">|</span>
+                                <a href="foundations/conditional-logic/cl-vedamark.html"><span class="ai-badge">AI</span>VedaMark</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Chained Conditionals</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="coming-soon">Lesson coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Translating Words on the Test</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="foundations/translating-words-on-the-test/lesson.html">Lesson</a>
+                                <span class="separator">|</span>
+                                <a href="foundations/translating-words-on-the-test/vedamark.html"><span class="ai-badge">AI</span>VedaMark</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Core 2: Most Frequent Question Types -->
+        <div class="section-header">
+            <div class="section-number">2</div>
+            <h2 class="section-title">Most Frequent Question Types</h2>
+        </div>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Master the question types you'll see most often.</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Sufficient Assumption</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Necessary Assumption</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/necessary-assumption/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Strengthen & Weaken</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/strengthen-weaken/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <a href="question-types/strengthen-weaken/worksheet.html">Worksheet</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Flaw</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/flaw/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Must Be True</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/must-be-true/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Core 3: Complete Your Toolkit -->
+        <div class="section-header">
+            <div class="section-number">3</div>
+            <h2 class="section-title">Complete Your Toolkit</h2>
+        </div>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Round out your skills with the remaining question types.</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Most Strongly Supported</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Resolve / Reconcile / Explain</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/resolve-reconcile-explain/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Argument Part / Role of Statement</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/argument-part/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Evaluate</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/evaluate/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Agree / Disagree (Point at Issue)</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/agree-disagree/flowchart.html">Flowchart</a>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Parallel Reasoning</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="question-types/parallel-reasoning/video.html">Video</a>
+                                <span class="separator">|</span>
+                                <a href="question-types/parallel-reasoning/worksheet.html">Worksheet</a>
+                                <span class="separator">|</span>
+                                <a href="question-types/parallel-reasoning/flowchart.html">Flowchart</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="lesson-item">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Method of Reasoning</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="coming-soon">Flowchart coming soon</span>
+                                <span class="separator">|</span>
+                                <span class="coming-soon">Worksheet coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ======================== -->
+    <!-- ADVANCED PATTERN          -->
+    <!-- ======================== -->
+    <div id="advanced-path" class="path-content">
+
+        <div class="hero-spacer"></div>
+
+        <!-- Advanced 1: Complex Conditionals -->
+        <div class="section-header">
+            <div class="section-number">1</div>
+            <h2 class="section-title">Complex Conditionals</h2>
+        </div>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Unless/Without/Except · None/Cannot · Combined Statements</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Complex Conditionals</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="advanced/complex-conditionals/lesson.html">Lesson</a>
+                                <span class="separator">|</span>
+                                <a href="advanced/complex-conditionals/cc-vedamark.html"><span class="ai-badge">AI</span>VedaMark</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Advanced 2: Advanced Translations -->
+        <div class="section-header">
+            <div class="section-number">2</div>
+            <h2 class="section-title">Advanced Translations</h2>
+        </div>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Few/Almost All · Required For · Comparative Statements · Tricky Grammar</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item available">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Advanced Translations</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <a href="advanced/advanced-translations/lesson.html">Lesson</a>
+                                <span class="separator">|</span>
+                                <a href="advanced/advanced-translations/at-vedamark.html"><span class="ai-badge">AI</span>VedaMark</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Advanced 3: Pattern Recognition -->
+        <div class="section-header">
+            <div class="section-number">3</div>
+            <h2 class="section-title">Pattern Recognition</h2>
+        </div>
+        <section class="lessons-section">
+            <div class="lessons-container">
+                <p class="section-description">Stop memorizing question types. Start seeing the patterns beneath them.</p>
+                <ul class="lessons-list">
+                    <li class="lesson-item">
+                        <div class="lesson-content">
+                            <div class="lesson-info">
+                                <span class="lesson-icon">▶</span>
+                                <span class="lesson-title">Argument Forms & Trap Answer Patterns</span>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="coming-soon">Coming soon</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
 
     <!-- CTA -->
     <section class="cta-section">
@@ -693,4 +846,28 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#c8beadaca9baa1a7a6e6bcbdbca7baa1a6af88afa5a9a1a4e6aba7a5"><span class="__c
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function switchPath(path) {
+            document.querySelectorAll('.path-card').forEach(function(card) {
+                card.classList.remove('active');
+            });
+            document.querySelectorAll('.path-content').forEach(function(content) {
+                content.classList.remove('active');
+            });
+
+            if (path === 'core') {
+                document.querySelectorAll('.path-card')[0].classList.add('active');
+                document.getElementById('core-path').classList.add('active');
+            } else {
+                document.querySelectorAll('.path-card')[1].classList.add('active');
+                document.getElementById('advanced-path').classList.add('active');
+            }
+
+            document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

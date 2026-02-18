@@ -1,591 +1,20 @@
 {
   "categories": [
     {
-      "id": "negate_sufficient",
-      "name": "Unless / Without / Except",
-      "description": "Single negation indicators — negate the sufficient",
-      "questions": [
-        {
-          "id": 1,
-          "sentence": "You will fail unless you study.",
-          "correct": "If you don't fail, then you studied.",
-          "wrong": "If you study, then you will not fail.",
-          "explanation": "\"Unless\" = negate the sufficient. \"Fail\" is in the sufficient position, so we negate it: Not fail → studied. If you didn't fail, then you must have studied. (B) goes in the wrong direction."
-        },
-        {
-          "id": 2,
-          "sentence": "Without sunlight, plants wilt.",
-          "correct": "If no sunlight, then plants wilt.",
-          "wrong": "If sunlight, then plants do not wilt.",
-          "explanation": "\"Without\" = negate the sufficient. \"Sunlight\" is in the sufficient position, so we negate it: No sunlight → plants wilt. (B) goes in the wrong direction."
-        },
-        {
-          "id": 3,
-          "sentence": "Everyone is welcome unless they break the rules.",
-          "correct": "If someone is not welcome, then they broke the rules.",
-          "wrong": "If they break the rules, they are welcome.",
-          "explanation": "\"Unless\" = negate the sufficient. \"Welcome\" is in the sufficient position, so we negate it: Not welcome → broke the rules. (B) goes in the wrong direction."
-        },
-        {
-          "id": 4,
-          "sentence": "The park is open except during storms.",
-          "correct": "If the park is not open, then there is a storm.",
-          "wrong": "If there is a storm, the park is open.",
-          "explanation": "\"Except\" = negate the sufficient. \"Open\" is in the sufficient position, so we negate it: Not open → storm. (B) goes in the wrong direction."
-        },
-        {
-          "id": 5,
-          "sentence": "Without exercise, your health declines.",
-          "correct": "If no exercise, then your health declines.",
-          "wrong": "If you exercise, then your health improves.",
-          "explanation": "\"Without\" = negate the sufficient. \"Exercise\" is in the sufficient position, so we negate it: No exercise → health declines. (B) goes in the wrong direction."
-        },
-        {
-          "id": 6,
-          "sentence": "She won't apologize unless she is wrong.",
-          "correct": "If she apologizes, then she is wrong.",
-          "wrong": "If she is wrong, she will apologize.",
-          "explanation": "\"Unless\" = negate the sufficient. \"Won't apologize\" is in the sufficient position, so we negate it: Apologizes → she is wrong. (B) goes in the wrong direction."
-        },
-        {
-          "id": 7,
-          "sentence": "The store is closed except on weekdays.",
-          "correct": "If the store is open, then it is a weekday.",
-          "wrong": "If it is a weekday, the store is closed.",
-          "explanation": "\"Except\" = negate the sufficient. \"Closed\" is in the sufficient position, so we negate it: Open → weekday. (B) goes in the wrong direction."
-        },
-        {
-          "id": 8,
-          "sentence": "Without a map, hikers get lost.",
-          "correct": "If no map, then hikers get lost.",
-          "wrong": "If hikers have a map, then they do not get lost.",
-          "explanation": "\"Without\" = negate the sufficient. \"Map\" is in the sufficient position, so we negate it: No map → hikers get lost. (B) goes in the wrong direction."
-        },
-        {
-          "id": 9,
-          "sentence": "You will be fined unless you pay on time.",
-          "correct": "If you are not fined, then you paid on time.",
-          "wrong": "If you pay on time, you will be fined.",
-          "explanation": "\"Unless\" = negate the sufficient. \"Fined\" is in the sufficient position, so we negate it: Not fined → paid on time. If you weren't fined, then you must have paid on time. (B) goes in the wrong direction."
-        },
-        {
-          "id": 10,
-          "sentence": "The dog stays inside except when it is sunny.",
-          "correct": "If the dog is outside, then it is sunny.",
-          "wrong": "If it is sunny, the dog stays inside.",
-          "explanation": "\"Except\" = negate the sufficient. \"Stays inside\" is in the sufficient position, so we negate it: Outside → sunny. (B) goes in the wrong direction."
-        }
-      ]
-    },
-    {
-      "id": "negate_necessary",
-      "name": "None / Cannot",
-      "description": "Single negation indicators — negate the necessary",
-      "questions": [
-        {
-          "id": 11,
-          "sentence": "No doctor would recommend this treatment.",
-          "correct": "If someone is a doctor, then they would not recommend this treatment.",
-          "wrong": "Some doctors would recommend this treatment.",
-          "explanation": "\"No\" = negate the necessary. \"Recommend this treatment\" is in the necessary position, so we negate it: Doctor → would NOT recommend this treatment. (B) says the opposite."
-        },
-        {
-          "id": 12,
-          "sentence": "None of the applicants were qualified.",
-          "correct": "All applicants were not qualified.",
-          "wrong": "Some applicants were qualified.",
-          "explanation": "\"None\" = negate the necessary. \"Qualified\" is in the necessary position, so we negate it: Applicant → NOT qualified. (B) says the opposite."
-        },
-        {
-          "id": 13,
-          "sentence": "No student who cheats will pass.",
-          "correct": "If a student cheats, then they will not pass.",
-          "wrong": "Some students who cheat will pass.",
-          "explanation": "\"No\" = negate the necessary. \"Pass\" is in the necessary position, so we negate it: Student who cheats → will NOT pass. (B) says the opposite."
-        },
-        {
-          "id": 14,
-          "sentence": "Children cannot drive.",
-          "correct": "If someone is a child, then they cannot drive.",
-          "wrong": "Some children can drive.",
-          "explanation": "\"Cannot\" = negate the necessary. \"Drive\" is in the necessary position, so we negate it: Child → canNOT drive. (B) says the opposite."
-        },
-        {
-          "id": 15,
-          "sentence": "No one without a badge can enter the building.",
-          "correct": "If without a badge, then you cannot enter the building.",
-          "wrong": "If someone has a badge, they can enter the building.",
-          "explanation": "\"No\" = negate the necessary. \"Enter the building\" is in the necessary position, so we negate it: Without a badge → canNOT enter the building. (B) goes in the wrong direction."
-        },
-        {
-          "id": 16,
-          "sentence": "None of the cookies are sugar-free.",
-          "correct": "All cookies contain sugar.",
-          "wrong": "Some cookies are sugar-free.",
-          "explanation": "\"None\" = negate the necessary. \"Sugar-free\" is in the necessary position, so we negate it: Cookie → NOT sugar-free. All cookies contain sugar. (B) says the opposite."
-        },
-        {
-          "id": 17,
-          "sentence": "No one who litters cares about the environment.",
-          "correct": "If someone litters, then they do not care about the environment.",
-          "wrong": "Some people who litter care about the environment.",
-          "explanation": "\"No\" = negate the necessary. \"Cares about the environment\" is in the necessary position, so we negate it: Litters → does NOT care about the environment. (B) says the opposite."
-        },
-        {
-          "id": 18,
-          "sentence": "None of the flights were on time.",
-          "correct": "All flights were not on time.",
-          "wrong": "Some flights were on time.",
-          "explanation": "\"None\" = negate the necessary. \"On time\" is in the necessary position, so we negate it: Flight → NOT on time. (B) says the opposite."
-        },
-        {
-          "id": 19,
-          "sentence": "No healthy dessert contains artificial sweeteners.",
-          "correct": "If a dessert is healthy, then it does not contain artificial sweeteners.",
-          "wrong": "Some healthy desserts contain artificial sweeteners.",
-          "explanation": "\"No\" = negate the necessary. \"Contains artificial sweeteners\" is in the necessary position, so we negate it: Healthy dessert → does NOT contain artificial sweeteners. (B) says the opposite."
-        },
-        {
-          "id": 20,
-          "sentence": "Cats cannot fly.",
-          "correct": "If it is a cat, then it cannot fly.",
-          "wrong": "Some cats can fly.",
-          "explanation": "\"Cannot\" = negate the necessary. \"Fly\" is in the necessary position, so we negate it: Cat → canNOT fly. (B) says the opposite."
-        }
-      ]
-    },
-    {
-      "id": "combined_negations",
-      "name": "Combined: Cannot + Unless / Without",
-      "description": "Two negation indicators together acting as conditional triggers — negations cancel each other out. Note: 'without' only counts as a conditional trigger when it introduces a condition, NOT when it modifies a noun (e.g., 'No one without a badge' — here 'without' describes the person, so only 'no' is the indicator).",
-      "questions": [
-        {
-          "id": 21,
-          "sentence": "You cannot vote unless you are registered.",
-          "correct": "If you voted, then you are registered.",
-          "wrong": "If you are registered, then you voted.",
-          "explanation": "\"Cannot\" + \"unless\" → the negations cancel. Vote → registered. If you voted, you must be registered. (B) goes in the wrong direction — being registered doesn't mean you voted."
-        },
-        {
-          "id": 22,
-          "sentence": "You cannot drive without a license.",
-          "correct": "If you drove, then you have a license.",
-          "wrong": "If you have a license, then you drove.",
-          "explanation": "\"Cannot\" + \"without\" → the negations cancel. Drive → have a license. If you drove, you must have a license. (B) goes in the wrong direction — having a license doesn't mean you drove."
-        },
-        {
-          "id": 23,
-          "sentence": "The machine cannot operate without electricity.",
-          "correct": "If the machine operates, then there is electricity.",
-          "wrong": "If there is electricity, the machine operates.",
-          "explanation": "\"Cannot\" + \"without\" → the negations cancel. Machine operates → electricity. If the machine is running, there must be electricity. (B) goes in the wrong direction."
-        },
-        {
-          "id": 24,
-          "sentence": "You cannot pass the class unless you submit the final paper.",
-          "correct": "If you passed the class, then you submitted the final paper.",
-          "wrong": "If you submitted the final paper, then you passed the class.",
-          "explanation": "\"Cannot\" + \"unless\" → the negations cancel. Pass → submitted final paper. If you passed, you must have submitted it. (B) goes in the wrong direction — submitting doesn't guarantee passing."
-        },
-        {
-          "id": 25,
-          "sentence": "No one can compete without signing the waiver.",
-          "correct": "If someone competed, then they signed the waiver.",
-          "wrong": "If someone signed the waiver, then they competed.",
-          "explanation": "\"No one can\" + \"without\" → the negations cancel. Compete → signed waiver. If they competed, they must have signed it. (B) goes in the wrong direction."
-        },
-        {
-          "id": 26,
-          "sentence": "You cannot board the plane unless you show your ID.",
-          "correct": "If you boarded the plane, then you showed your ID.",
-          "wrong": "If you showed your ID, then you boarded the plane.",
-          "explanation": "\"Cannot\" + \"unless\" → the negations cancel. Board → showed ID. If you boarded, you must have shown your ID. (B) goes in the wrong direction — showing ID doesn't guarantee boarding."
-        },
-        {
-          "id": 27,
-          "sentence": "The cake cannot be baked without flour.",
-          "correct": "If the cake was baked, then flour was used.",
-          "wrong": "If flour was used, then the cake was baked.",
-          "explanation": "\"Cannot\" + \"without\" → the negations cancel. Cake baked → flour used. If the cake was baked, flour must have been used. (B) goes in the wrong direction."
-        },
-        {
-          "id": 28,
-          "sentence": "You cannot access the system unless you have a password.",
-          "correct": "If you accessed the system, then you have a password.",
-          "wrong": "If you have a password, then you accessed the system.",
-          "explanation": "\"Cannot\" + \"unless\" → the negations cancel. Access → have password. If you accessed the system, you must have a password. (B) goes in the wrong direction — having a password doesn't mean you accessed it."
-        },
-        {
-          "id": 29,
-          "sentence": "No employee can get a raise without a performance review.",
-          "correct": "If an employee got a raise, then they had a performance review.",
-          "wrong": "If an employee had a performance review, then they got a raise.",
-          "explanation": "\"No...can\" + \"without\" → the negations cancel. Got raise → had performance review. If they got a raise, they must have had a review. (B) goes in the wrong direction."
-        },
-        {
-          "id": 30,
-          "sentence": "You cannot graduate unless you complete the internship.",
-          "correct": "If you graduated, then you completed the internship.",
-          "wrong": "If you completed the internship, then you graduated.",
-          "explanation": "\"Cannot\" + \"unless\" → the negations cancel. Graduate → completed internship. If you graduated, you must have completed it. (B) goes in the wrong direction — completing the internship doesn't guarantee graduation."
-        }
-      ]
-    },
-    {
-      "id": "few",
-      "name": "Few",
-      "description": "Few = some are AND most are not. Two pieces of information in one word.",
-      "questions": [
-        {
-          "id": 31,
-          "sentence": "Few students enjoy homework.",
-          "correct": "Most students do not enjoy homework.",
-          "wrong": "No students enjoy homework.",
-          "explanation": "\"Few\" = some are AND most are not. Some students enjoy homework, but most do not. (B) goes too far — \"few\" tells us some do enjoy it, so \"no students\" is wrong."
-        },
-        {
-          "id": 32,
-          "sentence": "Few restaurants in this town serve breakfast.",
-          "correct": "Most restaurants in this town do not serve breakfast.",
-          "wrong": "Most restaurants in this town serve breakfast.",
-          "explanation": "\"Few\" = some are AND most are not. Some restaurants serve breakfast, but most do not. (B) flips it — \"few\" means most do NOT."
-        },
-        {
-          "id": 33,
-          "sentence": "Few politicians keep their promises.",
-          "correct": "Most politicians do not keep their promises.",
-          "wrong": "No politicians keep their promises.",
-          "explanation": "\"Few\" = some are AND most are not. Some politicians keep their promises, but most do not. (B) goes too far — \"few\" tells us some do, so \"no politicians\" is wrong."
-        },
-        {
-          "id": 34,
-          "sentence": "Few movies this year were worth watching.",
-          "correct": "Some movies this year were worth watching.",
-          "wrong": "No movies this year were worth watching.",
-          "explanation": "\"Few\" = some are AND most are not. Some movies were worth watching. (B) goes too far — \"few\" guarantees that at least some were, so \"no movies\" is wrong."
-        },
-        {
-          "id": 35,
-          "sentence": "Few applicants passed the screening.",
-          "correct": "Most applicants did not pass the screening.",
-          "wrong": "All applicants passed the screening.",
-          "explanation": "\"Few\" = some are AND most are not. Some applicants passed, but most did not. (B) says the opposite — \"all\" contradicts \"few.\""
-        },
-        {
-          "id": 36,
-          "sentence": "Few dogs dislike walks.",
-          "correct": "Most dogs do not dislike walks.",
-          "wrong": "No dogs dislike walks.",
-          "explanation": "\"Few\" = some are AND most are not. Some dogs dislike walks, but most do not. (B) goes too far — \"few\" tells us some do dislike walks."
-        },
-        {
-          "id": 37,
-          "sentence": "Few people read the terms and conditions.",
-          "correct": "Most people do not read the terms and conditions.",
-          "wrong": "Most people read the terms and conditions.",
-          "explanation": "\"Few\" = some are AND most are not. Some people read them, but most do not. (B) flips it — \"few\" means most do NOT."
-        },
-        {
-          "id": 38,
-          "sentence": "Few cities have reliable public transit.",
-          "correct": "Some cities have reliable public transit.",
-          "wrong": "No cities have reliable public transit.",
-          "explanation": "\"Few\" = some are AND most are not. Some cities do have it. (B) goes too far — \"few\" guarantees at least some do."
-        },
-        {
-          "id": 39,
-          "sentence": "Few teachers assign homework over the holidays.",
-          "correct": "Most teachers do not assign homework over the holidays.",
-          "wrong": "All teachers assign homework over the holidays.",
-          "explanation": "\"Few\" = some are AND most are not. Some teachers assign it, but most do not. (B) says the opposite."
-        },
-        {
-          "id": 40,
-          "sentence": "Few desserts at this bakery are sugar-free.",
-          "correct": "Most desserts at this bakery are not sugar-free.",
-          "wrong": "No desserts at this bakery are sugar-free.",
-          "explanation": "\"Few\" = some are AND most are not. Some desserts are sugar-free, but most are not. (B) goes too far — \"few\" tells us some are."
-        }
-      ]
-    },
-    {
       "id": "many",
       "name": "Many",
       "description": "Many = some = at least one. It feels like a lot, but on the LSAT it only guarantees 'some.'",
       "questions": [
-        {
-          "id": 41,
-          "sentence": "Many athletes train twice a day.",
-          "correct": "At least one athlete trains twice a day.",
-          "wrong": "Most athletes train twice a day.",
-          "explanation": "\"Many\" = some = at least one. We know at least one athlete trains twice a day. (B) goes too far — \"many\" does not guarantee more than 50%."
-        },
-        {
-          "id": 42,
-          "sentence": "Many tourists visit the museum.",
-          "correct": "Some tourists visit the museum.",
-          "wrong": "Most tourists visit the museum.",
-          "explanation": "\"Many\" = some = at least one. We know some tourists visit. (B) goes too far — \"many\" does not guarantee more than 50%."
-        },
-        {
-          "id": 43,
-          "sentence": "Many companies offer remote work.",
-          "correct": "At least one company offers remote work.",
-          "wrong": "Most companies offer remote work.",
-          "explanation": "\"Many\" = some = at least one. We know at least one company offers it. (B) goes too far — \"many\" does not tell us it's more than half."
-        },
-        {
-          "id": 44,
-          "sentence": "Many children prefer chocolate ice cream.",
-          "correct": "Some children prefer chocolate ice cream.",
-          "wrong": "All children prefer chocolate ice cream.",
-          "explanation": "\"Many\" = some = at least one. We know some children prefer it. (B) goes way too far — \"many\" is nowhere near \"all.\""
-        },
-        {
-          "id": 45,
-          "sentence": "Many drivers ignore the speed limit.",
-          "correct": "At least one driver ignores the speed limit.",
-          "wrong": "Most drivers ignore the speed limit.",
-          "explanation": "\"Many\" = some = at least one. We know at least one driver ignores it. (B) goes too far — \"many\" does not guarantee more than 50%."
-        },
-        {
-          "id": 46,
-          "sentence": "Many homes in the area have solar panels.",
-          "correct": "Some homes in the area have solar panels.",
-          "wrong": "A majority of homes in the area have solar panels.",
-          "explanation": "\"Many\" = some = at least one. We know some homes have them. (B) goes too far — \"many\" does not mean a majority."
-        },
-        {
-          "id": 47,
-          "sentence": "Many doctors recommend this supplement.",
-          "correct": "At least one doctor recommends this supplement.",
-          "wrong": "Most doctors recommend this supplement.",
-          "explanation": "\"Many\" = some = at least one. We know at least one doctor recommends it. (B) goes too far — \"many\" does not guarantee more than 50%."
-        },
-        {
-          "id": 48,
-          "sentence": "Many songs on the album are about love.",
-          "correct": "Some songs on the album are about love.",
-          "wrong": "Most songs on the album are about love.",
-          "explanation": "\"Many\" = some = at least one. We know some songs are about love. (B) goes too far — \"many\" does not tell us it's more than half."
-        },
-        {
-          "id": 49,
-          "sentence": "Many voters support the proposal.",
-          "correct": "At least one voter supports the proposal.",
-          "wrong": "The majority of voters support the proposal.",
-          "explanation": "\"Many\" = some = at least one. We know at least one voter supports it. (B) goes too far — \"many\" does not guarantee a majority."
-        },
-        {
-          "id": 50,
-          "sentence": "Many plants need direct sunlight.",
-          "correct": "Some plants need direct sunlight.",
-          "wrong": "Most plants need direct sunlight.",
-          "explanation": "\"Many\" = some = at least one. We know some plants need it. (B) goes too far — \"many\" does not guarantee more than 50%."
-        }
-      ]
-    },
-    {
-      "id": "not_all",
-      "name": "Not All",
-      "description": "Not all = some are not = at least one is not. It tells us nothing about the majority.",
-      "questions": [
-        {
-          "id": 51,
-          "sentence": "Not all birds can fly.",
-          "correct": "At least one bird cannot fly.",
-          "wrong": "No birds can fly.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one bird cannot fly. (B) goes way too far — \"not all\" does not mean \"none.\""
-        },
-        {
-          "id": 52,
-          "sentence": "Not all students passed the test.",
-          "correct": "At least one student did not pass the test.",
-          "wrong": "Most students did not pass the test.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one student didn't pass. (B) goes too far — \"not all\" tells us nothing about whether most passed or not."
-        },
-        {
-          "id": 53,
-          "sentence": "Not every restaurant on this street is expensive.",
-          "correct": "At least one restaurant on this street is not expensive.",
-          "wrong": "No restaurants on this street are expensive.",
-          "explanation": "\"Not every\" = not all = at least one is not. At least one restaurant is not expensive. (B) goes way too far — \"not every\" does not mean \"none.\""
-        },
-        {
-          "id": 54,
-          "sentence": "Not all medications have side effects.",
-          "correct": "At least one medication does not have side effects.",
-          "wrong": "No medications have side effects.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one medication doesn't have side effects. (B) goes way too far — \"not all\" does not mean \"none.\""
-        },
-        {
-          "id": 55,
-          "sentence": "Not all politicians are dishonest.",
-          "correct": "At least one politician is not dishonest.",
-          "wrong": "Most politicians are not dishonest.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one politician is not dishonest. (B) goes too far — \"not all\" tells us nothing about the majority."
-        },
-        {
-          "id": 56,
-          "sentence": "Not every employee attended the meeting.",
-          "correct": "At least one employee did not attend the meeting.",
-          "wrong": "No employees attended the meeting.",
-          "explanation": "\"Not every\" = not all = at least one is not. At least one employee didn't attend. (B) goes way too far — \"not every\" does not mean \"none.\""
-        },
-        {
-          "id": 57,
-          "sentence": "Not all roads lead to Rome.",
-          "correct": "At least one road does not lead to Rome.",
-          "wrong": "No roads lead to Rome.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one road doesn't lead to Rome. (B) goes way too far — \"not all\" does not mean \"none.\""
-        },
-        {
-          "id": 58,
-          "sentence": "Not all coffee shops serve espresso.",
-          "correct": "At least one coffee shop does not serve espresso.",
-          "wrong": "Most coffee shops do not serve espresso.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one coffee shop doesn't serve espresso. (B) goes too far — \"not all\" tells us nothing about the majority."
-        },
-        {
-          "id": 59,
-          "sentence": "Not every celebrity is wealthy.",
-          "correct": "At least one celebrity is not wealthy.",
-          "wrong": "No celebrities are wealthy.",
-          "explanation": "\"Not every\" = not all = at least one is not. At least one celebrity is not wealthy. (B) goes way too far — \"not every\" does not mean \"none.\""
-        },
-        {
-          "id": 60,
-          "sentence": "Not all experiments produce useful results.",
-          "correct": "At least one experiment does not produce useful results.",
-          "wrong": "No experiments produce useful results.",
-          "explanation": "\"Not all\" = some are not = at least one is not. At least one experiment doesn't produce useful results. (B) goes way too far — \"not all\" does not mean \"none.\""
-        }
-      ]
-    },
-    {
-      "id": "most",
-      "name": "Most",
-      "description": "Most = more than 50%. Not all, but more than half.",
-      "questions": [
-        {
-          "id": 61,
-          "sentence": "Most employees prefer working from home.",
-          "correct": "More than half of employees prefer working from home.",
-          "wrong": "All employees prefer working from home.",
-          "explanation": "\"Most\" = more than 50%. More than half prefer it. (B) goes too far — \"most\" leaves room for some who don't."
-        },
-        {
-          "id": 62,
-          "sentence": "Most birds migrate south for the winter.",
-          "correct": "More than half of birds migrate south for the winter.",
-          "wrong": "Few birds migrate south for the winter.",
-          "explanation": "\"Most\" = more than 50%. More than half migrate. (B) says the opposite — \"few\" means most do NOT, which contradicts \"most do.\""
-        },
-        {
-          "id": 63,
-          "sentence": "Most customers were satisfied with the service.",
-          "correct": "More than half of customers were satisfied.",
-          "wrong": "All customers were satisfied with the service.",
-          "explanation": "\"Most\" = more than 50%. More than half were satisfied. (B) goes too far — \"most\" is not \"all.\""
-        },
-        {
-          "id": 64,
-          "sentence": "Most countries have a national anthem.",
-          "correct": "More than half of countries have a national anthem.",
-          "wrong": "Every country has a national anthem.",
-          "explanation": "\"Most\" = more than 50%. More than half have one. (B) goes too far — \"most\" does not mean \"every.\""
-        },
-        {
-          "id": 65,
-          "sentence": "Most students in the class scored above 80.",
-          "correct": "More than half of the students scored above 80.",
-          "wrong": "Few students in the class scored above 80.",
-          "explanation": "\"Most\" = more than 50%. More than half scored above 80. (B) says the opposite — \"few\" means most did NOT score above 80, which contradicts the statement."
-        }
-      ]
-    },
-    {
-      "id": "usually",
-      "name": "Usually",
-      "description": "Usually = most = more than 50%.",
-      "questions": [
-        {
-          "id": 66,
-          "sentence": "The train usually arrives on time.",
-          "correct": "More than half of the time, the train arrives on time.",
-          "wrong": "The train always arrives on time.",
-          "explanation": "\"Usually\" = most = more than 50%. More than half the time it's on time. (B) goes too far — \"usually\" leaves room for exceptions."
-        },
-        {
-          "id": 67,
-          "sentence": "She usually walks to work.",
-          "correct": "More than half of the time, she walks to work.",
-          "wrong": "She always walks to work.",
-          "explanation": "\"Usually\" = most = more than 50%. More than half the time she walks. (B) goes too far — \"usually\" is not \"always.\""
-        },
-        {
-          "id": 68,
-          "sentence": "It usually rains in April.",
-          "correct": "More than half of the time, it rains in April.",
-          "wrong": "It rains every day in April.",
-          "explanation": "\"Usually\" = most = more than 50%. It rains more than half the time. (B) goes too far — \"usually\" does not mean every day."
-        },
-        {
-          "id": 69,
-          "sentence": "The restaurant is usually crowded on weekends.",
-          "correct": "More than half of weekends, the restaurant is crowded.",
-          "wrong": "The restaurant is crowded every weekend.",
-          "explanation": "\"Usually\" = most = more than 50%. More than half of weekends it's crowded. (B) goes too far — \"usually\" leaves room for quiet weekends."
-        },
-        {
-          "id": 70,
-          "sentence": "He usually finishes his work before 5 PM.",
-          "correct": "More than half of the time, he finishes before 5 PM.",
-          "wrong": "He rarely finishes before 5 PM.",
-          "explanation": "\"Usually\" = most = more than 50%. More than half the time he finishes early. (B) says the opposite — \"rarely\" means most of the time he does NOT finish early."
-        }
-      ]
-    },
-    {
-      "id": "generally",
-      "name": "Generally",
-      "description": "Generally = most = more than 50%.",
-      "questions": [
-        {
-          "id": 71,
-          "sentence": "Experienced drivers are generally safer.",
-          "correct": "More than half of experienced drivers are safer.",
-          "wrong": "All experienced drivers are safer.",
-          "explanation": "\"Generally\" = most = more than 50%. More than half are safer. (B) goes too far — \"generally\" leaves room for exceptions."
-        },
-        {
-          "id": 72,
-          "sentence": "Organic produce is generally more expensive.",
-          "correct": "More than half of organic produce is more expensive.",
-          "wrong": "All organic produce is more expensive.",
-          "explanation": "\"Generally\" = most = more than 50%. More than half is more expensive. (B) goes too far — \"generally\" does not mean \"all.\""
-        },
-        {
-          "id": 73,
-          "sentence": "People generally prefer warm weather.",
-          "correct": "More than half of people prefer warm weather.",
-          "wrong": "Everyone prefers warm weather.",
-          "explanation": "\"Generally\" = most = more than 50%. More than half prefer it. (B) goes too far — \"generally\" is not \"everyone.\""
-        },
-        {
-          "id": 74,
-          "sentence": "Older buildings are generally less energy efficient.",
-          "correct": "More than half of older buildings are less energy efficient.",
-          "wrong": "Few older buildings are less energy efficient.",
-          "explanation": "\"Generally\" = most = more than 50%. More than half are less efficient. (B) says the opposite — \"few\" means most are NOT less efficient, which contradicts \"generally.\""
-        },
-        {
-          "id": 75,
-          "sentence": "Students generally perform better with more sleep.",
-          "correct": "More than half of students perform better with more sleep.",
-          "wrong": "All students perform better with more sleep.",
-          "explanation": "\"Generally\" = most = more than 50%. More than half perform better. (B) goes too far — \"generally\" leaves room for exceptions."
-        }
+        {"id": 41, "sentence": "Many athletes train twice a day.", "correct": "At least one athlete trains twice a day.", "wrong": "Most athletes train twice a day.", "explanation": "\"Many\" = some = at least one. We know at least one athlete trains twice a day. (B) goes too far — \"many\" does not guarantee more than 50%."},
+        {"id": 42, "sentence": "Many tourists visit the museum.", "correct": "Some tourists visit the museum.", "wrong": "Most tourists visit the museum.", "explanation": "\"Many\" = some = at least one. We know some tourists visit. (B) goes too far — \"many\" does not guarantee more than 50%."},
+        {"id": 43, "sentence": "Many companies offer remote work.", "correct": "At least one company offers remote work.", "wrong": "Most companies offer remote work.", "explanation": "\"Many\" = some = at least one. We know at least one company offers it. (B) goes too far — \"many\" does not tell us it's more than half."},
+        {"id": 44, "sentence": "Many children prefer chocolate ice cream.", "correct": "Some children prefer chocolate ice cream.", "wrong": "All children prefer chocolate ice cream.", "explanation": "\"Many\" = some = at least one. We know some children prefer it. (B) goes way too far — \"many\" is nowhere near \"all.\""},
+        {"id": 45, "sentence": "Many drivers ignore the speed limit.", "correct": "At least one driver ignores the speed limit.", "wrong": "Most drivers ignore the speed limit.", "explanation": "\"Many\" = some = at least one. We know at least one driver ignores it. (B) goes too far — \"many\" does not guarantee more than 50%."},
+        {"id": 46, "sentence": "Many homes in the area have solar panels.", "correct": "Some homes in the area have solar panels.", "wrong": "A majority of homes in the area have solar panels.", "explanation": "\"Many\" = some = at least one. We know some homes have them. (B) goes too far — \"many\" does not mean a majority."},
+        {"id": 47, "sentence": "Many doctors recommend this supplement.", "correct": "At least one doctor recommends this supplement.", "wrong": "Most doctors recommend this supplement.", "explanation": "\"Many\" = some = at least one. We know at least one doctor recommends it. (B) goes too far — \"many\" does not guarantee more than 50%."},
+        {"id": 48, "sentence": "Many songs on the album are about love.", "correct": "Some songs on the album are about love.", "wrong": "Most songs on the album are about love.", "explanation": "\"Many\" = some = at least one. We know some songs are about love. (B) goes too far — \"many\" does not tell us it's more than half."},
+        {"id": 49, "sentence": "Many voters support the proposal.", "correct": "At least one voter supports the proposal.", "wrong": "The majority of voters support the proposal.", "explanation": "\"Many\" = some = at least one. We know at least one voter supports it. (B) goes too far — \"many\" does not guarantee a majority."},
+        {"id": 50, "sentence": "Many plants need direct sunlight.", "correct": "Some plants need direct sunlight.", "wrong": "Most plants need direct sunlight.", "explanation": "\"Many\" = some = at least one. We know some plants need it. (B) goes too far — \"many\" does not guarantee more than 50%."}
       ]
     },
     {
@@ -593,76 +22,52 @@
       "name": "Some",
       "description": "Some = at least one. Could be 1, could be all. We just know it's not zero.",
       "questions": [
-        {
-          "id": 76,
-          "sentence": "Some cats are friendly.",
-          "correct": "At least one cat is friendly.",
-          "wrong": "Most cats are friendly.",
-          "explanation": "\"Some\" = at least one. We know at least one cat is friendly. (B) goes too far — \"some\" doesn't tell us it's more than 50%."
-        },
-        {
-          "id": 77,
-          "sentence": "Some houses on this block have pools.",
-          "correct": "At least one house on this block has a pool.",
-          "wrong": "6 houses on this block have pools.",
-          "explanation": "\"Some\" = at least one. We know at least one house has a pool, but we can't be sure it's 6. \"Some\" only guarantees at least one — not a specific number."
-        },
-        {
-          "id": 78,
-          "sentence": "Some employees received a bonus.",
-          "correct": "At least one employee received a bonus.",
-          "wrong": "Most employees received a bonus.",
-          "explanation": "\"Some\" = at least one. We know at least one got a bonus. (B) goes too far — \"some\" doesn't tell us it's more than half."
-        },
-        {
-          "id": 79,
-          "sentence": "Some books on the shelf are first editions.",
-          "correct": "At least one book on the shelf is a first edition.",
-          "wrong": "5 books on the shelf are first editions.",
-          "explanation": "\"Some\" = at least one. We know at least one book is a first edition, but we can't be sure it's 5. \"Some\" only guarantees at least one — not a specific number."
-        },
-        {
-          "id": 80,
-          "sentence": "Some voters changed their minds.",
-          "correct": "At least one voter changed their mind.",
-          "wrong": "Most voters changed their minds.",
-          "explanation": "\"Some\" = at least one. We know at least one voter changed their mind. (B) goes too far — \"some\" doesn't tell us it's more than 50%."
-        },
-        {
-          "id": 81,
-          "sentence": "Some students in the class speak Spanish.",
-          "correct": "At least one student in the class speaks Spanish.",
-          "wrong": "7 students in the class speak Spanish.",
-          "explanation": "\"Some\" = at least one. We know at least one student speaks Spanish, but we can't be sure it's 7. \"Some\" only guarantees at least one — not a specific number."
-        },
-        {
-          "id": 82,
-          "sentence": "Some of the paintings were damaged.",
-          "correct": "At least one painting was damaged.",
-          "wrong": "Most of the paintings were damaged.",
-          "explanation": "\"Some\" = at least one. We know at least one painting was damaged. (B) goes too far — \"some\" doesn't tell us it's more than half."
-        },
-        {
-          "id": 83,
-          "sentence": "Some parks in the city allow dogs.",
-          "correct": "At least one park in the city allows dogs.",
-          "wrong": "4 parks in the city allow dogs.",
-          "explanation": "\"Some\" = at least one. We know at least one park allows dogs, but we can't be sure it's 4. \"Some\" only guarantees at least one — not a specific number."
-        },
-        {
-          "id": 84,
-          "sentence": "Some teachers use technology in the classroom.",
-          "correct": "At least one teacher uses technology in the classroom.",
-          "wrong": "Most teachers use technology in the classroom.",
-          "explanation": "\"Some\" = at least one. We know at least one teacher uses it. (B) goes too far — \"some\" doesn't tell us it's more than 50%."
-        },
-        {
-          "id": 85,
-          "sentence": "Some runners finished under three hours.",
-          "correct": "At least one runner finished under three hours.",
-          "wrong": "8 runners finished under three hours.",
-          "explanation": "\"Some\" = at least one. We know at least one runner finished under three hours, but we can't be sure it's 8. \"Some\" only guarantees at least one — not a specific number."
-        }
+        {"id": 76, "sentence": "Some cats are friendly.", "correct": "At least one cat is friendly.", "wrong": "Most cats are friendly.", "explanation": "\"Some\" = at least one. We know at least one cat is friendly. (B) goes too far — \"some\" doesn't tell us it's more than 50%."},
+        {"id": 77, "sentence": "Some houses on this block have pools.", "correct": "At least one house on this block has a pool.", "wrong": "6 houses on this block have pools.", "explanation": "\"Some\" = at least one. We know at least one house has a pool, but we can't be sure it's 6. \"Some\" only guarantees at least one — not a specific number."},
+        {"id": 78, "sentence": "Some employees received a bonus.", "correct": "At least one employee received a bonus.", "wrong": "Most employees received a bonus.", "explanation": "\"Some\" = at least one. We know at least one got a bonus. (B) goes too far — \"some\" doesn't tell us it's more than half."},
+        {"id": 79, "sentence": "Some books on the shelf are first editions.", "correct": "At least one book on the shelf is a first edition.", "wrong": "5 books on the shelf are first editions.", "explanation": "\"Some\" = at least one. We know at least one book is a first edition, but we can't be sure it's 5. \"Some\" only guarantees at least one — not a specific number."},
+        {"id": 80, "sentence": "Some voters changed their minds.", "correct": "At least one voter changed their mind.", "wrong": "Most voters changed their minds.", "explanation": "\"Some\" = at least one. We know at least one voter changed their mind. (B) goes too far — \"some\" doesn't tell us it's more than 50%."},
+        {"id": 81, "sentence": "Some students in the class speak Spanish.", "correct": "At least one student in the class speaks Spanish.", "wrong": "7 students in the class speak Spanish.", "explanation": "\"Some\" = at least one. We know at least one student speaks Spanish, but we can't be sure it's 7. \"Some\" only guarantees at least one — not a specific number."},
+        {"id": 82, "sentence": "Some of the paintings were damaged.", "correct": "At least one painting was damaged.", "wrong": "Most of the paintings were damaged.", "explanation": "\"Some\" = at least one. We know at least one painting was damaged. (B) goes too far — \"some\" doesn't tell us it's more than half."},
+        {"id": 83, "sentence": "Some parks in the city allow dogs.", "correct": "At least one park in the city allows dogs.", "wrong": "4 parks in the city allow dogs.", "explanation": "\"Some\" = at least one. We know at least one park allows dogs, but we can't be sure it's 4. \"Some\" only guarantees at least one — not a specific number."},
+        {"id": 84, "sentence": "Some teachers use technology in the classroom.", "correct": "At least one teacher uses technology in the classroom.", "wrong": "Most teachers use technology in the classroom.", "explanation": "\"Some\" = at least one. We know at least one teacher uses it. (B) goes too far — \"some\" doesn't tell us it's more than 50%."},
+        {"id": 85, "sentence": "Some runners finished under three hours.", "correct": "At least one runner finished under three hours.", "wrong": "8 runners finished under three hours.", "explanation": "\"Some\" = at least one. We know at least one runner finished under three hours, but we can't be sure it's 8. \"Some\" only guarantees at least one — not a specific number."}
+      ]
+    },
+    {
+      "id": "most",
+      "name": "Most",
+      "description": "Most = more than 50%. Not all, but more than half.",
+      "questions": [
+        {"id": 61, "sentence": "Most employees prefer working from home.", "correct": "More than half of employees prefer working from home.", "wrong": "All employees prefer working from home.", "explanation": "\"Most\" = more than 50%. More than half prefer it. (B) goes too far — \"most\" leaves room for some who don't."},
+        {"id": 62, "sentence": "Most birds migrate south for the winter.", "correct": "More than half of birds migrate south for the winter.", "wrong": "Few birds migrate south for the winter.", "explanation": "\"Most\" = more than 50%. More than half migrate. (B) says the opposite — \"few\" means most do NOT, which contradicts \"most do.\""},
+        {"id": 63, "sentence": "Most customers were satisfied with the service.", "correct": "More than half of customers were satisfied.", "wrong": "All customers were satisfied with the service.", "explanation": "\"Most\" = more than 50%. More than half were satisfied. (B) goes too far — \"most\" is not \"all.\""},
+        {"id": 64, "sentence": "Most countries have a national anthem.", "correct": "More than half of countries have a national anthem.", "wrong": "Every country has a national anthem.", "explanation": "\"Most\" = more than 50%. More than half have one. (B) goes too far — \"most\" does not mean \"every.\""},
+        {"id": 65, "sentence": "Most students in the class scored above 80.", "correct": "More than half of the students scored above 80.", "wrong": "Few students in the class scored above 80.", "explanation": "\"Most\" = more than 50%. More than half scored above 80. (B) says the opposite — \"few\" means most did NOT score above 80, which contradicts the statement."}
+      ]
+    },
+    {
+      "id": "usually",
+      "name": "Usually",
+      "description": "Usually = most = more than 50%.",
+      "questions": [
+        {"id": 66, "sentence": "The train usually arrives on time.", "correct": "More than half of the time, the train arrives on time.", "wrong": "The train always arrives on time.", "explanation": "\"Usually\" = most = more than 50%. More than half the time it's on time. (B) goes too far — \"usually\" leaves room for exceptions."},
+        {"id": 67, "sentence": "She usually walks to work.", "correct": "More than half of the time, she walks to work.", "wrong": "She always walks to work.", "explanation": "\"Usually\" = most = more than 50%. More than half the time she walks. (B) goes too far — \"usually\" is not \"always.\""},
+        {"id": 68, "sentence": "It usually rains in April.", "correct": "More than half of the time, it rains in April.", "wrong": "It rains every day in April.", "explanation": "\"Usually\" = most = more than 50%. It rains more than half the time. (B) goes too far — \"usually\" does not mean every day."},
+        {"id": 69, "sentence": "The restaurant is usually crowded on weekends.", "correct": "More than half of weekends, the restaurant is crowded.", "wrong": "The restaurant is crowded every weekend.", "explanation": "\"Usually\" = most = more than 50%. More than half of weekends it's crowded. (B) goes too far — \"usually\" leaves room for quiet weekends."},
+        {"id": 70, "sentence": "He usually finishes his work before 5 PM.", "correct": "More than half of the time, he finishes before 5 PM.", "wrong": "He rarely finishes before 5 PM.", "explanation": "\"Usually\" = most = more than 50%. More than half the time he finishes early. (B) says the opposite — \"rarely\" means most of the time he does NOT finish early."}
+      ]
+    },
+    {
+      "id": "generally",
+      "name": "Generally",
+      "description": "Generally = most = more than 50%.",
+      "questions": [
+        {"id": 71, "sentence": "Experienced drivers are generally safer.", "correct": "More than half of experienced drivers are safer.", "wrong": "All experienced drivers are safer.", "explanation": "\"Generally\" = most = more than 50%. More than half are safer. (B) goes too far — \"generally\" leaves room for exceptions."},
+        {"id": 72, "sentence": "Organic produce is generally more expensive.", "correct": "More than half of organic produce is more expensive.", "wrong": "All organic produce is more expensive.", "explanation": "\"Generally\" = most = more than 50%. More than half is more expensive. (B) goes too far — \"generally\" does not mean \"all.\""},
+        {"id": 73, "sentence": "People generally prefer warm weather.", "correct": "More than half of people prefer warm weather.", "wrong": "Everyone prefers warm weather.", "explanation": "\"Generally\" = most = more than 50%. More than half prefer it. (B) goes too far — \"generally\" is not \"everyone.\""},
+        {"id": 74, "sentence": "Older buildings are generally less energy efficient.", "correct": "More than half of older buildings are less energy efficient.", "wrong": "Few older buildings are less energy efficient.", "explanation": "\"Generally\" = most = more than 50%. More than half are less efficient. (B) says the opposite — \"few\" means most are NOT less efficient, which contradicts \"generally.\""},
+        {"id": 75, "sentence": "Students generally perform better with more sleep.", "correct": "More than half of students perform better with more sleep.", "wrong": "All students perform better with more sleep.", "explanation": "\"Generally\" = most = more than 50%. More than half perform better. (B) goes too far — \"generally\" leaves room for exceptions."}
       ]
     },
     {
@@ -670,41 +75,11 @@
       "name": "All / Every",
       "description": "All = every = 100%. No exceptions.",
       "questions": [
-        {
-          "id": 86,
-          "sentence": "All mammals breathe air.",
-          "correct": "100% of mammals breathe air.",
-          "wrong": "Some mammals do not breathe air.",
-          "explanation": "\"All\" = 100%. Every single mammal breathes air. (B) directly contradicts the statement — if all do, then none are excluded."
-        },
-        {
-          "id": 87,
-          "sentence": "Every passenger must wear a seatbelt.",
-          "correct": "No passenger is exempt from wearing a seatbelt.",
-          "wrong": "Some passengers do not have to wear a seatbelt.",
-          "explanation": "\"Every\" = all = 100%. No exceptions. (B) directly contradicts the statement — if every passenger must, then none are exempt."
-        },
-        {
-          "id": 88,
-          "sentence": "All submissions must be received by Friday.",
-          "correct": "100% of submissions must be received by Friday.",
-          "wrong": "Some submissions do not have to be received by Friday.",
-          "explanation": "\"All\" = 100%. Every submission must be in by Friday. (B) directly contradicts the statement — if all must, then none are exempt."
-        },
-        {
-          "id": 89,
-          "sentence": "Every student who enrolls receives a textbook.",
-          "correct": "If a student enrolls, then they receive a textbook.",
-          "wrong": "Some students who enroll do not receive a textbook.",
-          "explanation": "\"Every\" = all = 100%. If you enroll, you get a textbook. (B) directly contradicts the statement — \"every\" means no one is left out."
-        },
-        {
-          "id": 90,
-          "sentence": "All visitors must sign in at the front desk.",
-          "correct": "100% of the visitors sign in at the front desk.",
-          "wrong": "Some visitors do not sign in at the front desk.",
-          "explanation": "\"All\" = 100%. Every visitor must sign in. (B) directly contradicts the statement — if all must, then none are excluded."
-        }
+        {"id": 86, "sentence": "All mammals breathe air.", "correct": "100% of mammals breathe air.", "wrong": "Some mammals do not breathe air.", "explanation": "\"All\" = 100%. Every single mammal breathes air. (B) directly contradicts the statement — if all do, then none are excluded."},
+        {"id": 87, "sentence": "Every passenger must wear a seatbelt.", "correct": "No passenger is exempt from wearing a seatbelt.", "wrong": "Some passengers do not have to wear a seatbelt.", "explanation": "\"Every\" = all = 100%. No exceptions. (B) directly contradicts the statement — if every passenger must, then none are exempt."},
+        {"id": 88, "sentence": "All submissions must be received by Friday.", "correct": "100% of submissions must be received by Friday.", "wrong": "Some submissions do not have to be received by Friday.", "explanation": "\"All\" = 100%. Every submission must be in by Friday. (B) directly contradicts the statement — if all must, then none are exempt."},
+        {"id": 89, "sentence": "Every student who enrolls receives a textbook.", "correct": "If a student enrolls, then they receive a textbook.", "wrong": "Some students who enroll do not receive a textbook.", "explanation": "\"Every\" = all = 100%. If you enroll, you get a textbook. (B) directly contradicts the statement — \"every\" means no one is left out."},
+        {"id": 90, "sentence": "All visitors must sign in at the front desk.", "correct": "100% of the visitors sign in at the front desk.", "wrong": "Some visitors do not sign in at the front desk.", "explanation": "\"All\" = 100%. Every visitor must sign in. (B) directly contradicts the statement — if all must, then none are excluded."}
       ]
     },
     {
@@ -712,41 +87,11 @@
       "name": "Nearly All",
       "description": "Nearly all = at least most, close to 100% but not all.",
       "questions": [
-        {
-          "id": 91,
-          "sentence": "Nearly all the tickets were sold.",
-          "correct": "Most of the tickets were sold.",
-          "wrong": "All of the tickets were sold.",
-          "explanation": "\"Nearly all\" = at least most, close to 100%. We can say most were sold. (B) goes too far — \"nearly\" tells us it's not quite all."
-        },
-        {
-          "id": 92,
-          "sentence": "Nearly all students completed the assignment.",
-          "correct": "More than half of students completed the assignment.",
-          "wrong": "Every student completed the assignment.",
-          "explanation": "\"Nearly all\" = at least most, close to 100%. More than half completed it. (B) goes too far — \"nearly all\" is not \"every.\""
-        },
-        {
-          "id": 93,
-          "sentence": "Nearly all the reviews were positive.",
-          "correct": "Most of the reviews were positive.",
-          "wrong": "All of the reviews were positive.",
-          "explanation": "\"Nearly all\" = at least most, close to 100%. Most were positive. (B) goes too far — \"nearly\" means not quite all."
-        },
-        {
-          "id": 94,
-          "sentence": "Nearly all participants finished the race.",
-          "correct": "Most participants finished the race.",
-          "wrong": "Few participants finished the race.",
-          "explanation": "\"Nearly all\" = at least most, close to 100%. Most finished. (B) says the opposite — \"few\" means most did NOT finish, which contradicts \"nearly all.\""
-        },
-        {
-          "id": 95,
-          "sentence": "Nearly all the houses on this street have garages.",
-          "correct": "Most of the houses on this street have garages.",
-          "wrong": "100% of the houses on this street have garages.",
-          "explanation": "\"Nearly all\" = at least most, close to 100%. Most have garages. (B) goes too far — \"nearly all\" is close to 100% but not there."
-        }
+        {"id": 91, "sentence": "Nearly all the tickets were sold.", "correct": "Most of the tickets were sold.", "wrong": "All of the tickets were sold.", "explanation": "\"Nearly all\" = at least most, close to 100%. We can say most were sold. (B) goes too far — \"nearly\" tells us it's not quite all."},
+        {"id": 92, "sentence": "Nearly all students completed the assignment.", "correct": "More than half of students completed the assignment.", "wrong": "Every student completed the assignment.", "explanation": "\"Nearly all\" = at least most, close to 100%. More than half completed it. (B) goes too far — \"nearly all\" is not \"every.\""},
+        {"id": 93, "sentence": "Nearly all the reviews were positive.", "correct": "Most of the reviews were positive.", "wrong": "All of the reviews were positive.", "explanation": "\"Nearly all\" = at least most, close to 100%. Most were positive. (B) goes too far — \"nearly\" means not quite all."},
+        {"id": 94, "sentence": "Nearly all participants finished the race.", "correct": "Most participants finished the race.", "wrong": "Few participants finished the race.", "explanation": "\"Nearly all\" = at least most, close to 100%. Most finished. (B) says the opposite — \"few\" means most did NOT finish, which contradicts \"nearly all.\""},
+        {"id": 95, "sentence": "Nearly all the houses on this street have garages.", "correct": "Most of the houses on this street have garages.", "wrong": "100% of the houses on this street have garages.", "explanation": "\"Nearly all\" = at least most, close to 100%. Most have garages. (B) goes too far — \"nearly all\" is close to 100% but not there."}
       ]
     },
     {
@@ -754,41 +99,11 @@
       "name": "Frequently",
       "description": "Frequently = at least some. It's unclear whether it reaches 50%.",
       "questions": [
-        {
-          "id": 96,
-          "sentence": "She frequently visits her grandparents.",
-          "correct": "She visits her grandparents at least some of the time.",
-          "wrong": "She visits her grandparents most of the time.",
-          "explanation": "\"Frequently\" = at least some. We know she visits, but it's unclear if it's more than 50%. (B) goes too far — we can't be sure \"frequently\" reaches \"most.\""
-        },
-        {
-          "id": 97,
-          "sentence": "This road frequently has traffic jams.",
-          "correct": "At least some of the time, this road has traffic jams.",
-          "wrong": "This road has traffic jams most of the time.",
-          "explanation": "\"Frequently\" = at least some. We know traffic jams happen, but it's unclear if it's more than half the time. (B) goes too far."
-        },
-        {
-          "id": 98,
-          "sentence": "He frequently forgets his keys.",
-          "correct": "He forgets his keys at least some of the time.",
-          "wrong": "He forgets his keys most of the time.",
-          "explanation": "\"Frequently\" = at least some. We know he forgets them sometimes, but it's unclear if it's more than 50%. (B) goes too far."
-        },
-        {
-          "id": 99,
-          "sentence": "Customers frequently complain about the wait time.",
-          "correct": "At least some customers complain about the wait time.",
-          "wrong": "Most customers complain about the wait time.",
-          "explanation": "\"Frequently\" = at least some. We know some customers complain, but it's unclear if it reaches more than half. (B) goes too far."
-        },
-        {
-          "id": 100,
-          "sentence": "The printer frequently malfunctions.",
-          "correct": "The printer malfunctions at least some of the time.",
-          "wrong": "The printer malfunctions every day.",
-          "explanation": "\"Frequently\" = at least some. We know it malfunctions sometimes. (B) goes way too far — \"frequently\" does not mean \"every day.\""
-        }
+        {"id": 96, "sentence": "She frequently visits her grandparents.", "correct": "She visits her grandparents at least some of the time.", "wrong": "She visits her grandparents most of the time.", "explanation": "\"Frequently\" = at least some. We know she visits, but it's unclear if it's more than 50%. (B) goes too far — we can't be sure \"frequently\" reaches \"most.\""},
+        {"id": 97, "sentence": "This road frequently has traffic jams.", "correct": "At least some of the time, this road has traffic jams.", "wrong": "This road has traffic jams most of the time.", "explanation": "\"Frequently\" = at least some. We know traffic jams happen, but it's unclear if it's more than half the time. (B) goes too far."},
+        {"id": 98, "sentence": "He frequently forgets his keys.", "correct": "He forgets his keys at least some of the time.", "wrong": "He forgets his keys most of the time.", "explanation": "\"Frequently\" = at least some. We know he forgets them sometimes, but it's unclear if it's more than 50%. (B) goes too far."},
+        {"id": 99, "sentence": "Customers frequently complain about the wait time.", "correct": "At least some customers complain about the wait time.", "wrong": "Most customers complain about the wait time.", "explanation": "\"Frequently\" = at least some. We know some customers complain, but it's unclear if it reaches more than half. (B) goes too far."},
+        {"id": 100, "sentence": "The printer frequently malfunctions.", "correct": "The printer malfunctions at least some of the time.", "wrong": "The printer malfunctions every day.", "explanation": "\"Frequently\" = at least some. We know it malfunctions sometimes. (B) goes way too far — \"frequently\" does not mean \"every day.\""}
       ]
     },
     {
@@ -796,41 +111,11 @@
       "name": "Always / Invariably / Inevitably",
       "description": "Always = all = 100%. Every single time, no exceptions.",
       "questions": [
-        {
-          "id": 106,
-          "sentence": "She always arrives early to meetings.",
-          "correct": "100% of the time, she arrives early to meetings.",
-          "wrong": "She sometimes does not arrive early to meetings.",
-          "explanation": "\"Always\" = 100%. Every single time she arrives early. (B) directly contradicts the statement — \"always\" means no exceptions."
-        },
-        {
-          "id": 107,
-          "sentence": "Traffic jams inevitably occur during rush hour.",
-          "correct": "During rush hour, 100% of the time traffic jams occur.",
-          "wrong": "Traffic jams only occur during rush hour.",
-          "explanation": "\"Inevitably\" = always = 100%. During rush hour, traffic jams will always occur. (B) goes wrong — the statement doesn't say traffic jams can't happen at other times, just that they always happen during rush hour."
-        },
-        {
-          "id": 108,
-          "sentence": "James invariably orders the same dish.",
-          "correct": "100% of the time, James orders the same dish.",
-          "wrong": "James sometimes orders a different dish.",
-          "explanation": "\"Invariably\" = always = 100%. Every time he orders the same thing. (B) directly contradicts the statement — \"invariably\" means no exceptions."
-        },
-        {
-          "id": 109,
-          "sentence": "The sun always rises in the east.",
-          "correct": "100% of the time, the sun rises in the east.",
-          "wrong": "The sun sometimes does not rise in the east.",
-          "explanation": "\"Always\" = 100%. Every single time. (B) directly contradicts the statement — \"always\" means no exceptions."
-        },
-        {
-          "id": 110,
-          "sentence": "Lisa always double-checks her work.",
-          "correct": "100% of the time, Lisa double-checks her work.",
-          "wrong": "Lisa sometimes does not double-check her work.",
-          "explanation": "\"Always\" = 100%. Every time she checks. (B) directly contradicts the statement — \"always\" means no exceptions."
-        }
+        {"id": 106, "sentence": "She always arrives early to meetings.", "correct": "100% of the time, she arrives early to meetings.", "wrong": "She sometimes does not arrive early to meetings.", "explanation": "\"Always\" = 100%. Every single time she arrives early. (B) directly contradicts the statement — \"always\" means no exceptions."},
+        {"id": 107, "sentence": "Traffic jams inevitably occur during rush hour.", "correct": "During rush hour, 100% of the time traffic jams occur.", "wrong": "Traffic jams only occur during rush hour.", "explanation": "\"Inevitably\" = always = 100%. During rush hour, traffic jams will always occur. (B) goes wrong — the statement doesn't say traffic jams can't happen at other times, just that they always happen during rush hour."},
+        {"id": 108, "sentence": "James invariably orders the same dish.", "correct": "100% of the time, James orders the same dish.", "wrong": "James sometimes orders a different dish.", "explanation": "\"Invariably\" = always = 100%. Every time he orders the same thing. (B) directly contradicts the statement — \"invariably\" means no exceptions."},
+        {"id": 109, "sentence": "The sun always rises in the east.", "correct": "100% of the time, the sun rises in the east.", "wrong": "The sun sometimes does not rise in the east.", "explanation": "\"Always\" = 100%. Every single time. (B) directly contradicts the statement — \"always\" means no exceptions."},
+        {"id": 110, "sentence": "Lisa always double-checks her work.", "correct": "100% of the time, Lisa double-checks her work.", "wrong": "Lisa sometimes does not double-check her work.", "explanation": "\"Always\" = 100%. Every time she checks. (B) directly contradicts the statement — \"always\" means no exceptions."}
       ]
     },
     {
@@ -838,41 +123,11 @@
       "name": "Never",
       "description": "Never = negate the necessary. Same pattern as no/none.",
       "questions": [
-        {
-          "id": 111,
-          "sentence": "Paul never eats breakfast.",
-          "correct": "If Paul is eating, it is not breakfast.",
-          "wrong": "Paul sometimes eats breakfast.",
-          "explanation": "\"Never\" = negate the necessary. \"Eats breakfast\" is in the necessary position, so we negate it: Paul → does NOT eat breakfast. (B) says the opposite."
-        },
-        {
-          "id": 112,
-          "sentence": "The library is never open on Sundays.",
-          "correct": "If it is the library, it is not open on Sundays.",
-          "wrong": "The library is open on some Sundays.",
-          "explanation": "\"Never\" = negate the necessary. \"Open on Sundays\" is in the necessary position, so we negate it: Library → NOT open on Sundays. (B) says the opposite."
-        },
-        {
-          "id": 113,
-          "sentence": "Maria never raises her hand in class.",
-          "correct": "If it is Maria, she does not raise her hand.",
-          "wrong": "Maria raises her hand in class most of the time.",
-          "explanation": "\"Never\" = negate the necessary. \"Raises her hand\" is in the necessary position, so we negate it: Maria → does NOT raise her hand in class. (B) says the opposite."
-        },
-        {
-          "id": 114,
-          "sentence": "My friends never travel during the winter.",
-          "correct": "If my friends are traveling, it is not winter.",
-          "wrong": "My friends sometimes travel during the winter.",
-          "explanation": "\"Never\" = negate the necessary. \"Winter\" is in the necessary position, so we negate it: Friends traveling → NOT winter. If my friends are traveling, it's not winter. (B) says the opposite."
-        },
-        {
-          "id": 115,
-          "sentence": "The Route 9 bus never arrives late.",
-          "correct": "If the Route 9 bus arrives, it is not late.",
-          "wrong": "The Route 9 bus arrives late some of the time.",
-          "explanation": "\"Never\" = negate the necessary. \"Arrives late\" is in the necessary position, so we negate it: Route 9 bus → does NOT arrive late. (B) says the opposite."
-        }
+        {"id": 111, "sentence": "Paul never eats breakfast.", "correct": "If Paul is eating, it is not breakfast.", "wrong": "Paul sometimes eats breakfast.", "explanation": "\"Never\" = negate the necessary. \"Eats breakfast\" is in the necessary position, so we negate it: Paul → does NOT eat breakfast. (B) says the opposite."},
+        {"id": 112, "sentence": "The library is never open on Sundays.", "correct": "If it is the library, it is not open on Sundays.", "wrong": "The library is open on some Sundays.", "explanation": "\"Never\" = negate the necessary. \"Open on Sundays\" is in the necessary position, so we negate it: Library → NOT open on Sundays. (B) says the opposite."},
+        {"id": 113, "sentence": "Maria never raises her hand in class.", "correct": "If it is Maria, she does not raise her hand.", "wrong": "Maria raises her hand in class most of the time.", "explanation": "\"Never\" = negate the necessary. \"Raises her hand\" is in the necessary position, so we negate it: Maria → does NOT raise her hand in class. (B) says the opposite."},
+        {"id": 114, "sentence": "My friends never travel during the winter.", "correct": "If my friends are traveling, it is not winter.", "wrong": "My friends sometimes travel during the winter.", "explanation": "\"Never\" = negate the necessary. \"Winter\" is in the necessary position, so we negate it: Friends traveling → NOT winter. If my friends are traveling, it's not winter. (B) says the opposite."},
+        {"id": 115, "sentence": "The Route 9 bus never arrives late.", "correct": "If the Route 9 bus arrives, it is not late.", "wrong": "The Route 9 bus arrives late some of the time.", "explanation": "\"Never\" = negate the necessary. \"Arrives late\" is in the necessary position, so we negate it: Route 9 bus → does NOT arrive late. (B) says the opposite."}
       ]
     }
   ]

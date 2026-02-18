@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Translating Words on the Test - VEDARION</title>
+    <title>Complex Conditionals - VEDARION</title>
     <style>
         * {
             margin: 0;
@@ -331,12 +331,38 @@
             border-bottom: 1px solid #E0E0E0;
         }
         
-        .ref-table { width: 100%; border-collapse: collapse; }
-        .ref-table tr { border-bottom: 1px solid #F0F0F0; }
-        .ref-table tr:last-child { border-bottom: none; }
-        .ref-table td { padding: 10px 0; font-size: 14px; vertical-align: top; }
-        .ref-word { font-weight: 600; color: #0A0A0A; width: 45%; padding-right: 15px; }
-        .ref-meaning { color: #555; }
+        .ref-card {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 18px 20px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .ref-card .ref-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 6px;
+        }
+
+        .ref-card .ref-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .ref-card .ref-content strong {
+            color: #0A0A0A;
+        }
+
+        .ref-card .ref-arrow {
+            font-size: 15px;
+            color: #C65D3B;
+            font-weight: 600;
+        }
         
         .back-link {
             display: inline-block;
@@ -368,7 +394,6 @@
             .page-title { font-size: 22px; }
             .tab-btn { padding: 15px 20px; font-size: 11px; }
             .step-line { width: 25px; }
-            .ref-word { width: 40%; }
         }
     </style>
 </head>
@@ -384,8 +409,8 @@
     </nav>
 
     <section class="hero">
-        <h1 class="page-title">TRANSLATING WORDS ON THE TEST</h1>
-        <p class="page-subtitle">Know exactly what each word guarantees — nothing more, nothing less</p>
+        <h1 class="page-title">COMPLEX CONDITIONALS</h1>
+        <p class="page-subtitle">Unless, without, none, never — the words that hide conditionals in plain sight</p>
     </section>
 
     <div class="tab-nav">
@@ -403,55 +428,68 @@
             <button class="step-btn" data-step="3">3</button>
         </div>
 
-        <!-- STEP 1: Some, Most, All -->
+        <!-- STEP 1: Unless / Without / Except -->
         <div class="step-content active" data-step="1">
             <section class="video-section">
                 <div class="video-container">
                     <div class="group-header">
-                        <h2 class="group-title">Some, Most, All</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                        <h2 class="group-title">Unless / Without / Except</h2>
+                        <p class="group-subtitle">These words negate the sufficient condition. Try these first.</p>
                     </div>
 
                     <div class="question-card" data-correct="A">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Some birds can swim."</p>
+                            <p class="question-sentence">"You can enter the concert unless you are wearing flip flops."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">At least one bird can swim.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">5 birds can swim.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot enter the concert, you are wearing flip flops.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you are wearing flip flops, you can enter the concert.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Some" = at least one.</strong> We know for certain that at least one bird can swim. We cannot conclude exactly 5 — "some" only tells us "at least one," not a specific number.</p></div>
-                    </div>
-
-                    <div class="question-card" data-correct="B">
-                        <div class="question-prompt">
-                            <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Most students passed the exam."</p>
-                            <p class="question-ask">Which of the following can we 100% support?</p>
-                        </div>
-                        <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All students passed the exam.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">More than half of the students passed the exam.</span></div>
-                        </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Most" = more than 50%.</strong> We know more than half passed. We cannot jump to "all" — "most" leaves room for some who didn't pass.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Unless" → identify the sufficient, negate it.</strong> "Enter" is the sufficient. Negate it: Cannot enter <span style="color:#C65D3B; font-weight:600;">→</span> wearing flip flops. If you can't get in, it must be because of the flip flops. (B) goes in the wrong direction.</p></div>
                     </div>
 
                     <div class="question-card" data-correct="A">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Every employee must complete the training."</p>
+                            <p class="question-sentence">"Without a map, hikers get lost."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All employees must complete the training.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Some employees do not have to complete the training.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If no map, then hikers get lost.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If hikers have a map, then they do not get lost.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Every" = all = 100%.</strong> No exceptions. Every single employee must complete it. (B) directly contradicts the statement — if every employee must, then none are exempt.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Without" → identify the sufficient, negate it.</strong> "Map" is the sufficient. Negate it: No map <span style="color:#C65D3B; font-weight:600;">→</span> hikers get lost. (B) goes in the wrong direction.</p></div>
                     </div>
 
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 1: Some, Most, All — coming soon</p></div>
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"The park is open except during storms."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If the park is not open, then there is a storm.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If there is a storm, the park is open.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Except" → identify the sufficient, negate it.</strong> "Open" is the sufficient. Negate it: Not open <span style="color:#C65D3B; font-weight:600;">→</span> storm. (B) goes in the wrong direction.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"She won't apologize unless she is wrong."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If she apologizes, then she is wrong.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If she is wrong, she will apologize.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Unless" → identify the sufficient, negate it.</strong> "Won't apologize" is the sufficient. Negate it: Apologizes <span style="color:#C65D3B; font-weight:600;">→</span> she is wrong. (B) goes in the wrong direction — being wrong doesn't guarantee an apology.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: Unless / Without / Except — coming soon</p></div>
 
                     <div class="step-nav">
                         <button class="step-nav-btn hidden">← Previous</button>
@@ -461,42 +499,68 @@
             </section>
         </div>
 
-        <!-- STEP 2: Many, Nearly All -->
+        <!-- STEP 2: None / Never / Cannot -->
         <div class="step-content" data-step="2">
             <section class="video-section">
                 <div class="video-container">
                     <div class="group-header">
-                        <h2 class="group-title">Many, Nearly All</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
-                    </div>
-
-                    <div class="question-card" data-correct="B">
-                        <div class="question-prompt">
-                            <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Many residents opposed the new policy."</p>
-                            <p class="question-ask">Which of the following can we 100% support?</p>
-                        </div>
-                        <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Most residents opposed the new policy.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">At least one resident opposed the new policy.</span></div>
-                        </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Many" = some = at least one.</strong> It feels like a lot, but on the LSAT, "many" only guarantees "some." We cannot conclude "most" — that requires more than 50%.</p></div>
+                        <h2 class="group-title">None / Never / Cannot</h2>
+                        <p class="group-subtitle">These words negate the necessary condition. Try these first.</p>
                     </div>
 
                     <div class="question-card" data-correct="A">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Nearly all applicants were qualified."</p>
+                            <p class="question-sentence">"No elephant makes a good pet."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Most applicants were qualified.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">All applicants were qualified.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All elephants do not make a good pet.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Some elephants make a good pet.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Nearly all" = at least most, close to 100%.</strong> We can definitely say most were qualified. But "nearly" tells us it's not quite all — so (B) goes too far.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"No" → identify the necessary, negate it.</strong> "Good pet" is the necessary. Negate it: Elephant <span style="color:#C65D3B; font-weight:600;">→</span> NOT a good pet. If it's an elephant, it does not make a good pet. (B) says the opposite.</p></div>
                     </div>
 
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 2: Many, Nearly All — coming soon</p></div>
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Children cannot drive."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If someone is a child, then they cannot drive.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Some children can drive.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot" → identify the necessary, negate it.</strong> "Drive" is the necessary. Negate it: Child <span style="color:#C65D3B; font-weight:600;">→</span> canNOT drive. (B) says the opposite.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"None of the graduates have an incomplete thesis."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All graduates completed their thesis.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Graduates have an incomplete thesis.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"None" → identify the necessary, negate it.</strong> "Incomplete thesis" is the necessary. Negate it: Graduate <span style="color:#C65D3B; font-weight:600;">→</span> NOT incomplete thesis. All graduates completed their thesis. (B) says the opposite.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Maria never raises her hand in class."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If it is Maria, she does not raise her hand.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Maria raises her hand in class most of the time.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Never" → identify the necessary, negate it.</strong> Same pattern as no/none. "Raises her hand" is the necessary. Negate it: Maria <span style="color:#C65D3B; font-weight:600;">→</span> does NOT raise her hand. (B) says the opposite.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: None / Never / Cannot — coming soon</p></div>
 
                     <div class="step-nav">
                         <button class="step-nav-btn" onclick="goToStep(1)">← Previous</button>
@@ -506,55 +570,68 @@
             </section>
         </div>
 
-        <!-- STEP 3: Generally, Usually, Frequently -->
+        <!-- STEP 3: Combined -->
         <div class="step-content" data-step="3">
             <section class="video-section">
                 <div class="video-container">
                     <div class="group-header">
-                        <h2 class="group-title">Generally, Usually, Frequently</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                        <h2 class="group-title">Combined: Cannot + Unless / Without</h2>
+                        <p class="group-subtitle">When two negation indicators appear together, they cancel each other out. Try these.</p>
                     </div>
 
                     <div class="question-card" data-correct="B">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Students who study generally pass the exam."</p>
+                            <p class="question-sentence">"You cannot enter unless you have a ticket."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All students who study pass the exam.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most students who study pass the exam.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot enter, you don't have a ticket.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you entered, then you have a ticket.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Generally" = most.</strong> More than half, but not all. "All" is too strong — "generally" leaves room for exceptions.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot" + "unless" → the negations cancel.</strong> Enter <span style="color:#C65D3B; font-weight:600;">→</span> have a ticket. If you entered, you must have a ticket. (A) goes in the wrong direction.</p></div>
                     </div>
 
                     <div class="question-card" data-correct="A">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"Flights from this airport usually depart on time."</p>
+                            <p class="question-sentence">"You cannot drive without a license."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">More than half of flights from this airport depart on time.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Flights from this airport always depart on time.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you drove, then you have a license.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you have a license, then you drove.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Usually" = most = more than 50%.</strong> Same as "generally." We know more than half depart on time, but "always" goes too far.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot" + "without" → the negations cancel.</strong> Drive <span style="color:#C65D3B; font-weight:600;">→</span> have a license. If you drove, you must have a license. (B) goes in the wrong direction — having a license doesn't mean you drove.</p></div>
                     </div>
 
                     <div class="question-card" data-correct="A">
                         <div class="question-prompt">
                             <div class="question-label">Translate</div>
-                            <p class="question-sentence">"This intersection frequently has accidents."</p>
+                            <p class="question-sentence">"The machine cannot operate without electricity."</p>
                             <p class="question-ask">Which of the following can we 100% support?</p>
                         </div>
                         <div class="answer-options">
-                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">At least some accidents occur at this intersection.</span></div>
-                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most accidents in the area happen at this intersection.</span></div>
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If the machine operates, then there is electricity.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If there is electricity, the machine operates.</span></div>
                         </div>
-                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Frequently" = at least some.</strong> We know accidents happen there, but "frequently" is ambiguous — it's unclear whether it reaches 50%. Safely translate it as "some" on the LSAT.</p></div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot" + "without" → the negations cancel.</strong> Machine operates <span style="color:#C65D3B; font-weight:600;">→</span> electricity. If the machine is running, there must be electricity. (B) goes in the wrong direction.</p></div>
                     </div>
 
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 3: Generally, Usually, Frequently — coming soon</p></div>
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"You cannot pass the class unless you submit the final paper."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you passed the class, then you submitted the final paper.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you submitted the final paper, then you passed the class.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot" + "unless" → the negations cancel.</strong> Pass <span style="color:#C65D3B; font-weight:600;">→</span> submitted final paper. If you passed, you must have submitted it. (B) goes in the wrong direction — submitting doesn't guarantee passing.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: Combined Negations — coming soon</p></div>
 
                     <div class="step-nav">
                         <button class="step-nav-btn" onclick="goToStep(2)">← Previous</button>
@@ -569,20 +646,38 @@
     <div id="tab-reference" class="tab-content">
         <section class="reference-section">
             <div class="reference-container">
-                <p class="reference-intro">Your cheat sheet for translating LSAT language. Bookmark this page and come back to it while practicing.</p>
+                <p class="reference-intro">Quick reference for complex conditional indicators. Bookmark this page and come back to it while practicing.</p>
 
                 <div class="ref-group">
-                    <div class="ref-group-title">Quantifiers</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word">All, every, each, any, whoever, anything that, whatever</td><td class="ref-meaning">100% — no exceptions</td></tr>
-                        <tr><td class="ref-word">Always, invariably, inevitably</td><td class="ref-meaning">= All (100%)</td></tr>
-                        <tr><td class="ref-word">Nearly all</td><td class="ref-meaning">At least most, close to 100% but not all</td></tr>
-                        <tr><td class="ref-word">Most</td><td class="ref-meaning">More than 50%</td></tr>
-                        <tr><td class="ref-word">Generally, usually</td><td class="ref-meaning">= Most (more than 50%)</td></tr>
-                        <tr><td class="ref-word">Some, at least one</td><td class="ref-meaning">At least one — could be 1, could be all</td></tr>
-                        <tr><td class="ref-word">Many</td><td class="ref-meaning">= Some (at least one)</td></tr>
-                        <tr><td class="ref-word">Frequently</td><td class="ref-meaning">At least some — unclear if it reaches 50%</td></tr>
-                    </table>
+                    <div class="ref-group-title">Negate the Sufficient</div>
+                    <div class="ref-card">
+                        <div class="ref-label">Unless / Without / Except</div>
+                        <p class="ref-content">Identify the sufficient condition, then negate it.</p>
+                        <p class="ref-content" style="margin-top: 8px;">Example: "A unless B"</p>
+                        <p class="ref-content" style="color: #666;">A is sufficient, so negate it:</p>
+                        <p class="ref-content"><strong>NOT A</strong> <span style="color:#C65D3B; font-weight:600;">→</span> <strong>B</strong></p>
+                    </div>
+                </div>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">Negate the Necessary</div>
+                    <div class="ref-card">
+                        <div class="ref-label">No / None / Never / Cannot</div>
+                        <p class="ref-content">Identify the necessary condition, then negate it.</p>
+                        <p class="ref-content" style="margin-top: 8px;">Example: "No A is B"</p>
+                        <p class="ref-content" style="color: #666;">B is necessary, so negate it:</p>
+                        <p class="ref-content"><strong>A</strong> <span style="color:#C65D3B; font-weight:600;">→</span> <strong>NOT B</strong></p>
+                    </div>
+                </div>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">Combined Negations</div>
+                    <div class="ref-card">
+                        <div class="ref-label">Cannot + Unless / Without</div>
+                        <p class="ref-content">Two negation indicators cancel each other out. Read it as a straightforward conditional.</p>
+                        <p class="ref-content" style="margin-top: 8px;">Example: "Cannot A without B"</p>
+                        <p class="ref-content">A <span style="color:#C65D3B; font-weight:600;">→</span> B</p>
+                    </div>
                 </div>
 
                 <a href="../../learn.html" class="back-link">← Back to Learn</a>

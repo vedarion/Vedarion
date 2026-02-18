@@ -1,0 +1,749 @@
+{
+  "categories": [
+    {
+      "id": "if",
+      "name": "If",
+      "description": "\"If\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 1,
+          "sentence": "If you eat the cake, you will feel full.",
+          "question": "What is the sufficient condition?",
+          "correct": "You eat the cake",
+          "wrong": "You will feel full",
+          "explanation": "\"If\" introduces the sufficient condition. Eating the cake is enough to guarantee feeling full. Eat cake \u2192 Feel full."
+        },
+        {
+          "id": 2,
+          "sentence": "If the alarm rings, everyone evacuates.",
+          "question": "What is the sufficient condition?",
+          "correct": "The alarm rings",
+          "wrong": "Everyone evacuates",
+          "explanation": "\"If\" introduces the sufficient condition. The alarm ringing is enough to trigger evacuation. Alarm rings \u2192 Evacuate."
+        },
+        {
+          "id": 3,
+          "sentence": "If she calls, I will answer.",
+          "question": "What is the sufficient condition?",
+          "correct": "She calls",
+          "wrong": "I will answer",
+          "explanation": "\"If\" introduces the sufficient condition. Her calling is enough to guarantee an answer. Calls \u2192 Answer."
+        },
+        {
+          "id": 4,
+          "sentence": "If the temperature drops, the lake freezes.",
+          "question": "What is the sufficient condition?",
+          "correct": "The temperature drops",
+          "wrong": "The lake freezes",
+          "explanation": "\"If\" introduces the sufficient condition. The temperature dropping is enough to freeze the lake. Temperature drops \u2192 Lake freezes."
+        },
+        {
+          "id": 5,
+          "sentence": "If you press the button, the door opens.",
+          "question": "What is the sufficient condition?",
+          "correct": "You press the button",
+          "wrong": "The door opens",
+          "explanation": "\"If\" introduces the sufficient condition. Pressing the button is enough to open the door. Press button \u2192 Door opens."
+        }
+      ]
+    },
+    {
+      "id": "all",
+      "name": "All",
+      "description": "\"All\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 6,
+          "sentence": "All dogs love treats.",
+          "question": "What is the sufficient condition?",
+          "correct": "Dog",
+          "wrong": "Loves treats",
+          "explanation": "\"All\" introduces the sufficient condition. Dog is enough to guarantee loving treats. Dog \u2192 Loves treats."
+        },
+        {
+          "id": 7,
+          "sentence": "All managers attend the weekly meeting.",
+          "question": "What is the sufficient condition?",
+          "correct": "Manager",
+          "wrong": "Attends the weekly meeting",
+          "explanation": "\"All\" introduces the sufficient condition. Manager is enough to guarantee attendance. Manager \u2192 Attends meeting."
+        },
+        {
+          "id": 8,
+          "sentence": "All citizens must pay taxes.",
+          "question": "What is the sufficient condition?",
+          "correct": "Citizen",
+          "wrong": "Pays taxes",
+          "explanation": "\"All\" introduces the sufficient condition. Citizen is enough to trigger the requirement. Citizen \u2192 Pay taxes."
+        },
+        {
+          "id": 9,
+          "sentence": "All flights from Gate B are delayed.",
+          "question": "What is the sufficient condition?",
+          "correct": "Flight from Gate B",
+          "wrong": "Delayed",
+          "explanation": "\"All\" introduces the sufficient condition. Flight from Gate B is enough to guarantee a delay. Gate B flight \u2192 Delayed."
+        },
+        {
+          "id": 10,
+          "sentence": "All swimmers wear goggles.",
+          "question": "What is the sufficient condition?",
+          "correct": "Swimmer",
+          "wrong": "Wears goggles",
+          "explanation": "\"All\" introduces the sufficient condition. Swimmer is enough to guarantee wearing goggles. Swimmer \u2192 Wears goggles."
+        }
+      ]
+    },
+    {
+      "id": "every",
+      "name": "Every",
+      "description": "\"Every\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 11,
+          "sentence": "Every guest received a gift bag.",
+          "question": "What is the sufficient condition?",
+          "correct": "Guest",
+          "wrong": "Gift bag",
+          "explanation": "\"Every\" introduces the sufficient condition. Guest is enough to guarantee a gift bag. Guest \u2192 Gift bag."
+        },
+        {
+          "id": 12,
+          "sentence": "Every house on this street has a garage.",
+          "question": "What is the sufficient condition?",
+          "correct": "House on this street",
+          "wrong": "Garage",
+          "explanation": "\"Every\" introduces the sufficient condition. House on this street is enough to guarantee a garage. House on street \u2192 Garage."
+        },
+        {
+          "id": 13,
+          "sentence": "Every applicant submitted a resume.",
+          "question": "What is the sufficient condition?",
+          "correct": "Applicant",
+          "wrong": "Submitted a resume",
+          "explanation": "\"Every\" introduces the sufficient condition. Applicant is enough to guarantee a resume was submitted. Applicant \u2192 Submitted resume."
+        },
+        {
+          "id": 14,
+          "sentence": "Every teacher has a degree.",
+          "question": "What is the sufficient condition?",
+          "correct": "Teacher",
+          "wrong": "Degree",
+          "explanation": "\"Every\" introduces the sufficient condition. Teacher is enough to guarantee having a degree. Teacher \u2192 Has degree."
+        },
+        {
+          "id": 15,
+          "sentence": "Every member signed the agreement.",
+          "question": "What is the sufficient condition?",
+          "correct": "Member",
+          "wrong": "Signed the agreement",
+          "explanation": "\"Every\" introduces the sufficient condition. Member is enough to guarantee signing. Member \u2192 Signed agreement."
+        }
+      ]
+    },
+    {
+      "id": "whenever",
+      "name": "Whenever",
+      "description": "\"Whenever\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 16,
+          "sentence": "Whenever it rains, she brings an umbrella.",
+          "question": "What is the sufficient condition?",
+          "correct": "It rains",
+          "wrong": "She brings an umbrella",
+          "explanation": "\"Whenever\" introduces the sufficient condition. Rain is enough to guarantee she brings an umbrella. Rains \u2192 Umbrella."
+        },
+        {
+          "id": 17,
+          "sentence": "Whenever the boss is away, the team relaxes.",
+          "question": "What is the sufficient condition?",
+          "correct": "The boss is away",
+          "wrong": "The team relaxes",
+          "explanation": "\"Whenever\" introduces the sufficient condition. The boss being away is enough to guarantee the team relaxes. Boss away \u2192 Team relaxes."
+        },
+        {
+          "id": 18,
+          "sentence": "Whenever he exercises, he feels better.",
+          "question": "What is the sufficient condition?",
+          "correct": "He exercises",
+          "wrong": "He feels better",
+          "explanation": "\"Whenever\" introduces the sufficient condition. Exercising is enough to guarantee feeling better. Exercises \u2192 Feels better."
+        },
+        {
+          "id": 19,
+          "sentence": "Whenever the store has a sale, the parking lot fills up.",
+          "question": "What is the sufficient condition?",
+          "correct": "The store has a sale",
+          "wrong": "The parking lot fills up",
+          "explanation": "\"Whenever\" introduces the sufficient condition. A sale is enough to guarantee a full lot. Sale \u2192 Lot fills up."
+        },
+        {
+          "id": 20,
+          "sentence": "Whenever she sings, the audience claps.",
+          "question": "What is the sufficient condition?",
+          "correct": "She sings",
+          "wrong": "The audience claps",
+          "explanation": "\"Whenever\" introduces the sufficient condition. Her singing is enough to guarantee applause. Sings \u2192 Audience claps."
+        }
+      ]
+    },
+    {
+      "id": "when",
+      "name": "When",
+      "description": "\"When\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 21,
+          "sentence": "When the bell rings, class is over.",
+          "question": "What is the sufficient condition?",
+          "correct": "The bell rings",
+          "wrong": "Class is over",
+          "explanation": "\"When\" introduces the sufficient condition. The bell ringing is enough to guarantee class is over. Bell rings \u2192 Class over."
+        },
+        {
+          "id": 22,
+          "sentence": "When the sun sets, the lights turn on.",
+          "question": "What is the sufficient condition?",
+          "correct": "The sun sets",
+          "wrong": "The lights turn on",
+          "explanation": "\"When\" introduces the sufficient condition. The sun setting is enough to trigger the lights. Sun sets \u2192 Lights on."
+        },
+        {
+          "id": 23,
+          "sentence": "When he arrives, the meeting starts.",
+          "question": "What is the sufficient condition?",
+          "correct": "He arrives",
+          "wrong": "The meeting starts",
+          "explanation": "\"When\" introduces the sufficient condition. His arrival is enough to start the meeting. Arrives \u2192 Meeting starts."
+        },
+        {
+          "id": 24,
+          "sentence": "When the oven beeps, the food is ready.",
+          "question": "What is the sufficient condition?",
+          "correct": "The oven beeps",
+          "wrong": "The food is ready",
+          "explanation": "\"When\" introduces the sufficient condition. The beep is enough to guarantee the food is ready. Oven beeps \u2192 Food ready."
+        },
+        {
+          "id": 25,
+          "sentence": "When traffic is heavy, he takes the train.",
+          "question": "What is the sufficient condition?",
+          "correct": "Traffic is heavy",
+          "wrong": "He takes the train",
+          "explanation": "\"When\" introduces the sufficient condition. Heavy traffic is enough to guarantee he takes the train. Heavy traffic \u2192 Takes train."
+        }
+      ]
+    },
+    {
+      "id": "people_who",
+      "name": "People who",
+      "description": "\"People who\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 26,
+          "sentence": "People who volunteer gain experience.",
+          "question": "What is the sufficient condition?",
+          "correct": "Volunteering",
+          "wrong": "Gains experience",
+          "explanation": "\"People who\" introduces the sufficient condition. Volunteering is enough to guarantee gaining experience. Volunteer \u2192 Gain experience."
+        },
+        {
+          "id": 27,
+          "sentence": "People who read daily expand their vocabulary.",
+          "question": "What is the sufficient condition?",
+          "correct": "Reading daily",
+          "wrong": "Expands vocabulary",
+          "explanation": "\"People who\" introduces the sufficient condition. Reading daily is enough to guarantee vocabulary expansion. Read daily \u2192 Expand vocabulary."
+        },
+        {
+          "id": 28,
+          "sentence": "People who litter receive a fine.",
+          "question": "What is the sufficient condition?",
+          "correct": "Littering",
+          "wrong": "Fine",
+          "explanation": "\"People who\" introduces the sufficient condition. Littering is enough to guarantee a fine. Litter \u2192 Fine."
+        },
+        {
+          "id": 29,
+          "sentence": "People who arrive late miss the opening act.",
+          "question": "What is the sufficient condition?",
+          "correct": "Arriving late",
+          "wrong": "Misses the opening act",
+          "explanation": "\"People who\" introduces the sufficient condition. Arriving late is enough to guarantee missing the opener. Arrive late \u2192 Miss opening act."
+        },
+        {
+          "id": 30,
+          "sentence": "People who subscribe get free shipping.",
+          "question": "What is the sufficient condition?",
+          "correct": "Subscribing",
+          "wrong": "Free shipping",
+          "explanation": "\"People who\" introduces the sufficient condition. Subscribing is enough to guarantee free shipping. Subscribe \u2192 Free shipping."
+        }
+      ]
+    },
+    {
+      "id": "each",
+      "name": "Each",
+      "description": "\"Each\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 31,
+          "sentence": "Each participant receives a certificate.",
+          "question": "What is the sufficient condition?",
+          "correct": "Participant",
+          "wrong": "Certificate",
+          "explanation": "\"Each\" introduces the sufficient condition. Participant is enough to guarantee a certificate. Participant \u2192 Certificate."
+        },
+        {
+          "id": 32,
+          "sentence": "Each room has a window.",
+          "question": "What is the sufficient condition?",
+          "correct": "Room",
+          "wrong": "Window",
+          "explanation": "\"Each\" introduces the sufficient condition. Room is enough to guarantee a window. Room \u2192 Window."
+        },
+        {
+          "id": 33,
+          "sentence": "Each student was assigned a mentor.",
+          "question": "What is the sufficient condition?",
+          "correct": "Student",
+          "wrong": "Mentor",
+          "explanation": "\"Each\" introduces the sufficient condition. Student is enough to guarantee a mentor. Student \u2192 Mentor."
+        },
+        {
+          "id": 34,
+          "sentence": "Each floor has a fire extinguisher.",
+          "question": "What is the sufficient condition?",
+          "correct": "Floor",
+          "wrong": "Fire extinguisher",
+          "explanation": "\"Each\" introduces the sufficient condition. Floor is enough to guarantee a fire extinguisher. Floor \u2192 Fire extinguisher."
+        },
+        {
+          "id": 35,
+          "sentence": "Each chapter ends with a summary.",
+          "question": "What is the sufficient condition?",
+          "correct": "Chapter",
+          "wrong": "Summary",
+          "explanation": "\"Each\" introduces the sufficient condition. Chapter is enough to guarantee a summary. Chapter \u2192 Summary."
+        }
+      ]
+    },
+    {
+      "id": "any",
+      "name": "Any",
+      "description": "\"Any\" introduces the sufficient condition.",
+      "questions": [
+        {
+          "id": 36,
+          "sentence": "Any student caught cheating is expelled.",
+          "question": "What is the sufficient condition?",
+          "correct": "Student caught cheating",
+          "wrong": "Expelled",
+          "explanation": "\"Any\" introduces the sufficient condition. Caught cheating is enough to guarantee expulsion. Caught cheating \u2192 Expelled."
+        },
+        {
+          "id": 37,
+          "sentence": "Any package over 50 pounds requires extra postage.",
+          "question": "What is the sufficient condition?",
+          "correct": "Package over 50 pounds",
+          "wrong": "Extra postage",
+          "explanation": "\"Any\" introduces the sufficient condition. Over 50 pounds is enough to require extra postage. Over 50 lbs \u2192 Extra postage."
+        },
+        {
+          "id": 38,
+          "sentence": "Any dog that bites is quarantined.",
+          "question": "What is the sufficient condition?",
+          "correct": "Dog that bites",
+          "wrong": "Quarantined",
+          "explanation": "\"Any\" introduces the sufficient condition. Biting is enough to guarantee quarantine. Dog bites \u2192 Quarantined."
+        },
+        {
+          "id": 39,
+          "sentence": "Any employee with five years of service gets a bonus.",
+          "question": "What is the sufficient condition?",
+          "correct": "Employee with five years of service",
+          "wrong": "Bonus",
+          "explanation": "\"Any\" introduces the sufficient condition. Five years of service is enough to guarantee a bonus. Five years \u2192 Bonus."
+        },
+        {
+          "id": 40,
+          "sentence": "Any car parked here overnight will be towed.",
+          "question": "What is the sufficient condition?",
+          "correct": "Car parked here overnight",
+          "wrong": "Towed",
+          "explanation": "\"Any\" introduces the sufficient condition. Parking overnight is enough to guarantee towing. Parked overnight \u2192 Towed."
+        }
+      ]
+    },
+    {
+      "id": "the_only",
+      "name": "The only",
+      "description": "\"The only\" introduces the sufficient condition. Don't confuse it with \"only\" or \"only if\" which introduce the necessary.",
+      "questions": [
+        {
+          "id": 41,
+          "sentence": "The only ones that passed were seniors.",
+          "question": "What is the sufficient condition?",
+          "correct": "Passed",
+          "wrong": "Senior",
+          "explanation": "\"The only\" introduces the sufficient condition. Passed is enough to guarantee being a senior. Passed \u2192 Senior."
+        },
+        {
+          "id": 42,
+          "sentence": "The only fruit she eats is bananas.",
+          "question": "What is the sufficient condition?",
+          "correct": "Fruit she eats",
+          "wrong": "Banana",
+          "explanation": "\"The only\" introduces the sufficient condition. Fruit she eats is enough to guarantee it's a banana. Fruit she eats \u2192 Banana."
+        },
+        {
+          "id": 43,
+          "sentence": "The only cars allowed are electric.",
+          "question": "What is the sufficient condition?",
+          "correct": "Cars allowed",
+          "wrong": "Electric",
+          "explanation": "\"The only\" introduces the sufficient condition. Allowed car is enough to guarantee it's electric. Allowed car \u2192 Electric."
+        },
+        {
+          "id": 44,
+          "sentence": "The only day he works from home is Friday.",
+          "question": "What is the sufficient condition?",
+          "correct": "Day he works from home",
+          "wrong": "Friday",
+          "explanation": "\"The only\" introduces the sufficient condition. Day he works from home is enough to guarantee it's Friday. Works from home \u2192 Friday."
+        },
+        {
+          "id": 45,
+          "sentence": "The only students exempt are athletes.",
+          "question": "What is the sufficient condition?",
+          "correct": "Students exempt",
+          "wrong": "Athlete",
+          "explanation": "\"The only\" introduces the sufficient condition. Being exempt is enough to guarantee being an athlete. Exempt \u2192 Athlete."
+        },
+        {
+          "id": 46,
+          "sentence": "The only restaurant open late is the diner.",
+          "question": "What is the sufficient condition?",
+          "correct": "Restaurant open late",
+          "wrong": "The diner",
+          "explanation": "\"The only\" introduces the sufficient condition. Restaurant open late is enough to guarantee it's the diner. Open late \u2192 The diner."
+        },
+        {
+          "id": 47,
+          "sentence": "The only language taught here is Spanish.",
+          "question": "What is the sufficient condition?",
+          "correct": "Language taught here",
+          "wrong": "Spanish",
+          "explanation": "\"The only\" introduces the sufficient condition. Language taught here is enough to guarantee it's Spanish. Taught here \u2192 Spanish."
+        },
+        {
+          "id": 48,
+          "sentence": "The only drink she orders is coffee.",
+          "question": "What is the sufficient condition?",
+          "correct": "Drink she orders",
+          "wrong": "Coffee",
+          "explanation": "\"The only\" introduces the sufficient condition. Drink she orders is enough to guarantee it's coffee. Drink she orders \u2192 Coffee."
+        },
+        {
+          "id": 49,
+          "sentence": "The only team that qualified was the home team.",
+          "question": "What is the sufficient condition?",
+          "correct": "Team that qualified",
+          "wrong": "The home team",
+          "explanation": "\"The only\" introduces the sufficient condition. Qualifying is enough to guarantee being the home team. Qualified \u2192 Home team."
+        },
+        {
+          "id": 50,
+          "sentence": "The only shoes permitted are sneakers.",
+          "question": "What is the sufficient condition?",
+          "correct": "Shoes permitted",
+          "wrong": "Sneakers",
+          "explanation": "\"The only\" introduces the sufficient condition. Permitted shoe is enough to guarantee it's sneakers. Permitted shoe \u2192 Sneakers."
+        }
+      ]
+    },
+    {
+      "id": "then",
+      "name": "Then",
+      "description": "\"Then\" introduces the necessary condition.",
+      "questions": [
+        {
+          "id": 51,
+          "sentence": "If you study hard, then you will pass.",
+          "question": "What is the necessary condition?",
+          "correct": "You will pass",
+          "wrong": "You study hard",
+          "explanation": "\"Then\" introduces the necessary condition. Passing is what must follow from studying. Study hard \u2192 Pass."
+        },
+        {
+          "id": 52,
+          "sentence": "If the power goes out, then the alarm sounds.",
+          "question": "What is the necessary condition?",
+          "correct": "The alarm sounds",
+          "wrong": "The power goes out",
+          "explanation": "\"Then\" introduces the necessary condition. The alarm sounding is what must follow. Power out \u2192 Alarm sounds."
+        },
+        {
+          "id": 53,
+          "sentence": "If she wins, then the team celebrates.",
+          "question": "What is the necessary condition?",
+          "correct": "The team celebrates",
+          "wrong": "She wins",
+          "explanation": "\"Then\" introduces the necessary condition. The celebration must follow from winning. Wins \u2192 Team celebrates."
+        },
+        {
+          "id": 54,
+          "sentence": "If the bridge is closed, then traffic is rerouted.",
+          "question": "What is the necessary condition?",
+          "correct": "Traffic is rerouted",
+          "wrong": "The bridge is closed",
+          "explanation": "\"Then\" introduces the necessary condition. Rerouting must follow from the closure. Bridge closed \u2192 Traffic rerouted."
+        },
+        {
+          "id": 55,
+          "sentence": "If you finish early, then you may leave.",
+          "question": "What is the necessary condition?",
+          "correct": "You may leave",
+          "wrong": "You finish early",
+          "explanation": "\"Then\" introduces the necessary condition. Being allowed to leave must follow from finishing early. Finish early \u2192 May leave."
+        }
+      ]
+    },
+    {
+      "id": "must",
+      "name": "Must",
+      "description": "\"Must\" introduces the necessary condition.",
+      "questions": [
+        {
+          "id": 56,
+          "sentence": "Visitors must sign in at the front desk.",
+          "question": "What is the necessary condition?",
+          "correct": "Signing in at the front desk",
+          "wrong": "Visitor",
+          "explanation": "\"Must\" introduces the necessary condition. Signing in is required of all visitors. Visitor \u2192 Must sign in."
+        },
+        {
+          "id": 57,
+          "sentence": "Applicants must submit two references.",
+          "question": "What is the necessary condition?",
+          "correct": "Submitting two references",
+          "wrong": "Applicant",
+          "explanation": "\"Must\" introduces the necessary condition. Submitting references is required. Applicant \u2192 Must submit references."
+        },
+        {
+          "id": 58,
+          "sentence": "Drivers must wear a seatbelt.",
+          "question": "What is the necessary condition?",
+          "correct": "Wearing a seatbelt",
+          "wrong": "Driver",
+          "explanation": "\"Must\" introduces the necessary condition. Wearing a seatbelt is required of all drivers. Driver \u2192 Must wear seatbelt."
+        },
+        {
+          "id": 59,
+          "sentence": "Students must attend orientation.",
+          "question": "What is the necessary condition?",
+          "correct": "Attending orientation",
+          "wrong": "Student",
+          "explanation": "\"Must\" introduces the necessary condition. Attending orientation is required. Student \u2192 Must attend orientation."
+        },
+        {
+          "id": 60,
+          "sentence": "Tenants must give 30 days notice.",
+          "question": "What is the necessary condition?",
+          "correct": "Giving 30 days notice",
+          "wrong": "Tenant",
+          "explanation": "\"Must\" introduces the necessary condition. Giving notice is required of tenants. Tenant \u2192 Must give 30 days notice."
+        }
+      ]
+    },
+    {
+      "id": "only_if",
+      "name": "Only if",
+      "description": "\"Only if\" introduces the necessary condition. Don't confuse with \"if\" which introduces the sufficient.",
+      "questions": [
+        {
+          "id": 61,
+          "sentence": "You can vote only if you are registered.",
+          "question": "What is the necessary condition?",
+          "correct": "You are registered",
+          "wrong": "You can vote",
+          "explanation": "\"Only if\" introduces the necessary condition. Being registered is required for voting. Vote \u2192 Registered."
+        },
+        {
+          "id": 62,
+          "sentence": "She will go only if he goes.",
+          "question": "What is the necessary condition?",
+          "correct": "He goes",
+          "wrong": "She will go",
+          "explanation": "\"Only if\" introduces the necessary condition. His going is required for her to go. She goes \u2192 He goes."
+        },
+        {
+          "id": 63,
+          "sentence": "The project moves forward only if the budget is approved.",
+          "question": "What is the necessary condition?",
+          "correct": "The budget is approved",
+          "wrong": "The project moves forward",
+          "explanation": "\"Only if\" introduces the necessary condition. Budget approval is required. Project moves forward \u2192 Budget approved."
+        },
+        {
+          "id": 64,
+          "sentence": "He will accept the job only if it includes relocation support.",
+          "question": "What is the necessary condition?",
+          "correct": "It includes relocation support",
+          "wrong": "He will accept the job",
+          "explanation": "\"Only if\" introduces the necessary condition. Relocation support is required for acceptance. Accepts job \u2192 Relocation support."
+        },
+        {
+          "id": 65,
+          "sentence": "The game continues only if both teams agree.",
+          "question": "What is the necessary condition?",
+          "correct": "Both teams agree",
+          "wrong": "The game continues",
+          "explanation": "\"Only if\" introduces the necessary condition. Agreement from both teams is required. Game continues \u2192 Both teams agree."
+        }
+      ]
+    },
+    {
+      "id": "only_when",
+      "name": "Only when",
+      "description": "\"Only when\" introduces the necessary condition.",
+      "questions": [
+        {
+          "id": 66,
+          "sentence": "She smiles only when she is happy.",
+          "question": "What is the necessary condition?",
+          "correct": "She is happy",
+          "wrong": "She smiles",
+          "explanation": "\"Only when\" introduces the necessary condition. Being happy is required for her to smile. Smiles \u2192 Happy."
+        },
+        {
+          "id": 67,
+          "sentence": "He cooks only when guests are coming.",
+          "question": "What is the necessary condition?",
+          "correct": "Guests are coming",
+          "wrong": "He cooks",
+          "explanation": "\"Only when\" introduces the necessary condition. Guests coming is required for him to cook. Cooks \u2192 Guests coming."
+        },
+        {
+          "id": 68,
+          "sentence": "The sprinklers activate only when smoke is detected.",
+          "question": "What is the necessary condition?",
+          "correct": "Smoke is detected",
+          "wrong": "The sprinklers activate",
+          "explanation": "\"Only when\" introduces the necessary condition. Smoke detection is required for activation. Sprinklers activate \u2192 Smoke detected."
+        },
+        {
+          "id": 69,
+          "sentence": "They hire only when a position is open.",
+          "question": "What is the necessary condition?",
+          "correct": "A position is open",
+          "wrong": "They hire",
+          "explanation": "\"Only when\" introduces the necessary condition. An open position is required for hiring. Hire \u2192 Position open."
+        },
+        {
+          "id": 70,
+          "sentence": "The gate opens only when the code is entered.",
+          "question": "What is the necessary condition?",
+          "correct": "The code is entered",
+          "wrong": "The gate opens",
+          "explanation": "\"Only when\" introduces the necessary condition. Entering the code is required. Gate opens \u2192 Code entered."
+        }
+      ]
+    },
+    {
+      "id": "requires",
+      "name": "Requires",
+      "description": "\"Requires\" introduces the necessary condition.",
+      "questions": [
+        {
+          "id": 71,
+          "sentence": "Graduation requires a thesis.",
+          "question": "What is the necessary condition?",
+          "correct": "A thesis",
+          "wrong": "Graduation",
+          "explanation": "\"Requires\" introduces the necessary condition. A thesis is required for graduation. Graduation \u2192 Thesis."
+        },
+        {
+          "id": 72,
+          "sentence": "This recipe requires butter.",
+          "question": "What is the necessary condition?",
+          "correct": "Butter",
+          "wrong": "This recipe",
+          "explanation": "\"Requires\" introduces the necessary condition. Butter is required for the recipe. Make this recipe \u2192 Butter."
+        },
+        {
+          "id": 73,
+          "sentence": "The job requires a background check.",
+          "question": "What is the necessary condition?",
+          "correct": "A background check",
+          "wrong": "The job",
+          "explanation": "\"Requires\" introduces the necessary condition. A background check is required for the job. Get the job \u2192 Background check."
+        },
+        {
+          "id": 74,
+          "sentence": "Entry requires a valid ID.",
+          "question": "What is the necessary condition?",
+          "correct": "A valid ID",
+          "wrong": "Entry",
+          "explanation": "\"Requires\" introduces the necessary condition. A valid ID is required for entry. Entry \u2192 Valid ID."
+        },
+        {
+          "id": 75,
+          "sentence": "The experiment requires parental consent.",
+          "question": "What is the necessary condition?",
+          "correct": "Parental consent",
+          "wrong": "The experiment",
+          "explanation": "\"Requires\" introduces the necessary condition. Parental consent is required. Participate in experiment \u2192 Parental consent."
+        }
+      ]
+    },
+    {
+      "id": "depends_on",
+      "name": "Depends on",
+      "description": "\"Depends on\" introduces the necessary condition.",
+      "questions": [
+        {
+          "id": 81,
+          "sentence": "Success depends on preparation.",
+          "question": "What is the necessary condition?",
+          "correct": "Preparation",
+          "wrong": "Success",
+          "explanation": "\"Depends on\" introduces the necessary condition. Preparation is required for success. Success \u2192 Preparation."
+        },
+        {
+          "id": 82,
+          "sentence": "The outcome depends on the jury's decision.",
+          "question": "What is the necessary condition?",
+          "correct": "The jury's decision",
+          "wrong": "The outcome",
+          "explanation": "\"Depends on\" introduces the necessary condition. The jury's decision is required. Outcome \u2192 Jury's decision."
+        },
+        {
+          "id": 83,
+          "sentence": "Plant growth depends on water.",
+          "question": "What is the necessary condition?",
+          "correct": "Water",
+          "wrong": "Plant growth",
+          "explanation": "\"Depends on\" introduces the necessary condition. Water is required for growth. Plant growth \u2192 Water."
+        },
+        {
+          "id": 84,
+          "sentence": "His promotion depends on his performance review.",
+          "question": "What is the necessary condition?",
+          "correct": "His performance review",
+          "wrong": "His promotion",
+          "explanation": "\"Depends on\" introduces the necessary condition. A performance review is required. Promotion \u2192 Performance review."
+        },
+        {
+          "id": 85,
+          "sentence": "The trip depends on the weather.",
+          "question": "What is the necessary condition?",
+          "correct": "The weather",
+          "wrong": "The trip",
+          "explanation": "\"Depends on\" introduces the necessary condition. The weather is required to be favorable. Trip happens \u2192 Weather cooperates."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "categories": [
+    {
+      "id": "contrapositive",
+      "name": "Contrapositive",
+      "description": "Flip the direction and negate both sides. A → B becomes NOT B → NOT A.",
+      "questions": [
+        {
+          "id": 1,
+          "sentence": "If it rains, the picnic is cancelled.",
+          "question": "What is the contrapositive?",
+          "correct": "If the picnic is not cancelled, it did not rain.",
+          "wrong": "If it does not rain, the picnic is not cancelled.",
+          "explanation": "Rain → Cancelled. Flip and negate: NOT cancelled → NOT rain. (B) negates the sufficient without flipping — that tells us nothing."
+        },
+        {
+          "id": 2,
+          "sentence": "If you are a pilot, you have a license.",
+          "question": "What is the contrapositive?",
+          "correct": "If you do not have a license, you are not a pilot.",
+          "wrong": "If you are not a pilot, you do not have a license.",
+          "explanation": "Pilot → License. Flip and negate: NOT license → NOT pilot. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 3,
+          "sentence": "All chefs know how to cook.",
+          "question": "What is the contrapositive?",
+          "correct": "If you don't know how to cook, you are not a chef.",
+          "wrong": "If you are not a chef, you don't know how to cook.",
+          "explanation": "Chef → Knows how to cook. Flip and negate: NOT knows how to cook → NOT chef. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 4,
+          "sentence": "Every member pays dues.",
+          "question": "What is the contrapositive?",
+          "correct": "If you don't pay dues, you are not a member.",
+          "wrong": "If you are not a member, you don't pay dues.",
+          "explanation": "Member → Pays dues. Flip and negate: NOT pays dues → NOT member. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 5,
+          "sentence": "If the light is green, traffic moves.",
+          "question": "What is the contrapositive?",
+          "correct": "If traffic is not moving, the light is not green.",
+          "wrong": "If the light is not green, traffic is not moving.",
+          "explanation": "Green → Traffic moves. Flip and negate: NOT moving → NOT green. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 6,
+          "sentence": "You can enter only if you have a ticket.",
+          "question": "What is the contrapositive?",
+          "correct": "If you don't have a ticket, you cannot enter.",
+          "wrong": "If you cannot enter, you don't have a ticket.",
+          "explanation": "Enter → Ticket. Flip and negate: NOT ticket → NOT enter. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 7,
+          "sentence": "Whenever she runs, she stretches first.",
+          "question": "What is the contrapositive?",
+          "correct": "If she did not stretch first, she did not run.",
+          "wrong": "If she did not run, she did not stretch first.",
+          "explanation": "Runs → Stretches first. Flip and negate: NOT stretch → NOT run. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 8,
+          "sentence": "If the store is open, the sign is lit.",
+          "question": "What is the contrapositive?",
+          "correct": "If the sign is not lit, the store is not open.",
+          "wrong": "If the store is not open, the sign is not lit.",
+          "explanation": "Store open → Sign lit. Flip and negate: NOT lit → NOT open. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 9,
+          "sentence": "All employees wear badges.",
+          "question": "What is the contrapositive?",
+          "correct": "If someone is not wearing a badge, they are not an employee.",
+          "wrong": "If someone is not an employee, they are not wearing a badge.",
+          "explanation": "Employee → Wears badge. Flip and negate: NOT badge → NOT employee. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 10,
+          "sentence": "If the battery is dead, the car won't start.",
+          "question": "What is the contrapositive?",
+          "correct": "If the car started, the battery is not dead.",
+          "wrong": "If the battery is not dead, the car will start.",
+          "explanation": "Battery dead → Won't start. Flip and negate: Car started → Battery NOT dead. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 11,
+          "sentence": "She graduates only if she completes the internship.",
+          "question": "What is the contrapositive?",
+          "correct": "If she does not complete the internship, she does not graduate.",
+          "wrong": "If she does not graduate, she did not complete the internship.",
+          "explanation": "Graduate → Internship. Flip and negate: NOT internship → NOT graduate. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 12,
+          "sentence": "When the whistle blows, the game ends.",
+          "question": "What is the contrapositive?",
+          "correct": "If the game has not ended, the whistle did not blow.",
+          "wrong": "If the whistle did not blow, the game has not ended.",
+          "explanation": "Whistle blows → Game ends. Flip and negate: NOT ended → NOT whistle. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 13,
+          "sentence": "If you pass the test, you earn the certificate.",
+          "question": "What is the contrapositive?",
+          "correct": "If you did not earn the certificate, you did not pass the test.",
+          "wrong": "If you did not pass the test, you did not earn the certificate.",
+          "explanation": "Pass → Certificate. Flip and negate: NOT certificate → NOT pass. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 14,
+          "sentence": "Every nurse wears scrubs.",
+          "question": "What is the contrapositive?",
+          "correct": "If someone is not wearing scrubs, they are not a nurse.",
+          "wrong": "If someone is not a nurse, they are not wearing scrubs.",
+          "explanation": "Nurse → Scrubs. Flip and negate: NOT scrubs → NOT nurse. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 15,
+          "sentence": "If the water boils, steam rises.",
+          "question": "What is the contrapositive?",
+          "correct": "If steam is not rising, the water is not boiling.",
+          "wrong": "If the water is not boiling, steam is not rising.",
+          "explanation": "Boils → Steam. Flip and negate: NOT steam → NOT boiling. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 16,
+          "sentence": "Promotion depends on a performance review.",
+          "question": "What is the contrapositive?",
+          "correct": "If there is no performance review, there is no promotion.",
+          "wrong": "If there is no promotion, there is no performance review.",
+          "explanation": "Promotion → Performance review. Flip and negate: NOT review → NOT promotion. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 17,
+          "sentence": "If the door is locked, you need a key.",
+          "question": "What is the contrapositive?",
+          "correct": "If you don't need a key, the door is not locked.",
+          "wrong": "If the door is not locked, you don't need a key.",
+          "explanation": "Locked → Need key. Flip and negate: NOT need key → NOT locked. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 18,
+          "sentence": "Any car on the lot has been inspected.",
+          "question": "What is the contrapositive?",
+          "correct": "If a car has not been inspected, it is not on the lot.",
+          "wrong": "If a car is not on the lot, it has not been inspected.",
+          "explanation": "On lot → Inspected. Flip and negate: NOT inspected → NOT on lot. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 19,
+          "sentence": "If the museum is closed, the lights are off.",
+          "question": "What is the contrapositive?",
+          "correct": "If the lights are on, the museum is not closed.",
+          "wrong": "If the museum is not closed, the lights are on.",
+          "explanation": "Closed → Lights off. Flip and negate: Lights NOT off (on) → NOT closed. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 20,
+          "sentence": "He accepts the offer only if the salary is competitive.",
+          "question": "What is the contrapositive?",
+          "correct": "If the salary is not competitive, he does not accept the offer.",
+          "wrong": "If he does not accept the offer, the salary is not competitive.",
+          "explanation": "Accepts → Salary competitive. Flip and negate: NOT competitive → NOT accept. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 21,
+          "sentence": "If the soil is dry, the plants wilt.",
+          "question": "What is the contrapositive?",
+          "correct": "If the plants are not wilting, the soil is not dry.",
+          "wrong": "If the soil is not dry, the plants are not wilting.",
+          "explanation": "Soil dry → Plants wilt. Flip and negate: NOT wilt → NOT dry. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 22,
+          "sentence": "All lawyers passed the bar exam.",
+          "question": "What is the contrapositive?",
+          "correct": "If someone did not pass the bar exam, they are not a lawyer.",
+          "wrong": "If someone is not a lawyer, they did not pass the bar exam.",
+          "explanation": "Lawyer → Passed bar. Flip and negate: NOT passed bar → NOT lawyer. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 23,
+          "sentence": "If the road is icy, the school bus is delayed.",
+          "question": "What is the contrapositive?",
+          "correct": "If the school bus is not delayed, the road is not icy.",
+          "wrong": "If the road is not icy, the school bus is not delayed.",
+          "explanation": "Icy → Bus delayed. Flip and negate: NOT delayed → NOT icy. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 24,
+          "sentence": "This course requires a prerequisite.",
+          "question": "What is the contrapositive?",
+          "correct": "If you did not take the prerequisite, you cannot take this course.",
+          "wrong": "If you cannot take this course, you did not take the prerequisite.",
+          "explanation": "Take course → Prerequisite. Flip and negate: NOT prerequisite → NOT take course. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 25,
+          "sentence": "Whenever the alarm triggers, security responds.",
+          "question": "What is the contrapositive?",
+          "correct": "If security did not respond, the alarm did not trigger.",
+          "wrong": "If the alarm did not trigger, security did not respond.",
+          "explanation": "Alarm triggers → Security responds. Flip and negate: NOT respond → NOT triggered. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 26,
+          "sentence": "If the concert is sold out, extra shows are added.",
+          "question": "What is the contrapositive?",
+          "correct": "If extra shows are not added, the concert is not sold out.",
+          "wrong": "If the concert is not sold out, extra shows are not added.",
+          "explanation": "Sold out → Extra shows. Flip and negate: NOT extra shows → NOT sold out. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 27,
+          "sentence": "Every passenger has a boarding pass.",
+          "question": "What is the contrapositive?",
+          "correct": "If someone does not have a boarding pass, they are not a passenger.",
+          "wrong": "If someone is not a passenger, they do not have a boarding pass.",
+          "explanation": "Passenger → Boarding pass. Flip and negate: NOT boarding pass → NOT passenger. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 28,
+          "sentence": "If the printer jams, the report is late.",
+          "question": "What is the contrapositive?",
+          "correct": "If the report is not late, the printer did not jam.",
+          "wrong": "If the printer did not jam, the report is not late.",
+          "explanation": "Jams → Report late. Flip and negate: NOT late → NOT jammed. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 29,
+          "sentence": "She applies only if the deadline has not passed.",
+          "question": "What is the contrapositive?",
+          "correct": "If the deadline has passed, she does not apply.",
+          "wrong": "If she does not apply, the deadline has passed.",
+          "explanation": "Applies → Deadline NOT passed. Flip and negate: Deadline passed → NOT apply. (B) negates the sufficient without flipping."
+        },
+        {
+          "id": 30,
+          "sentence": "If the experiment fails, the hypothesis is revised.",
+          "question": "What is the contrapositive?",
+          "correct": "If the hypothesis is not revised, the experiment did not fail.",
+          "wrong": "If the experiment did not fail, the hypothesis is not revised.",
+          "explanation": "Fails → Revised. Flip and negate: NOT revised → NOT failed. (B) negates the sufficient without flipping."
+        }
+      ]
+    }
+  ]
+}

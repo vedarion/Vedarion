@@ -1,0 +1,38 @@
+{
+  "categories": [
+    {
+      "id": "few",
+      "name": "Few",
+      "description": "Few = some are AND most are not. Two pieces of information in one word.",
+      "questions": [
+        {"id": 31, "sentence": "Few students enjoy homework.", "correct": "Most students do not enjoy homework.", "wrong": "No students enjoy homework.", "explanation": "\"Few\" = some are AND most are not. Some students enjoy homework, but most do not. (B) goes too far — \"few\" tells us some do enjoy it, so \"no students\" is wrong."},
+        {"id": 32, "sentence": "Few restaurants in this town serve breakfast.", "correct": "Most restaurants in this town do not serve breakfast.", "wrong": "Most restaurants in this town serve breakfast.", "explanation": "\"Few\" = some are AND most are not. Some restaurants serve breakfast, but most do not. (B) flips it — \"few\" means most do NOT."},
+        {"id": 33, "sentence": "Few politicians keep their promises.", "correct": "Most politicians do not keep their promises.", "wrong": "No politicians keep their promises.", "explanation": "\"Few\" = some are AND most are not. Some politicians keep their promises, but most do not. (B) goes too far — \"few\" tells us some do, so \"no politicians\" is wrong."},
+        {"id": 34, "sentence": "Few movies this year were worth watching.", "correct": "Some movies this year were worth watching.", "wrong": "No movies this year were worth watching.", "explanation": "\"Few\" = some are AND most are not. Some movies were worth watching. (B) goes too far — \"few\" guarantees that at least some were, so \"no movies\" is wrong."},
+        {"id": 35, "sentence": "Few applicants passed the screening.", "correct": "Most applicants did not pass the screening.", "wrong": "All applicants passed the screening.", "explanation": "\"Few\" = some are AND most are not. Some applicants passed, but most did not. (B) says the opposite — \"all\" contradicts \"few.\""},
+        {"id": 36, "sentence": "Few dogs dislike walks.", "correct": "Most dogs do not dislike walks.", "wrong": "No dogs dislike walks.", "explanation": "\"Few\" = some are AND most are not. Some dogs dislike walks, but most do not. (B) goes too far — \"few\" tells us some do dislike walks."},
+        {"id": 37, "sentence": "Few people read the terms and conditions.", "correct": "Most people do not read the terms and conditions.", "wrong": "Most people read the terms and conditions.", "explanation": "\"Few\" = some are AND most are not. Some people read them, but most do not. (B) flips it — \"few\" means most do NOT."},
+        {"id": 38, "sentence": "Few cities have reliable public transit.", "correct": "Some cities have reliable public transit.", "wrong": "No cities have reliable public transit.", "explanation": "\"Few\" = some are AND most are not. Some cities do have it. (B) goes too far — \"few\" guarantees at least some do."},
+        {"id": 39, "sentence": "Few teachers assign homework over the holidays.", "correct": "Most teachers do not assign homework over the holidays.", "wrong": "All teachers assign homework over the holidays.", "explanation": "\"Few\" = some are AND most are not. Some teachers assign it, but most do not. (B) says the opposite."},
+        {"id": 40, "sentence": "Few desserts at this bakery are sugar-free.", "correct": "Most desserts at this bakery are not sugar-free.", "wrong": "No desserts at this bakery are sugar-free.", "explanation": "\"Few\" = some are AND most are not. Some desserts are sugar-free, but most are not. (B) goes too far — \"few\" tells us some are."}
+      ]
+    },
+    {
+      "id": "not_all",
+      "name": "Not All",
+      "description": "Not all = some are not = at least one is not. It tells us nothing about the majority.",
+      "questions": [
+        {"id": 51, "sentence": "Not all birds can fly.", "correct": "At least one bird cannot fly.", "wrong": "No birds can fly.", "explanation": "\"Not all\" = some are not = at least one is not. At least one bird cannot fly. (B) goes way too far — \"not all\" does not mean \"none.\""},
+        {"id": 52, "sentence": "Not all students passed the test.", "correct": "At least one student did not pass the test.", "wrong": "Most students did not pass the test.", "explanation": "\"Not all\" = some are not = at least one is not. At least one student didn't pass. (B) goes too far — \"not all\" tells us nothing about whether most passed or not."},
+        {"id": 53, "sentence": "Not every restaurant on this street is expensive.", "correct": "At least one restaurant on this street is not expensive.", "wrong": "No restaurants on this street are expensive.", "explanation": "\"Not every\" = not all = at least one is not. At least one restaurant is not expensive. (B) goes way too far — \"not every\" does not mean \"none.\""},
+        {"id": 54, "sentence": "Not all medications have side effects.", "correct": "At least one medication does not have side effects.", "wrong": "No medications have side effects.", "explanation": "\"Not all\" = some are not = at least one is not. At least one medication doesn't have side effects. (B) goes way too far — \"not all\" does not mean \"none.\""},
+        {"id": 55, "sentence": "Not all politicians are dishonest.", "correct": "At least one politician is not dishonest.", "wrong": "Most politicians are not dishonest.", "explanation": "\"Not all\" = some are not = at least one is not. At least one politician is not dishonest. (B) goes too far — \"not all\" tells us nothing about the majority."},
+        {"id": 56, "sentence": "Not every employee attended the meeting.", "correct": "At least one employee did not attend the meeting.", "wrong": "No employees attended the meeting.", "explanation": "\"Not every\" = not all = at least one is not. At least one employee didn't attend. (B) goes way too far — \"not every\" does not mean \"none.\""},
+        {"id": 57, "sentence": "Not all roads lead to Rome.", "correct": "At least one road does not lead to Rome.", "wrong": "No roads lead to Rome.", "explanation": "\"Not all\" = some are not = at least one is not. At least one road doesn't lead to Rome. (B) goes way too far — \"not all\" does not mean \"none.\""},
+        {"id": 58, "sentence": "Not all coffee shops serve espresso.", "correct": "At least one coffee shop does not serve espresso.", "wrong": "Most coffee shops do not serve espresso.", "explanation": "\"Not all\" = some are not = at least one is not. At least one coffee shop doesn't serve espresso. (B) goes too far — \"not all\" tells us nothing about the majority."},
+        {"id": 59, "sentence": "Not every celebrity is wealthy.", "correct": "At least one celebrity is not wealthy.", "wrong": "No celebrities are wealthy.", "explanation": "\"Not every\" = not all = at least one is not. At least one celebrity is not wealthy. (B) goes way too far — \"not every\" does not mean \"none.\""},
+        {"id": 60, "sentence": "Not all experiments produce useful results.", "correct": "At least one experiment does not produce useful results.", "wrong": "No experiments produce useful results.", "explanation": "\"Not all\" = some are not = at least one is not. At least one experiment doesn't produce useful results. (B) goes way too far — \"not all\" does not mean \"none.\""}
+      ]
+    }
+  ]
+}

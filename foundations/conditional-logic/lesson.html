@@ -3,485 +3,808 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conditional Logic: The Foundation - VEDARION</title>
+    <title>Conditional Logic Basics - VEDARION</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#FAFAFA;color:#0A0A0A;min-height:100vh}
-        .nav{background:#0A0A0A;display:flex;justify-content:space-between;align-items:center;padding:25px 50px;border-bottom:1px solid #222}
-        .nav-brand{font-size:24px;font-weight:300;letter-spacing:4px;color:white;text-decoration:none}
-        .nav-brand .v-accent{color:#C65D3B;font-weight:700}
-        .nav-links{display:flex;gap:40px}
-        .nav-links a{color:#888;text-decoration:none;font-size:14px;letter-spacing:1px;transition:color .3s}
-        .nav-links a:hover,.nav-links a.active{color:white}
-        .breadcrumb{background:#0A0A0A;padding:15px 50px}
-        .breadcrumb a{color:#666;text-decoration:none;font-size:13px;letter-spacing:.5px}
-        .breadcrumb a:hover{color:#888}
-        .breadcrumb span{color:#444;font-size:13px;margin:0 8px}
-        .breadcrumb .current{color:#888;font-size:13px}
-        .lesson-header{background:#0A0A0A;padding:20px 50px 30px}
-        .lesson-section-label{color:#C65D3B;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-        .lesson-title{color:white;font-size:32px;font-weight:400;letter-spacing:1px;margin-bottom:8px}
-        .lesson-subtitle{color:#666;font-size:15px}
-        .tab-nav{background:#0A0A0A;padding:0 50px;display:flex;gap:0;border-bottom:1px solid #222}
-        .tab-btn{background:none;border:none;color:#666;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:16px 30px;cursor:pointer;transition:color .3s;position:relative;font-family:inherit;display:flex;align-items:center;gap:6px}
-        .tab-btn:hover{color:#999}
-        .tab-btn.active{color:white}
-        .tab-btn.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#C65D3B}
-        .tab-badge{background:#C65D3B;color:white;font-size:8px;padding:2px 5px;border-radius:3px;letter-spacing:.5px;font-weight:700}
-        .tab-content{display:none}.tab-content.active{display:block}
-        .video-section{background:#0A0A0A;padding:30px 50px 50px}
-        .video-container{max-width:900px;margin:0 auto}
-        .video-wrapper{position:relative;padding-top:56.25%;border:1px solid #222}
-        .video-wrapper iframe{border:0;position:absolute;top:0;height:100%;width:100%}
-        .video-summary{max-width:700px;margin:0 auto;padding:50px 20px}
-        .content-heading{font-size:18px;font-weight:600;margin-bottom:15px;color:#0A0A0A}
-        .content-text{color:#555;font-size:15px;line-height:1.7;margin-bottom:30px}
-        .key-takeaways{background:white;border:1px solid #E0E0E0;padding:25px 30px;margin-bottom:30px}
-        .key-takeaways h3{font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:15px}
-        .takeaway-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;font-size:14px;color:#555;line-height:1.5}
-        .takeaway-item .check{color:#C65D3B;font-weight:700;flex-shrink:0}
-        .takeaway-item .invalid{color:#888;font-weight:700;flex-shrink:0}
-        .go-practice{display:block;background:#C65D3B;color:white;text-align:center;padding:16px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;width:100%;transition:background .3s;font-family:inherit}
-        .go-practice:hover{background:#A04D2E}
-        .practice-section{background:#0A0A0A;padding:30px 50px 10px}
-        .practice-intro{max-width:700px;margin:0 auto;text-align:center;padding-bottom:30px}
-        .practice-intro h2{color:white;font-size:20px;font-weight:400;letter-spacing:1px;margin-bottom:10px}
-        .practice-intro p{color:#666;font-size:14px;line-height:1.6}
-        .exercises-container{max-width:700px;margin:0 auto;padding:0 50px 50px;background:#0A0A0A}
-        .exercise{background:#111;border:1px solid #222;margin-bottom:12px}
-        .exercise-header{display:flex;align-items:center;gap:15px;padding:20px 25px;cursor:pointer;transition:background .2s;justify-content:space-between}
-        .exercise-header:hover{background:#1a1a1a}
-        .exercise-header-left{display:flex;align-items:center;gap:15px}
-        .exercise-number{background:#C65D3B;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
-        .exercise-statement{color:white;font-size:16px;font-style:italic;line-height:1.5}
-        .exercise-indicator{color:#666;font-size:12px;letter-spacing:.5px;margin-top:4px;font-style:normal}
-        .exercise-toggle{color:#666;font-size:18px;flex-shrink:0;transition:transform .3s}
-        .exercise.open .exercise-toggle{transform:rotate(180deg)}
-        .exercise-body{display:none;border-top:1px solid #222}
-        .exercise.open .exercise-body{display:block}
-        .exercise-part{border-bottom:1px solid #1a1a1a}
-        .exercise-part:last-child{border-bottom:none}
-        .part-question{padding:18px 25px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s}
-        .part-question:hover{background:#1a1a1a}
-        .part-label{font-size:14px;color:#999}
-        .part-label strong{color:white;font-weight:600}
-        .reveal-btn{color:#666;font-size:12px;font-weight:600;letter-spacing:.5px;flex-shrink:0;margin-left:15px;transition:color .2s}
-        .part-question:hover .reveal-btn{color:#999}
-        .part-answer{display:none;padding:0 25px 20px}
-        .part-answer.revealed{display:block}
-        .answer-text{color:#ccc;font-size:14px;line-height:1.6;padding:15px 20px;background:#1a1a1a;border-left:2px solid #C65D3B}
-        .answer-text .valid{color:#C65D3B;font-weight:600}
-        .answer-text .trap{color:#666;font-weight:600}
-        .answer-notation{color:#888;font-size:13px;margin-top:8px;font-family:'SF Mono','Fira Code','Courier New',monospace}
-        .video-explanation{padding:12px 25px;border-top:1px solid #222;display:flex;align-items:center;gap:10px;color:#666;font-size:13px}
-        .video-explanation .play-icon{color:#C65D3B;font-size:14px}
-        .video-explanation .coming{color:#555;font-style:italic}
-        .vm-section{background:#0A0A0A;padding:40px 50px 50px}
-        .vm-container{max-width:700px;margin:0 auto}
-        .vm-header{text-align:center;margin-bottom:35px}
-        .vm-logo{font-size:24px;font-weight:300;letter-spacing:3px;color:white;margin-bottom:8px}
-        .vm-logo span{color:#C65D3B;font-weight:700}
-        .vm-tagline{color:#666;font-size:13px;font-style:italic}
-        .tier-cards{display:flex;gap:12px;margin-bottom:30px}
-        .tier-card{flex:1;background:#111;border:1px solid #222;padding:22px;cursor:pointer;transition:all .3s}
-        .tier-card:hover{border-color:#C65D3B}
-        .tier-card.selected{border-color:#C65D3B;background:#1a1a1a}
-        .tier-num{color:#555;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-        .tier-card.selected .tier-num{color:#888}
-        .tier-name{color:white;font-size:15px;font-weight:600;margin-bottom:6px}
-        .tier-desc{color:#666;font-size:13px;line-height:1.5;margin-bottom:10px}
-        .tier-meta{color:#555;font-size:12px}
-        .tier-meta strong{color:#888}
-        .vm-btn{display:block;background:#C65D3B;color:white;text-align:center;padding:16px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;width:100%;transition:background .3s;font-family:inherit;margin-top:20px}
-        .vm-btn:hover{background:#A04D2E}
-        .vm-btn-secondary{display:block;background:none;border:1px solid #333;color:#888;text-align:center;padding:14px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;width:100%;transition:all .3s;font-family:inherit;margin-top:10px}
-        .vm-btn-secondary:hover{border-color:#666;color:#ccc}
-        .benchmark-note{text-align:center;color:#555;font-size:12px;margin-top:15px}
-        .quiz-area{display:none}.quiz-area.visible{display:block}
-        .quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid #222}
-        .quiz-progress-text{color:#888;font-size:13px}
-        .quiz-progress-text strong{color:white}
-        .quiz-score-label{color:#666;font-size:13px}
-        .q-block{background:#111;border:1px solid #222;margin-bottom:15px}
-        .q-block-header{padding:20px 25px;border-bottom:1px solid #222;display:flex;align-items:center;gap:15px}
-        .q-sentence{color:white;font-size:16px;font-style:italic;line-height:1.5}
-        .q-body{padding:20px 25px;border-bottom:1px solid #1a1a1a}
-        .q-body:last-child{border-bottom:none}
-        .q-text{color:#ccc;font-size:14px;margin-bottom:12px;font-weight:600}
-        .q-options{display:flex;flex-direction:column;gap:8px}
-        .q-opt{background:#1a1a1a;border:1px solid #222;padding:12px 16px;color:#ccc;font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;font-family:'SF Mono','Fira Code','Courier New',monospace}
-        .q-opt:hover{border-color:#444;background:#222}
-        .q-opt.selected{border-color:#C65D3B;background:#1f1510}
-        .q-opt .ol{color:#666;font-size:12px;font-weight:600;width:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-        .q-opt.selected .ol{color:#C65D3B}
-        .q-opt.selected .ol{color:#C65D3B}
-        .results-area{display:none}.results-area.visible{display:block}
-        .res-header{text-align:center;padding:30px 0}
-        .res-pct{font-size:48px;font-weight:300;color:white;margin-bottom:5px}
-        .res-sub{color:#666;font-size:14px;margin-bottom:15px}
-        .res-pass{color:#4a9;font-size:16px;font-weight:600}
-        .res-fail{color:#c44;font-size:16px;font-weight:600}
-        .res-items{margin-top:25px}
-        .res-item{background:#111;border:1px solid #222;padding:18px 25px;margin-bottom:10px}
-        .res-item.wrong{border-left:3px solid #c44}
-        .res-item.right{border-left:3px solid #4a9}
-        .res-sentence{color:#888;font-size:13px;font-style:italic;margin-bottom:8px}
-        .res-q{color:#ccc;font-size:14px;margin-bottom:6px}
-        .res-yours{color:#c44;font-size:13px;font-family:'SF Mono','Fira Code','Courier New',monospace}
-        .res-correct{color:#4a9;font-size:13px;font-family:'SF Mono','Fira Code','Courier New',monospace}
-        .res-right-label{color:#4a9;font-size:13px;font-family:'SF Mono','Fira Code','Courier New',monospace}
-        .res-explain{color:#888;font-size:13px;margin-top:6px;font-style:italic}
-        .back-levels{display:block;text-align:center;margin-top:15px;color:#888;font-size:13px;cursor:pointer;background:none;border:1px solid #333;font-family:inherit;padding:12px;width:100%;transition:all .3s}
-        .back-levels:hover{border-color:#666;color:#ccc}
-        .reference-section{background:#0A0A0A;padding:40px 50px 50px}
-        .reference-container{max-width:700px;margin:0 auto}
-        .reference-container h2{color:white;font-size:20px;font-weight:400;letter-spacing:1px;margin-bottom:8px;text-align:center}
-        .reference-container .ref-subtitle{color:#666;font-size:14px;text-align:center;margin-bottom:35px}
-        .ref-columns{display:flex;gap:20px;margin-bottom:35px}
-        .ref-column{flex:1;background:#111;border:1px solid #222;padding:25px}
-        .ref-column h3{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #222;color:#888}
-        .ref-word{padding:10px 0;border-bottom:1px solid #1a1a1a}
-        .ref-word:last-child{border-bottom:none}
-        .ref-word .word{color:white;font-size:15px;font-weight:500}
-        .ref-diagram{background:#111;border:1px solid #222;padding:25px;text-align:center;margin-bottom:35px}
-        .ref-diagram h3{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:white;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #222}
-        .ref-diagram .diagram-row{display:flex;align-items:center;justify-content:center;gap:20px;padding:12px 0;border-bottom:1px solid #1a1a1a}
-        .ref-diagram .diagram-row:last-child{border-bottom:none}
-        .ref-diagram .diagram-label{font-size:13px;color:#888;width:120px;text-align:right}
-        .ref-diagram .diagram-arrow{font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:14px;color:#666;min-width:180px;text-align:center}
-        .ref-diagram .diagram-result{font-size:13px;width:80px;text-align:left}
-        .ref-diagram .diagram-result.yes{color:#C65D3B;font-weight:600}
-        .ref-diagram .diagram-result.no{color:#555}
-        .ref-tip{background:#111;border:1px solid #222;border-left:2px solid #C65D3B;padding:20px 25px;color:#999;font-size:14px;line-height:1.6}
-        .ref-tip strong{color:white}
-        .next-section{max-width:700px;margin:0 auto;padding:40px 20px 50px}
-        .next-lesson{background:white;border:1px solid #E0E0E0;padding:20px 25px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#0A0A0A;transition:border-color .3s;margin-bottom:20px}
-        .next-lesson:hover{border-color:#C65D3B}
-        .next-label{font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
-        .next-title{font-size:15px;font-weight:600}
-        .next-arrow{color:#C65D3B;font-size:20px}
-        .back-link{text-align:center}
-        .back-link a{color:#888;text-decoration:none;font-size:13px}
-        .back-link a:hover{color:#C65D3B}
-        .cta-section{background:#0A0A0A;padding:40px 20px;text-align:center}
-        .cta-button{background:#C65D3B;color:white;padding:14px 30px;border:none;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;letter-spacing:1px;text-transform:uppercase}
-        .cta-button:hover{background:#A04D2E}
-        .cta-tagline{color:#888;font-size:14px;margin-top:12px}
-        .footer{background:#0A0A0A;border-top:1px solid #222;color:#555;text-align:center;padding:30px 20px;font-size:13px}
-        .footer a{color:#C65D3B;text-decoration:none}
-        .email-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:1000;align-items:center;justify-content:center}
-        .email-overlay.visible{display:flex}
-        .email-modal{background:#111;border:1px solid #222;padding:40px;max-width:420px;width:90%;text-align:center}
-        .email-modal-logo{font-size:20px;font-weight:300;letter-spacing:3px;color:white;margin-bottom:6px}
-        .email-modal-logo span{color:#C65D3B;font-weight:700}
-        .email-modal h3{color:white;font-size:18px;font-weight:500;margin-bottom:8px}
-        .email-modal p{color:#666;font-size:14px;line-height:1.6;margin-bottom:25px}
-        .email-input{width:100%;padding:14px 16px;background:#1a1a1a;border:1px solid #333;color:white;font-size:14px;font-family:inherit;outline:none;transition:border-color .3s;margin-bottom:12px}
-        .email-input:focus{border-color:#C65D3B}
-        .email-input::placeholder{color:#555}
-        .email-submit{display:block;background:#C65D3B;color:white;text-align:center;padding:14px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;width:100%;transition:background .3s;font-family:inherit}
-        .email-submit:hover{background:#A04D2E}
-        .email-submit:disabled{background:#333;color:#666;cursor:not-allowed}
-        .email-error{color:#c44;font-size:12px;margin-top:8px;display:none}
-        .email-close{position:absolute;top:15px;right:20px;color:#555;font-size:20px;cursor:pointer;background:none;border:none}
-        .email-close:hover{color:#888}
-        .email-modal-wrap{position:relative}
-        .tier-lock{color:#555;font-size:11px;margin-top:8px;display:flex;align-items:center;gap:5px}
-        @media(max-width:650px){
-            .nav{padding:20px;flex-direction:column;gap:20px}
-            .nav-links{gap:25px}
-            .breadcrumb{padding:15px 20px}
-            .lesson-header{padding:20px 20px 25px}
-            .lesson-title{font-size:24px}
-            .tab-nav{padding:0 10px;overflow-x:auto}
-            .tab-btn{padding:14px 12px;font-size:11px;letter-spacing:1px;white-space:nowrap}
-            .video-section{padding:20px 15px 40px}
-            .practice-section{padding:20px 15px 10px}
-            .exercises-container{padding:0 15px 40px}
-            .exercise-header{padding:16px 18px}
-            .part-question{padding:16px 18px}
-            .part-answer{padding:0 18px 16px}
-            .vm-section{padding:30px 15px 40px}
-            .tier-cards{flex-direction:column}
-            .reference-section{padding:30px 15px 40px}
-            .ref-columns{flex-direction:column}
-            .ref-diagram .diagram-row{flex-wrap:wrap;gap:8px}
-            .next-lesson{flex-direction:column;align-items:flex-start;gap:10px}
-            .email-modal{padding:30px 20px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
+        
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-brand .v-accent {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+        
+        .hero {
+            background: #0A0A0A;
+            padding: 40px 20px 50px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+
+        /* Main tabs: Lessons | Reference */
+        .main-tab-nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .main-tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 18px 35px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .main-tab-btn:hover { color: white; }
+        .main-tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+
+        .main-tab-content { display: none; }
+        .main-tab-content.active { display: block; }
+
+        /* Step nav */
+        .step-nav-bar {
+            background: #111;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .step-nav-btn-main {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 16px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .step-nav-btn-main:hover { color: #CCC; }
+        .step-nav-btn-main.active { color: white; border-bottom-color: #C65D3B; }
+
+        .step-panel { display: none; }
+        .step-panel.active { display: block; }
+
+        /* Sub tabs */
+        .sub-tab-nav {
+            background: #F5F5F5;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .sub-tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 14px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .sub-tab-btn:hover { color: #0A0A0A; }
+        .sub-tab-btn.active { color: #0A0A0A; border-bottom-color: #C65D3B; }
+
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; }
+        
+        .video-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        
+        .video-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .group-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .group-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        
+        .group-subtitle {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .try-first-note {
+            background: #FFFAF8;
+            border: 1px solid #E8D5CC;
+            padding: 12px 18px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .try-first-note strong {
+            color: #C65D3B;
+        }
+        
+        .question-card {
+            background: white;
+            border: 1px solid #E0E0E0;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .question-prompt {
+            padding: 20px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .question-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 8px;
+        }
+        
+        .question-sentence {
+            font-size: 16px;
+            line-height: 1.6;
+            font-style: italic;
+            color: #333;
+        }
+        
+        .question-ask {
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+            font-style: normal;
+        }
+        
+        .answer-options { padding: 15px 20px; }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 6px;
+            border: 1px solid #E8E8E8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .answer-option:last-child { margin-bottom: 0; }
+        .answer-option:hover:not(.correct):not(.incorrect) { border-color: #C65D3B; background: #FFFAF8; }
+        .answer-option.correct { border-color: #3A8A5C; background: #F0FAF4; }
+        .answer-option.incorrect { border-color: #C44; background: #FFF5F5; }
+        
+        .answer-letter {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #CCC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .answer-option.correct .answer-letter { background: #3A8A5C; color: white; border-color: #3A8A5C; }
+        .answer-option.incorrect .answer-letter { background: #C44; color: white; border-color: #C44; }
+        
+        .answer-text { font-size: 14px; color: #333; }
+        
+        .explanation {
+            display: none;
+            padding: 20px;
+            background: #F8F8F8;
+            border-top: 1px solid #E8E8E8;
+        }
+        
+        .explanation.show { display: block; }
+        
+        .explanation-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 6px;
+        }
+        
+        .explanation-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .explanation-text strong { color: #0A0A0A; }
+        
+        .video-placeholder {
+            background: #0A0A0A;
+            padding: 50px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #222;
+        }
+        
+        .video-placeholder p { color: #888; font-size: 14px; letter-spacing: 0.5px; }
+        .video-placeholder .play-icon { font-size: 36px; margin-bottom: 10px; opacity: 0.5; }
+        
+        .reference-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        
+        .reference-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .reference-intro {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .ref-group { margin-bottom: 30px; }
+        
+        .ref-group-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        
+        .ref-card {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 18px 20px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .ref-card .ref-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 6px;
+        }
+
+        .ref-card .ref-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .ref-card .ref-arrow {
+            font-size: 15px;
+            color: #C65D3B;
+            font-weight: 600;
+        }
+
+        .ref-valid {
+            color: #3A8A5C;
+            font-weight: 600;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover { color: #C65D3B; }
+        
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .main-tab-btn { padding: 15px 20px; font-size: 11px; }
+            .step-nav-btn-main { padding: 14px 16px; font-size: 10px; }
+            .sub-tab-btn { padding: 12px 14px; font-size: 10px; }
         }
     </style>
 </head>
 <body>
-<div class="email-overlay" id="email-overlay"><div class="email-modal-wrap"><button class="email-close" onclick="closeEmailModal()">&times;</button><div class="email-modal"><div class="email-modal-logo"><span>Veda</span>Mark</div><h3>Unlock full practice</h3><p>VedaMark I is free. Enter your email to unlock Precision, Command, and future AI-powered drills tailored to your weaknesses.</p><input type="email" class="email-input" id="lead-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitEmail()"><button class="email-submit" id="email-btn" onclick="submitEmail()">Unlock VedaMark II & III</button><div class="email-error" id="email-error"></div></div></div></div>
-<nav class="nav"><a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a><div class="nav-links"><a href="../../about.html">About</a><a href="../../pricing.html">Pricing</a><a href="../../learn.html" class="active">Learn</a><a href="../../index.html#testimonials">Testimonials</a></div></nav>
-<div class="breadcrumb"><a href="../../learn.html">Learn</a><span>›</span><a href="../../learn.html">Foundations</a><span>›</span><span class="current">Conditional Logic</span></div>
-<div class="lesson-header"><div class="lesson-section-label">Foundations</div><h1 class="lesson-title">Conditional Logic: The Foundation</h1><p class="lesson-subtitle">Valid inferences, the contrapositive, and the two traps to avoid.</p></div>
-<div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('video')">Video</button>
-    <button class="tab-btn" onclick="switchTab('practice')">Practice</button>
-    <button class="tab-btn" onclick="switchTab('vedamark')"><span class="tab-badge">AI</span> VedaMark</button>
-    <button class="tab-btn" onclick="switchTab('reference')">Reference</button>
-</div>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
 
-<!-- VIDEO -->
-<div id="tab-video" class="tab-content active">
-<section class="video-section"><div class="video-container"><div class="video-wrapper"><iframe src="https://iframe.mediadelivery.net/embed/600986/5f5d7647-74db-4a10-a9ee-406e50664ffa?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div></div></section>
-<div class="video-summary"><h2 class="content-heading">What you'll learn</h2><p class="content-text">Conditional logic is the backbone of LSAT Logical Reasoning. This lesson covers the if-then relationship, how to diagram it, and the exact inferences you can and cannot draw.</p>
-<div class="key-takeaways"><h3>Key Takeaways</h3><div class="takeaway-item"><span class="check">✓</span><span>A → B — the original conditional is always valid.</span></div><div class="takeaway-item"><span class="check">✓</span><span>/B → /A — the contrapositive is always valid.</span></div><div class="takeaway-item"><span class="invalid">✗</span><span>/A → ??? — negating the sufficient gives you nothing.</span></div><div class="takeaway-item"><span class="invalid">✗</span><span>B → ??? — affirming the necessary gives you nothing.</span></div></div>
-<button class="go-practice" onclick="switchTab('practice')">Practice What You Learned →</button></div></div>
+    <section class="hero">
+        <h1 class="page-title">CONDITIONAL LOGIC BASICS</h1>
+        <p class="page-subtitle">The if-then relationship — the backbone of LSAT reasoning</p>
+    </section>
 
-<!-- PRACTICE -->
-<div id="tab-practice" class="tab-content">
-<section class="practice-section"><div class="practice-intro"><h2>Apply what you learned</h2><p>Diagram each statement, then work through the four scenarios. Click an exercise to expand it.</p></div></section>
-<div class="exercises-container">
-<div class="exercise"><div class="exercise-header" onclick="toggleExercise(this)"><div class="exercise-header-left"><div class="exercise-number">1</div><div><div class="exercise-statement">"All surgeons must complete a residency."</div><div class="exercise-indicator">Indicator: All … must</div></div></div><span class="exercise-toggle">▾</span></div><div class="exercise-body"><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Diagram:</strong> Identify sufficient & necessary, draw the arrow.</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text">"All" introduces the sufficient. So <span class="valid">surgeon</span> is sufficient. "Must" introduces the necessary. So <span class="valid">complete a residency</span> is necessary.<div class="answer-notation">Surgeon → Complete Residency</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part A:</strong> Someone <strong>is a surgeon</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They completed a residency.</span><br>Surgeon is sufficient — when triggered, the necessary follows.<div class="answer-notation">Surgeon → Complete Residency ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part B:</strong> Someone <strong>did NOT complete a residency</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They are NOT a surgeon.</span><br>Residency is required. Failing it means they can't be a surgeon.<div class="answer-notation">/Complete Residency → /Surgeon ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part C:</strong> Someone <strong>completed a residency</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Lots of doctors complete residencies without becoming surgeons.<div class="answer-notation">Complete Residency → ??? ✗</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part D:</strong> Someone <strong>is NOT a surgeon</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>They might have completed a residency or might not.<div class="answer-notation">/Surgeon → ??? ✗</div></div></div></div><div class="video-explanation"><span class="play-icon">▶</span><span class="coming">Video walkthrough coming soon</span></div></div></div>
-<div class="exercise"><div class="exercise-header" onclick="toggleExercise(this)"><div class="exercise-header-left"><div class="exercise-number">2</div><div><div class="exercise-statement">"You can enter the building only if you have a badge."</div><div class="exercise-indicator">Indicator: Only if</div></div></div><span class="exercise-toggle">▾</span></div><div class="exercise-body"><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Diagram:</strong> Identify sufficient & necessary, draw the arrow.</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text">"Only if" introduces the <em>necessary</em>. So <span class="valid">having a badge</span> is necessary. The part before it — <span class="valid">entering the building</span> — is sufficient.<div class="answer-notation">Enter Building → Have Badge</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part A:</strong> Someone <strong>entered the building</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They have a badge.</span><br>Entering is sufficient — the necessary must follow.<div class="answer-notation">Enter Building → Have Badge ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part B:</strong> Someone <strong>does NOT have a badge</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They did not enter the building.</span><br>A badge is required. Without it, entry is impossible.<div class="answer-notation">/Have Badge → /Enter Building ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part C:</strong> Someone <strong>has a badge</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Having a badge doesn't mean they entered.<div class="answer-notation">Have Badge → ??? ✗</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part D:</strong> Someone <strong>did NOT enter the building</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>They might have a badge and chose not to go in.<div class="answer-notation">/Enter Building → ??? ✗</div></div></div></div><div class="video-explanation"><span class="play-icon">▶</span><span class="coming">Video walkthrough coming soon</span></div></div></div>
-<div class="exercise"><div class="exercise-header" onclick="toggleExercise(this)"><div class="exercise-header-left"><div class="exercise-number">3</div><div><div class="exercise-statement">"Whenever it rains, the sidewalks get wet."</div><div class="exercise-indicator">Indicator: Whenever</div></div></div><span class="exercise-toggle">▾</span></div><div class="exercise-body"><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Diagram:</strong> Identify sufficient & necessary, draw the arrow.</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text">"Whenever" means "every time that" — it introduces the sufficient. So <span class="valid">raining</span> is sufficient. <span class="valid">Sidewalks get wet</span> is necessary.<div class="answer-notation">Rain → Wet Sidewalks</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part A:</strong> It <strong>is raining</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ The sidewalks are wet.</span><br>Rain is sufficient — wet sidewalks must follow.<div class="answer-notation">Rain → Wet Sidewalks ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part B:</strong> The sidewalks are <strong>NOT wet</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ It's NOT raining.</span><br>If they're dry, it can't be raining.<div class="answer-notation">/Wet Sidewalks → /Rain ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part C:</strong> The sidewalks <strong>are wet</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Maybe someone was hosing them down.<div class="answer-notation">Wet Sidewalks → ??? ✗</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part D:</strong> It is <strong>NOT raining</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>The sidewalks could be wet from a sprinkler or earlier rain.<div class="answer-notation">/Rain → ??? ✗</div></div></div></div><div class="video-explanation"><span class="play-icon">▶</span><span class="coming">Video walkthrough coming soon</span></div></div></div>
-<div class="exercise"><div class="exercise-header" onclick="toggleExercise(this)"><div class="exercise-header-left"><div class="exercise-number">4</div><div><div class="exercise-statement">"Graduation requires passing the ethics exam."</div><div class="exercise-indicator">Indicator: Requires</div></div></div><span class="exercise-toggle">▾</span></div><div class="exercise-body"><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Diagram:</strong> Identify sufficient & necessary, draw the arrow.</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text">"Requires" introduces the necessary. So <span class="valid">passing the ethics exam</span> is necessary. The thing doing the requiring — <span class="valid">graduation</span> — is sufficient.<div class="answer-notation">Graduate → Pass Ethics Exam</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part A:</strong> Someone <strong>graduated</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They passed the ethics exam.</span><br>Graduation is sufficient — the exam must have been passed.<div class="answer-notation">Graduate → Pass Ethics Exam ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part B:</strong> Someone <strong>did NOT pass the ethics exam</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They did NOT graduate.</span><br>The exam is required. Failing it means graduation is impossible.<div class="answer-notation">/Pass Ethics Exam → /Graduate ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part C:</strong> Someone <strong>passed the ethics exam</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Passing the exam doesn't mean they graduated.<div class="answer-notation">Pass Ethics Exam → ??? ✗</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part D:</strong> Someone <strong>did NOT graduate</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Maybe they passed the exam but failed something else.<div class="answer-notation">/Graduate → ??? ✗</div></div></div></div><div class="video-explanation"><span class="play-icon">▶</span><span class="coming">Video walkthrough coming soon</span></div></div></div>
-<div class="exercise"><div class="exercise-header" onclick="toggleExercise(this)"><div class="exercise-header-left"><div class="exercise-number">5</div><div><div class="exercise-statement">"People who read the newspaper are curious about the world."</div><div class="exercise-indicator">Indicator: People who</div></div></div><span class="exercise-toggle">▾</span></div><div class="exercise-body"><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Diagram:</strong> Identify sufficient & necessary, draw the arrow.</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text">"People who" introduces the sufficient. So <span class="valid">reads the newspaper</span> is sufficient. <span class="valid">Curious about the world</span> is necessary.<div class="answer-notation">Read Newspaper → Curious About World</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part A:</strong> Someone <strong>reads the newspaper</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They are curious about the world.</span><br>Reading the newspaper is sufficient — curiosity must follow.<div class="answer-notation">Read Newspaper → Curious About World ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part B:</strong> Someone is <strong>NOT curious about the world</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="valid">✓ They don't read the newspaper.</span><br>Curiosity is required. Without it, they can't be a newspaper reader.<div class="answer-notation">/Curious About World → /Read Newspaper ✓</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part C:</strong> Someone <strong>is curious about the world</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>Maybe they watch documentaries instead.<div class="answer-notation">Curious About World → ??? ✗</div></div></div></div><div class="exercise-part"><div class="part-question" onclick="toggleAnswer(this)"><span class="part-label"><strong>Part D:</strong> Someone <strong>does NOT read the newspaper</strong>. Conclude?</span><span class="reveal-btn">Reveal</span></div><div class="part-answer"><div class="answer-text"><span class="trap">✗ Nothing.</span><br>They could still be curious through other means.<div class="answer-notation">/Read Newspaper → ??? ✗</div></div></div></div><div class="video-explanation"><span class="play-icon">▶</span><span class="coming">Video walkthrough coming soon</span></div></div></div>
-</div>
-<div style="background:#FAFAFA"><div class="next-section"><a href="#" class="next-lesson"><div><div class="next-label">Next lesson</div><div class="next-title">Translating Words on the Test</div></div><span class="next-arrow">→</span></a><div class="back-link"><a href="../../learn.html">← Back to all lessons</a></div></div></div>
-</div>
-
-<!-- VEDAMARK -->
-<div id="tab-vedamark" class="tab-content">
-<section class="vm-section"><div class="vm-container">
-<div class="vm-header"><div class="vm-logo"><span>Veda</span>Mark</div><div class="vm-tagline">AI-powered practice, guided by your instructor.</div></div>
-<div id="vm-levels">
-    <div class="tier-cards">
-        <div class="tier-card selected" onclick="selectTier(0)"><div class="tier-num">VedaMark I</div><div class="tier-name">Recognition</div><div class="tier-desc">Spot the indicator and pick the correct diagram.</div><div class="tier-meta"><strong>5 sentences</strong> · ~2 min</div></div>
-        <div class="tier-card" onclick="selectTier(1)"><div class="tier-num">VedaMark II</div><div class="tier-name">Precision</div><div class="tier-desc">Don't get fooled by tricky sentence order.</div><div class="tier-meta"><strong>5 sentences</strong> · ~3 min</div><div class="tier-lock" id="lock-1">🔒 Email required</div></div>
-        <div class="tier-card" onclick="selectTier(2)"><div class="tier-num">VedaMark III</div><div class="tier-name">Command</div><div class="tier-desc">Apply the logic: inferences, contrapositives, and traps.</div><div class="tier-meta"><strong>3 sentences</strong> · 15 questions · ~5 min</div><div class="tier-lock" id="lock-2">🔒 Email required</div></div>
+    <!-- Main tabs -->
+    <div class="main-tab-nav">
+        <button class="main-tab-btn active" data-maintab="lessons">Lessons</button>
+        <button class="main-tab-btn" data-maintab="reference">Reference</button>
     </div>
-    <button class="vm-btn" onclick="startQuiz()">Start VedaMark</button>
-    <div class="benchmark-note">Score 80% to hit the Mark.</div>
-</div>
-<div id="vm-quiz" class="quiz-area"></div>
-<div id="vm-results" class="results-area"></div>
-</div></section>
-</div>
 
-<!-- REFERENCE -->
-<div id="tab-reference" class="tab-content">
-<section class="reference-section"><div class="reference-container">
-<h2>Indicator Words</h2><p class="ref-subtitle">Use these to identify which part of a sentence is sufficient and which is necessary.</p>
-<div class="ref-columns">
-<div class="ref-column sufficient"><h3>Sufficient Condition →</h3><div class="ref-word"><span class="word">If</span></div><div class="ref-word"><span class="word">All</span></div><div class="ref-word"><span class="word">Every</span></div><div class="ref-word"><span class="word">Whenever</span></div><div class="ref-word"><span class="word">When</span></div><div class="ref-word"><span class="word">People who</span></div><div class="ref-word"><span class="word">Each</span></div><div class="ref-word"><span class="word">Any</span></div><div class="ref-word"><span class="word">The only</span></div></div>
-<div class="ref-column necessary"><h3>→ Necessary Condition</h3><div class="ref-word"><span class="word">Then</span></div><div class="ref-word"><span class="word">Must</span></div><div class="ref-word"><span class="word">Only if</span></div><div class="ref-word"><span class="word">Only when</span></div><div class="ref-word"><span class="word">Requires</span></div><div class="ref-word"><span class="word">Necessary</span></div><div class="ref-word"><span class="word">Depends on</span></div></div>
-</div>
-<div class="ref-diagram"><h3>The Four Scenarios</h3><div class="diagram-row"><span class="diagram-label">If sufficient</span><span class="diagram-arrow">A → B</span><span class="diagram-result yes">✓ Valid</span></div><div class="diagram-row"><span class="diagram-label">If not necessary</span><span class="diagram-arrow">/B → /A</span><span class="diagram-result yes">✓ Valid</span></div><div class="diagram-row"><span class="diagram-label">If necessary</span><span class="diagram-arrow">B → ???</span><span class="diagram-result no">✗ Trap</span></div><div class="diagram-row"><span class="diagram-label">If not sufficient</span><span class="diagram-arrow">/A → ???</span><span class="diagram-result no">✗ Trap</span></div></div>
-<div class="ref-tip"><strong>Remember:</strong> The only two valid inferences are the original conditional and the contrapositive. Everything else is a trap. When in doubt, ask yourself: "Am I triggering the sufficient, or negating the necessary?" If yes, you can conclude. If not, you can't.</div>
-</div></section>
-<div style="background:#FAFAFA"><div class="next-section"><a href="#" class="next-lesson"><div><div class="next-label">Next lesson</div><div class="next-title">Translating Words on the Test</div></div><span class="next-arrow">→</span></a><div class="back-link"><a href="../../learn.html">← Back to all lessons</a></div></div></div>
-</div>
+    <!-- ======================== -->
+    <!-- LESSONS                  -->
+    <!-- ======================== -->
+    <div id="maintab-lessons" class="main-tab-content active">
 
-<section class="cta-section"><a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a><p class="cta-tagline">Want help applying these concepts? Let's talk.</p></section>
-<footer class="footer"><p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p></footer>
-<script>
-// BANK: #1-61 standard, #62-81 tricky (necessary-first)
-var STD=[
-{id:1,ind:"If",s:"Passes bar exam",n:"Can practice law",sentence:"If a student passes the bar exam, they can practice law."},
-{id:2,ind:"If",s:"Alarm sounds",n:"Employees evacuate",sentence:"If the alarm sounds, all employees must evacuate."},
-{id:3,ind:"If",s:"Recipe calls for butter",n:"Contains dairy",sentence:"If a recipe calls for butter, it contains dairy."},
-{id:4,ind:"If",s:"River floods",n:"Bridge closes",sentence:"If the river floods, the bridge will close."},
-{id:5,ind:"If",s:"Pilot is certified",n:"Completed flight school",sentence:"If a pilot is certified, they completed flight school."},
-{id:6,ind:"If",s:"Temperature below freezing",n:"Pipes may burst",sentence:"If the temperature drops below freezing, the pipes may burst."},
-{id:7,ind:"If",s:"Company goes public",n:"Files with SEC",sentence:"If a company goes public, it must file with the SEC."},
-{id:8,ind:"All",s:"Architect",n:"Pass licensing exam",sentence:"All architects must pass the licensing exam."},
-{id:9,ind:"All",s:"Olympic athlete",n:"Undergoes drug testing",sentence:"All Olympic athletes undergo drug testing."},
-{id:10,ind:"All",s:"Published research",n:"Peer-reviewed",sentence:"All published research must be peer-reviewed."},
-{id:11,ind:"All",s:"Commercial pilot",n:"Holds medical certificate",sentence:"All commercial pilots hold a medical certificate."},
-{id:12,ind:"All",s:"Citizen over 18",n:"Eligible to vote",sentence:"All citizens over 18 are eligible to vote."},
-{id:13,ind:"All",s:"Imported goods",n:"Subject to customs inspection",sentence:"All imported goods are subject to customs inspection."},
-{id:14,ind:"All",s:"Nurse",n:"Complete clinical rotations",sentence:"All nurses must complete clinical rotations."},
-{id:15,ind:"Every",s:"Teacher in the district",n:"Has a master's degree",sentence:"Every teacher in the district has a master's degree."},
-{id:16,ind:"Every",s:"Applicant",n:"Submit background check",sentence:"Every applicant must submit a background check."},
-{id:17,ind:"Every",s:"Team member",n:"Speaks two languages",sentence:"Every member of the team speaks two languages."},
-{id:18,ind:"Every",s:"Licensed electrician",n:"Passed safety exam",sentence:"Every licensed electrician has passed the safety exam."},
-{id:19,ind:"Every",s:"Homeowner on this block",n:"Pays property tax",sentence:"Every homeowner on this block pays property tax."},
-{id:20,ind:"Every",s:"Contestant",n:"Signs a waiver",sentence:"Every contestant must sign a waiver."},
-{id:21,ind:"Whenever",s:"CEO travels",n:"VP runs the meeting",sentence:"Whenever the CEO travels, the VP runs the meeting."},
-{id:22,ind:"Whenever",s:"Student is absent",n:"Teacher sends notice",sentence:"Whenever a student is absent, the teacher sends a notice."},
-{id:23,ind:"Whenever",s:"Market crashes",n:"Investors panic",sentence:"Whenever the market crashes, investors panic."},
-{id:24,ind:"Whenever",s:"Fire is reported",n:"Department responds",sentence:"Whenever a fire is reported, the department responds within minutes."},
-{id:25,ind:"Whenever",s:"Printer jams",n:"Red light turns on",sentence:"Whenever the printer jams, the red light turns on."},
-{id:26,ind:"Whenever",s:"Patient is admitted",n:"Chart is created",sentence:"Whenever a patient is admitted, a chart is created."},
-{id:27,ind:"When",s:"Board votes",n:"Quorum is present",sentence:"When the board votes, a quorum must be present."},
-{id:28,ind:"When",s:"Dog is frightened",n:"It barks",sentence:"When a dog is frightened, it barks."},
-{id:29,ind:"When",s:"School is canceled",n:"Parents receive alert",sentence:"When school is canceled, parents receive an alert."},
-{id:30,ind:"When",s:"Lake freezes",n:"Boat launch closes",sentence:"When the lake freezes, the park closes the boat launch."},
-{id:31,ind:"When",s:"Contract expires",n:"Parties renegotiate",sentence:"When a contract expires, both parties must renegotiate."},
-{id:32,ind:"People who",s:"Volunteers regularly",n:"Develops leadership skills",sentence:"People who volunteer regularly develop strong leadership skills."},
-{id:33,ind:"People who",s:"Lives near the coast",n:"Experiences milder winters",sentence:"People who live near the coast experience milder winters."},
-{id:34,ind:"People who",s:"Studies abroad",n:"Becomes more independent",sentence:"People who study abroad become more independent."},
-{id:35,ind:"People who",s:"Eats breakfast",n:"Performs better on exams",sentence:"People who eat breakfast perform better on exams."},
-{id:36,ind:"People who",s:"Meditates daily",n:"Reports lower stress",sentence:"People who meditate daily report lower stress levels."},
-{id:37,ind:"Each",s:"Juror",n:"Must be impartial",sentence:"Each juror must be impartial."},
-{id:38,ind:"Each",s:"Driver on highway",n:"Has insurance",sentence:"Each driver on the highway has insurance."},
-{id:39,ind:"Each",s:"Graduate",n:"Received diploma",sentence:"Each graduate received a diploma."},
-{id:40,ind:"Each",s:"Employee",n:"Attends safety briefing",sentence:"Each employee must attend the safety briefing."},
-{id:41,ind:"Any",s:"Student caught cheating",n:"Will be expelled",sentence:"Any student caught cheating will be expelled."},
-{id:42,ind:"Any",s:"Vehicle on the lot",n:"Has been inspected",sentence:"Any vehicle on the lot has been inspected."},
-{id:43,ind:"Any",s:"Resident",n:"Can use the pool",sentence:"Any resident can use the pool."},
-{id:44,ind:"Any",s:"Package over 50 lbs",n:"Requires signature",sentence:"Any package over 50 pounds requires a signature."},
-{id:45,ind:"Only if",s:"Boards the plane",n:"Has a ticket",sentence:"You can board the plane only if you have a ticket."},
-{id:46,ind:"Only if",s:"Experiment succeeds",n:"Temperature is controlled",sentence:"The experiment succeeds only if the temperature is controlled."},
-{id:47,ind:"Only if",s:"Student graduates",n:"Completes thesis",sentence:"A student graduates only if they complete the thesis."},
-{id:48,ind:"Requires",s:"Teaching at university",n:"Has a PhD",sentence:"Teaching at the university requires a PhD."},
-{id:49,ind:"Requires",s:"Runs the marathon",n:"Months of training",sentence:"Running the marathon requires months of training."},
-{id:50,ind:"Requires",s:"Becomes a CPA",n:"Passes the exam",sentence:"Becoming a CPA requires passing the exam."},
-{id:51,ind:"Only when",s:"Performs at Carnegie Hall",n:"Practice for years",sentence:"A musician performs at Carnegie Hall only when they practice for years."},
-{id:52,ind:"Only when",s:"Funding is approved",n:"Council reviews proposal",sentence:"Funding is approved only when the council reviews the proposal."},
-{id:53,ind:"Only when",s:"Patient is discharged",n:"Doctor signs off",sentence:"A patient is discharged only when the doctor signs off."},
-{id:54,ind:"Only when",s:"Vault opens",n:"Two keys turned",sentence:"The vault opens only when two keys are turned simultaneously."},
-{id:55,ind:"Only when",s:"Software updates",n:"Connected to WiFi",sentence:"The software updates only when connected to WiFi."},
-{id:56,ind:"Only when",s:"Case goes to trial",n:"Complete discovery",sentence:"A case goes to trial only when both sides complete discovery."},
-{id:57,ind:"The only",s:"Home that's beautiful",n:"Emily's home",sentence:"The only home that's beautiful in this town is Emily's home."},
-{id:58,ind:"The only",s:"Restaurant serves sushi downtown",n:"Yama",sentence:"The only restaurant that serves sushi downtown is Yama."},
-{id:59,ind:"The only",s:"Employee speaks French",n:"Daniel",sentence:"The only employee who speaks French is Daniel."},
-{id:60,ind:"The only",s:"Store open past midnight",n:"Pharmacy",sentence:"The only store open past midnight is the pharmacy."},
-{id:61,ind:"The only",s:"Professor teaches logic",n:"Dr. Rivas",sentence:"The only professor who teaches logic is Dr. Rivas."}
-];
-var TRICKY=[
-{id:62,ind:"Is required for",s:"Commercial pilot",n:"Medical certificate",sentence:"A medical certificate is required for commercial pilots."},
-{id:63,ind:"Is necessary for",s:"Licensed electrician",n:"Passing the safety exam",sentence:"Passing the safety exam is necessary for becoming a licensed electrician."},
-{id:64,ind:"Is required for",s:"Applicant",n:"Background check",sentence:"A background check is required for every applicant."},
-{id:65,ind:"Must be",s:"Contestant",n:"Waiver signed",sentence:"A waiver must be signed by every contestant."},
-{id:66,ind:"Is required for",s:"Olympic athlete",n:"Drug testing",sentence:"Drug testing is required for all Olympic athletes."},
-{id:67,ind:"Is necessary for",s:"Teaching in this district",n:"Master's degree",sentence:"A master's degree is necessary for teaching in this district."},
-{id:68,ind:"Is required for",s:"Nurse",n:"Clinical rotations",sentence:"Clinical rotations are required for all nurses."},
-{id:69,ind:"Is required for",s:"Driver on highway",n:"Insurance",sentence:"Insurance is required for every driver on the highway."},
-{id:70,ind:"Is required of",s:"Juror",n:"Impartiality",sentence:"Impartiality is required of each juror."},
-{id:71,ind:"Is necessary for",s:"Publishing research",n:"Peer review",sentence:"A peer review is necessary for publishing research."},
-{id:72,ind:"Only if",s:"Skies are blue",n:"Roses are red",sentence:"Only if roses are red are skies blue."},
-{id:73,ind:"Only when",s:"Get good grades",n:"Study",sentence:"Only when we study do we get good grades."},
-{id:74,ind:"Only if",s:"Do well on the LSAT",n:"Review conditional logic",sentence:"Only if we review conditional logic are we sure to do well on the LSAT."},
-{id:75,ind:"Only when",s:"Player joins the team",n:"Coach approves",sentence:"Only when the coach approves can a player join the team."},
-{id:76,ind:"Only if",s:"Construction begins",n:"Contract is signed",sentence:"Only if the contract is signed can construction begin."},
-{id:77,ind:"Only when",s:"Jury deliberates",n:"Evidence is reviewed",sentence:"Only when the evidence is reviewed does the jury deliberate."},
-{id:78,ind:"Is needed for",s:"Applying to graduate school",n:"Diploma",sentence:"A diploma is needed for applying to graduate school."},
-{id:79,ind:"Is necessary for",s:"Getting a driver's license",n:"Passing the written test",sentence:"Passing the written test is necessary for getting a driver's license."},
-{id:80,ind:"Only if",s:"Hiring begins",n:"Budget is approved",sentence:"Only if the budget is approved can hiring begin."},
-{id:81,ind:"Is required for",s:"Practicing medicine independently",n:"Board certification",sentence:"Board certification is required for practicing medicine independently."}
-];
-var ALL=STD.concat(TRICKY);
-var SUPABASE_URL='https://fqshijwiushtrncinjif.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
-var emailUnlocked=!!localStorage.getItem('vm_email');
-function showEmailModal(){document.getElementById('email-overlay').classList.add('visible');document.getElementById('lead-email').focus()}
-function closeEmailModal(){document.getElementById('email-overlay').classList.remove('visible');document.getElementById('email-error').style.display='none'}
-function submitEmail(){var email=document.getElementById('lead-email').value.trim();var err=document.getElementById('email-error');var btn=document.getElementById('email-btn');if(!email||!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)){err.textContent='Please enter a valid email.';err.style.display='block';return}btn.disabled=true;btn.textContent='Saving...';err.style.display='none';fetch(SUPABASE_URL+'/rest/v1/leads',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify({email:email,source:'vedamark'})}).then(function(r){if(r.ok){emailUnlocked=true;localStorage.setItem('vm_email',email);closeEmailModal();document.getElementById('lock-1').style.display='none';document.getElementById('lock-2').style.display='none';startQuiz()}else{r.text().then(function(t){err.textContent='Something went wrong. Try again.';err.style.display='block';btn.disabled=false;btn.textContent='Unlock VedaMark II & III';console.error('Supabase error:',t)})}}).catch(function(e){err.textContent='Connection error. Try again.';err.style.display='block';btn.disabled=false;btn.textContent='Unlock VedaMark II & III';console.error('Fetch error:',e)})}
+        <div class="step-nav-bar">
+            <button class="step-nav-btn-main active" data-step="1">Step 1: Sufficient & Necessary</button>
+            <button class="step-nav-btn-main" data-step="2">Step 2: Contrapositive</button>
+        </div>
 
-var currentTier=0,quizQs=[],userAns={};
-var SUFFINDS=['If','All','Every','Whenever','When','People who','Each','Any','The only'];
-var NECINDS=['Only if','Only when','Requires','Is required for','Is necessary for','Is needed for','Must be','Is required of'];
+        <!-- STEP 1 -->
+        <div class="step-panel active" data-step="1">
+            <div class="sub-tab-nav" data-group="step1">
+                <button class="sub-tab-btn active" data-subtab="s1-lesson">Lesson</button>
+                <button class="sub-tab-btn" data-subtab="s1-sufficient">Practice: Sufficient</button>
+                <button class="sub-tab-btn" data-subtab="s1-necessary">Practice: Necessary</button>
+            </div>
 
-function switchTab(t){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active')});var tabs=['video','practice','vedamark','reference'];document.querySelectorAll('.tab-btn')[tabs.indexOf(t)].classList.add('active');document.getElementById('tab-'+t).classList.add('active');window.scrollTo({top:document.querySelector('.tab-nav').offsetTop-10,behavior:'smooth'})}
-function toggleExercise(h){h.parentElement.classList.toggle('open')}
-function toggleAnswer(el){var a=el.nextElementSibling,b=el.querySelector('.reveal-btn');if(a.classList.contains('revealed')){a.classList.remove('revealed');b.textContent='Reveal'}else{a.classList.add('revealed');b.textContent='Hide'}}
-function selectTier(i){currentTier=i;document.querySelectorAll('.tier-card').forEach(function(c,j){c.classList.toggle('selected',j===i)})}
-function shuffle(a){var r=a.slice();for(var i=r.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=r[i];r[i]=r[j];r[j]=t}return r}
+            <!-- Lesson -->
+            <div class="sub-tab-content active" data-subtab="s1-lesson">
+                <section class="video-section">
+                    <div class="video-container">
+                        <div class="group-header">
+                            <h2 class="group-title">What Are Sufficient & Necessary Conditions?</h2>
+                            <p class="group-subtitle">Watch this first. Then move to the practice tabs.</p>
+                        </div>
+                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: Sufficient & Necessary Conditions — coming soon</p></div>
+                    </div>
+                </section>
+            </div>
 
-function pickFromGroups(pool,count){
-    var groups={};pool.forEach(function(q){if(!groups[q.ind])groups[q.ind]=[];groups[q.ind].push(q)});
-    var keys=shuffle(Object.keys(groups));var picked=[];
-    for(var i=0;i<keys.length&&picked.length<count;i++){picked.push(shuffle(groups[keys[i]])[0])}
-    return picked;
-}
+            <!-- Practice: Sufficient -->
+            <div class="sub-tab-content" data-subtab="s1-sufficient">
+                <section class="video-section">
+                    <div class="video-container">
+                        <div class="group-header">
+                            <h2 class="group-title">Guided Practice: Sufficient Indicators</h2>
+                        </div>
 
-function getExplanation(q){
-    if(SUFFINDS.indexOf(q.ind)!==-1) return '"'+q.ind+'" is a sufficient indicator — the words after it are the sufficient condition. So "'+q.s+'" is sufficient, and "'+q.n+'" is necessary. The arrow points from sufficient to necessary: '+q.s+' → '+q.n;
-    return '"'+q.ind+'" is a necessary indicator — the words after it are the necessary condition. So "'+q.n+'" is necessary, and "'+q.s+'" is sufficient. The arrow points from sufficient to necessary: '+q.s+' → '+q.n;
-}
+                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Guided Practice Video: Sufficient Indicators — coming soon</p></div>
 
-function buildDiagramQ(sentences){
-    var qs=[];
-    sentences.forEach(function(s,si){
-        var correct=s.s+' → '+s.n;var wrong=s.n+' → '+s.s;
-        var opts=Math.random()>0.5?[correct,wrong]:[wrong,correct];
-        qs.push({si:si,sentence:s.sentence,ind:s.ind,correct:correct,options:opts,qText:'What is the correct diagram?',explanation:getExplanation(s)});
-    });
-    return qs;
-}
+                        <div class="try-first-note"><strong>Tip:</strong> Try the questions below first, then come back and watch the video.</div>
 
-function buildCommandQ(sentences){
-    var qs=[];
-    sentences.forEach(function(s,si){
-        var c1=s.s+' → '+s.n,w1=s.n+' → '+s.s;
-        qs.push({si:si,sentence:s.sentence,ind:s.ind,qText:'What is the correct diagram?',options:Math.random()>0.5?[c1,w1]:[w1,c1],correct:c1,explanation:getExplanation(s)});
-        var inferenceQs=shuffle([
-            {si:si,sentence:s.sentence,ind:s.ind,qText:'If the sufficient condition is true ('+s.s+'), what can you conclude?',options:shuffle([s.n,'Nothing — this is a trap']),correct:s.n,explanation:'When the sufficient is triggered, the necessary must follow: '+s.s+' → '+s.n},
-            {si:si,sentence:s.sentence,ind:s.ind,qText:'If the necessary condition is FALSE (NOT: '+s.n+'), what can you conclude?',options:shuffle(['NOT: '+s.s,'Nothing — this is a trap']),correct:'NOT: '+s.s,explanation:'Contrapositive: negating the necessary negates the sufficient. /'+s.n+' → /'+s.s},
-            {si:si,sentence:s.sentence,ind:s.ind,qText:'If the necessary condition IS true ('+s.n+'), what can you conclude?',options:shuffle([s.s+' must be true','Nothing — this is a trap']),correct:'Nothing — this is a trap',explanation:'Trap! Affirming the necessary tells you nothing. '+s.n+' being true doesn\'t mean '+s.s+'.'},
-            {si:si,sentence:s.sentence,ind:s.ind,qText:'If the sufficient condition is FALSE (NOT: '+s.s+'), what can you conclude?',options:shuffle(['NOT: '+s.n,'Nothing — this is a trap']),correct:'Nothing — this is a trap',explanation:'Trap! Negating the sufficient tells you nothing. NOT '+s.s+' says nothing about '+s.n+'.'}
-        ]);
-        qs=qs.concat(inferenceQs);
-    });
-    return qs;
-}
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"If it rains, then the ground is wet."</p>
+                                <p class="question-ask">What is the sufficient condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It rains</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">The ground is wet</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"If" introduces the sufficient condition.</strong> Rain is enough to guarantee wet ground. Rain <span style="color:#C65D3B; font-weight:600;">→</span> Ground is wet.</p></div>
+                        </div>
 
-function startQuiz(){
-    if(currentTier>0&&!emailUnlocked){showEmailModal();return}
-    userAns={};var sentences,qs;
-    if(currentTier===0){
-        sentences=pickFromGroups(STD,5);qs=buildDiagramQ(sentences);
-    } else if(currentTier===1){
-        var tricky3=pickFromGroups(TRICKY,3);
-        var std2=pickFromGroups(STD,2);
-        sentences=shuffle(tricky3.concat(std2));qs=buildDiagramQ(sentences);
-    } else {
-        sentences=pickFromGroups(ALL,3);qs=buildCommandQ(sentences);
-    }
-    quizQs=qs;
-    document.getElementById('vm-levels').style.display='none';
-    document.getElementById('vm-results').classList.remove('visible');
-    var el=document.getElementById('vm-quiz');el.classList.add('visible');
-    var tierNames=['I: Recognition','II: Precision','III: Command'];
-    var total=quizQs.length;
-    var h='<div class="quiz-progress"><span class="quiz-progress-text"><strong>VedaMark '+tierNames[currentTier]+'</strong> · '+total+' questions</span><span class="quiz-score-label"><a style="color:#666;cursor:pointer;text-decoration:none;font-weight:400" onclick="backToLevels()">← Change level</a> · 80% to pass</span></div>';
-    var curSi=-1;
-    quizQs.forEach(function(q,qi){
-        if(q.si!==curSi){if(curSi!==-1)h+='</div>';curSi=q.si;h+='<div class="q-block"><div class="q-block-header"><div class="exercise-number">'+(q.si+1)+'</div><div><div class="q-sentence">'+q.sentence+'</div></div></div>'}
-        h+='<div class="q-body"><div class="q-text">'+q.qText+'</div><div class="q-options">';
-        ['A','B','C','D'].forEach(function(l,oi){if(oi<q.options.length)h+='<div class="q-opt" data-q="'+qi+'" data-o="'+oi+'" onclick="pickOpt('+qi+','+oi+')"><span class="ol">'+l+'</span>'+q.options[oi]+'</div>'});
-        h+='</div></div>';
-    });
-    h+='</div><button class="vm-btn" onclick="submitQuiz()">Submit Answers</button>';
-    el.innerHTML=h;window.scrollTo({top:document.querySelector('.vm-header').offsetTop-10,behavior:'smooth'});
-}
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"Every employee must complete the training."</p>
+                                <p class="question-ask">What is the sufficient condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Being an employee</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Completing the training</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"Every" introduces the sufficient condition.</strong> Being an employee is enough to trigger the requirement. Employee <span style="color:#C65D3B; font-weight:600;">→</span> Must complete training.</p></div>
+                        </div>
 
-function pickOpt(qi,oi){document.querySelectorAll('.q-opt[data-q="'+qi+'"]').forEach(function(e){e.classList.remove('selected')});document.querySelector('.q-opt[data-q="'+qi+'"][data-o="'+oi+'"]').classList.add('selected');userAns[qi]=oi}
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"Whenever she studies, she passes."</p>
+                                <p class="question-ask">What is the sufficient condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">She passes</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">She studies</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"Whenever" introduces the sufficient condition.</strong> Studying is enough to guarantee passing. Studies <span style="color:#C65D3B; font-weight:600;">→</span> Passes.</p></div>
+                        </div>
 
-function submitQuiz(){
-    var total=quizQs.length;
-    if(Object.keys(userAns).length<total){alert('Please answer all questions before submitting.');return}
-    var correct=0,results=[];
-    quizQs.forEach(function(q,qi){var pick=q.options[userAns[qi]];var ok=pick===q.correct;if(ok)correct++;results.push({q:q,pick:pick,ok:ok})});
-    var pct=Math.round((correct/total)*100),passed=pct>=80;
-    document.getElementById('vm-quiz').classList.remove('visible');
-    var el=document.getElementById('vm-results');el.classList.add('visible');
-    var tierNames=['I: Recognition','II: Precision','III: Command'];
-    var h='<div class="res-header"><div class="res-pct">'+pct+'%</div><div class="res-sub">'+correct+' of '+total+' correct</div>';
-    h+=passed?'<div class="res-pass">You hit the VedaMark '+tierNames[currentTier]+'.</div>':'<div class="res-fail">You need 80% to hit the Mark. Review below and retry.</div>';
-    h+='</div><div class="res-items">';
-    results.forEach(function(r){
-        if(r.ok){h+='<div class="res-item right"><div class="res-sentence">'+r.q.sentence+'</div>';if(r.q.qText)h+='<div class="res-q">'+r.q.qText+'</div>';h+='<div class="res-right-label">✓ '+r.pick+'</div></div>'}
-        else{h+='<div class="res-item wrong"><div class="res-sentence">'+r.q.sentence+'</div>';if(r.q.qText)h+='<div class="res-q">'+r.q.qText+'</div>';h+='<div class="res-yours">✗ Your answer: '+r.pick+'</div><div class="res-correct">✓ Correct: '+r.q.correct+'</div><div class="res-explain">'+r.q.explanation+'</div></div>'}
-    });
-    h+='</div>';
-    if(passed&&currentTier<2){
-        var nextNames=['II: Precision','III: Command'];
-        h+='<button class="vm-btn" onclick="currentTier='+(currentTier+1)+';startQuiz()">Start VedaMark '+nextNames[currentTier]+'</button>';
-        h+='<button class="vm-btn-secondary" onclick="startQuiz()">Retry with New Questions</button>';
-    } else {
-        h+='<button class="vm-btn" onclick="startQuiz()">Try Again with New Questions</button>';
-    }
-    h+='<button class="back-levels" onclick="backToLevels()">← Back to level select</button>';
-    el.innerHTML=h;window.scrollTo({top:document.querySelector('.vm-header').offsetTop-10,behavior:'smooth'});
-}
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Apply</div>
+                                <p class="question-sentence">"If a student is enrolled, then they have paid tuition."</p>
+                                <p class="question-ask">A student is enrolled. What can we conclude?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">They have paid tuition.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>The sufficient condition is met, so the necessary must follow.</strong> Enrolled <span style="color:#C65D3B; font-weight:600;">→</span> Paid tuition. The student is enrolled, so they must have paid.</p></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-function backToLevels(){document.getElementById('vm-quiz').classList.remove('visible');document.getElementById('vm-results').classList.remove('visible');document.getElementById('vm-levels').style.display='block'}
-if(emailUnlocked){document.getElementById('lock-1').style.display='none';document.getElementById('lock-2').style.display='none'}
-</script>
+            <!-- Practice: Necessary -->
+            <div class="sub-tab-content" data-subtab="s1-necessary">
+                <section class="video-section">
+                    <div class="video-container">
+                        <div class="group-header">
+                            <h2 class="group-title">Guided Practice: Necessary Indicators</h2>
+                        </div>
+
+                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Guided Practice Video: Necessary Indicators — coming soon</p></div>
+
+                        <div class="try-first-note"><strong>Tip:</strong> Try the questions below first, then come back and watch the video.</div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"You can drive only if you have a license."</p>
+                                <p class="question-ask">What is the necessary condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">You can drive</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">You have a license</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"Only if" introduces the necessary condition.</strong> Having a license is required for driving. Drive <span style="color:#C65D3B; font-weight:600;">→</span> License. Be careful: "if" and "only if" point in opposite directions.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"Graduation requires completing all coursework."</p>
+                                <p class="question-ask">What is the necessary condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Completing all coursework</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Graduation</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"Requires" introduces the necessary condition.</strong> Coursework is required for graduation. Graduation <span style="color:#C65D3B; font-weight:600;">→</span> Completed coursework.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Identify</div>
+                                <p class="question-sentence">"Success depends on preparation."</p>
+                                <p class="question-ask">What is the necessary condition?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Success</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Preparation</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>"Depends on" introduces the necessary condition.</strong> Preparation is required for success. Success <span style="color:#C65D3B; font-weight:600;">→</span> Preparation.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Apply</div>
+                                <p class="question-sentence">"If a student is enrolled, then they have paid tuition."</p>
+                                <p class="question-ask">A student has paid tuition. What can we conclude?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">They are enrolled.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Knowing the necessary condition is true tells us nothing.</strong> Enrolled <span style="color:#C65D3B; font-weight:600;">→</span> Paid tuition. We know they paid, but paying doesn't guarantee enrollment — maybe they paid and withdrew, or payment is just one of several requirements. The arrow only goes one direction.</p></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" data-step="2">
+            <div class="sub-tab-nav" data-group="step2">
+                <button class="sub-tab-btn active" data-subtab="s2-lesson">Lesson</button>
+                <button class="sub-tab-btn" data-subtab="s2-practice">Guided Practice</button>
+            </div>
+
+            <!-- Lesson -->
+            <div class="sub-tab-content active" data-subtab="s2-lesson">
+                <section class="video-section">
+                    <div class="video-container">
+                        <div class="group-header">
+                            <h2 class="group-title">The Contrapositive</h2>
+                            <p class="group-subtitle">Flip the direction and negate both sides. Watch this first.</p>
+                        </div>
+                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: The Contrapositive — coming soon</p></div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Guided Practice -->
+            <div class="sub-tab-content" data-subtab="s2-practice">
+                <section class="video-section">
+                    <div class="video-container">
+                        <div class="group-header">
+                            <h2 class="group-title">Guided Practice: Contrapositive</h2>
+                        </div>
+
+                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Guided Practice Video: Contrapositive — coming soon</p></div>
+
+                        <div class="try-first-note"><strong>Tip:</strong> Try the questions below first, then come back and watch the video.</div>
+
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Contrapositive</div>
+                                <p class="question-sentence">"If it rains, then the ground is wet."</p>
+                                <p class="question-ask">What is the contrapositive?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If the ground is not wet, then it did not rain.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If it does not rain, then the ground is not wet.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Rain → Wet ground becomes: NOT wet ground → NOT rain. If the ground isn't wet, it couldn't have rained. (B) negates the sufficient without flipping — that's not valid.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Contrapositive</div>
+                                <p class="question-sentence">"You can drive only if you have a license."</p>
+                                <p class="question-ask">What is the contrapositive?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot drive, then you do not have a license.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you do not have a license, then you cannot drive.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>First, set up the original: Drive → License. Then flip and negate:</strong> NOT license → NOT drive. If you don't have a license, you can't drive. (A) negates the sufficient without flipping — that's not valid.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Apply</div>
+                                <p class="question-sentence">"If a book is published, then it has been edited."</p>
+                                <p class="question-ask">A book has not been edited. What can we conclude?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It has not been published.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>This is the contrapositive in action.</strong> Published → Edited. Contrapositive: NOT edited → NOT published. The book hasn't been edited, so it can't have been published.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="A">
+                            <div class="question-prompt">
+                                <div class="question-label">Apply</div>
+                                <p class="question-sentence">"If it snows, then schools close."</p>
+                                <p class="question-ask">Schools did not close. What can we conclude?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It did not snow.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">It snowed but schools stayed open anyway.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Contrapositive: NOT close → NOT snow.</strong> If schools didn't close, it didn't snow. (B) is impossible — the original says snow guarantees closures.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Apply</div>
+                                <p class="question-sentence">"If it snows, then schools close."</p>
+                                <p class="question-ask">It did not snow. What can we conclude?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Schools did not close.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Negating the sufficient tells us nothing.</strong> Snow → Close. We know it didn't snow, but schools could still close for another reason. The contrapositive only works when we negate the necessary side.</p></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- REFERENCE                -->
+    <!-- ======================== -->
+    <div id="maintab-reference" class="main-tab-content">
+        <section class="reference-section">
+            <div class="reference-container">
+                <p class="reference-intro">Quick reference for conditional logic. Bookmark this page and come back to it while practicing.</p>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">The Conditional</div>
+                    <div class="ref-card">
+                        <div class="ref-label">Structure</div>
+                        <p class="ref-content"><strong>Sufficient</strong> <span class="ref-arrow">→</span> <strong>Necessary</strong></p>
+                        <p class="ref-content" style="margin-top: 8px; color: #666; font-size: 13px;">If the sufficient happens, the necessary <em>must</em> follow.</p>
+                    </div>
+                </div>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">Common Triggers</div>
+                    <div class="ref-card" style="margin-bottom: 8px;">
+                        <div class="ref-label">Sufficient Condition <span class="ref-arrow">→</span></div>
+                        <p class="ref-content">If, All, Every, Whenever, When, People who, Each, Any, The only</p>
+                    </div>
+                    <div class="ref-card">
+                        <div class="ref-label"><span class="ref-arrow">→</span> Necessary Condition</div>
+                        <p class="ref-content">Then, Must, Only if, Only when, Requires, Necessary, Depends on</p>
+                    </div>
+                </div>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">The Contrapositive</div>
+                    <div class="ref-card">
+                        <div class="ref-label">How to form it</div>
+                        <p class="ref-content"><strong>Flip</strong> the direction and <strong>negate</strong> both sides.</p>
+                        <p class="ref-content" style="margin-top: 8px;">A <span class="ref-arrow">→</span> B &nbsp;&nbsp;becomes:</p>
+                        <p class="ref-content"><strong>NOT B</strong> <span class="ref-arrow">→</span> <strong>NOT A</strong></p>
+                        <p class="ref-content" style="margin-top: 8px; color: #666; font-size: 13px;"><span class="ref-valid">✓ Always valid</span> — the contrapositive is logically identical to the original.</p>
+                    </div>
+                </div>
+
+                <a href="../../learn.html" class="back-link">← Back to Learn</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        // Main tabs (Lessons / Reference)
+        document.querySelectorAll('.main-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.main-tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('maintab-' + btn.dataset.maintab).classList.add('active');
+            });
+        });
+
+        // Step nav
+        document.querySelectorAll('.step-nav-btn-main').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.step-nav-btn-main').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector('.step-panel[data-step="' + btn.dataset.step + '"]').classList.add('active');
+            });
+        });
+
+        // Sub tabs
+        document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const panel = btn.closest('.step-panel');
+                btn.closest('.sub-tab-nav').querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+                panel.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                panel.querySelector('.sub-tab-content[data-subtab="' + btn.dataset.subtab + '"]').classList.add('active');
+            });
+        });
+
+        // Questions
+        document.querySelectorAll('.question-card').forEach(card => {
+            const correct = card.dataset.correct;
+            const options = card.querySelectorAll('.answer-option');
+            const explanation = card.querySelector('.explanation');
+            let answered = false;
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (answered) return;
+                    answered = true;
+                    const selected = option.dataset.value;
+                    if (selected === correct) {
+                        option.classList.add('correct');
+                    } else {
+                        option.classList.add('incorrect');
+                        options.forEach(o => { if (o.dataset.value === correct) o.classList.add('correct'); });
+                    }
+                    explanation.classList.add('show');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
