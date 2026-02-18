@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translating Words on the Test - VEDARION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
+        
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-brand .v-accent {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+        
+        .hero {
+            background: #0A0A0A;
+            padding: 40px 20px 50px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .tab-nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+        
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 18px 35px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-btn:hover { color: white; }
+        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .stepper {
+            background: white;
+            border-bottom: 1px solid #E0E0E0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .step-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #DDD;
+            background: white;
+            color: #999;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+        .step-btn.active { background: #C65D3B; border-color: #C65D3B; color: white; }
+        
+        .step-line { width: 40px; height: 2px; background: #DDD; }
+        
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        
+        .video-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        
+        .video-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .group-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .group-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        
+        .group-subtitle {
+            color: #888;
+            font-size: 13px;
+        }
+        
+        .question-card {
+            background: white;
+            border: 1px solid #E0E0E0;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .question-prompt {
+            padding: 20px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .question-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 8px;
+        }
+        
+        .question-sentence {
+            font-size: 16px;
+            line-height: 1.6;
+            font-style: italic;
+            color: #333;
+        }
+        
+        .question-ask {
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+            font-style: normal;
+        }
+        
+        .answer-options { padding: 15px 20px; }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 6px;
+            border: 1px solid #E8E8E8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .answer-option:last-child { margin-bottom: 0; }
+        .answer-option:hover:not(.correct):not(.incorrect) { border-color: #C65D3B; background: #FFFAF8; }
+        .answer-option.correct { border-color: #3A8A5C; background: #F0FAF4; }
+        .answer-option.incorrect { border-color: #C44; background: #FFF5F5; }
+        
+        .answer-letter {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #CCC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .answer-option.correct .answer-letter { background: #3A8A5C; color: white; border-color: #3A8A5C; }
+        .answer-option.incorrect .answer-letter { background: #C44; color: white; border-color: #C44; }
+        
+        .answer-text { font-size: 14px; color: #333; }
+        
+        .explanation {
+            display: none;
+            padding: 20px;
+            background: #F8F8F8;
+            border-top: 1px solid #E8E8E8;
+        }
+        
+        .explanation.show { display: block; }
+        
+        .explanation-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 6px;
+        }
+        
+        .explanation-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .explanation-text strong { color: #0A0A0A; }
+        
+        .video-placeholder {
+            background: #0A0A0A;
+            padding: 50px 20px;
+            text-align: center;
+            margin-top: 25px;
+            border: 1px solid #222;
+        }
+        
+        .video-placeholder p { color: #888; font-size: 14px; letter-spacing: 0.5px; }
+        .video-placeholder .play-icon { font-size: 36px; margin-bottom: 10px; opacity: 0.5; }
+        
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .step-nav-btn {
+            background: none;
+            border: 1px solid #DDD;
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .step-nav-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+        .step-nav-btn.hidden { visibility: hidden; }
+        
+        .reference-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        
+        .reference-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .reference-intro {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .ref-group { margin-bottom: 30px; }
+        
+        .ref-group-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        
+        .ref-table { width: 100%; border-collapse: collapse; }
+        .ref-table tr { border-bottom: 1px solid #F0F0F0; }
+        .ref-table tr:last-child { border-bottom: none; }
+        .ref-table td { padding: 10px 0; font-size: 14px; vertical-align: top; }
+        .ref-word { font-weight: 600; color: #0A0A0A; width: 45%; padding-right: 15px; }
+        .ref-meaning { color: #555; }
+        
+        .equivalence-card {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 18px 20px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .eq-left { font-size: 14px; color: #333; margin-bottom: 6px; }
+        .eq-equals { font-size: 11px; color: #C65D3B; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+        .eq-right { font-size: 14px; color: #333; }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover { color: #C65D3B; }
+        
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .tab-btn { padding: 15px 20px; font-size: 11px; }
+            .step-line { width: 25px; }
+            .ref-word { width: 40%; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="page-title">TRANSLATING WORDS ON THE TEST</h1>
+        <p class="page-subtitle">Know exactly what each word guarantees — nothing more, nothing less</p>
+    </section>
+
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="video">Video</button>
+        <button class="tab-btn" data-tab="reference">Reference</button>
+    </div>
+
+    <!-- VIDEO TAB -->
+    <div id="tab-video" class="tab-content active">
+        <div class="stepper">
+            <button class="step-btn active" data-step="1">1</button>
+            <div class="step-line"></div>
+            <button class="step-btn" data-step="2">2</button>
+            <div class="step-line"></div>
+            <button class="step-btn" data-step="3">3</button>
+            <div class="step-line"></div>
+            <button class="step-btn" data-step="4">4</button>
+            <div class="step-line"></div>
+            <button class="step-btn" data-step="5">5</button>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step-content active" data-step="1">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="group-header">
+                        <h2 class="group-title">Some, Most, All</h2>
+                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Some birds can swim."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">At least one bird can swim.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">5 birds can swim.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Some" = at least one.</strong> We know for certain that at least one bird can swim. We cannot conclude exactly 5 — "some" only tells us "at least one," not a specific number.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="B">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Most students passed the exam."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All students passed the exam.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">More than half of the students passed the exam.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Most" = more than 50%.</strong> We know more than half passed. We cannot jump to "all" — "most" leaves room for some who didn't pass.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Every employee must complete the training."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All employees must complete the training.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Some employees do not have to complete the training.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Every" = all = 100%.</strong> No exceptions. Every single employee must complete it. (B) directly contradicts the statement — if every employee must, then none are exempt.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 1: Some, Most, All — coming soon</p></div>
+
+                    <div class="step-nav">
+                        <button class="step-nav-btn hidden">← Previous</button>
+                        <button class="step-nav-btn" onclick="goToStep(2)">Next →</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-content" data-step="2">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="group-header">
+                        <h2 class="group-title">Many, Nearly All, Not All, Few</h2>
+                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                    </div>
+
+                    <div class="question-card" data-correct="B">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Many residents opposed the new policy."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Most residents opposed the new policy.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">At least one resident opposed the new policy.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Many" = some = at least one.</strong> It feels like a lot, but on the LSAT, "many" only guarantees "some." We cannot conclude "most" — that requires more than 50%.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Nearly all applicants were qualified."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Most applicants were qualified.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">All applicants were qualified.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Nearly all" = at least most, close to 100%.</strong> We can definitely say most were qualified. But "nearly" tells us it's not quite all — so (B) goes too far.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Not all animals are cute."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It is possible that an animal is not cute.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most animals are cute.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Not all" = some are not = at least one is not.</strong> We know at least one animal is not cute. We have no idea whether most are cute or not — "not all" tells us nothing about the majority.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="B">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Few vegetables are tasty."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Most vegetables are tasty.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most vegetables are not tasty.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Few" = some are AND most are not.</strong> "Few vegetables are tasty" means some vegetables are tasty, but most are not. Two pieces of information in one word.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 2: Many, Nearly All, Not All, Few — coming soon</p></div>
+
+                    <div class="step-nav">
+                        <button class="step-nav-btn" onclick="goToStep(1)">← Previous</button>
+                        <button class="step-nav-btn" onclick="goToStep(3)">Next →</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-content" data-step="3">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="group-header">
+                        <h2 class="group-title">Generally, Usually, Frequently</h2>
+                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                    </div>
+
+                    <div class="question-card" data-correct="B">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Students who study generally pass the exam."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All students who study pass the exam.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most students who study pass the exam.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Generally" = most.</strong> More than half, but not all. "All" is too strong — "generally" leaves room for exceptions.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Flights from this airport usually depart on time."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">More than half of flights from this airport depart on time.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Flights from this airport always depart on time.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Usually" = most = more than 50%.</strong> Same as "generally." We know more than half depart on time, but "always" goes too far.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"This intersection frequently has accidents."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">At least some accidents occur at this intersection.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Most accidents in the area happen at this intersection.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Frequently" = at least some.</strong> We know accidents happen there, but "frequently" is ambiguous — it's unclear whether it reaches 50%. Safely translate it as "some" on the LSAT.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 3: Generally, Usually, Frequently — coming soon</p></div>
+
+                    <div class="step-nav">
+                        <button class="step-nav-btn" onclick="goToStep(2)">← Previous</button>
+                        <button class="step-nav-btn" onclick="goToStep(4)">Next →</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-content" data-step="4">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="group-header">
+                        <h2 class="group-title">None / No, Unless / Without / Except</h2>
+                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"No elephant makes a good pet."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All elephants do not make a good pet.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Some elephants make a good pet.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"No" = negate the necessary.</strong> "Good pet" is in the necessary position, so we negate it: Elephant → NOT a good pet. If it's an elephant, then it does not make a good pet. (B) says the opposite.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"You can enter the concert unless you are wearing flip flops."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot enter the concert, you are wearing flip flops.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you are wearing flip flops, you can enter the concert.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Unless" = negate the sufficient.</strong> "Enter" is in the sufficient position, so we negate it: Cannot enter → wearing flip flops. If you can't get in, it must be because of the flip flops. (B) flips the direction — wearing flip flops is what prevents entry, not what allows it.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"Without a good job, life is hard."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If no good job, then life is hard.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If good job, then life is not hard.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Without" = negate the sufficient.</strong> "Good job" is in the sufficient position, so we negate it: No good job → life is hard. If you don't have a good job, then life is hard. (B) goes in the wrong direction.</p></div>
+                    </div>
+
+                    <div class="question-card" data-correct="A">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"None of the graduates have an incomplete thesis."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">All graduates completed their thesis.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">Graduates have an incomplete thesis.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"None" = negate the necessary.</strong> "Incomplete thesis" is in the necessary position, so we negate it: Graduate → NOT incomplete thesis. If they graduated, their thesis is complete. (B) says the opposite.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 4: None / No, Unless / Without / Except — coming soon</p></div>
+
+                    <div class="step-nav">
+                        <button class="step-nav-btn" onclick="goToStep(3)">← Previous</button>
+                        <button class="step-nav-btn" onclick="goToStep(5)">Next →</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-content" data-step="5">
+            <section class="video-section">
+                <div class="video-container">
+                    <div class="group-header">
+                        <h2 class="group-title">Combined: Cannot + Unless / Without</h2>
+                        <p class="group-subtitle">When you see two negation indicators together (cannot + unless, cannot + without), they cancel each other out. Try this one.</p>
+                    </div>
+
+                    <div class="question-card" data-correct="B">
+                        <div class="question-prompt">
+                            <div class="question-label">Translate</div>
+                            <p class="question-sentence">"You cannot enter unless you have a ticket."</p>
+                            <p class="question-ask">Which of the following can we 100% support?</p>
+                        </div>
+                        <div class="answer-options">
+                            <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot enter, you don't have a ticket.</span></div>
+                            <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you entered, then you have a ticket.</span></div>
+                        </div>
+                        <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Cannot...unless" → the negations cancel.</strong> Enter → have a ticket. If you entered, you must have a ticket. (A) is a mistaken reversal — it flips the direction of the conditional.</p></div>
+                    </div>
+
+                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 5: Combined Negations — coming soon</p></div>
+
+                    <div class="step-nav">
+                        <button class="step-nav-btn" onclick="goToStep(4)">← Previous</button>
+                        <a href="../../learn.html" class="step-nav-btn">Back to Learn →</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- REFERENCE TAB -->
+    <div id="tab-reference" class="tab-content">
+        <section class="reference-section">
+            <div class="reference-container">
+                <p class="reference-intro">Your cheat sheet for translating LSAT language. Bookmark this page and come back to it while practicing.</p>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">Quantifiers</div>
+                    <table class="ref-table">
+                        <tr><td class="ref-word">All, every, each, any, whoever, anything that, whatever</td><td class="ref-meaning">100% — no exceptions</td></tr>
+                        <tr><td class="ref-word">Always, invariably, inevitably</td><td class="ref-meaning">= All (100%)</td></tr>
+                        <tr><td class="ref-word">Nearly all</td><td class="ref-meaning">At least most, close to 100% but not all</td></tr>
+                        <tr><td class="ref-word">Most</td><td class="ref-meaning">More than 50%</td></tr>
+                        <tr><td class="ref-word">Generally, usually</td><td class="ref-meaning">= Most (more than 50%)</td></tr>
+                        <tr><td class="ref-word">Some, at least one</td><td class="ref-meaning">At least one — could be 1, could be all</td></tr>
+                        <tr><td class="ref-word">Many</td><td class="ref-meaning">= Some (at least one)</td></tr>
+                        <tr><td class="ref-word">Frequently</td><td class="ref-meaning">At least some — unclear if it reaches 50%</td></tr>
+                        <tr><td class="ref-word">Few</td><td class="ref-meaning">Some are AND most are not (two claims in one)</td></tr>
+                        <tr><td class="ref-word">Not all / Not every / Not always</td><td class="ref-meaning">= Some are not (at least one is not)</td></tr>
+                        <tr><td class="ref-word">At most</td><td class="ref-meaning">Upper bound — could be zero</td></tr>
+                        <tr><td class="ref-word">None, never</td><td class="ref-meaning">0% — zero, not a single one</td></tr>
+                    </table>
+                </div>
+
+                <div class="ref-group">
+                    <div class="ref-group-title">Conditional Triggers</div>
+                    <table class="ref-table">
+                        <tr><td class="ref-word">Unless, without, except</td><td class="ref-meaning">Negate sufficient</td></tr>
+                        <tr><td class="ref-word">None, cannot</td><td class="ref-meaning">Negate necessary</td></tr>
+                    </table>
+                </div>
+
+                <a href="../../learn.html" class="back-link">← Back to Learn</a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        // Main tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Stepper
+        function goToStep(n) {
+            document.querySelectorAll('.step-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('.step-btn[data-step="' + n + '"]').classList.add('active');
+            document.querySelector('.step-content[data-step="' + n + '"]').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.step-btn').forEach(btn => {
+            btn.addEventListener('click', () => goToStep(btn.dataset.step));
+        });
+
+        // Questions
+        document.querySelectorAll('.question-card').forEach(card => {
+            const correct = card.dataset.correct;
+            const options = card.querySelectorAll('.answer-option');
+            const explanation = card.querySelector('.explanation');
+            let answered = false;
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (answered) return;
+                    answered = true;
+                    const selected = option.dataset.value;
+                    if (selected === correct) {
+                        option.classList.add('correct');
+                    } else {
+                        option.classList.add('incorrect');
+                        options.forEach(o => { if (o.dataset.value === correct) o.classList.add('correct'); });
+                    }
+                    explanation.classList.add('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

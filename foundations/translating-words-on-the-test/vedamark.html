@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translating Words - VedaMark Practice - VEDARION</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#FAFAFA;color:#0A0A0A;min-height:100vh}
+        .nav{background:#0A0A0A;display:flex;justify-content:space-between;align-items:center;padding:25px 50px;border-bottom:1px solid #222}
+        .nav-brand{font-size:24px;font-weight:300;letter-spacing:4px;color:white;text-decoration:none}
+        .nav-brand .v-accent{color:#C65D3B;font-weight:700}
+        .nav-links{display:flex;gap:40px}
+        .nav-links a{color:#888;text-decoration:none;font-size:14px;letter-spacing:1px;transition:color .3s}
+        .nav-links a:hover,.nav-links a.active{color:white}
+        .vm-header{background:#1A1A1A;padding:40px 20px 30px;text-align:center;border-bottom:1px solid #222}
+        .vm-logo{font-size:32px;font-weight:400;letter-spacing:2px;color:white;margin-bottom:8px}
+        .vm-logo span{color:#C65D3B;font-weight:700}
+        .vm-subtitle{color:#888;font-size:14px;font-style:italic}
+        .vm-levels{padding:40px 20px}
+        .tier-cards{max-width:900px;margin:0 auto;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+        .tier-card{background:#2A2A2A;border:1px solid #333;padding:25px;width:280px;cursor:pointer;transition:all .3s}
+        .tier-card:hover{border-color:#555}
+        .tier-card.selected{border-color:#C65D3B}
+        .tier-card.locked{opacity:.5;cursor:not-allowed}
+        .tier-num{color:#C65D3B;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+        .tier-name{color:white;font-size:20px;font-weight:600;margin-bottom:8px}
+        .tier-desc{color:#999;font-size:13px;line-height:1.5;margin-bottom:12px}
+        .tier-meta{color:#888;font-size:12px}
+        .tier-meta strong{color:#CCC}
+        .tier-lock{color:#C65D3B;font-size:11px;margin-top:10px;letter-spacing:.5px}
+        .vm-start-wrap{max-width:900px;margin:25px auto 0;text-align:center}
+        .vm-btn{background:#C65D3B;color:white;border:none;padding:16px 0;width:100%;max-width:900px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .3s;font-family:inherit}
+        .vm-btn:hover{background:#A04D2E}
+        .vm-pass-note{color:#888;font-size:13px;margin-top:12px}
+        .vm-quiz{display:none;max-width:700px;margin:0 auto;padding:30px 20px}
+        .vm-quiz.visible{display:block}
+        .quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;padding-bottom:15px;border-bottom:1px solid #E0E0E0}
+        .quiz-progress-text{font-size:14px;color:#333}
+        .quiz-score-label{font-size:12px;color:#888}
+        .quiz-score-label a{color:#666;cursor:pointer;text-decoration:none;font-weight:400}
+        .quiz-score-label a:hover{color:#C65D3B}
+        .q-block{background:white;border:1px solid #E0E0E0;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+        .q-block-header{padding:20px;border-bottom:1px solid #F0F0F0}
+        .q-num{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#C65D3B;margin-bottom:6px}
+        .q-sentence{font-size:16px;line-height:1.6;font-style:italic;color:#333}
+        .q-ask{font-size:13px;color:#666;margin-top:10px;font-style:normal}
+        .q-options{padding:15px 20px}
+        .q-opt{display:flex;align-items:center;gap:12px;padding:12px 15px;margin-bottom:6px;border:1px solid #E8E8E8;cursor:pointer;transition:all .2s;background:white;font-size:14px;color:#333}
+        .q-opt:last-child{margin-bottom:0}
+        .q-opt:hover:not(.correct):not(.incorrect):not(.disabled){border-color:#C65D3B;background:#FFFAF8}
+        .q-opt.selected{border-color:#C65D3B;background:#FFFAF8}
+        .q-opt.correct{border-color:#3A8A5C;background:#F0FAF4;cursor:default}
+        .q-opt.incorrect{border-color:#C44;background:#FFF5F5;cursor:default}
+        .q-opt.disabled{cursor:default;opacity:.7}
+        .ol{width:24px;height:24px;border-radius:50%;border:1px solid #CCC;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#888;flex-shrink:0;transition:all .2s}
+        .q-opt.selected .ol{border-color:#C65D3B;color:#C65D3B}
+        .q-opt.correct .ol{background:#3A8A5C;color:white;border-color:#3A8A5C}
+        .q-opt.incorrect .ol{background:#C44;color:white;border-color:#C44}
+        .q-explanation{display:none;padding:20px;background:#F8F8F8;border-top:1px solid #E8E8E8}
+        .q-explanation.show{display:block}
+        .q-explanation-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#C65D3B;margin-bottom:6px}
+        .q-explanation-text{font-size:14px;line-height:1.7;color:#555}
+        .q-explanation-text strong{color:#0A0A0A}
+        .vm-results{display:none;max-width:700px;margin:0 auto;padding:30px 20px}
+        .vm-results.visible{display:block}
+        .results-card{background:white;border:1px solid #E0E0E0;padding:30px;text-align:center;margin-bottom:20px}
+        .results-score{font-size:48px;font-weight:700;color:#0A0A0A;margin-bottom:5px}
+        .results-label{font-size:14px;color:#888;margin-bottom:15px}
+        .results-pass{color:#3A8A5C;font-size:16px;font-weight:600}
+        .results-fail{color:#C44;font-size:16px;font-weight:600}
+        .results-msg{color:#666;font-size:14px;margin-top:8px}
+        .results-actions{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+        .results-btn{padding:12px 24px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:inherit;border:none}
+        .results-btn.primary{background:#C65D3B;color:white}
+        .results-btn.primary:hover{background:#A04D2E}
+        .results-btn.secondary{background:none;border:1px solid #DDD;color:#666}
+        .results-btn.secondary:hover{border-color:#C65D3B;color:#C65D3B}
+        .review-header{font-size:14px;font-weight:600;letter-spacing:1px;color:#333;margin:25px 0 15px;text-transform:uppercase}
+        .footer{background:#0A0A0A;border-top:1px solid #222;color:#555;text-align:center;padding:30px 20px;font-size:13px;margin-top:40px}
+        .footer a{color:#C65D3B;text-decoration:none}
+        .email-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:1000;justify-content:center;align-items:center}
+        .email-modal-wrap{background:#1A1A1A;border:1px solid #333;padding:40px;max-width:420px;width:90%;position:relative}
+        .email-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#666;font-size:24px;cursor:pointer}
+        .email-close:hover{color:white}
+        .email-modal-logo{font-size:24px;font-weight:400;letter-spacing:2px;color:white;margin-bottom:15px;text-align:center}
+        .email-modal-logo span{color:#C65D3B;font-weight:700}
+        .email-modal h3{color:white;font-size:18px;margin-bottom:8px;text-align:center}
+        .email-modal p{color:#888;font-size:13px;line-height:1.6;margin-bottom:20px;text-align:center}
+        .email-input{width:100%;padding:12px 15px;background:#2A2A2A;border:1px solid #444;color:white;font-size:14px;margin-bottom:12px;font-family:inherit}
+        .email-input:focus{outline:none;border-color:#C65D3B}
+        .email-submit{width:100%;padding:14px;background:#C65D3B;color:white;border:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:inherit}
+        .email-submit:hover{background:#A04D2E}
+        .email-error{color:#C44;font-size:12px;margin-top:8px;text-align:center}
+        @media(max-width:650px){.nav{padding:20px;flex-direction:column;gap:20px}.nav-links{gap:25px}.tier-cards{flex-direction:column;align-items:center}.tier-card{width:100%;max-width:350px}}
+    </style>
+</head>
+<body>
+<div class="email-overlay" id="email-overlay"><div class="email-modal-wrap"><button class="email-close" onclick="closeEmailModal()">&times;</button><div class="email-modal"><div class="email-modal-logo"><span>Veda</span>Mark</div><h3>Unlock full practice</h3><p>VedaMark I is free. Enter your email to unlock Precision, Command, and future AI-powered drills tailored to your weaknesses.</p><input type="email" class="email-input" id="lead-email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitEmail()"><button class="email-submit" onclick="submitEmail()">Unlock VedaMark II & III</button><div class="email-error" id="email-error"></div></div></div></div>
+<nav class="nav"><a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a><div class="nav-links"><a href="../../about.html">About</a><a href="../../pricing.html">Pricing</a><a href="../../learn.html" class="active">Learn</a><a href="../../index.html#testimonials">Testimonials</a></div></nav>
+<div class="vm-header"><div class="vm-logo"><span>Veda</span>Mark</div><p class="vm-subtitle">AI-powered practice, guided by your instructor.</p></div>
+<div class="vm-levels" id="vm-levels">
+    <div class="tier-cards">
+        <div class="tier-card selected" id="tier-0" onclick="selectTier(0)"><div class="tier-num">VedaMark I</div><div class="tier-name">Recognition</div><div class="tier-desc">Translate the basics: all, some, many, most, nearly all.</div><div class="tier-meta"><strong>5 questions</strong> · ~2 min</div></div>
+        <div class="tier-card" id="tier-1" onclick="selectTier(1)"><div class="tier-num">VedaMark II</div><div class="tier-name">Precision</div><div class="tier-desc">Don't confuse the tricky ones: usually, generally, frequently, always, never, not all, few.</div><div class="tier-meta"><strong>5 questions</strong> · ~3 min</div><div class="tier-lock" id="lock-1"></div></div>
+        <div class="tier-card" id="tier-2" onclick="selectTier(2)"><div class="tier-num">VedaMark III</div><div class="tier-name">Command</div><div class="tier-desc">Master the conditional translations: unless, without, except, none, cannot, and combined.</div><div class="tier-meta"><strong>5 questions</strong> · ~3 min</div><div class="tier-lock" id="lock-2"></div></div>
+    </div>
+    <div class="vm-start-wrap"><button class="vm-btn" onclick="startQuiz()">START VEDAMARK</button><p class="vm-pass-note">Score 80% to hit the Mark.</p></div>
+</div>
+<div class="vm-quiz" id="vm-quiz"></div>
+<div class="vm-results" id="vm-results"></div>
+<footer class="footer"><p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p></footer>
+<script src="vm-engine.js"></script>
+</body>
+</html>
