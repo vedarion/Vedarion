@@ -60,7 +60,7 @@
         /* Hero */
         .hero {
             background: #0A0A0A;
-            padding: 80px 20px;
+            padding: 50px 20px;
             text-align: center;
         }
         
@@ -79,7 +79,7 @@
         
         /* Intro Banner */
         .intro-banner {
-            background: #111;
+            background: #1a1a1a;
             padding: 20px 20px;
             text-align: center;
             display: flex;
@@ -87,6 +87,7 @@
             align-items: center;
             gap: 24px;
             flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,255,0.15);
             border-bottom: 1px solid #222;
         }
         
@@ -115,10 +116,33 @@
         .intro-banner .banner-button:hover {
             background: #A04D2E;
         }
+
+        /* Social Proof */
+        .social-proof {
+            text-align: center;
+            padding: 40px 20px 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-proof-stat {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0A0A0A;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .social-proof-quote {
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+            line-height: 1.6;
+        }
         
         /* Cards Section */
         .cards-section {
-            padding: 80px 20px;
+            padding: 40px 20px 80px;
             background: #FAFAFA;
         }
         
@@ -361,7 +385,7 @@
             }
             
             .cards-section {
-                padding: 50px 20px;
+                padding: 30px 20px 50px;
             }
             
             .pricing-grid {
@@ -405,6 +429,12 @@
     <div class="intro-banner">
         <p>Not sure where to start? Book a free 30-minute consultation.</p>
         <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="banner-button">Book Free Session</a>
+    </div>
+
+    <!-- Social Proof -->
+    <div class="social-proof">
+        <p class="social-proof-stat">Students improve 8–15+ points.</p>
+        <p class="social-proof-quote">"One of the best investments I made in my law school application process." — Mia, 175</p>
     </div>
 
     <!-- Cards Section -->
@@ -464,7 +494,7 @@
     <section class="consultation-cta">
         <div class="cta-container">
             <a href="https://buy.stripe.com/28EfZadUp1OD4Xr2HR7bW01" target="_blank" class="book-button">Get Started with 5 Sessions</a>
-            <p class="cta-subtext">The most popular way to get started.</p>
+            <p class="cta-subtext">Most students start here.</p>
         </div>
     </section>
 
@@ -494,3 +524,6 @@
     <!-- Footer -->
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+</body>
+</html>
