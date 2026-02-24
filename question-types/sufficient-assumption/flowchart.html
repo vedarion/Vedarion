@@ -28,11 +28,16 @@
         .step-content { font-size: 13px; color: #666; line-height: 1.6; }
         .step-content ul { list-style: none; margin-top: 8px; }
         .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
+        .step-content li:before { content: "•"; position: absolute; left: 0; color: #999; }
+        .step-note { font-size: 13px; color: #444; margin-top: 12px; font-style: italic; line-height: 1.5; }
         .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
         .final-step { background: #0A0A0A; border: none; text-align: center; }
         .final-step .step-title { margin-bottom: 5px; color: white; }
         .final-step .step-content { color: #888; }
+        .trap-step { background: #1A1A1A; border: 1px solid #333; }
+        .trap-step .step-title { color: #C65D3B; }
+        .trap-step .step-content { color: #999; }
+        .trap-step .step-content li:before { color: #C65D3B; content: "⚠"; }
         .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
         .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
         .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
@@ -73,6 +78,7 @@
                             <li>"If true, allows the conclusion to be properly drawn"</li>
                             <li>"If valid, justifies the reasoning"</li>
                         </ul>
+                        <p class="step-note">The question stem is asking you to find an answer choice that makes the conclusion 100% true.</p>
                     </div>
                 </div>
                 
@@ -80,36 +86,12 @@
                 
                 <div class="step">
                     <div class="step-number">STEP 2</div>
-                    <div class="step-title">Read & Analyze the Stimulus</div>
+                    <div class="step-title">Stimulus Strategy</div>
                     <div class="step-content">
                         <ul>
-                            <li>Track how premises connect</li>
-                            <li>Identify Premise(s) & Conclusion</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 3</div>
-                    <div class="step-title">Core Argument</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Simplified Premise → Conclusion</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 4</div>
-                    <div class="step-title">Identify the Gap</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>What's missing between Premise & Conclusion?</li>
-                            <li>If possible, express in conditional form (A → B)</li>
+                            <li>Identify Premise(s) &amp; Conclusion</li>
+                            <li>Core argument — simplify Premise and Conclusion</li>
+                            <li>Identify the gap — express in Premise → Conclusion form</li>
                         </ul>
                     </div>
                 </div>
@@ -117,24 +99,13 @@
                 <div class="arrow">↓</div>
                 
                 <div class="step highlight">
-                    <div class="step-number">STEP 5</div>
-                    <div class="step-title">Predict the Bridge</div>
+                    <div class="step-number">STEP 3</div>
+                    <div class="step-title">Answer Choice Strategy</div>
                     <div class="step-content">
                         <ul>
-                            <li>Predict: What fills the gap?</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 6</div>
-                    <div class="step-title">Review Answer Choices</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Hunt Mode → scan for prediction</li>
-                            <li>If not found → POE (start with A)</li>
+                            <li>Hunt Mode → scan for your prediction</li>
+                            <li>Correct answer: P → C &nbsp;or&nbsp; /C → /P</li>
+                            <li>If not found → POE (start with answer choice A)</li>
                         </ul>
                     </div>
                 </div>
@@ -142,9 +113,22 @@
                 <div class="arrow">↓</div>
                 
                 <div class="step final-step">
-                    <div class="step-title">Correct Answer Check</div>
+                    <div class="step-title">Right Answer Check</div>
                     <div class="step-content">
-                        Bridges Premise → Conclusion 100% · Makes argument valid
+                        Premise + Answer Choice → you should 100% be able to arrive at the Conclusion.
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step trap-step">
+                    <div class="step-title">⚠ Trap Answer Choices</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Wrong direction: Conclusion → Premise</li>
+                            <li>Wrong negation: /Premise → /Conclusion</li>
+                            <li>Strengthens but does not guarantee a conclusion</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -158,4 +142,7 @@
     </section>
 
     <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#1d6b78797c6f74727333696869726f74737a5d7a707c7471337e7270"><span class="__c
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+</body>
+</html>

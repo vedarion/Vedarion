@@ -19,9 +19,10 @@
         .vm-subtitle{color:#888;font-size:14px;font-style:italic}
         .vm-levels{padding:40px 20px}
         .tier-cards{max-width:900px;margin:0 auto;display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
-        .tier-card{background:#2A2A2A;border:1px solid #333;padding:25px;width:280px;cursor:pointer;transition:all .3s}
-        .tier-card:hover{border-color:#555}
-        .tier-card.selected{border-color:#C65D3B}
+        .tier-card{background:#2A2A2A;border:2px solid #333;padding:25px;width:280px;cursor:pointer;transition:all .3s}
+        .tier-card:hover{border-color:#555;background:#333}
+        .tier-card.selected{border-color:#C65D3B;background:#1A1A1A;box-shadow:0 0 0 1px #C65D3B,0 4px 15px rgba(198,93,59,.25)}
+        .tier-card.selected .tier-num{color:#C65D3B}
         .tier-card.locked{opacity:.5;cursor:not-allowed}
         .tier-num{color:#999;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
         .tier-name{color:white;font-size:20px;font-weight:600;margin-bottom:8px}
