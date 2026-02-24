@@ -84,10 +84,23 @@
         }
         
         .hero-tagline {
-            font-size: 20px;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            font-weight: 400;
             color: #B0B0B0;
             margin-bottom: 15px;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            line-height: 1.5;
+        }
+
+        .tagline-big {
+            font-size: 28px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+        }
+
+        .tagline-accent {
+            color: #C65D3B;
         }
         
         .hero-description {
@@ -96,6 +109,63 @@
             max-width: 700px;
             margin: 0 auto 30px;
             line-height: 1.8;
+        }
+
+        /* Value Props */
+        .value-props {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            max-width: 720px;
+            margin: 0 auto 40px;
+        }
+
+        .value-card {
+            flex: 1;
+            padding: 32px 36px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .value-card:first-child {
+            border-right: none;
+        }
+
+        .value-card:hover {
+            border-color: rgba(198,93,59,0.3);
+        }
+
+        .value-number {
+            font-size: 11px;
+            color: #C65D3B;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .value-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .value-text {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.7;
+        }
+
+        .value-divider {
+            width: 1px;
+            background: rgba(255,255,255,0.07);
         }
         
         /* Dual CTA buttons */
@@ -498,11 +568,29 @@
             }
             
             .hero-tagline {
-                font-size: 16px;
+                font-size: 18px;
+            }
+
+            .tagline-big {
+                font-size: 23px;
             }
             
             .hero-description {
                 font-size: 16px;
+            }
+
+            .value-props {
+                flex-direction: column;
+            }
+
+            .value-card:first-child {
+                border-right: 1px solid rgba(255,255,255,0.07);
+                border-bottom: none;
+            }
+
+            .value-divider {
+                width: 100%;
+                height: 1px;
             }
 
             .hero-cta-row {
@@ -566,10 +654,20 @@
     <!-- Hero Section -->
     <section class="hero">
         <h1 class="hero-brand"><span class="v-accent">V</span>EDARION</h1>
-        <p class="hero-tagline">The faster path to your target score.</p>
-        <p class="hero-description">
-            Pattern recognition methodology.<br>AI practice &mdash; guided by a real tutor.
-        </p>
+        <p class="hero-tagline">LSAT simplified.<br><span class="tagline-big">Advanced Pattern Recognition for higher scores.</span></p>
+
+        <!-- Value Props Side by Side -->
+        <div class="value-props">
+            <div class="value-card">
+                <h3 class="value-title">Simplified Foundation</h3>
+                <p class="value-text">We break the LSAT down into clear, structured steps so it's easier to learn.</p>
+            </div>
+            <div class="value-divider"></div>
+            <div class="value-card">
+                <h3 class="value-title">Advanced Pattern Recognition</h3>
+                <p class="value-text">Go beyond question types and learn pattern recognition to get higher scores.</p>
+            </div>
+        </div>
 
         <!-- CTA -->
         <div class="hero-cta-row">
