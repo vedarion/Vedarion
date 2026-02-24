@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up — VEDARION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: white; }
+
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-card h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .auth-card .subtitle {
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #111;
+            border: 1px solid #222;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus { border-color: #C65D3B; }
+        .form-group input::placeholder { color: #444; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #C65D3B;
+            color: white;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover { background: #A04D2E; }
+        .submit-btn:disabled { background: #333; cursor: not-allowed; }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .auth-footer a { color: #C65D3B; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+
+        .error-msg {
+            background: rgba(198, 93, 59, 0.1);
+            border: 1px solid rgba(198, 93, 59, 0.3);
+            color: #C65D3B;
+            padding: 12px 16px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-msg {
+            background: rgba(59, 198, 93, 0.1);
+            border: 1px solid rgba(59, 198, 93, 0.3);
+            color: #3bc65d;
+            padding: 12px 16px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .divider { height: 1px; background: #222; margin: 30px 0; }
+
+        @media (max-width: 600px) {
+            .nav { padding: 20px; }
+            .nav-links { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="learn.html">Learn</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="login.html">Sign In</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <h1>Create Your Account</h1>
+            <p class="subtitle">Start mastering the LSAT with pattern recognition.</p>
+
+            <div class="error-msg" id="errorMsg"></div>
+            <div class="success-msg" id="successMsg"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" placeholder="Your first name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Minimum 8 characters" required minlength="8">
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+            </form>
+
+            <div class="divider"></div>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        redirectIfLoggedIn();
+
+        const form = document.getElementById('signupForm');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'CREATING ACCOUNT...';
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const { data, error } = await vedarionAuth.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            first_name: firstName
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                if (data.user) {
+                    await vedarionAuth.from('profiles').insert({
+                        id: data.user.id,
+                        first_name: firstName,
+                        email: email
+                    });
+                }
+
+                if (data.session) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    successMsg.textContent = 'Account created! Check your email to confirm, then sign in.';
+                    successMsg.style.display = 'block';
+                    form.reset();
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message || 'Something went wrong. Please try again.';
+                errorMsg.style.display = 'block';
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'CREATE ACCOUNT';
+        });
+    </script>
+
+</body>
+</html>
