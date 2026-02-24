@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — VEDARION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid #151515;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: white; }
+        .nav-links .user-name {
+            color: #C65D3B;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .loading-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .dashboard { display: none; }
+
+        .dashboard-header {
+            padding: 60px 50px 40px;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-header .welcome-sub {
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 0 50px 50px;
+        }
+
+        .stat-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            padding: 28px 24px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: #fff;
+        }
+
+        .stat-card .stat-value.accent { color: #C65D3B; }
+
+        .section-header {
+            padding: 20px 50px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .section-header a {
+            color: #C65D3B;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 50px 60px;
+        }
+
+        .course-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            padding: 30px;
+            transition: border-color 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .course-card:hover { border-color: #C65D3B; }
+
+        .course-card .card-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #C65D3B;
+            margin-bottom: 14px;
+        }
+
+        .course-card h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .course-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-container {
+            background: #1a1a1a;
+            height: 4px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: #C65D3B;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-locked {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .card-locked .card-tag { color: #444; }
+
+        .section-divider {
+            height: 1px;
+            background: #151515;
+            margin: 20px 50px;
+        }
+
+        .activity-list {
+            padding: 0 50px 60px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid #151515;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-item .activity-text {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .activity-item .activity-text strong { color: #fff; }
+
+        .activity-item .activity-date {
+            font-size: 12px;
+            color: #444;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 20px; }
+            .nav-links { gap: 20px; }
+            .dashboard-header { padding: 40px 20px 30px; }
+            .stats-row { padding: 0 20px 40px; }
+            .section-header { padding: 20px; }
+            .course-grid { padding: 0 20px 40px; grid-template-columns: 1fr; }
+            .activity-list { padding: 0 20px 40px; }
+            .section-divider { margin: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="learn.html">Learn</a>
+            <a href="pricing.html">Pricing</a>
+            <span class="user-name" id="navUserName"></span>
+            <a href="#" id="signOutBtn">Sign Out</a>
+        </div>
+    </nav>
+
+    <div class="loading-screen" id="loadingScreen">LOADING...</div>
+
+    <div class="dashboard" id="dashboard">
+
+        <div class="dashboard-header">
+            <h1 id="welcomeMsg">Welcome back</h1>
+            <p class="welcome-sub">Pick up where you left off.</p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Patterns Studied</div>
+                <div class="stat-value accent" id="patternsStudied">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Practice Questions</div>
+                <div class="stat-value" id="questionsCompleted">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Accuracy</div>
+                <div class="stat-value" id="accuracy">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Member Since</div>
+                <div class="stat-value" id="memberSince" style="font-size: 22px;">—</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Your Courses</h2>
+            <a href="learn.html">View All →</a>
+        </div>
+
+        <div class="course-grid">
+            <a class="course-card" href="learn.html">
+                <div class="card-tag">Foundation</div>
+                <h3>Identifying Conclusions</h3>
+                <p>Learn to find the conclusion in any LSAT argument — the foundation of every question type.</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-label">Not started</div>
+            </a>
+
+            <a class="course-card" href="learn.html">
+                <div class="card-tag">Foundation</div>
+                <h3>Translating Words</h3>
+                <p>Master sufficient and necessary conditions through everyday language patterns.</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-label">Not started</div>
+            </a>
+
+            <div class="course-card card-locked">
+                <div class="card-tag">Coming Soon</div>
+                <h3>Pattern Recognition</h3>
+                <p>Identify recurring argument structures across all question types.</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-label">Locked</div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section-header">
+            <h2>Recent Activity</h2>
+        </div>
+
+        <div class="activity-list" id="activityList">
+            <div class="activity-item">
+                <span class="activity-text">Welcome to <strong>VEDARION</strong>. Start with Identifying Conclusions.</span>
+                <span class="activity-date">Today</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        (async () => {
+            const session = await requireAuth();
+            if (!session) return;
+
+            const user = session.user;
+            const firstName = user.user_metadata?.first_name || 'Student';
+
+            document.getElementById('navUserName').textContent = firstName;
+            document.getElementById('welcomeMsg').textContent = `Welcome back, ${firstName}`;
+
+            const created = new Date(user.created_at);
+            const options = { month: 'short', year: 'numeric' };
+            document.getElementById('memberSince').textContent = created.toLocaleDateString('en-US', options);
+
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+
+            document.getElementById('signOutBtn').addEventListener('click', async (e) => {
+                e.preventDefault();
+                await vedarionAuth.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        })();
+    </script>
+
+</body>
+</html>
