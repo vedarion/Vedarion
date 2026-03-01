@@ -166,16 +166,17 @@
 
         .btn-event {
             display: inline-block;
-            background: #C65D3B;
+            background: transparent;
             color: #fff;
             padding: 18px 44px;
             font-size: 14px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             font-weight: 600;
-            transition: background 0.3s ease;
+            border: 1px solid #444;
+            transition: border-color 0.3s ease, color 0.3s ease;
         }
-        .event-banner:hover .btn-event { background: #a94e32; }
+        .event-banner:hover .btn-event { border-color: #fff; }
 
         .event-free-note {
             font-size: 12px;
@@ -329,7 +330,6 @@
             </div>
             <div class="event-cta-area">
                 <span class="btn-event">Reserve Your Spot</span>
-                <span class="event-free-note">100% free · No commitment</span>
             </div>
         </a>
 
