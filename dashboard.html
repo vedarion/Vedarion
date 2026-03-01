@@ -62,41 +62,155 @@
 
         /* ── Header ── */
         .dashboard-header {
-            padding: 60px 50px 20px;
+            padding: 50px 50px 16px;
         }
         .dashboard-header h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 38px;
+            font-size: 34px;
             font-weight: 300;
             letter-spacing: 2px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .dashboard-header .welcome-sub {
-            color: #666;
-            font-size: 15px;
+            color: #555;
+            font-size: 14px;
             letter-spacing: 0.5px;
-            line-height: 1.6;
+        }
+
+        /* ── Event Banner ── */
+        .event-banner {
+            margin: 30px 50px;
+            background: linear-gradient(135deg, #1a1210 0%, #111 100%);
+            border: 1px solid #C65D3B;
+            padding: 48px 52px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s ease;
+        }
+
+        .event-banner:hover { transform: translateY(-2px); }
+
+        .event-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #C65D3B, #a94e32, #C65D3B);
+        }
+
+        .event-info { flex: 1; }
+
+        .event-live-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #C65D3B;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .event-live-dot {
+            width: 8px;
+            height: 8px;
+            background: #C65D3B;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .event-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .event-date {
+            font-size: 16px;
+            color: #ccc;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .event-details {
+            font-size: 15px;
+            color: #888;
+            line-height: 1.7;
+        }
+
+        .event-cta-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn-event {
+            display: inline-block;
+            background: #C65D3B;
+            color: #fff;
+            padding: 18px 44px;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        .event-banner:hover .btn-event { background: #a94e32; }
+
+        .event-free-note {
+            font-size: 12px;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Section Label ── */
+        .section-label {
+            padding: 40px 50px 16px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
         }
 
         /* ── Action Cards ── */
         .action-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            padding: 40px 50px 60px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 0 50px 50px;
         }
 
         .action-card {
             background: #111;
             border: 1px solid #1a1a1a;
-            padding: 36px 32px;
+            padding: 32px 28px;
             transition: border-color 0.3s ease, transform 0.2s ease;
             text-decoration: none;
             color: inherit;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 240px;
+            min-height: 180px;
         }
         .action-card:hover {
             border-color: #C65D3B;
@@ -108,26 +222,26 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #C65D3B;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .action-card h3 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 400;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
         }
 
         .action-card p {
-            color: #777;
-            font-size: 14px;
+            color: #666;
+            font-size: 13px;
             line-height: 1.7;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .card-cta {
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 1px;
             color: #C65D3B;
             font-weight: 500;
@@ -141,15 +255,6 @@
             transform: translateX(4px);
         }
 
-        /* ── Coming Soon card ── */
-        .action-card.coming-soon {
-            pointer-events: none;
-            border: 1px dashed #222;
-        }
-        .action-card.coming-soon h3 { color: #999; }
-        .action-card.coming-soon .card-tag { color: #555; }
-        .action-card.coming-soon .card-cta { color: #444; }
-
         /* ── Divider ── */
         .section-divider {
             height: 1px;
@@ -162,9 +267,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 50px;
-            color: #444;
-            font-size: 12px;
+            padding: 24px 50px;
+            color: #333;
+            font-size: 11px;
             letter-spacing: 1px;
         }
 
@@ -172,10 +277,20 @@
         @media (max-width: 768px) {
             .nav { padding: 20px; }
             .nav-links { gap: 20px; }
-            .dashboard-header { padding: 40px 20px 20px; }
-            .action-grid { padding: 30px 20px 40px; grid-template-columns: 1fr; }
+            .dashboard-header { padding: 30px 20px 12px; }
+            .event-banner {
+                margin: 20px;
+                padding: 32px 24px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .event-title { font-size: 28px; }
+            .event-cta-area { width: 100%; }
+            .btn-event { width: 100%; text-align: center; }
+            .section-label { padding: 30px 20px 12px; }
+            .action-grid { padding: 0 20px 30px; grid-template-columns: 1fr; }
             .section-divider { margin: 0 20px; }
-            .member-bar { padding: 24px 20px; flex-direction: column; gap: 8px; }
+            .member-bar { padding: 20px; flex-direction: column; gap: 8px; }
         }
     </style>
 </head>
@@ -185,8 +300,8 @@
         <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
             <a href="learn.html">Learn</a>
-            <a href="pricing.html">Pricing</a>
             <a href="course.html">Courses</a>
+            <a href="pricing.html">Pricing</a>
             <a href="dashboard.html">Dashboard</a>
             <span class="user-name" id="navUserName"></span>
         </div>
@@ -198,39 +313,55 @@
 
         <div class="dashboard-header">
             <h1 id="welcomeMsg">Welcome back</h1>
-            <p class="welcome-sub">Here's everything you need to start mastering the LSAT.</p>
+            <p class="welcome-sub">Here's what's happening at VEDARION.</p>
         </div>
 
+        <!-- ── Event Banner ── -->
+        <a href="https://us06web.zoom.us/j/82877683031" target="_blank" rel="noopener" class="event-banner">
+            <div class="event-info">
+                <div class="event-live-tag">
+                    <span class="event-live-dot"></span>
+                    Upcoming Live Event · Free
+                </div>
+                <h2 class="event-title">Free LSAT Strategy Session</h2>
+                <div class="event-date">Thursday, March 5 · 8–9 PM CST</div>
+                <p class="event-details">One hour. Live on Zoom. Learn what's actually holding your score back — and how to fix it.</p>
+            </div>
+            <div class="event-cta-area">
+                <span class="btn-event">Reserve Your Spot</span>
+                <span class="event-free-note">100% free · No commitment</span>
+            </div>
+        </a>
+
+        <!-- ── Quick Links ── -->
+        <div class="section-label">Explore</div>
         <div class="action-grid">
 
-            <!-- Card 1: Start Learning -->
+            <a class="action-card" href="course.html">
+                <div>
+                    <div class="card-tag">Live Courses</div>
+                    <h3>Enroll in a Course</h3>
+                    <p>Foundation or Advanced — 8 live sessions starting March 15. Small classes, real results.</p>
+                </div>
+                <div class="card-cta">View Courses <span class="arrow">→</span></div>
+            </a>
+
             <a class="action-card" href="learn.html">
                 <div>
                     <div class="card-tag">Free Resources</div>
                     <h3>Start Learning</h3>
-                    <p>Explore flowcharts, pattern breakdowns, and free lessons built around the VEDARION method.</p>
+                    <p>Flowcharts, pattern breakdowns, and free lessons built around the VEDARION method.</p>
                 </div>
                 <div class="card-cta">Go to Learn <span class="arrow">→</span></div>
             </a>
 
-            <!-- Card 2: Free Game Plan Call -->
             <a class="action-card" href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" target="_blank" rel="noopener">
                 <div>
                     <div class="card-tag">Free · 15 Minutes</div>
                     <h3>Book a Game Plan Call</h3>
-                    <p>Figure out what's holding your score back and get a clear plan for what to do next. No pressure, no pitch.</p>
+                    <p>Not sure where to start? Get a clear plan for what to do next.</p>
                 </div>
                 <div class="card-cta">Book Now <span class="arrow">→</span></div>
-            </a>
-
-            <!-- Card 3: Free Event -->
-            <a class="action-card" href="https://us06web.zoom.us/j/82877683031" target="_blank" rel="noopener" style="border-color: #C65D3B;">
-                <div>
-                    <div class="card-tag">Free · Live Event</div>
-                    <h3>Free LSAT Strategy Session</h3>
-                    <p>Thursday, March 5 · 8–9 PM CST. Join live on Zoom for a free strategy session — learn what's actually holding your score back and how to fix it.</p>
-                </div>
-                <div class="card-cta">Join on Zoom <span class="arrow">→</span></div>
             </a>
 
         </div>
