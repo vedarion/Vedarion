@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free LSAT Strategy Session — VEDARION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* ── Nav ── */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid #151515;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: white; }
+
+        /* ── Main ── */
+        .rsvp-container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .event-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #C65D3B;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-dot {
+            width: 8px;
+            height: 8px;
+            background: #C65D3B;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .rsvp-container h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .event-date {
+            font-size: 17px;
+            color: #ccc;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .event-desc {
+            font-size: 16px;
+            color: #888;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        /* ── Form ── */
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+        }
+
+        .form-group input {
+            background: #111;
+            border: 1px solid #222;
+            color: #fff;
+            padding: 16px 18px;
+            font-size: 15px;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #C65D3B;
+        }
+
+        .form-group input::placeholder {
+            color: #444;
+        }
+
+        .btn-submit {
+            background: #C65D3B;
+            color: #fff;
+            padding: 18px 36px;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background: #a94e32;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-error {
+            color: #C65D3B;
+            font-size: 13px;
+            display: none;
+        }
+
+        /* ── Success State ── */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .success-state h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+
+        .success-state p {
+            font-size: 16px;
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .zoom-link-box {
+            background: #111;
+            border: 1px solid #C65D3B;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+
+        .zoom-link-box .zoom-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #C65D3B;
+            margin-bottom: 12px;
+        }
+
+        .zoom-link-box a {
+            color: #fff;
+            font-size: 17px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            word-break: break-all;
+        }
+
+        .zoom-link-box a:hover {
+            color: #C65D3B;
+        }
+
+        .zoom-link-box .zoom-details {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .success-note {
+            font-size: 13px;
+            color: #555;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-courses {
+            display: inline-block;
+            background: transparent;
+            color: #C65D3B;
+            padding: 14px 32px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid #C65D3B;
+            transition: background 0.3s ease, color 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .btn-courses:hover {
+            background: #C65D3B;
+            color: #fff;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            border-top: 1px solid #151515;
+            padding: 30px 50px;
+            text-align: center;
+            color: #333;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            .nav { padding: 20px; }
+            .nav-links { gap: 20px; }
+            .rsvp-container { padding: 50px 20px; }
+            .rsvp-container h1 { font-size: 32px; }
+            .footer { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="learn.html">Learn</a>
+            <a href="course.html">Courses</a>
+            <a href="pricing.html">Pricing</a>
+        </div>
+    </nav>
+
+    <div class="rsvp-container">
+
+        <!-- ── Form State ── -->
+        <div id="formState">
+            <div class="event-tag">
+                <span class="event-dot"></span>
+                Free Live Event
+            </div>
+            <h1>Free LSAT Strategy Session</h1>
+            <div class="event-date">Thursday, March 5 · 8–9 PM CST</div>
+            <p class="event-desc">One hour on Zoom. Learn what's actually holding your score back — and walk away with a clear plan to fix it.</p>
+
+            <div class="rsvp-form">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="rsvpName" placeholder="Your first name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="rsvpEmail" placeholder="you@email.com">
+                </div>
+                <div class="form-error" id="formError"></div>
+                <button class="btn-submit" id="submitBtn" onclick="handleRSVP()">Reserve Your Spot</button>
+            </div>
+        </div>
+
+        <!-- ── Success State ── -->
+        <div class="success-state" id="successState">
+            <h2>You're in.</h2>
+            <p>See you Thursday, March 5 at 8 PM CST.</p>
+
+            <div class="zoom-link-box">
+                <div class="zoom-label">Zoom Link — Save This</div>
+                <a href="https://us06web.zoom.us/j/82877683031" target="_blank" rel="noopener">https://us06web.zoom.us/j/82877683031</a>
+                <div class="zoom-details">Meeting ID: 828 7768 3031</div>
+            </div>
+
+            <p class="success-note">Bookmark this link or add it to your calendar. We'll start right at 8 PM.</p>
+
+            <a href="course.html" class="btn-courses">Browse Live Courses →</a>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        © 2026 VEDARION. All rights reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://fqshijwiushtrncinjif.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_mA1mUh0atDsGPYFclPoj8A_4c2bcYTR';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function handleRSVP() {
+            const name = document.getElementById('rsvpName').value.trim();
+            const email = document.getElementById('rsvpEmail').value.trim();
+            const errorEl = document.getElementById('formError');
+            const btn = document.getElementById('submitBtn');
+
+            // Validate
+            errorEl.style.display = 'none';
+
+            if (!name || !email) {
+                errorEl.textContent = 'Please fill in both fields.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                errorEl.textContent = 'Please enter a valid email.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            // Submit
+            btn.disabled = true;
+            btn.textContent = 'RESERVING...';
+
+            const { error } = await sb
+                .from('event_rsvps')
+                .insert({
+                    name: name,
+                    email: email,
+                    event_name: 'Free LSAT Strategy Session — March 5, 2026'
+                });
+
+            if (error) {
+                errorEl.textContent = 'Something went wrong. Please try again.';
+                errorEl.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'RESERVE YOUR SPOT';
+                return;
+            }
+
+            // Show success
+            document.getElementById('formState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
