@@ -17,6 +17,51 @@
             background: #0A0A0A;
         }
         
+        /* Announcement Bar */
+        .announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: #111;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .announcement-bar:hover {
+            background: #1a1210;
+            color: #ccc;
+        }
+
+        .announce-dot {
+            width: 6px;
+            height: 6px;
+            background: #C65D3B;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .announce-cta {
+            color: #C65D3B;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
         /* Nav */
         .nav {
             position: absolute;
@@ -68,7 +113,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 120px 20px 40px;
+            padding: 160px 20px 40px;
         }
         
         .hero-brand {
@@ -553,13 +598,18 @@
                 flex-direction: column;
                 gap: 20px;
             }
+
+            .announcement-bar {
+                font-size: 11px;
+                padding: 8px 16px;
+            }
             
             .nav-links {
                 gap: 25px;
             }
             
             .hero {
-                padding: 100px 20px 40px;
+                padding: 140px 20px 40px;
             }
             
             .hero-brand {
@@ -639,8 +689,14 @@
     </style>
 </head>
 <body>
+    <!-- Announcement Bar -->
+    <a href="rsvp.html" class="announcement-bar">
+        <span class="announce-dot"></span>
+        Free LSAT Strategy Session · March 5, 8 PM CST · <span class="announce-cta">Reserve your spot</span>
+    </a>
+
     <!-- Nav -->
-    <nav class="nav">
+    <nav class="nav" style="top: 48px;">
         <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
             <a href="learn.html">Learn</a>
