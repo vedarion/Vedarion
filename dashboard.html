@@ -16,6 +16,7 @@
             color: #fff;
         }
 
+        /* ── Nav ── */
         .nav {
             display: flex;
             justify-content: space-between;
@@ -46,6 +47,7 @@
             letter-spacing: 1px;
         }
 
+        /* ── Loading ── */
         .loading-screen {
             display: flex;
             align-items: center;
@@ -58,95 +60,50 @@
 
         .dashboard { display: none; }
 
+        /* ── Header ── */
         .dashboard-header {
-            padding: 60px 50px 40px;
+            padding: 60px 50px 20px;
         }
-
         .dashboard-header h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 300;
             letter-spacing: 2px;
             margin-bottom: 6px;
         }
-
         .dashboard-header .welcome-sub {
             color: #666;
-            font-size: 14px;
+            font-size: 15px;
             letter-spacing: 0.5px;
+            line-height: 1.6;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 0 50px 50px;
-        }
-
-        .stat-card {
-            background: #111;
-            border: 1px solid #1a1a1a;
-            padding: 28px 24px;
-        }
-
-        .stat-card .stat-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-            margin-bottom: 12px;
-        }
-
-        .stat-card .stat-value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 400;
-            color: #fff;
-        }
-
-        .stat-card .stat-value.accent { color: #C65D3B; }
-
-        .section-header {
-            padding: 20px 50px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .section-header a {
-            color: #C65D3B;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-decoration: none;
-        }
-
-        .course-grid {
+        /* ── Action Cards ── */
+        .action-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 0 50px 60px;
+            gap: 24px;
+            padding: 40px 50px 60px;
         }
 
-        .course-card {
+        .action-card {
             background: #111;
             border: 1px solid #1a1a1a;
-            padding: 30px;
-            transition: border-color 0.3s ease;
+            padding: 36px 32px;
+            transition: border-color 0.3s ease, transform 0.2s ease;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 240px;
+        }
+        .action-card:hover {
+            border-color: #C65D3B;
+            transform: translateY(-2px);
         }
 
-        .course-card:hover { border-color: #C65D3B; }
-
-        .course-card .card-tag {
+        .action-card .card-tag {
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -154,89 +111,71 @@
             margin-bottom: 14px;
         }
 
-        .course-card h3 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            letter-spacing: 0.3px;
-        }
-
-        .course-card p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar-container {
-            background: #1a1a1a;
-            height: 4px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            background: #C65D3B;
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-
-        .progress-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 10px;
+        .action-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 12px;
             letter-spacing: 0.5px;
         }
 
-        .card-locked {
-            opacity: 0.4;
-            pointer-events: none;
+        .action-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 24px;
         }
 
-        .card-locked .card-tag { color: #444; }
+        .card-cta {
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: #C65D3B;
+            font-weight: 500;
+            margin-top: auto;
+        }
+        .card-cta .arrow {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .action-card:hover .card-cta .arrow {
+            transform: translateX(4px);
+        }
 
+        /* ── Coming Soon card ── */
+        .action-card.coming-soon {
+            pointer-events: none;
+            border: 1px dashed #222;
+        }
+        .action-card.coming-soon h3 { color: #999; }
+        .action-card.coming-soon .card-tag { color: #555; }
+        .action-card.coming-soon .card-cta { color: #444; }
+
+        /* ── Divider ── */
         .section-divider {
             height: 1px;
             background: #151515;
-            margin: 20px 50px;
+            margin: 0 50px;
         }
 
-        .activity-list {
-            padding: 0 50px 60px;
-        }
-
-        .activity-item {
+        /* ── Member Info ── */
+        .member-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid #151515;
-        }
-
-        .activity-item:last-child { border-bottom: none; }
-
-        .activity-item .activity-text {
-            font-size: 14px;
-            color: #999;
-        }
-
-        .activity-item .activity-text strong { color: #fff; }
-
-        .activity-item .activity-date {
-            font-size: 12px;
+            padding: 30px 50px;
             color: #444;
-            letter-spacing: 0.5px;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
+        /* ── Mobile ── */
         @media (max-width: 768px) {
             .nav { padding: 20px; }
             .nav-links { gap: 20px; }
-            .dashboard-header { padding: 40px 20px 30px; }
-            .stats-row { padding: 0 20px 40px; }
-            .section-header { padding: 20px; }
-            .course-grid { padding: 0 20px 40px; grid-template-columns: 1fr; }
-            .activity-list { padding: 0 20px 40px; }
-            .section-divider { margin: 20px; }
+            .dashboard-header { padding: 40px 20px 20px; }
+            .action-grid { padding: 30px 20px 40px; grid-template-columns: 1fr; }
+            .section-divider { margin: 0 20px; }
+            .member-bar { padding: 24px 20px; flex-direction: column; gap: 8px; }
         }
     </style>
 </head>
@@ -247,8 +186,9 @@
         <div class="nav-links">
             <a href="learn.html">Learn</a>
             <a href="pricing.html">Pricing</a>
+            <a href="course.html">Courses</a>
+            <a href="dashboard.html">Dashboard</a>
             <span class="user-name" id="navUserName"></span>
-            <a href="#" id="signOutBtn">Sign Out</a>
         </div>
     </nav>
 
@@ -258,76 +198,48 @@
 
         <div class="dashboard-header">
             <h1 id="welcomeMsg">Welcome back</h1>
-            <p class="welcome-sub">Pick up where you left off.</p>
+            <p class="welcome-sub">Here's everything you need to start mastering the LSAT.</p>
         </div>
 
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-label">Patterns Studied</div>
-                <div class="stat-value accent" id="patternsStudied">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Practice Questions</div>
-                <div class="stat-value" id="questionsCompleted">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Accuracy</div>
-                <div class="stat-value" id="accuracy">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Member Since</div>
-                <div class="stat-value" id="memberSince" style="font-size: 22px;">—</div>
-            </div>
-        </div>
+        <div class="action-grid">
 
-        <div class="section-header">
-            <h2>Your Courses</h2>
-            <a href="learn.html">View All →</a>
-        </div>
-
-        <div class="course-grid">
-            <a class="course-card" href="learn.html">
-                <div class="card-tag">Foundation</div>
-                <h3>Identifying Conclusions</h3>
-                <p>Learn to find the conclusion in any LSAT argument — the foundation of every question type.</p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: 0%"></div>
+            <!-- Card 1: Start Learning -->
+            <a class="action-card" href="learn.html">
+                <div>
+                    <div class="card-tag">Free Resources</div>
+                    <h3>Start Learning</h3>
+                    <p>Explore flowcharts, pattern breakdowns, and free lessons built around the VEDARION method.</p>
                 </div>
-                <div class="progress-label">Not started</div>
+                <div class="card-cta">Go to Learn <span class="arrow">→</span></div>
             </a>
 
-            <a class="course-card" href="learn.html">
-                <div class="card-tag">Foundation</div>
-                <h3>Translating Words</h3>
-                <p>Master sufficient and necessary conditions through everyday language patterns.</p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: 0%"></div>
+            <!-- Card 2: Free Game Plan Call -->
+            <a class="action-card" href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" target="_blank" rel="noopener">
+                <div>
+                    <div class="card-tag">Free · 15 Minutes</div>
+                    <h3>Book a Game Plan Call</h3>
+                    <p>Figure out what's holding your score back and get a clear plan for what to do next. No pressure, no pitch.</p>
                 </div>
-                <div class="progress-label">Not started</div>
+                <div class="card-cta">Book Now <span class="arrow">→</span></div>
             </a>
 
-            <div class="course-card card-locked">
-                <div class="card-tag">Coming Soon</div>
-                <h3>Pattern Recognition</h3>
-                <p>Identify recurring argument structures across all question types.</p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: 0%"></div>
+            <!-- Card 3: Free Event -->
+            <a class="action-card" href="https://us06web.zoom.us/j/82877683031" target="_blank" rel="noopener" style="border-color: #C65D3B;">
+                <div>
+                    <div class="card-tag">Free · Live Event</div>
+                    <h3>Free LSAT Strategy Session</h3>
+                    <p>Thursday, March 5 · 8–9 PM CST. Join live on Zoom for a free strategy session — learn what's actually holding your score back and how to fix it.</p>
                 </div>
-                <div class="progress-label">Locked</div>
-            </div>
+                <div class="card-cta">Join on Zoom <span class="arrow">→</span></div>
+            </a>
+
         </div>
 
         <div class="section-divider"></div>
 
-        <div class="section-header">
-            <h2>Recent Activity</h2>
-        </div>
-
-        <div class="activity-list" id="activityList">
-            <div class="activity-item">
-                <span class="activity-text">Welcome to <strong>VEDARION</strong>. Start with Identifying Conclusions.</span>
-                <span class="activity-date">Today</span>
-            </div>
+        <div class="member-bar">
+            <span>Member since <span id="memberSince">—</span></span>
+            <span>VEDARION · Pattern-First LSAT Prep</span>
         </div>
 
     </div>
@@ -351,12 +263,6 @@
 
             document.getElementById('loadingScreen').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
-
-            document.getElementById('signOutBtn').addEventListener('click', async (e) => {
-                e.preventDefault();
-                await vedarionAuth.auth.signOut();
-                window.location.href = 'index.html';
-            });
         })();
     </script>
 

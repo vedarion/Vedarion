@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses — VEDARION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #0A0A0A;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* ── Nav ── */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            border-bottom: 1px solid #151515;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: white; }
+
+        /* ── Page Hero ── */
+        .page-hero {
+            padding: 80px 50px 60px;
+            text-align: center;
+        }
+
+        .page-hero-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #C65D3B;
+            margin-bottom: 20px;
+        }
+
+        .page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .page-hero p {
+            font-size: 17px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: #151515;
+            margin: 0 50px;
+        }
+
+        /* ── Side by Side Courses ── */
+        .courses-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 60px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s ease;
+        }
+
+        .course-card:hover { border-color: #272727; }
+
+        .course-card-header {
+            padding: 44px 40px 32px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-tier {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #C65D3B;
+            margin-bottom: 14px;
+        }
+
+        .course-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .course-name .accent { color: #C65D3B; }
+
+        .course-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 300;
+            color: #555;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .course-desc {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #444;
+            min-width: 80px;
+        }
+
+        .meta-value {
+            font-size: 13px;
+            color: #bbb;
+            letter-spacing: 0.3px;
+        }
+
+        .course-pricing {
+            display: flex;
+            gap: 20px;
+            align-items: baseline;
+            margin-bottom: 24px;
+            margin-top: auto;
+        }
+
+        .price-main {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 400;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: #C65D3B;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .price-standard {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .course-cta-area {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #C65D3B;
+            color: #fff;
+            padding: 16px 32px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-primary:hover { background: #a94e32; transform: translateY(-1px); }
+
+        .payment-note {
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .btn-ghost {
+            display: inline-block;
+            color: #666;
+            padding: 12px 32px;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        .btn-ghost:hover { color: #C65D3B; }
+
+        /* ── Sessions List ── */
+        .course-card-sessions {
+            padding: 32px 40px 40px;
+            flex-grow: 1;
+        }
+
+        .sessions-heading {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .session-row {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #131313;
+            align-items: flex-start;
+        }
+
+        .session-row:last-child { border-bottom: none; }
+
+        .session-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 300;
+            color: #333;
+            min-width: 28px;
+        }
+
+        .session-title {
+            font-size: 13px;
+            color: #888;
+            letter-spacing: 0.2px;
+            line-height: 1.5;
+        }
+
+        /* ── Instructor ── */
+        .instructor-section {
+            padding: 60px 50px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #C65D3B;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 32px;
+        }
+
+        .instructor-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .instructor-photo {
+            width: 120px;
+            height: 120px;
+            background: #1a1a1a;
+            border: 1px solid #222;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .instructor-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .instructor-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .instructor-text .credentials {
+            font-size: 13px;
+            color: #C65D3B;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .instructor-text p {
+            font-size: 15px;
+            color: #888;
+            line-height: 1.8;
+        }
+
+        /* ── Final CTA ── */
+        .final-cta {
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 36px;
+        }
+
+        .final-cta .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: #C65D3B;
+            padding: 16px 36px;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid #C65D3B;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .btn-outline:hover { background: #C65D3B; color: #fff; }
+
+        /* ── Footer ── */
+        .footer {
+            border-top: 1px solid #151515;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .footer a {
+            color: #555;
+            text-decoration: none;
+        }
+        .footer a:hover { color: #fff; }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            .courses-container { grid-template-columns: 1fr; padding: 40px 20px; }
+            .nav { padding: 20px; }
+            .nav-links { gap: 20px; }
+            .page-hero { padding: 50px 20px 40px; }
+            .page-hero h1 { font-size: 34px; }
+            .course-card-header { padding: 32px 24px 24px; }
+            .course-card-sessions { padding: 24px 24px 32px; }
+            .instructor-section { padding: 40px 20px; }
+            .instructor-content { flex-direction: column; }
+            .final-cta { padding: 50px 20px; }
+            .divider { margin: 0 20px; }
+            .footer { padding: 24px 20px; flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="learn.html">Learn</a>
+            <a href="pricing.html">Pricing</a>
+        </div>
+    </nav>
+
+    <!-- ── Page Hero ── -->
+    <section class="page-hero">
+        <div class="page-hero-tag">Live Group Courses · Starting March 2026</div>
+        <h1>VEDARION Live Courses</h1>
+        <p>Whether you're starting from scratch or pushing for a higher score, choose the level that matches where you are right now.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── Two Courses Side by Side ── -->
+    <section class="courses-container">
+
+        <!-- FOUNDATION -->
+        <div class="course-card" id="foundation">
+            <div class="course-card-header">
+                <h2 class="course-name"><span class="accent">Foundation Course</span></h2>
+                <div class="course-subtitle">Ground Zero</div>
+                <p class="course-desc">
+                    We break the LSAT down into clear, structured steps so it's easier to learn. Eight sessions to help you get a complete understanding of the foundations and questions on the LSAT.
+                </p>
+
+                <div class="course-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Starts</span>
+                        <span class="meta-value">Sunday, March 16</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Schedule</span>
+                        <span class="meta-value">Sundays & Thursdays, 7–9 PM CST</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Duration</span>
+                        <span class="meta-value">4 weeks · 16 hours</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Class Size</span>
+                        <span class="meta-value">Max 10 students</span>
+                    </div>
+                </div>
+
+                <div class="course-pricing">
+                    <div>
+                        <div class="price-main">$700</div>
+                    </div>
+                </div>
+
+                <div class="course-cta-area">
+                    <a class="btn-primary" href="https://buy.stripe.com/aFa4gs7w1fFtcpTgyH7bW05">Enroll Now</a>
+                    <div class="payment-note">Klarna pay-in-4 available at checkout</div>
+                    <a class="btn-ghost" href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" target="_blank" rel="noopener">Not sure? Book a free call →</a>
+                </div>
+            </div>
+
+            <div class="course-card-sessions">
+                <div class="sessions-heading">8 Sessions</div>
+                <div class="session-row">
+                    <span class="session-num">01</span>
+                    <span class="session-title">Conditional Logic, Translating Words & Must Be True</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">02</span>
+                    <span class="session-title">Parts of an Argument, Main Point & Argument Part</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">03</span>
+                    <span class="session-title">Flaw: Conditional & Mixed</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">04</span>
+                    <span class="session-title">Sufficient Assumption & Reading Comprehension I</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">05</span>
+                    <span class="session-title">Necessary Assumption & Reading Comprehension II</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">06</span>
+                    <span class="session-title">Causal Reasoning, Strengthen & Weaken</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">07</span>
+                    <span class="session-title">Parallel Reasoning & Parallel Flaw</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">08</span>
+                    <span class="session-title">Complete Toolkit — MSS, Resolve/Reconcile & Agree/Disagree</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADVANCED -->
+        <div class="course-card" id="advanced">
+            <div class="course-card-header">
+                <h2 class="course-name"><span class="accent">Advanced Course</span></h2>
+                <div class="course-subtitle">Pattern Recognition</div>
+                <p class="course-desc">
+                    Go beyond question types and learn pattern recognition for higher scores. Every session focuses on medium-to-hard questions — the ones that actually separate a 155 from a 170. For students who already know the basics and are ready to push past their plateau.
+                </p>
+
+                <div class="course-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">Starts</span>
+                        <span class="meta-value">Saturday, March 15</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Schedule</span>
+                        <span class="meta-value">Saturdays & Sundays, 10 AM–12 PM CST</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Duration</span>
+                        <span class="meta-value">4 weeks · 16 hours</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">Class Size</span>
+                        <span class="meta-value">Max 10 students</span>
+                    </div>
+                </div>
+
+                <div class="course-pricing">
+                    <div>
+                        <div class="price-main">$800</div>
+                    </div>
+                </div>
+
+                <div class="course-cta-area">
+                    <a class="btn-primary" href="https://buy.stripe.com/aFa3co6rXbpd89D0zJ7bW04">Enroll Now</a>
+                    <div class="payment-note">Klarna pay-in-4 available at checkout</div>
+                    <a class="btn-ghost" href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" target="_blank" rel="noopener">Not sure? Book a free call →</a>
+                </div>
+            </div>
+
+            <div class="course-card-sessions">
+                <div class="sessions-heading">8 Sessions · Medium to Hard Questions</div>
+                <div class="session-row">
+                    <span class="session-num">01</span>
+                    <span class="session-title">Complex Translations & Advanced Inferences</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">02</span>
+                    <span class="session-title">Premise to Conclusion: Argument Mapping</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">03</span>
+                    <span class="session-title">Triggering Sufficient Conditions & Contrapositives</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">04</span>
+                    <span class="session-title">Advanced Reading Comprehension: Reading & Question Type Strategy</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">05</span>
+                    <span class="session-title">Correlation vs. Causation Under Time Pressure</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">06</span>
+                    <span class="session-title">Reading Comprehension: Advanced Timing & Accuracy</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">07</span>
+                    <span class="session-title">Sampling Questions & Math on the LSAT</span>
+                </div>
+                <div class="session-row">
+                    <span class="session-num">08</span>
+                    <span class="session-title">Other Patterns</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── Instructor ── -->
+    <section class="instructor-section">
+        <div class="section-tag">Your Instructor</div>
+        <h2 class="section-title">Meet Rahela</h2>
+
+        <div class="instructor-content">
+            <div class="instructor-photo">
+                <img src="rahela.jpeg" alt="Rahela">
+            </div>
+            <div class="instructor-text">
+                <h3>Rahela</h3>
+                <div class="credentials">LSAT 173 · Northwestern Law · 6 Years Teaching</div>
+                <p>
+                    I've spent six years teaching the LSAT across every format — private tutoring, live courses, and online platforms. I scored a 173 and graduated from Northwestern Law. But what makes my approach different isn't my score — it's the method. I don't teach you to memorize question types. I teach you to see the patterns underneath them — so the test becomes predictable.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ── Final CTA ── -->
+    <section class="final-cta">
+        <h2>10 Seats Per Course. First Cohort.</h2>
+        <p>VEDARION's first live courses start the week of March 15. Limited to 10 students per course.</p>
+        <div class="cta-row">
+            <a class="btn-primary" href="#foundation">Foundation — Ground Zero</a>
+            <a class="btn-primary" href="#advanced">Advanced — Pattern Recognition</a>
+        </div>
+        <p style="margin-top: 20px; color: #555; font-size: 13px;">Not sure which course is right for you?
+            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" target="_blank" rel="noopener" style="color: #C65D3B; text-decoration: none;">Book a free 15-min call</a>
+            and we'll figure it out together.
+        </p>
+    </section>
+
+    <footer class="footer">
+        <span>© 2026 VEDARION. All rights reserved.</span>
+        <a href="terms.html">Terms of Service</a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+
+</body>
+</html>
