@@ -240,12 +240,12 @@ async function loadUser(){
   S.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
 
   if(S.isTutor){
-    const{data:sts}=await db.from('students').select('*, profiles(first_name, email)').eq('assigned_tutor_id',user.id).order('created_at',{ascending:false});
+    const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('assigned_tutor_id',user.id).order('created_at',{ascending:false});
     S.students=sts||[];
     if(S.students.length>0){S.selId=S.students[0].id;await loadStudent(S.students[0].id);}
     else{S.student=null;S.sessions=[];}
   }else{
-    const{data:sts}=await db.from('students').select('*, profiles(first_name, email)').eq('profile_id',user.id);
+    const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('profile_id',user.id);
     if(sts&&sts.length>0){S.students=sts;S.selId=sts[0].id;S.student=sts[0];await loadStudent(sts[0].id);}
     else{S.student=null;S.sessions=[];}
   }
@@ -253,7 +253,7 @@ async function loadUser(){
 }
 
 async function loadStudent(id){
-  const{data:st}=await db.from('students').select('*, profiles(first_name, email)').eq('id',id).single();
+  const{data:st}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('id',id).single();
   S.student=st;
   const{data:sess}=await db.from('sessions').select('*').eq('student_id',id).order('session_number');
   for(let s of(sess||[])){
