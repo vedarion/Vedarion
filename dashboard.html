@@ -4,179 +4,150 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VEDARION — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#080808;--card:#0c0c0c;--border:#171717;--input:#101010;--text:#ddd;--dim:#888;--muted:#555;--faint:#333;--accent:#c97a45;--green:#6bc76b;--green-bg:#141f14}
-    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:3px}
-    select option{background:#111;color:#ccc}
+    :root{
+      --bg:#080808;--surface:#0c0c0c;--border:#151515;--border-hi:#252525;
+      --input:#0a0a0a;--text:#d4d4d4;--bright:#eaeaea;--dim:#777;--muted:#555;
+      --faint:#333;--deep:#1a1a1a;--accent:#c97a45;--green:#5cb85c;
+      --green-bg:rgba(92,184,92,.08);--red:#d9534f;
+      --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+      --serif:'Libre Baskerville',Georgia,serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:2px}
+    select option{background:#111;color:#bbb}
 
-    /* LOGIN */
-    .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
-    .login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px 36px;width:100%;max-width:380px;animation:fadeIn .4s ease}
-    .logo{font-family:'DM Mono',monospace;font-weight:700;letter-spacing:3px}
-    .logo .v{color:var(--accent)}.logo .r{color:var(--text)}
-    .login-box .logo{font-size:18px;text-align:center;margin-bottom:32px}
-    .lbl{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
-    .inp{width:100%;padding:12px 14px;background:var(--input);border:1px solid #1a1a1a;border-radius:9px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:16px;transition:border .2s}
-    .inp:focus{border-color:#333}
-    .btn{width:100%;padding:12px;background:#222;border:none;border-radius:9px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s}
-    .btn:hover{background:#2a2a2a}.btn:disabled{opacity:.5;cursor:not-allowed}
-    .login-err{color:#e85555;font-size:12px;text-align:center;margin-top:12px}
-    .forgot{text-align:center;margin-top:12px}
-    .forgot a{color:var(--muted);font-size:12px;font-family:'DM Mono',monospace;text-decoration:none}
-    .forgot a:hover{color:var(--dim)}
+    .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:radial-gradient(ellipse at 50% 30%,rgba(201,122,69,.03) 0%,transparent 60%)}
+    .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:100%;max-width:380px;animation:fadeUp .5s ease;box-shadow:0 32px 64px rgba(0,0,0,.4)}
+    .logo{font-family:var(--mono);font-weight:700;letter-spacing:4px}.logo .v{color:var(--accent)}.logo .rest{color:var(--bright)}
+    .login-box .logo{font-size:20px;text-align:center;margin-bottom:40px}
+    .lbl{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+    .inp{width:100%;padding:14px 16px;background:var(--input);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:14px;outline:none;margin-bottom:20px;transition:border-color .2s}
+    .inp:focus{border-color:#2a2a2a}.inp::placeholder{color:var(--faint)}
+    .btn-primary{width:100%;padding:14px;background:var(--deep);border:1px solid #222;border-radius:10px;color:var(--bright);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.5px;cursor:pointer;transition:all .2s}
+    .btn-primary:hover{background:#222;border-color:#333}.btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .login-err{color:var(--red);font-size:12px;text-align:center;margin-top:14px}
+    .forgot{text-align:center;margin-top:16px}.forgot a{color:var(--faint);font-size:11px;font-family:var(--mono);text-decoration:none;transition:color .2s}.forgot a:hover{color:var(--muted)}
 
-    /* NAV */
-    .nav{padding:14px 32px;border-bottom:1px solid #141414;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100}
-    .nav-left{display:flex;align-items:center;gap:10px}
-    .nav .logo{font-size:15px}
-    .nav-sep{color:#222;margin:0 4px}
-    .nav-role{color:var(--muted);font-size:12px;font-family:'DM Mono',monospace}
-    .nav-links{display:flex;align-items:center;gap:6px}
-    .nav-link{padding:5px 12px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.3px}
-    .nav-link:hover{color:var(--dim);background:#111}
-    .nav-right{display:flex;align-items:center;gap:12px}
-    .nav-user{color:var(--muted);font-size:12px;font-family:'DM Mono',monospace}
-    .sign-out{padding:5px 12px;background:#111;border:1px solid #1a1a1a;border-radius:6px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s}
-    .sign-out:hover{border-color:#333;color:var(--dim)}
+    .nav{padding:16px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:100}
+    .nav-left{display:flex;align-items:center;gap:12px}.nav .logo{font-size:14px}
+    .nav-sep{color:#1a1a1a;font-size:14px}.nav-role{color:var(--muted);font-size:11px;font-family:var(--mono);letter-spacing:.5px}
+    .nav-links{display:flex;align-items:center;gap:2px}
+    .nav-link{padding:6px 14px;color:var(--faint);font-family:var(--mono);font-size:10px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px}
+    .nav-link:hover{color:var(--muted);background:rgba(255,255,255,.02)}
+    .nav-right{display:flex;align-items:center;gap:14px}
+    .nav-user{color:var(--faint);font-size:11px;font-family:var(--mono)}
+    .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+    .sign-out:hover{border-color:var(--faint);color:var(--muted)}
 
-    /* LAYOUT */
-    .layout{display:flex;max-width:1100px;margin:0 auto;padding:24px;gap:20px;animation:fadeIn .4s ease}
-    .main{flex:1;min-width:0}
-    .sidebar{width:240px;flex-shrink:0}
+    .edit-banner{padding:8px 32px;background:rgba(201,122,69,.03);border-bottom:1px solid rgba(201,122,69,.06);display:flex;align-items:center;gap:8px}
+    .edit-banner svg{opacity:.4}.edit-banner span{font-size:10px;color:var(--faint);font-family:var(--mono);letter-spacing:.3px}
 
-    /* SIDEBAR */
-    .sb-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;position:sticky;top:80px}
-    .sb-title{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-    .sb-list{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
-    .sb-item{padding:10px 12px;border-radius:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;border:1px solid transparent}
-    .sb-item:hover{background:#111}
-    .sb-item.active{background:#111;border-color:#252525}
-    .sb-item .avatar{width:32px;height:32px;border-radius:8px;background:#181818;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:var(--muted);flex-shrink:0}
-    .sb-item.active .avatar{color:var(--text)}
-    .sb-item .sname{font-size:13px;color:var(--dim);font-weight:500}
-    .sb-item.active .sname{color:var(--text)}
-    .sb-item .spack{font-size:10px;color:var(--faint);font-family:'DM Mono',monospace}
-    .sb-divider{height:1px;background:var(--border);margin:10px 0}
-    .sb-add-title{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-    .sb-add-input{width:100%;padding:8px 10px;background:var(--input);border:1px solid #1a1a1a;border-radius:7px;color:var(--text);font-size:12px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:8px}
-    .sb-add-input:focus{border-color:#333}
-    .sb-add-input::placeholder{color:var(--faint)}
-    .sb-add-btn{width:100%;padding:7px;background:#181818;border:1px solid #222;border-radius:7px;color:var(--dim);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:all .2s}
-    .sb-add-btn:hover{background:#222;color:var(--text)}
-    .sb-add-btn:disabled{opacity:.5;cursor:not-allowed}
-    .sb-msg{font-size:11px;margin-top:6px;font-family:'DM Sans',sans-serif}
-    .sb-msg.err{color:#e85555}
-    .sb-msg.ok{color:var(--green)}
-    .sb-empty{color:var(--faint);font-size:12px;text-align:center;padding:16px 0}
+    .layout{display:flex;max-width:1080px;margin:0 auto;padding:32px;gap:28px;animation:fadeUp .4s ease}
+    .main{flex:1;min-width:0}.sidebar{width:230px;flex-shrink:0}
 
-    /* PROFILE CARD */
-    .profile{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:10px}
-    .profile-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
-    .p-name{font-size:24px;font-weight:700;font-family:'Libre Baskerville',Georgia,serif;color:#eee}
-    .p-pkg{margin-top:4px;color:#444;font-size:12px;font-family:'DM Mono',monospace}
-    .p-goal-lbl{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
-    .p-goal{font-size:32px;font-weight:700;font-family:'DM Mono',monospace;color:#eee;line-height:1}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-    .stat{background:var(--input);border-radius:9px;padding:11px 12px;text-align:center}
-    .stat-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-    .stat-val{font-size:14px;font-weight:700;color:#bbb;font-family:'DM Mono',monospace}
-    .prog-wrap{margin-bottom:14px}
-    .prog-top{display:flex;justify-content:space-between;margin-bottom:7px}
-    .prog-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-    .prog-ct{font-size:11px;color:#666;font-family:'DM Mono',monospace}
-    .prog-track{height:4px;background:#151515;border-radius:2px;overflow:hidden}
-    .prog-fill{height:100%;background:var(--muted);border-radius:2px;transition:width .5s ease}
-    .info-grid{display:grid;grid-template-columns:1fr 2fr;gap:10px}
-    .info-box{background:var(--input);border-radius:9px;padding:11px 12px}
-    .info-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-    .info-val{font-size:12px;color:var(--dim);line-height:1.5}
+    .sb-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;position:sticky;top:90px}
+    .sb-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+    .sb-list{display:flex;flex-direction:column;gap:3px;margin-bottom:18px}
+    .sb-item{padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;border:1px solid transparent}
+    .sb-item:hover{background:rgba(255,255,255,.02)}.sb-item.active{background:rgba(255,255,255,.03);border-color:var(--border-hi)}
+    .sb-avatar{width:34px;height:34px;border-radius:9px;background:var(--deep);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--faint);flex-shrink:0;transition:color .15s}
+    .sb-item.active .sb-avatar{color:var(--text)}
+    .sb-sname{font-size:13px;color:var(--dim);font-weight:500;transition:color .15s}.sb-item.active .sb-sname{color:var(--bright)}
+    .sb-spack{font-size:9px;color:var(--faint);font-family:var(--mono);letter-spacing:.5px;margin-top:1px}
+    .sb-divider{height:1px;background:var(--border);margin:14px 0}
+    .sb-add-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+    .sb-add-input{width:100%;padding:10px 12px;background:var(--input);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;margin-bottom:8px;transition:border-color .2s}
+    .sb-add-input:focus{border-color:#2a2a2a}.sb-add-input::placeholder{color:var(--faint)}
+    .sb-add-btn{width:100%;padding:9px;background:var(--deep);border:1px solid #222;border-radius:8px;color:var(--dim);font-family:var(--mono);font-size:10px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+    .sb-add-btn:hover{background:#222;color:var(--text)}.sb-add-btn:disabled{opacity:.4;cursor:not-allowed}
+    .sb-msg{font-size:11px;margin-top:8px;font-family:var(--sans);line-height:1.4}.sb-msg.err{color:var(--red)}.sb-msg.ok{color:var(--green)}
+    .sb-empty{color:var(--faint);font-size:11px;text-align:center;padding:20px 0;font-family:var(--mono)}
 
-    /* EDITABLE */
-    .ed{cursor:pointer;border-bottom:1px dashed #444;padding-bottom:1px;transition:border-color .2s}
-    .ed:hover{border-color:#666}
-    .ed-inp{background:#161210;border:1px solid rgba(201,122,69,.25);border-radius:5px;padding:3px 7px;outline:none;color:inherit;font:inherit;width:100%}
-    .ed-ta{background:#161210;border:1px solid rgba(201,122,69,.25);border-radius:5px;padding:6px 8px;outline:none;color:inherit;font:inherit;width:100%;min-height:60px;resize:vertical}
-    .ph{color:var(--muted);font-style:italic}
+    .profile{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:30px;margin-bottom:12px}
+    .profile-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
+    .p-name{font-size:26px;font-weight:700;font-family:var(--serif);color:var(--bright);line-height:1.2}
+    .p-pkg{margin-top:6px;color:var(--faint);font-size:11px;font-family:var(--mono);letter-spacing:.5px}
+    .p-goal-lbl{font-size:9px;color:var(--muted);font-family:var(--mono);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+    .p-goal{font-size:36px;font-weight:700;font-family:var(--mono);color:var(--bright);line-height:1}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+    .stat{background:var(--input);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
+    .stat-lbl{font-size:8px;color:var(--faint);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+    .stat-val{font-size:14px;font-weight:700;color:#aaa;font-family:var(--mono)}
+    .prog-wrap{margin-bottom:18px}.prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
+    .prog-lbl{font-size:8px;color:var(--faint);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+    .prog-ct{font-size:11px;color:var(--faint);font-family:var(--mono)}
+    .prog-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+    .prog-fill{height:100%;background:var(--muted);border-radius:2px;transition:width .6s ease}
+    .info-grid{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+    .info-box{background:var(--input);border:1px solid var(--border);border-radius:10px;padding:14px}
+    .info-lbl{font-size:8px;color:var(--faint);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+    .info-val{font-size:12px;color:var(--dim);line-height:1.6}
 
-    /* ROADMAP */
-    .rm-header{display:flex;justify-content:space-between;align-items:center;margin:24px 0 14px}
-    .rm-title{font-size:18px;font-family:'Libre Baskerville',Georgia,serif;font-weight:700}
-    .rm-sub{font-size:10px;color:#444;font-family:'DM Mono',monospace}
+    .ed{cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.1);padding-bottom:1px;transition:border-color .2s}.ed:hover{border-color:rgba(255,255,255,.25)}
+    .ed-inp{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:4px 8px;outline:none;color:inherit;font:inherit;width:100%}
+    .ed-ta{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:8px 10px;outline:none;color:inherit;font:inherit;width:100%;min-height:60px;resize:vertical}
+    .ph{color:var(--faint);font-style:italic}
+
+    .rm-header{display:flex;justify-content:space-between;align-items:baseline;margin:32px 0 16px}
+    .rm-title{font-size:18px;font-family:var(--serif);font-weight:700;color:var(--text)}
+    .rm-sub{font-size:10px;color:var(--faint);font-family:var(--mono);letter-spacing:.3px}
     .sess-list{display:flex;flex-direction:column;gap:6px}
 
-    /* SESSION */
-    .sess{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s}
-    .sess.up{border-color:#252525}
-    .sess.lk-s{opacity:.6}
-    .sess-hd{padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:16px;user-select:none}
-    .sess-num{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:15px;font-weight:700;flex-shrink:0}
-    .sess-num.upcoming{background:#181818;border:1px solid rgba(201,122,69,.33);color:#e0e0e0}
-    .sess-num.completed{background:var(--green-bg);border:1px solid #1a1a1a;color:var(--green)}
-    .sess-num.locked{background:#111;border:1px solid #1a1a1a;color:#3a3a3a}
-    .sess-info{flex:1;min-width:0}
-    .sess-tr{display:flex;align-items:center;gap:10px;margin-bottom:3px;flex-wrap:wrap}
-    .sess-t{font-size:15px;font-weight:600;font-family:'Libre Baskerville',Georgia,serif;color:var(--text)}
-    .sess-t.lk{color:var(--muted)}
-    .sess-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .sess-meta .sep{color:var(--faint)}
-    .chev{width:18px;height:18px;flex-shrink:0;transition:transform .3s;stroke:#444}
-    .chev.open{transform:rotate(180deg)}
-    .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:16px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Mono',monospace}
-    .badge.upcoming{background:#1a1a1a;color:#e0e0e0}
-    .badge.completed{background:var(--green-bg);color:var(--green)}
-    .badge.locked{background:#131313;color:#444}
-    .bdot{width:5px;height:5px;border-radius:50%}
-    .bdot.upcoming{background:var(--accent);animation:pulse 2s infinite}
-    .bdot.completed{background:var(--green)}
-    .sess-body{padding:0 24px 24px;border-top:1px solid var(--border);padding-top:16px}
-    .tc{display:flex;gap:10px;margin-bottom:14px;align-items:center;padding:8px 12px;background:#0e0e0e;border:1px solid #222;border-radius:8px}
-    .tc-lbl{font-size:10px;color:#666;font-family:'DM Mono',monospace;font-weight:600;letter-spacing:1px}
-    .tc-btn{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:5px;border:1px solid #2a2a2a;background:#111;color:#999;cursor:pointer;font-size:10px;font-family:'DM Mono',monospace;font-weight:600;margin-left:auto;transition:all .2s}
-    .tc-btn:hover{border-color:#444}
-    .slbl{color:#777;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Mono',monospace;margin:0 0 10px}
-    .slbl .lkn{color:var(--faint);font-weight:500}
-    .desc{color:var(--dim);font-size:13px;line-height:1.7;margin-bottom:18px}
-    .g-list{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-    .g-item{display:flex;align-items:flex-start;gap:10px;color:#aaa;font-size:13px}
-    .g-arrow{color:var(--muted);flex-shrink:0;margin-top:1px;font-size:12px}
-    .rm-btn{background:none;border:none;color:var(--faint);cursor:pointer;font-size:15px;padding:0 3px;flex-shrink:0;line-height:1}
-    .rm-btn:hover{color:#666}
-    .add-b{background:none;border:1px dashed #252525;border-radius:7px;color:#444;cursor:pointer;padding:7px;font-size:11px;font-family:'DM Mono',monospace;width:100%;transition:all .2s}
-    .add-b:hover{border-color:#444;color:var(--muted)}
-    .hw-list{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
-    .hw{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--input);border-radius:9px;border:1px solid #1a1a1a}
-    .hw.lk{background:#0a0a0a;border:1px dashed #1a1a1a}
-    .hw-cb{width:16px;height:16px;border-radius:3px;border:1.5px solid #2a2a2a;flex-shrink:0}
-    .hw-l{color:#bbb;font-size:13px;flex:1}
-    .hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
-    .hw-badge{font-size:9px;padding:2px 7px;border-radius:3px;background:#151515;color:var(--muted);font-family:'DM Mono',monospace;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-    .hw-sel{background:#111;color:#666;border:1px solid #252525;border-radius:4px;padding:2px 5px;font-size:10px;font-family:'DM Mono',monospace;cursor:pointer;outline:none}
-    .tn-box{padding:14px;background:var(--input);border-radius:9px;border-left:2px solid #333;color:#bbb;font-size:13px;line-height:1.7}
-    .footer{text-align:center;padding:32px 0 16px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px}
-    .footer .v{color:var(--accent)}.footer .r{color:#222}
-    .loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--muted);font-family:'DM Mono',monospace;font-size:13px}
-    .empty{text-align:center;padding:60px 20px;color:var(--muted)}
-    .empty h3{font-family:'Libre Baskerville',Georgia,serif;font-size:18px;color:var(--dim);margin-bottom:8px}
-    .empty p{font-size:13px}
+    .sess{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s ease}
+    .sess.up{border-color:var(--border-hi)}.sess.lk-s{opacity:.55}
+    .sess-hd{padding:22px 26px;cursor:pointer;display:flex;align-items:center;gap:18px;user-select:none;transition:background .15s}
+    .sess-hd:hover{background:rgba(255,255,255,.01)}
+    .sess-num{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;font-weight:700;flex-shrink:0}
+    .sess-num.upcoming{background:#141414;border:1px solid rgba(201,122,69,.2);color:var(--bright)}
+    .sess-num.completed{background:var(--green-bg);border:1px solid rgba(92,184,92,.1);color:var(--green)}
+    .sess-num.locked{background:#0e0e0e;border:1px solid var(--border);color:var(--faint)}
+    .sess-info{flex:1;min-width:0}.sess-tr{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+    .sess-t{font-size:15px;font-weight:600;font-family:var(--serif);color:var(--text)}.sess-t.lk{color:var(--faint)}
+    .sess-meta{font-size:11px;color:var(--faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}.sess-meta .sep{color:#222}
+    .chev{width:16px;height:16px;flex-shrink:0;transition:transform .3s ease;stroke:var(--faint)}.chev.open{transform:rotate(180deg)}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:20px;font-size:9px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;font-family:var(--mono)}
+    .badge.upcoming{background:var(--deep);color:var(--text)}.badge.completed{background:var(--green-bg);color:var(--green)}.badge.locked{background:#0e0e0e;color:var(--faint)}
+    .bdot{width:5px;height:5px;border-radius:50%}.bdot.upcoming{background:var(--accent);animation:pulse 2s infinite}.bdot.completed{background:var(--green)}
+
+    .sess-body{padding:0 26px 26px;border-top:1px solid var(--border);padding-top:20px}
+    .tc{display:flex;gap:10px;margin-bottom:16px;align-items:center;padding:8px 14px;background:rgba(255,255,255,.015);border:1px solid var(--border);border-radius:9px}
+    .tc-lbl{font-size:9px;color:var(--faint);font-family:var(--mono);font-weight:600;letter-spacing:1.5px}
+    .tc-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:6px;border:1px solid #222;background:var(--deep);color:var(--dim);cursor:pointer;font-size:9px;font-family:var(--mono);font-weight:600;margin-left:auto;transition:all .2s;letter-spacing:.5px}
+    .tc-btn:hover{border-color:var(--faint);color:var(--text)}
+    .slbl{color:var(--faint);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);margin:0 0 12px}
+    .slbl .lkn{color:var(--faint);font-weight:500;letter-spacing:1px}
+    .desc{color:var(--dim);font-size:13px;line-height:1.8;margin-bottom:22px}
+    .g-list{display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+    .g-item{display:flex;align-items:flex-start;gap:10px;color:#999;font-size:13px;line-height:1.5}
+    .g-arrow{color:var(--faint);flex-shrink:0;margin-top:2px;font-size:11px}
+    .rm-btn{background:none;border:none;color:var(--faint);cursor:pointer;font-size:14px;padding:0 4px;flex-shrink:0;line-height:1;transition:color .15s}.rm-btn:hover{color:var(--dim)}
+    .add-b{background:none;border:1px dashed var(--border);border-radius:8px;color:var(--faint);cursor:pointer;padding:9px;font-size:10px;font-family:var(--mono);width:100%;transition:all .2s;letter-spacing:.3px}
+    .add-b:hover{border-color:var(--faint);color:var(--muted)}
+    .hw-list{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+    .hw{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--input);border-radius:10px;border:1px solid var(--border)}
+    .hw.lk{background:rgba(8,8,8,.6);border:1px dashed var(--border)}
+    .hw-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid #222;flex-shrink:0}
+    .hw-l{color:#aaa;font-size:13px;flex:1;line-height:1.4}.hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
+    .hw-badge{font-size:8px;padding:3px 8px;border-radius:4px;background:var(--deep);color:var(--muted);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
+    .hw-sel{background:#0e0e0e;color:var(--faint);border:1px solid var(--border);border-radius:5px;padding:3px 6px;font-size:9px;font-family:var(--mono);cursor:pointer;outline:none}
+    .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#999;font-size:13px;line-height:1.8}
+    .footer{text-align:center;padding:40px 0 20px;font-family:var(--mono);font-size:11px;letter-spacing:4px}
+    .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
+    .loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:1px}
+    .empty{text-align:center;padding:80px 20px}.empty h3{font-family:var(--serif);font-size:18px;color:var(--dim);margin-bottom:10px;font-weight:400}.empty p{font-size:13px;color:var(--faint)}
 
     @media(max-width:768px){
-      .layout{flex-direction:column-reverse}
-      .sidebar{width:100%}
-      .sb-card{position:static}
-      .nav-links{display:none}
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .info-grid{grid-template-columns:1fr}
-      .nav{padding:12px 16px}
-      .layout{padding:16px}
-      .profile{padding:20px}
-      .p-name{font-size:20px}
-      .p-goal{font-size:26px}
+      .layout{flex-direction:column-reverse;padding:20px 16px;gap:20px}
+      .sidebar{width:100%}.sb-card{position:static}.nav-links{display:none}
+      .stats{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}
+      .nav{padding:14px 16px}.profile{padding:24px}.p-name{font-size:22px}.p-goal{font-size:28px}
+      .edit-banner{padding:8px 16px}
     }
   </style>
 </head>
@@ -187,29 +158,22 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={
-  view:'loading',user:null,profile:null,isTutor:false,
-  students:[],selId:null,student:null,sessions:[],
-  exSess:-1,loginErr:'',loginLoad:false,
-  addEmail:'',addMsg:'',addMsgType:''
-};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:''};
 
-// ── RENDER ──
 function R(){
   const a=document.getElementById('app');
-  if(S.view==='loading')a.innerHTML='<div class="loading">Loading...</div>';
+  if(S.view==='loading')a.innerHTML='<div class="loading">LOADING</div>';
   else if(S.view==='login')a.innerHTML=loginHTML();
   else a.innerHTML=dashHTML();
   bind();
 }
 
-// ── LOGIN ──
 function loginHTML(){
   return`<div class="login-wrap"><div class="login-box">
-    <div class="logo"><span class="v">V</span><span class="r">EDARION</span></div>
+    <div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div>
     <label class="lbl">Email</label><input class="inp" type="email" id="le" placeholder="you@email.com">
     <label class="lbl">Password</label><input class="inp" type="password" id="lp" placeholder="••••••••">
-    <button class="btn" id="lb" ${S.loginLoad?'disabled':''}>${S.loginLoad?'Signing in...':'Sign In'}</button>
+    <button class="btn-primary" id="lb" ${S.loginLoad?'disabled':''}>${S.loginLoad?'Signing in...':'Sign In'}</button>
     <div class="forgot"><a href="#" id="fp">Forgot password?</a></div>
     ${S.loginErr?'<div class="login-err">'+S.loginErr+'</div>':''}
   </div></div>`;
@@ -224,30 +188,21 @@ async function doLogin(){
   await loadUser();
 }
 
-async function doLogout(){
-  await db.auth.signOut();
-  S={...S,view:'login',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],loginErr:'',exSess:-1};
-  R();
-}
+async function doLogout(){await db.auth.signOut();S={...S,view:'login',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],loginErr:'',exSess:-1};R();}
 
-// ── LOAD DATA ──
 async function loadUser(){
   const{data:{user}}=await db.auth.getUser();
   if(!user){S.view='login';R();return;}
   S.user=user;
   const{data:prof}=await db.from('profiles').select('*').eq('id',user.id).single();
-  S.profile=prof;
-  S.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
-
+  S.profile=prof;S.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
   if(S.isTutor){
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('assigned_tutor_id',user.id).order('created_at',{ascending:false});
     S.students=sts||[];
-    if(S.students.length>0){S.selId=S.students[0].id;await loadStudent(S.students[0].id);}
-    else{S.student=null;S.sessions=[];}
+    if(S.students.length>0){S.selId=S.students[0].id;await loadStudent(S.students[0].id);}else{S.student=null;S.sessions=[];}
   }else{
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('profile_id',user.id);
-    if(sts&&sts.length>0){S.students=sts;S.selId=sts[0].id;S.student=sts[0];await loadStudent(sts[0].id);}
-    else{S.student=null;S.sessions=[];}
+    if(sts&&sts.length>0){S.students=sts;S.selId=sts[0].id;S.student=sts[0];await loadStudent(sts[0].id);}else{S.student=null;S.sessions=[];}
   }
   S.view='dash';S.loginLoad=false;R();
 }
@@ -257,137 +212,88 @@ async function loadStudent(id){
   S.student=st;
   const{data:sess}=await db.from('sessions').select('*').eq('student_id',id).order('session_number');
   for(let s of(sess||[])){
-    const{data:g}=await db.from('session_goals').select('*').eq('session_id',s.id).order('sort_order');
-    s.goals=g||[];
-    const{data:h}=await db.from('homework').select('*').eq('session_id',s.id).order('sort_order');
-    s.homework=h||[];
+    const{data:g}=await db.from('session_goals').select('*').eq('session_id',s.id).order('sort_order');s.goals=g||[];
+    const{data:h}=await db.from('homework').select('*').eq('session_id',s.id).order('sort_order');s.homework=h||[];
   }
   S.sessions=sess||[];
 }
 
-// ── ADD STUDENT ──
 async function addStudent(){
   const email=S.addEmail.trim().toLowerCase();
   if(!email){S.addMsg='Enter an email';S.addMsgType='err';R();return;}
-
-  // Find profile by email
   const{data:profs}=await db.from('profiles').select('*').eq('email',email);
-  if(!profs||profs.length===0){S.addMsg='No account found for that email. Create their account in Supabase first.';S.addMsgType='err';R();return;}
-
-  // Check if already a student of this tutor
+  if(!profs||profs.length===0){S.addMsg='No account found. Create their account in Supabase first.';S.addMsgType='err';R();return;}
   const{data:existing}=await db.from('students').select('id').eq('profile_id',profs[0].id).eq('assigned_tutor_id',S.user.id);
   if(existing&&existing.length>0){S.addMsg='Already added as your student';S.addMsgType='err';R();return;}
-
-  // Create student record
-  const{error}=await db.from('students').insert({
-    profile_id:profs[0].id,
-    assigned_tutor_id:S.user.id,
-    package_type:'5-session',
-    sessions_bought:5,
-    status:'active'
-  });
+  const{error}=await db.from('students').insert({profile_id:profs[0].id,assigned_tutor_id:S.user.id,package_type:'5-session',sessions_bought:5,status:'active'});
   if(error){S.addMsg='Error: '+error.message;S.addMsgType='err';R();return;}
-
-  S.addMsg='Added '+profs[0].first_name+'!';S.addMsgType='ok';S.addEmail='';
+  S.addMsg=(profs[0].first_name||'Student')+' added!';S.addMsgType='ok';S.addEmail='';
   await loadUser();
 }
 
-// ── HELPERS ──
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function ed(val,id,ml){
-  if(val)return'<span class="ed" data-eid="'+id+'" data-ml="'+ml+'">'+esc(val)+'</span>';
-  return'<span class="ed" data-eid="'+id+'" data-ml="'+ml+'"><span class="ph">Click to add...</span></span>';
+  if(val)return`<span class="ed" data-eid="${id}" data-ml="${ml}">${esc(val)}</span>`;
+  return`<span class="ed" data-eid="${id}" data-ml="${ml}"><span class="ph">Click to add...</span></span>`;
 }
 
-// ── DASHBOARD HTML ──
 function dashHTML(){
   const t=S.isTutor,s=S.student;
   const cc=S.sessions.filter(x=>x.status==='completed').length;
   const total=s?s.sessions_bought:0;
   const pct=total>0?Math.max((cc/total)*100,3):3;
   let name='';if(s&&s.profiles)name=s.profiles.first_name||s.profiles.email||'';
-
   return`
     <div class="nav">
-      <div class="nav-left"><span class="logo"><span class="v">V</span><span class="r">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
+      <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
       <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/course.html" class="nav-link">Course</a><a href="/foundations/translating-words-on-the-test/vedamark.html" class="nav-link">VedaMark</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
-
+    ${t?'<div class="edit-banner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Editing mode — click any text to edit</span></div>':''}
     <div class="layout">
       <div class="main">
-        ${!s?`<div class="empty"><h3>${t?'Select or add a student':'No roadmap assigned yet'}</h3><p>${t?'Add a student by email in the panel on the right.':'Your tutor will set up your dashboard soon.'}</p></div>`:
-        `
-        <div class="profile">
+        ${!s?`<div class="empty"><h3>${t?'Select or add a student':'No roadmap assigned yet'}</h3><p>${t?'Add a student by email in the panel.':'Your tutor will set up your dashboard soon.'}</p></div>`:
+        `<div class="profile">
           <div class="profile-top">
-            <div>
-              <div class="p-name">${t?ed(name,'student-name',false):esc(name)}</div>
-              <div class="p-pkg">${s.package_type||'5-session'} Package</div>
-            </div>
-            <div style="text-align:right">
-              <div class="p-goal-lbl">Goal</div>
-              <div class="p-goal">${t?ed(s.goal_score||'','student-goal_score',false):esc(s.goal_score||'—')}</div>
-            </div>
+            <div><div class="p-name">${t?ed(name,'student-name',false):esc(name)}</div><div class="p-pkg">${t?ed(s.package_type||'5-session','student-package_type',false):esc(s.package_type||'5-session')} Package</div></div>
+            <div style="text-align:right"><div class="p-goal-lbl">Goal</div><div class="p-goal">${t?ed(s.goal_score||'','student-goal_score',false):esc(s.goal_score||'—')}</div></div>
           </div>
-          <div class="stats">
-            ${statBox('Current Avg',s.current_average,'student-current_average',t)}
-            ${statBox('LR',s.lr_average,'student-lr_average',t)}
-            ${statBox('RC',s.rc_average,'student-rc_average',t)}
-            ${statBox('Test Date',s.test_date,'student-test_date',t)}
-          </div>
-          <div class="prog-wrap"><div class="prog-top"><span class="prog-lbl">Progress</span><span class="prog-ct">${cc} / ${total}</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div></div>
+          <div class="stats">${statBox('Current Avg',s.current_average,'student-current_average',t)}${statBox('LR',s.lr_average,'student-lr_average',t)}${statBox('RC',s.rc_average,'student-rc_average',t)}${statBox('Test Date',s.test_date,'student-test_date',t)}</div>
+          <div class="prog-wrap"><div class="prog-top"><span class="prog-lbl">Progress</span><span class="prog-ct">${cc} / ${t?ed(String(total||0),'student-sessions_bought',false):total}</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div></div>
           <div class="info-grid">
             <div class="info-box"><div class="info-lbl">Accommodations</div><div class="info-val">${t?ed(s.accommodations||'None','student-accommodations',false):esc(s.accommodations||'None')}</div></div>
             <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val">${t?ed(s.notes||'','student-notes',true):esc(s.notes||'—')}</div></div>
           </div>
         </div>
-
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
           ${S.sessions.length===0&&t?'<button class="add-b" id="add-first-s">+ Add First Session</button>':''}
           ${S.sessions.map((ss,i)=>sessHTML(ss,i)).join('')}
           ${S.sessions.length>0&&t?'<button class="add-b" id="add-s">+ Add Session</button>':''}
-        </div>
-        `}
-        <div class="footer"><span class="v">V</span><span class="r">EDARION</span></div>
+        </div>`}
+        <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>
       </div>
-
-      ${t?`
-      <div class="sidebar">
-        <div class="sb-card">
-          <div class="sb-title">My Students</div>
-          <div class="sb-list">
-            ${S.students.length===0?'<div class="sb-empty">No students yet</div>':''}
-            ${S.students.map(st=>{
-              const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';
-              const init=n.charAt(0).toUpperCase();
-              const active=st.id===S.selId;
-              return`<div class="sb-item ${active?'active':''}" data-pick="${st.id}">
-                <div class="avatar">${init}</div>
-                <div><div class="sname">${esc(n)}</div><div class="spack">${st.package_type||'5-session'}</div></div>
-              </div>`;
-            }).join('')}
-          </div>
-          <div class="sb-divider"></div>
-          <div class="sb-add-title">Add Student</div>
-          <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
-          <button class="sb-add-btn" id="add-btn">Add by Email</button>
-          ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${S.addMsg}</div>`:''}
-        </div>
-      </div>
-      `:''}
+      ${t?`<div class="sidebar"><div class="sb-card">
+        <div class="sb-title">My Students</div>
+        <div class="sb-list">${S.students.length===0?'<div class="sb-empty">No students yet</div>':''}${S.students.map(st=>{
+          const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';const init=n.charAt(0).toUpperCase();const active=st.id===S.selId;
+          return`<div class="sb-item ${active?'active':''}" data-pick="${st.id}"><div class="sb-avatar">${init}</div><div><div class="sb-sname">${esc(n)}</div><div class="sb-spack">${st.package_type||'5-session'}</div></div></div>`;
+        }).join('')}</div>
+        <div class="sb-divider"></div>
+        <div class="sb-add-title">Add Student</div>
+        <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
+        <button class="sb-add-btn" id="add-btn">Add by Email</button>
+        ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${S.addMsg}</div>`:''}
+      </div></div>`:''}
     </div>`;
 }
 
-function statBox(lbl,val,eid,t){
-  return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(val||'',eid,false):esc(val||'—')}</div></div>`;
-}
+function statBox(lbl,val,eid,t){return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(val||'',eid,false):esc(val||'—')}</div></div>`;}
 
 function sessHTML(ss,i){
   const t=S.isTutor,ex=S.exSess===i,lk=ss.status==='locked',up=ss.status==='upcoming',cp=ss.status==='completed';
   const dt=ss.session_date?new Date(ss.session_date+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-  const lockIco='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
-
+  const lockIco='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
   let body='';
   if(ex){
     body=`<div class="sess-body">
@@ -398,12 +304,12 @@ function sessHTML(ss,i){
         ${(ss.goals||[]).map(g=>`<div class="g-item"><span class="g-arrow">→</span>${t?`<span style="flex:1">${ed(g.goal_text,'goal-'+g.id+'-goal_text',false)}</span><button class="rm-btn" data-rg="${g.id}">×</button>`:`<span>${esc(g.goal_text)}</span>`}</div>`).join('')}
         ${t?`<button class="add-b" data-ag="${ss.id}">+ Add Goal</button>`:''}
       </div>
-      <div class="slbl">Homework${lk&&!t?' <span class="lkn">— UNLOCKS AFTER SESSION</span>':''}</div>
+      <div class="slbl">Homework${lk&&!t?' <span class="lkn">— unlocks after session</span>':''}</div>
       <div class="hw-list">
         ${(ss.homework||[]).map(h=>{
           const sl=lk&&!t;
           return`<div class="hw ${sl?'lk':''}">
-            ${sl?'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3a3a3a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
+            ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
             ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
             ${!sl?(t?`<select class="hw-sel" data-ht="${h.id}"><option value="drill" ${h.hw_type==='drill'?'selected':''}>DRILL</option><option value="link" ${h.hw_type==='link'?'selected':''}>LINK</option><option value="note" ${h.hw_type==='note'?'selected':''}>NOTE</option><option value="pdf" ${h.hw_type==='pdf'?'selected':''}>PDF</option></select><button class="rm-btn" data-rh="${h.id}">×</button>`:`<span class="hw-badge">${h.hw_type||'drill'}</span>`):''}
           </div>`;
@@ -413,7 +319,6 @@ function sessHTML(ss,i){
       ${t||ss.tutor_notes?`<div class="slbl">Session Notes${!t?' from Your Tutor':''}</div><div class="tn-box">${t?ed(ss.tutor_notes||'','session-'+ss.id+'-tutor_notes',true):esc(ss.tutor_notes||'')}</div>`:''}
     </div>`;
   }
-
   return`<div class="sess ${up?'up':''} ${lk&&!t?'lk-s':''}">
     <div class="sess-hd" data-tog="${i}">
       <div class="sess-num ${ss.status}">${cp?'✓':i+1}</div>
@@ -428,131 +333,57 @@ function sessHTML(ss,i){
           ${t?`<span>${ed(ss.session_date||'','session-'+ss.id+'-session_date',false)}</span>`:`<span>${dt}</span>`}
         </div>
       </div>
-      <svg class="chev ${ex?'open':''}" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    ${body}
-  </div>`;
+      <svg class="chev ${ex?'open':''}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>${body}</div>`;
 }
 
-// ── EVENTS ──
 function bind(){
-  // Login
   document.getElementById('lb')?.addEventListener('click',doLogin);
   document.getElementById('lp')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  document.getElementById('le')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp')?.focus();});
   document.getElementById('fp')?.addEventListener('click',async e=>{
-    e.preventDefault();
-    const em=document.getElementById('le')?.value.trim();
+    e.preventDefault();const em=document.getElementById('le')?.value.trim();
     if(!em){S.loginErr='Enter your email first';R();return;}
     await db.auth.resetPasswordForEmail(em,{redirectTo:location.origin+'/dashboard.html'});
-    alert('Password reset email sent to '+em);
+    alert('Password reset link sent to '+em);
   });
-
-  // Logout
   document.getElementById('lo')?.addEventListener('click',doLogout);
-
-  // Sidebar: pick student
-  document.querySelectorAll('[data-pick]').forEach(el=>{
-    el.addEventListener('click',async()=>{
-      S.selId=el.dataset.pick;S.exSess=-1;S.addMsg='';
-      await loadStudent(el.dataset.pick);R();
-    });
-  });
-
-  // Sidebar: add student
+  document.querySelectorAll('[data-pick]').forEach(el=>{el.addEventListener('click',async()=>{S.selId=el.dataset.pick;S.exSess=-1;S.addMsg='';await loadStudent(el.dataset.pick);R();});});
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
   document.getElementById('add-btn')?.addEventListener('click',addStudent);
-
-  // Toggle sessions
-  document.querySelectorAll('[data-tog]').forEach(el=>{
-    el.addEventListener('click',e=>{
-      if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta'))return;
-      const i=parseInt(el.dataset.tog);
-      S.exSess=S.exSess===i?-1:i;R();
-    });
-  });
-
-  // Editable fields
-  document.querySelectorAll('.ed').forEach(el=>{
-    el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});
-  });
-
-  // Cycle status
-  document.querySelectorAll('[data-cyc]').forEach(b=>{
-    b.addEventListener('click',async e=>{
-      e.stopPropagation();
-      const order=['locked','upcoming','completed'];
-      const next=order[(order.indexOf(b.dataset.st)+1)%3];
-      await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);
-      await loadStudent(S.selId);R();
-    });
-  });
-
-  // Goals
-  document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{
-    const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;
-    await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});
-    await loadStudent(S.selId);R();
-  });});
-  document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{
-    await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();
-  });});
-
-  // Homework
-  document.querySelectorAll('[data-ah]').forEach(b=>{b.addEventListener('click',async()=>{
-    const sid=b.dataset.ah;const ms=S.sessions.find(s=>s.id===sid)?.homework?.length||0;
-    await db.from('homework').insert({session_id:sid,label:'New assignment',hw_type:'drill',sort_order:ms});
-    await loadStudent(S.selId);R();
-  });});
-  document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{
-    await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();
-  });});
-  document.querySelectorAll('[data-ht]').forEach(sel=>{sel.addEventListener('change',async function(){
-    await db.from('homework').update({hw_type:this.value}).eq('id',this.dataset.ht);
-  });});
-
-  // Add session
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
+  document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-ah]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ah;const ms=S.sessions.find(s=>s.id===sid)?.homework?.length||0;await db.from('homework').insert({session_id:sid,label:'New assignment',hw_type:'drill',sort_order:ms});await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-ht]').forEach(sel=>{sel.addEventListener('change',async function(){await db.from('homework').update({hw_type:this.value}).eq('id',this.dataset.ht);});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
-  if(ab)ab.addEventListener('click',async()=>{
-    const n=S.sessions.length+1;
-    await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});
-    await loadStudent(S.selId);R();
-  });
+  if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
 
-// ── INLINE EDIT ──
 function startEd(el){
   const eid=el.dataset.eid,ml=el.dataset.ml==='true';
   const cur=el.textContent==='Click to add...'?'':el.textContent;
   if(ml)el.outerHTML=`<textarea class="ed-ta" data-eid="${eid}">${esc(cur)}</textarea>`;
   else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
-  const inp=document.querySelector(`[data-eid="${eid}"]`);
-  inp.focus();
+  const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();
   inp.addEventListener('blur',()=>saveEd(eid,inp.value));
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!ml)saveEd(eid,inp.value);if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
 }
 
 async function saveEd(eid,val){
   const p=eid.split('-');
-  if(p[0]==='student'){
-    if(p[1]==='name')await db.from('profiles').update({first_name:val}).eq('id',S.student.profile_id);
-    else await db.from('students').update({[p[1]]:val}).eq('id',S.selId);
-  }else if(p[0]==='session'){
-    await db.from('sessions').update({[p[2]]:val}).eq('id',p[1]);
-  }else if(p[0]==='goal'){
-    await db.from('session_goals').update({[p[2]]:val}).eq('id',p[1]);
-  }else if(p[0]==='hw'){
-    await db.from('homework').update({[p[2]]:val}).eq('id',p[1]);
-  }
+  if(p[0]==='student'){if(p[1]==='name')await db.from('profiles').update({first_name:val}).eq('id',S.student.profile_id);else{const v=p[1]==='sessions_bought'?parseInt(val)||0:val;await db.from('students').update({[p[1]]:v}).eq('id',S.selId);}}
+  else if(p[0]==='session')await db.from('sessions').update({[p[2]]:val}).eq('id',p[1]);
+  else if(p[0]==='goal')await db.from('session_goals').update({[p[2]]:val}).eq('id',p[1]);
+  else if(p[0]==='hw')await db.from('homework').update({[p[2]]:val}).eq('id',p[1]);
   await loadStudent(S.selId);R();
 }
 
-// ── INIT ──
-async function init(){
-  const{data:{session}}=await db.auth.getSession();
-  if(session)await loadUser();
-  else{S.view='login';R();}
-}
+async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
 init();
 </script>
 </body>
