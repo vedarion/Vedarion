@@ -136,6 +136,12 @@
     .hw-l{color:#aaa;font-size:13px;flex:1;line-height:1.4}.hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
     .hw-badge{font-size:8px;padding:3px 8px;border-radius:4px;background:var(--deep);color:var(--muted);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
     .hw-sel{background:#0e0e0e;color:var(--faint);border:1px solid var(--border);border-radius:5px;padding:3px 6px;font-size:9px;font-family:var(--mono);cursor:pointer;outline:none}
+    .hw-attach{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 7px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:4px;font-size:9px;font-family:var(--mono);color:var(--faint);letter-spacing:.3px;flex-shrink:0}
+    .hw-attach:hover{border-color:var(--faint);color:var(--muted)}
+    .hw-attach.has{border-color:rgba(201,122,69,.25);color:var(--accent)}
+    .hw-attach.has:hover{border-color:rgba(201,122,69,.5)}
+    .hw-dl{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:5px;color:var(--accent);font-size:9px;font-family:var(--mono);text-decoration:none;font-weight:600;letter-spacing:.3px;flex-shrink:0;transition:all .2s}
+    .hw-dl:hover{background:rgba(201,122,69,.1);border-color:rgba(201,122,69,.3)}
     .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#999;font-size:13px;line-height:1.8}
     .footer{text-align:center;padding:40px 0 20px;font-family:var(--mono);font-size:11px;letter-spacing:4px}
     .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
@@ -311,8 +317,7 @@ function sessHTML(ss,i){
           return`<div class="hw ${sl?'lk':''}">
             ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
             ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
-            ${!sl?(t?`<select class="hw-sel" data-ht="${h.id}"><option value="drill" ${h.hw_type==='drill'?'selected':''}>DRILL</option><option value="link" ${h.hw_type==='link'?'selected':''}>LINK</option><option value="note" ${h.hw_type==='note'?'selected':''}>NOTE</option><option value="pdf" ${h.hw_type==='pdf'?'selected':''}>PDF</option></select><button class="rm-btn" data-rh="${h.id}">×</button>`:`<span class="hw-badge">${h.hw_type||'drill'}</span>`):''}
-          </div>`;
+            ${!sl?(t?`<select class="hw-sel" data-ht="${h.id}"><option value="drill" ${h.hw_type==='drill'?'selected':''}>DRILL</option><option value="link" ${h.hw_type==='link'?'selected':''}>LINK</option><option value="note" ${h.hw_type==='note'?'selected':''}>NOTE</option><option value="pdf" ${h.hw_type==='pdf'?'selected':''}>PDF</option></select><button class="hw-attach ${h.attachment_url?'has':''}" data-ha="${h.id}" title="${h.attachment_url?esc(h.attachment_url):'Attach PDF'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>${h.attachment_url?'PDF':'Attach'}</button><button class="rm-btn" data-rh="${h.id}">×</button>`:`<span class="hw-badge">${h.hw_type||'drill'}</span>${h.attachment_url?`<a href="${esc(h.attachment_url)}" target="_blank" class="hw-dl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Worksheet</a>`:''}`):''}          </div>`;
         }).join('')}
         ${t?`<button class="add-b" data-ah="${ss.id}">+ Add Homework</button>`:''}
       </div>
@@ -360,6 +365,7 @@ function bind(){
   document.querySelectorAll('[data-ah]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ah;const ms=S.sessions.find(s=>s.id===sid)?.homework?.length||0;await db.from('homework').insert({session_id:sid,label:'New assignment',hw_type:'drill',sort_order:ms});await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ht]').forEach(sel=>{sel.addEventListener('change',async function(){await db.from('homework').update({hw_type:this.value}).eq('id',this.dataset.ht);});});
+  document.querySelectorAll('[data-ha]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const cur=b.title!=='Attach PDF'?b.title:'';const url=prompt('Paste PDF or worksheet URL (leave empty to remove):',cur);if(url===null)return;await db.from('homework').update({attachment_url:url||null}).eq('id',b.dataset.ha);await loadStudent(S.selId);R();});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
