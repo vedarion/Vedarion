@@ -45,9 +45,7 @@
     .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border-hi);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
     .sign-out:hover{border-color:var(--dim);color:var(--bright)}
 
-    /* FIX 1: banner — 14px, var(--text), icon opacity .7 */
-    .edit-banner{padding:8px 32px;background:rgba(201,122,69,.03);border-bottom:1px solid rgba(201,122,69,.06);display:flex;align-items:center;gap:8px}
-    .edit-banner svg{opacity:.7}.edit-banner span{font-size:14px;color:var(--text);font-family:var(--mono);letter-spacing:.3px}
+
 
     .layout{display:flex;max-width:1080px;margin:0 auto;padding:32px;gap:28px;animation:fadeUp .4s ease}
     .main{flex:1;min-width:0}.sidebar{width:230px;flex-shrink:0}
@@ -344,7 +342,7 @@ function dashHTML(){
       <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
-    ${t?'<div class="edit-banner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Editing mode — click any text to edit</span></div>':''}
+
     <div class="layout">
       <div class="main">
         ${!s?`<div class="empty"><h3>${t?'Select or add a student':'No roadmap assigned yet'}</h3><p>${t?'Add a student by email in the panel.':'Your tutor will set up your dashboard soon.'}</p></div>`:
