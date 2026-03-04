@@ -130,18 +130,17 @@
     .add-b{background:none;border:1px dashed var(--border);border-radius:8px;color:var(--faint);cursor:pointer;padding:9px;font-size:10px;font-family:var(--mono);width:100%;transition:all .2s;letter-spacing:.3px}
     .add-b:hover{border-color:var(--faint);color:var(--muted)}
     .hw-list{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
-    .hw{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--input);border-radius:10px;border:1px solid var(--border)}
+    .hw{padding:14px 16px;background:var(--input);border-radius:10px;border:1px solid var(--border)}
     .hw.lk{background:rgba(8,8,8,.6);border:1px dashed var(--border)}
+    .hw-top{display:flex;align-items:center;gap:14px}
     .hw-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid #222;flex-shrink:0}
     .hw-l{color:#aaa;font-size:13px;flex:1;line-height:1.4}.hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
-    .hw-badge{font-size:8px;padding:3px 8px;border-radius:4px;background:var(--deep);color:var(--muted);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.8px}
-    .hw-sel{background:#0e0e0e;color:var(--faint);border:1px solid var(--border);border-radius:5px;padding:3px 6px;font-size:9px;font-family:var(--mono);cursor:pointer;outline:none}
-    .hw-attach{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 7px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:4px;font-size:9px;font-family:var(--mono);color:var(--faint);letter-spacing:.3px;flex-shrink:0}
-    .hw-attach:hover{border-color:var(--faint);color:var(--muted)}
-    .hw-attach.has{border-color:rgba(201,122,69,.25);color:var(--accent)}
-    .hw-attach.has:hover{border-color:rgba(201,122,69,.5)}
-    .hw-dl{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:5px;color:var(--accent);font-size:9px;font-family:var(--mono);text-decoration:none;font-weight:600;letter-spacing:.3px;flex-shrink:0;transition:all .2s}
-    .hw-dl:hover{background:rgba(201,122,69,.1);border-color:rgba(201,122,69,.3)}
+    .hw-desc{margin:10px 0 0 29px;padding:10px 14px;background:rgba(255,255,255,.015);border-left:2px solid #1e1e1e;border-radius:0 6px 6px 0;color:var(--muted);font-size:12px;line-height:1.8;white-space:pre-line}
+    .hw-desc .step{display:flex;gap:8px;padding:2px 0}.hw-desc .step-dot{color:var(--faint);flex-shrink:0;margin-top:1px}
+    .hw-desc .step-arrow{color:var(--accent);flex-shrink:0;font-size:10px;margin-top:2px;opacity:.5}
+    .hw-desc-edit{margin:10px 0 0 29px;width:calc(100% - 29px);padding:10px 14px;background:rgba(22,18,16,.5);border:1px solid rgba(201,122,69,.15);border-radius:6px;color:var(--dim);font-size:12px;line-height:1.8;font-family:var(--sans);outline:none;resize:vertical;min-height:60px}
+    .hw-desc-ph{margin:8px 0 0 29px;font-size:11px;color:var(--faint);font-style:italic;cursor:pointer;padding:4px 0;opacity:.5;transition:opacity .2s}
+    .hw-desc-ph:hover{opacity:.8}
     .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#999;font-size:13px;line-height:1.8}
     .footer{text-align:center;padding:40px 0 20px;font-family:var(--mono);font-size:11px;letter-spacing:4px}
     .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
@@ -314,10 +313,15 @@ function sessHTML(ss,i){
       <div class="hw-list">
         ${(ss.homework||[]).map(h=>{
           const sl=lk&&!t;
+          const desc=h.description||'';
+          const descHtml=desc?desc.split('\n').filter(l=>l.trim()).map(l=>`<div class="step"><span class="step-arrow">›</span><span>${esc(l.trim())}</span></div>`).join(''):'';
           return`<div class="hw ${sl?'lk':''}">
-            ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
-            ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
-            ${!sl?(t?`<select class="hw-sel" data-ht="${h.id}"><option value="drill" ${h.hw_type==='drill'?'selected':''}>DRILL</option><option value="link" ${h.hw_type==='link'?'selected':''}>LINK</option><option value="note" ${h.hw_type==='note'?'selected':''}>NOTE</option><option value="pdf" ${h.hw_type==='pdf'?'selected':''}>PDF</option></select><button class="hw-attach ${h.attachment_url?'has':''}" data-ha="${h.id}" title="${h.attachment_url?esc(h.attachment_url):'Attach PDF'}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>${h.attachment_url?'PDF':'Attach'}</button><button class="rm-btn" data-rh="${h.id}">×</button>`:`<span class="hw-badge">${h.hw_type||'drill'}</span>${h.attachment_url?`<a href="${esc(h.attachment_url)}" target="_blank" class="hw-dl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Worksheet</a>`:''}`):''}          </div>`;
+            <div class="hw-top">
+              ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
+              ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
+              ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}            </div>
+            ${!sl?(t?`${desc?`<div class="hw-desc ed" data-eid="hw-${h.id}-description" data-ml="true">${esc(desc)}</div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
+          </div>`;
         }).join('')}
         ${t?`<button class="add-b" data-ah="${ss.id}">+ Add Homework</button>`:''}
       </div>
@@ -357,24 +361,26 @@ function bind(){
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
   document.getElementById('add-btn')?.addEventListener('click',addStudent);
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ah]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ah;const ms=S.sessions.find(s=>s.id===sid)?.homework?.length||0;await db.from('homework').insert({session_id:sid,label:'New assignment',hw_type:'drill',sort_order:ms});await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-ht]').forEach(sel=>{sel.addEventListener('change',async function(){await db.from('homework').update({hw_type:this.value}).eq('id',this.dataset.ht);});});
-  document.querySelectorAll('[data-ha]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const cur=b.title!=='Attach PDF'?b.title:'';const url=prompt('Paste PDF or worksheet URL (leave empty to remove):',cur);if(url===null)return;await db.from('homework').update({attachment_url:url||null}).eq('id',b.dataset.ha);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;b.outerHTML=`<textarea class="hw-desc-edit" data-eid="hw-${id}-description" placeholder="Add steps, one per line..."></textarea>`;const ta=document.querySelector(`[data-eid="hw-${id}-description"]`);ta.focus();ta.addEventListener('blur',()=>saveEd(`hw-${id}-description`,ta.value));ta.addEventListener('keydown',e=>{if(e.key==='Escape'){loadStudent(S.selId).then(R);}});});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
 
 function startEd(el){
   const eid=el.dataset.eid,ml=el.dataset.ml==='true';
+  const isHwDesc=el.classList.contains('hw-desc');
   const cur=el.textContent==='Click to add...'?'':el.textContent;
-  if(ml)el.outerHTML=`<textarea class="ed-ta" data-eid="${eid}">${esc(cur)}</textarea>`;
-  else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
+  if(ml){
+    const cls=isHwDesc?'hw-desc-edit':'ed-ta';
+    el.outerHTML=`<textarea class="${cls}" data-eid="${eid}">${esc(cur)}</textarea>`;
+  }else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
   const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();
   inp.addEventListener('blur',()=>saveEd(eid,inp.value));
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!ml)saveEd(eid,inp.value);if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
