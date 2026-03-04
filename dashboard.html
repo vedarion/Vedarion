@@ -135,7 +135,11 @@
     .hw{padding:14px 16px;background:var(--input);border-radius:10px;border:1px solid var(--border)}
     .hw.lk{background:rgba(8,8,8,.6);border:1px dashed var(--border)}
     .hw-top{display:flex;align-items:center;gap:14px}
-    .hw-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid #222;flex-shrink:0}
+    .hw-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid #222;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .hw-cb:hover{border-color:var(--faint)}
+    .hw-cb.checked{background:var(--accent);border-color:var(--accent);color:#fff}
+    .hw-done .hw-l{text-decoration:line-through;opacity:.45}
+    .hw-done .hw-desc{opacity:.35}
     .hw-l{color:#aaa;font-size:13px;flex:1;line-height:1.4}.hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
     .hw-desc{margin:10px 0 0 29px;padding:10px 14px;background:rgba(255,255,255,.015);border-left:2px solid #1e1e1e;border-radius:0 6px 6px 0;color:var(--muted);font-size:12px;line-height:1.8;white-space:pre-line}
     .hw-desc .step{display:flex;gap:8px;padding:2px 0}.hw-desc .step-dot{color:var(--faint);flex-shrink:0;margin-top:1px}
@@ -387,9 +391,9 @@ function sessHTML(ss,i){
           const sl=lk&&!t;
           const desc=h.description||'';
           const descHtml=desc?desc.split('\n').filter(l=>l.trim()).map(l=>`<div class="step"><span class="step-arrow">›</span><span>${esc(l.trim())}</span></div>`).join(''):'';
-          return`<div class="hw ${sl?'lk':''}">
+          return`<div class="hw ${sl?'lk':''} ${h.completed?'hw-done':''}">
             <div class="hw-top">
-              ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':'<div class="hw-cb"></div>'}
+              ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':`<div class="hw-cb ${h.completed?'checked':''}" data-hc="${h.id}">${h.completed?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`}
               ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
               ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}            </div>
             ${!sl?(t?`${desc?`<div class="hw-desc ed" data-eid="hw-${h.id}-description" data-ml="true">${esc(desc)}</div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
@@ -444,7 +448,8 @@ function bind(){
     await applyTemplate(S.selId,tplKey);
     await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
