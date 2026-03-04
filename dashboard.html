@@ -163,6 +163,7 @@
         <label class="login-label">Password</label>
         <input class="login-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
         <button class="login-btn" id="login-btn" ${S.loginLoading?'disabled':''}>${S.loginLoading?'Signing in...':'Sign In'}</button>
+        <div style="text-align:center;margin-top:12px"><a href="#" id="forgot-pw" style="color:#555;font-size:12px;font-family:'DM Mono',monospace;text-decoration:none;transition:color .2s">Forgot password?</a></div>
         ${S.loginError?`<div class="login-error">${S.loginError}</div>`:''}
       </div></div>`;
     }
@@ -192,7 +193,7 @@
       S.isTutor=profile&&(profile.role==='owner'||profile.role==='tutor');
 
       if(S.isTutor){
-        const{data:students}=await sb.from('students').select('*, profiles(full_name, email)').order('created_at',{ascending:false});
+        const{data:students}=await sb.from('students').select('*, profiles(first_name, email)').order('created_at',{ascending:false});
         S.students=students||[];
         if(students&&students.length>0){S.selectedStudentId=students[0].id;await loadStudentData(students[0].id);}
       }else{
@@ -203,7 +204,7 @@
     }
 
     async function loadStudentData(studentId){
-      const{data:student}=await sb.from('students').select('*, profiles(full_name, email)').eq('id',studentId).single();
+      const{data:student}=await sb.from('students').select('*, profiles(first_name, email)').eq('id',studentId).single();
       S.student=student;
       const{data:sessions}=await sb.from('sessions').select('*').eq('student_id',studentId).order('session_number');
       for(let sess of(sessions||[])){
@@ -231,17 +232,17 @@
       const total=s?s.sessions_bought:0;
       const pct=total>0?Math.max((cc/total)*100,3):3;
       let name='';
-      if(s&&s.profiles)name=s.profiles.full_name||s.profiles.email||'';
+      if(s&&s.profiles)name=s.profiles.first_name||s.profiles.email||'';
 
       return`
         <div class="nav">
           <div class="nav-left"><span class="nav-logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
           <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/course.html" class="nav-link">Course</a><a href="/foundations/translating-words-on-the-test/vedamark.html" class="nav-link">VedaMark</a></div>
-          <div class="nav-right"><span class="nav-user">${S.profile?.full_name||S.user?.email||''}</span><button class="logout-btn" id="logout-btn">Sign Out</button></div>
+          <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="logout-btn" id="logout-btn">Sign Out</button></div>
         </div>
         ${t?`
           <div class="student-picker"><label>Student</label>
-            <select id="student-select">${S.students.map(st=>`<option value="${st.id}" ${st.id===S.selectedStudentId?'selected':''}>${st.profiles?.full_name||st.profiles?.email||'Unnamed'}</option>`).join('')}</select>
+            <select id="student-select">${S.students.map(st=>`<option value="${st.id}" ${st.id===S.selectedStudentId?'selected':''}>${st.profiles?.first_name||st.profiles?.email||'Unnamed'}</option>`).join('')}</select>
             <button class="add-student-btn" id="add-student-btn">+ New Student</button>
           </div>
           <div class="edit-banner"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Editing mode — click any text to edit</div>
@@ -330,6 +331,15 @@
     function attachEvents(){
       document.getElementById('login-btn')?.addEventListener('click',handleLogin);
       document.getElementById('login-password')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleLogin();});
+      document.getElementById('forgot-pw')?.addEventListener('click',async e=>{
+        e.preventDefault();
+        const email=document.getElementById('login-email')?.value.trim();
+        if(!email){S.loginError='Enter your email above, then click Forgot password';render();return;}
+        const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/dashboard.html'});
+        if(error){S.loginError='Error sending reset email: '+error.message;render();return;}
+        S.loginError='';render();
+        alert('Password reset email sent to '+email+'. Check your inbox.');
+      });
       document.getElementById('logout-btn')?.addEventListener('click',handleLogout);
       document.getElementById('student-select')?.addEventListener('change',async function(){S.selectedStudentId=this.value;S.expandedSession=-1;await loadStudentData(this.value);render();});
       document.getElementById('add-student-btn')?.addEventListener('click',handleAddStudent);
@@ -400,7 +410,7 @@
       const p=editId.split('-');
       if(p[0]==='student'){
         const field=p[1];
-        if(field==='name')await sb.from('profiles').update({full_name:value}).eq('id',S.student.profile_id);
+        if(field==='name')await sb.from('profiles').update({first_name:value}).eq('id',S.student.profile_id);
         else await sb.from('students').update({[field]:value}).eq('id',S.selectedStudentId);
       }else if(p[0]==='session'){
         await sb.from('sessions').update({[p[2]]:value}).eq('id',p[1]);
@@ -417,7 +427,7 @@
       const email=prompt('Student email:');if(!email)return;
       const password=prompt('Set a temporary password for the student (min 6 chars):');if(!password)return;
 
-      const{error:signUpError}=await sb.auth.signUp({email,password,options:{data:{full_name:name,role:'student'}}});
+      const{error:signUpError}=await sb.auth.signUp({email,password,options:{data:{first_name:name,role:'student'}}});
       if(signUpError){alert('Error: '+signUpError.message);return;}
 
       // Re-auth as tutor
