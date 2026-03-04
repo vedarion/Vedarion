@@ -66,6 +66,8 @@
     .sb-add-input:focus{border-color:#2a2a2a}.sb-add-input::placeholder{color:var(--faint)}
     .sb-add-btn{width:100%;padding:9px;background:var(--deep);border:1px solid #222;border-radius:8px;color:var(--dim);font-family:var(--mono);font-size:10px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.3px}
     .sb-add-btn:hover{background:#222;color:var(--text)}.sb-add-btn:disabled{opacity:.4;cursor:not-allowed}
+    .sb-tpl-sel,.tpl-apply-sel{width:100%;padding:9px;border-radius:8px;border:1px solid var(--border);background:var(--deep);color:var(--dim);cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.3px;outline:none;transition:all .2s;-webkit-appearance:none;appearance:none}
+    .sb-tpl-sel:hover,.tpl-apply-sel:hover{border-color:var(--faint);color:var(--text)}
     .sb-msg{font-size:11px;margin-top:8px;font-family:var(--sans);line-height:1.4}.sb-msg.err{color:var(--red)}.sb-msg.ok{color:var(--green)}
     .sb-empty{color:var(--faint);font-size:11px;text-align:center;padding:20px 0;font-family:var(--mono)}
 
@@ -163,7 +165,70 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:''};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:''};
+
+const TEMPLATES={
+'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
+{n:1,title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',status:'upcoming',
+goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],
+homework:[
+{label:'Insight to Action: LR Review',desc:'Review every missed question from our session\nFor each: was it strategy (knew the concept, wrong approach) or knowledge (didn\'t recognize the pattern)?\nWhat will you do differently next time?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
+{label:'LR Section Reset',desc:'Take a fresh LR section when ready\nReview every miss: strategy or knowledge?\nSame reason as Session 1 misses, or different?\nInsight to Action: what will you do differently?\nDrill similar questions\nClean section → you\'re ready for a PT. If not → keep doing sections'},
+{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read'},
+{label:'1 RC Section (timed)',desc:''},
+{label:'Practice Test + Blind Review',desc:''}
+]},
+{n:2,title:'The Passage That Breaks You',subtitle:'Diagnostic',description:'Work through a hard Reading Comprehension passage together in real time. We\'ll slow down and examine how you read, what you notice, what you miss, and where time disappears.',status:'locked',
+goals:['Identify RC reading habits that cost time or accuracy','Test passage structure recognition on a difficult passage','Determine whether issues are comprehension, question strategy, or pacing'],
+homework:[
+{label:'Insight to Action: RC Review',desc:'Review every missed question from our session passage\nFor each: was it a reading issue (missed something in the passage) or a question strategy issue (understood the passage but picked wrong)?\nWhat will you do differently?\nDo 2 similar passage types\nResults improve → move on. If not → repeat or email tutor'},
+{label:'2 Hard RC Passages (untimed)',desc:'Focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nAfter finishing: did the summaries help you answer questions faster?'},
+{label:'1 RC Section (timed)',desc:'Full section under the clock\nTrack which passage took the most time and which questions you flagged'},
+{label:'1 LR Section (timed)',desc:'Keep LR momentum from Session 1\nSame Insight to Action process for any misses: strategy or knowledge?'},
+{label:'Practice Test + Blind Review',desc:''}
+]},
+{n:3,title:'LR Under the Clock',subtitle:'Timed Review',description:'Take a full timed LR section that day, then review it together question by question. Every miss and every hesitation gets examined.',status:'locked',
+goals:['Complete a timed LR section to simulate real test pressure','Review every flagged and missed question together','Identify patterns in errors — are they the same types from Session 1?'],
+homework:[
+{label:'Insight to Action: LR Review',desc:'Review every missed question from our session\nFor each: strategy or knowledge?\nAre these the same patterns from Session 1 or new ones?\nWhat will you do differently?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
+{label:'LR Section Reset',desc:'Take a fresh LR section when ready\nReview every miss with the same process\nCompare to Session 1 and Session 3 patterns — are you improving?\nClean section → ready for PT. If not → keep going'},
+{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read'},
+{label:'1 RC Section (timed)',desc:''},
+{label:'Practice Test + Blind Review',desc:''}
+]},
+{n:4,title:'RC Under the Clock',subtitle:'Timed Review',description:'Same approach as Session 3 but for Reading Comprehension. Full timed RC section followed by a detailed walkthrough of every passage and question.',status:'locked',
+goals:['Complete a timed RC section under test conditions','Review passage approach and question strategy for each passage','Compare weaknesses to Session 2 findings — what\'s improved, what hasn\'t'],
+homework:[
+{label:'Insight to Action: RC Review',desc:'Review every missed question from our timed section\nFor each: reading issue or question strategy issue?\nCompare to Session 2 findings — same problems or different?\nWhat will you do differently?\nDo 2 similar passage types\nResults improve → move on. If not → repeat or email tutor'},
+{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nCompare your approach now to Session 2 — what\'s changed?'},
+{label:'1 RC Section (timed)',desc:'Full section under the clock\nTrack timing per passage — are you faster than Session 2?'},
+{label:'1 LR Section (timed)',desc:'Keep LR sharp\nSame Insight to Action process for any misses'},
+{label:'Practice Test + Blind Review',desc:'Full PT under test conditions\nBlind review after — note confidence level on every question\nThis is your last PT before our final session'}
+]},
+{n:5,title:'Breaking the Plateau',subtitle:'Final Review',description:'Review a recent full practice test together with a focus on LR and RC. This is where everything from the first four sessions comes together. We\'ll build your game plan for test day.',status:'locked',
+goals:['Review a complete PT focusing on LR and RC sections','Confirm whether targeted weaknesses have improved','Build a test day strategy and final prep plan through April'],
+homework:[
+{label:'Final Insight to Action',desc:'Review your Insight to Action notes from all 4 previous sessions\nWhat patterns kept showing up?\nWhat changed in how you approach questions?\nWrite your 3 biggest takeaways'},
+{label:'Test Day Strategy',desc:'Write your section order preference and why\nWrite your timing plan for each section\nList your top 3 rules for test day (things you learned from our sessions)'},
+{label:'Continue the Process',desc:'Keep doing weekly PTs with blind review through April\nUse Insight to Action for every review\nIf you hit a wall → email tutor'}
+]}
+]}
+};
+
+async function applyTemplate(studentId,tplKey){
+  const tpl=TEMPLATES[tplKey];if(!tpl)return;
+  await db.from('students').update({package_type:tpl.package_type,sessions_bought:tpl.sessions_bought}).eq('id',studentId);
+  for(const s of tpl.sessions){
+    const{data:sess}=await db.from('sessions').insert({student_id:studentId,session_number:s.n,title:s.title,subtitle:s.subtitle,description:s.description,status:s.status}).select().single();
+    if(!sess)continue;
+    for(let gi=0;gi<s.goals.length;gi++){
+      await db.from('session_goals').insert({session_id:sess.id,goal_text:s.goals[gi],sort_order:gi});
+    }
+    for(let hi=0;hi<s.homework.length;hi++){
+      await db.from('homework').insert({session_id:sess.id,label:s.homework[hi].label,hw_type:'drill',description:s.homework[hi].desc||null,sort_order:hi});
+    }
+  }
+}
 
 function R(){
   const a=document.getElementById('app');
@@ -230,9 +295,15 @@ async function addStudent(){
   if(!profs||profs.length===0){S.addMsg='No account found. Create their account in Supabase first.';S.addMsgType='err';R();return;}
   const{data:existing}=await db.from('students').select('id').eq('profile_id',profs[0].id).eq('assigned_tutor_id',S.user.id);
   if(existing&&existing.length>0){S.addMsg='Already added as your student';S.addMsgType='err';R();return;}
-  const{error}=await db.from('students').insert({profile_id:profs[0].id,assigned_tutor_id:S.user.id,package_type:'5-session',sessions_bought:5,status:'active'});
+  const pkg=S.addTpl&&TEMPLATES[S.addTpl]?TEMPLATES[S.addTpl].package_type:'5-session';
+  const bought=S.addTpl&&TEMPLATES[S.addTpl]?TEMPLATES[S.addTpl].sessions_bought:5;
+  const{data:newSt,error}=await db.from('students').insert({profile_id:profs[0].id,assigned_tutor_id:S.user.id,package_type:pkg,sessions_bought:bought,status:'active'}).select().single();
   if(error){S.addMsg='Error: '+error.message;S.addMsgType='err';R();return;}
-  S.addMsg=(profs[0].first_name||'Student')+' added!';S.addMsgType='ok';S.addEmail='';
+  if(S.addTpl&&TEMPLATES[S.addTpl]&&newSt){
+    S.addMsg='Applying template...';S.addMsgType='ok';R();
+    await applyTemplate(newSt.id,S.addTpl);
+  }
+  S.addMsg=(profs[0].first_name||'Student')+' added!';S.addMsgType='ok';S.addEmail='';S.addTpl='';
   await loadUser();
 }
 
@@ -272,7 +343,7 @@ function dashHTML(){
         </div>
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
-          ${S.sessions.length===0&&t?'<button class="add-b" id="add-first-s">+ Add First Session</button>':''}
+          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><select class="tpl-apply-sel" id="tpl-apply">${Object.keys(TEMPLATES).map(k=>'<option value="'+k+'">'+TEMPLATES[k].name+'</option>').join('')}</select><button class="add-b" id="apply-tpl" style="border-color:rgba(201,122,69,.3);color:var(--accent)">Apply Template</button><div style="text-align:center;color:var(--faint);font-size:10px;font-family:var(--mono);padding:4px 0">— or —</div><button class="add-b" id="add-first-s">+ Add Blank Session</button></div>`:''}
           ${S.sessions.map((ss,i)=>sessHTML(ss,i)).join('')}
           ${S.sessions.length>0&&t?'<button class="add-b" id="add-s">+ Add Session</button>':''}
         </div>`}
@@ -287,6 +358,7 @@ function dashHTML(){
         <div class="sb-divider"></div>
         <div class="sb-add-title">Add Student</div>
         <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
+        <select class="sb-tpl-sel" id="add-tpl"><option value="">No template (blank)</option>${Object.keys(TEMPLATES).map(k=>`<option value="${k}" ${S.addTpl===k?'selected':''}>${TEMPLATES[k].name}</option>`).join('')}</select>
         <button class="sb-add-btn" id="add-btn">Add by Email</button>
         ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${S.addMsg}</div>`:''}
       </div></div>`:''}
@@ -361,6 +433,17 @@ function bind(){
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
   document.getElementById('add-btn')?.addEventListener('click',addStudent);
+  document.getElementById('add-tpl')?.addEventListener('change',function(){S.addTpl=this.value;});
+  document.getElementById('apply-tpl')?.addEventListener('click',async()=>{
+    if(!S.selId)return;
+    const sel=document.getElementById('tpl-apply');
+    const tplKey=sel?sel.value:'';
+    if(!tplKey||!TEMPLATES[tplKey])return;
+    const btn=document.getElementById('apply-tpl');
+    btn.textContent='Applying...';btn.disabled=true;
+    await applyTemplate(S.selId,tplKey);
+    await loadStudent(S.selId);R();
+  });
   document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
