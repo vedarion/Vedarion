@@ -177,7 +177,10 @@ let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:nul
 
 const TEMPLATES={
 'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
-{n:1,title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',status:'upcoming',
+{n:0,title:'Introduction',subtitle:'Session 0',description:'Get to know your tutor, talk through where you are, and walk through your roadmap together so you know exactly what\'s coming.',status:'upcoming',goals:['Get to know your tutor','Walk through your roadmap and what each session covers','Set expectations and next steps'],homework:[
+{label:'Book your next session',desc:''}
+]},
+{n:1,title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',status:'locked',
 goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],
 homework:[
 {label:'Insight to Action: LR Review',desc:'Review every missed question from our session\nFor each: was it strategy (knew the concept, wrong approach) or knowledge (didn\'t recognize the pattern)?\nWhat will you do differently next time?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
@@ -323,7 +326,7 @@ function ed(val,id,ml){
 
 function dashHTML(){
   const t=S.isTutor,s=S.student;
-  const cc=S.sessions.filter(x=>x.status==='completed').length;
+  const cc=S.sessions.filter(x=>x.status==='completed'&&x.session_number>0).length;
   const total=s?s.sessions_bought:0;
   const pct=total>0?Math.max((cc/total)*100,3):3;
   let name='';if(s&&s.profiles)name=s.profiles.first_name||s.profiles.email||'';
@@ -410,7 +413,7 @@ function sessHTML(ss,i){
   }
   return`<div class="sess ${up?'up':''} ${lk&&!t?'lk-s':''}">
     <div class="sess-hd" data-tog="${i}">
-      <div class="sess-num ${ss.status}">${cp?'✓':i+1}</div>
+      <div class="sess-num ${ss.status}">${cp?'✓':ss.session_number}</div>
       <div class="sess-info">
         <div class="sess-tr">
           ${t?`<span class="sess-t">${ed(ss.title,'session-'+ss.id+'-title',false)}</span>`:`<span class="sess-t ${lk?'lk':''}">${esc(ss.title)}</span>`}
