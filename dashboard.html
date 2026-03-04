@@ -36,15 +36,14 @@
 
     .nav{padding:16px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:100}
     .nav-left{display:flex;align-items:center;gap:12px}.nav .logo{font-size:14px}
-    .nav-sep{color:#1a1a1a;font-size:14px}.nav-role{color:var(--muted);font-size:11px;font-family:var(--mono);letter-spacing:.5px}
+    .nav-sep{color:#1a1a1a;font-size:14px}.nav-role{color:var(--text);font-size:11px;font-family:var(--mono);letter-spacing:.5px}
     .nav-links{display:flex;align-items:center;gap:2px}
-    /* FIX 6: nav links var(--faint) -> var(--dim) */
-    .nav-link{padding:6px 14px;color:var(--dim);font-family:var(--mono);font-size:10px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px}
-    .nav-link:hover{color:var(--muted);background:rgba(255,255,255,.02)}
+    .nav-link{padding:6px 14px;color:var(--bright);font-family:var(--mono);font-size:12px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px}
+    .nav-link:hover{color:#fff;background:rgba(255,255,255,.04)}
     .nav-right{display:flex;align-items:center;gap:14px}
     .nav-user{color:var(--faint);font-size:11px;font-family:var(--mono)}
-    .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
-    .sign-out:hover{border-color:var(--faint);color:var(--muted)}
+    .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border-hi);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+    .sign-out:hover{border-color:var(--dim);color:var(--bright)}
 
     /* FIX 1: banner — 14px, var(--text), icon opacity .7 */
     .edit-banner{padding:8px 32px;background:rgba(201,122,69,.03);border-bottom:1px solid rgba(201,122,69,.06);display:flex;align-items:center;gap:8px}
@@ -342,7 +341,7 @@ function dashHTML(){
   return`
     <div class="nav">
       <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/course.html" class="nav-link">Course</a><a href="/foundations/translating-words-on-the-test/vedamark.html" class="nav-link">VedaMark</a></div>
+      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
     ${t?'<div class="edit-banner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Editing mode — click any text to edit</span></div>':''}
