@@ -140,8 +140,8 @@
     .hw-cb{width:15px;height:15px;border-radius:4px;border:1.5px solid #222;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
     .hw-cb:hover{border-color:var(--faint)}
     .hw-cb.checked{background:var(--accent);border-color:var(--accent);color:#fff}
-    .hw-done .hw-l{text-decoration:line-through;opacity:.6}
-    .hw-done .hw-desc{opacity:.5}
+    .hw-done .hw-l{text-decoration:line-through;opacity:.5}
+    .hw-done .hw-desc{opacity:.65}
     .hw-l{color:var(--bright);font-size:15px;flex:1;line-height:1.4;font-weight:500}.hw-l.lk{color:var(--faint);filter:blur(3px);user-select:none}
     .hw-desc{margin:10px 0 0 29px;padding:10px 14px;background:rgba(255,255,255,.03);border-left:2px solid rgba(201,122,69,.25);border-radius:0 6px 6px 0;color:var(--text);font-size:14px;line-height:2;white-space:pre-line}
     .hw-desc .step{display:flex;gap:8px;padding:2px 0;align-items:flex-start}.hw-desc .step-dot{color:var(--faint);flex-shrink:0;margin-top:1px}
@@ -149,9 +149,14 @@
     .hw-step-cb{width:13px;height:13px;border-radius:3px;border:1.5px solid #333;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:3px}
     .hw-step-cb:hover{border-color:var(--dim)}
     .hw-step-cb.checked{background:var(--accent);border-color:var(--accent);color:#fff}
-    .step-done{text-decoration:line-through;opacity:.55}
+    .step-done{text-decoration:line-through;opacity:.5}
     .hw-desc a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;transition:opacity .2s}.hw-desc a:hover{opacity:.8}
     .hw-desc-edit{margin:10px 0 0 29px;width:calc(100% - 29px);padding:10px 14px;background:rgba(22,18,16,.5);border:1px solid rgba(201,122,69,.15);border-radius:6px;color:var(--dim);font-size:12px;line-height:1.8;font-family:var(--sans);outline:none;resize:vertical;min-height:60px}
+    .hw-edit-wrap{margin:10px 0 0 29px;width:calc(100% - 29px)}
+    .hw-edit-toolbar{display:flex;gap:6px;margin-bottom:4px}
+    .hw-edit-toolbar button{background:var(--deep);border:1px solid #222;border-radius:5px;color:var(--dim);font-family:var(--mono);font-size:9px;padding:4px 10px;cursor:pointer;transition:all .15s;letter-spacing:.3px;display:flex;align-items:center;gap:4px}
+    .hw-edit-toolbar button:hover{border-color:var(--faint);color:var(--text)}
+    .hw-edit-toolbar button svg{width:11px;height:11px}
     .hw-desc-ph{margin:8px 0 0 29px;font-size:11px;color:var(--faint);font-style:italic;cursor:pointer;padding:4px 0;opacity:.5;transition:opacity .2s}
     .hw-desc-ph:hover{opacity:.8}
     .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#bbb;font-size:14px;line-height:1.8;white-space:pre-line}
@@ -229,7 +234,9 @@ homework:[
 };
 
 function linkify(text){
-  return text.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+  text=text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  text=text.replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g,'$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+  return text;
 }
 
 async function applyTemplate(studentId,tplKey){
@@ -422,7 +429,7 @@ function sessHTML(ss,i){
               ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
               ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}
             </div>
-            ${!sl?(t?`${desc?`<div class="hw-desc ed" data-eid="hw-${h.id}-description" data-ml="true">${esc(desc)}</div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
+            ${!sl?(t?`${desc?`<div class="hw-desc">${descHtml}<div class="hw-desc-edit-btn" data-adesc="${h.id}" title="Edit steps" style="margin-top:8px;font-size:10px;color:var(--faint);cursor:pointer;font-family:var(--mono);opacity:.5;transition:opacity .2s">✎ edit steps</div></div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
           </div>`;
         }).join('')}
         ${t?`<button class="add-b" data-ah="${ss.id}">+ Add Homework</button>`:''}
@@ -478,7 +485,7 @@ function bind(){
     await applyTemplate(S.selId,tplKey);
     await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
@@ -495,7 +502,25 @@ function bind(){
   document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ah]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ah;const ms=S.sessions.find(s=>s.id===sid)?.homework?.length||0;await db.from('homework').insert({session_id:sid,label:'New assignment',hw_type:'drill',sort_order:ms});await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;b.outerHTML=`<textarea class="hw-desc-edit" data-eid="hw-${id}-description" placeholder="Add steps, one per line..."></textarea>`;const ta=document.querySelector(`[data-eid="hw-${id}-description"]`);ta.focus();ta.addEventListener('blur',()=>saveEd(`hw-${id}-description`,ta.value));ta.addEventListener('keydown',e=>{if(e.key==='Escape'){loadStudent(S.selId).then(R);}});});});
+  document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;
+    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===id);
+    const curDesc=hw?hw.description||'':'';
+    const parent=b.closest('.hw-desc')||b;
+    parent.outerHTML=`<div class="hw-edit-wrap"><div class="hw-edit-toolbar"><button class="hw-link-btn" data-linkfor="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link</button></div><textarea class="hw-desc-edit" data-eid="hw-${id}-description" placeholder="Add steps, one per line..." style="width:100%;margin:0">${esc(curDesc)}</textarea></div>`;
+    const ta=document.querySelector(`[data-eid="hw-${id}-description"]`);ta.focus();
+    ta.addEventListener('blur',e=>{if(e.relatedTarget&&e.relatedTarget.classList.contains('hw-link-btn'))return;saveEd(`hw-${id}-description`,ta.value);});
+    ta.addEventListener('keydown',e=>{if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
+    document.querySelector(`.hw-link-btn[data-linkfor="${id}"]`).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
+      const start=ta.selectionStart,end=ta.selectionEnd;
+      const sel=ta.value.substring(start,end);
+      if(!sel){alert('Highlight a word first, then click Link');ta.focus();return;}
+      const url=prompt('Enter URL for "'+sel+'":');
+      if(!url){ta.focus();return;}
+      const before=ta.value.substring(0,start);const after=ta.value.substring(end);
+      ta.value=before+'['+sel+']('+url+')'+after;
+      ta.focus();
+    });
+  });});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
