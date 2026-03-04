@@ -38,15 +38,17 @@
     .nav-left{display:flex;align-items:center;gap:12px}.nav .logo{font-size:14px}
     .nav-sep{color:#1a1a1a;font-size:14px}.nav-role{color:var(--muted);font-size:11px;font-family:var(--mono);letter-spacing:.5px}
     .nav-links{display:flex;align-items:center;gap:2px}
-    .nav-link{padding:6px 14px;color:var(--faint);font-family:var(--mono);font-size:10px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px}
+    /* FIX 6: nav links var(--faint) -> var(--dim) */
+    .nav-link{padding:6px 14px;color:var(--dim);font-family:var(--mono);font-size:10px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px}
     .nav-link:hover{color:var(--muted);background:rgba(255,255,255,.02)}
     .nav-right{display:flex;align-items:center;gap:14px}
     .nav-user{color:var(--faint);font-size:11px;font-family:var(--mono)}
     .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
     .sign-out:hover{border-color:var(--faint);color:var(--muted)}
 
+    /* FIX 1: banner — 14px, var(--text), icon opacity .7 */
     .edit-banner{padding:8px 32px;background:rgba(201,122,69,.03);border-bottom:1px solid rgba(201,122,69,.06);display:flex;align-items:center;gap:8px}
-    .edit-banner svg{opacity:.4}.edit-banner span{font-size:10px;color:var(--faint);font-family:var(--mono);letter-spacing:.3px}
+    .edit-banner svg{opacity:.7}.edit-banner span{font-size:14px;color:var(--text);font-family:var(--mono);letter-spacing:.3px}
 
     .layout{display:flex;max-width:1080px;margin:0 auto;padding:32px;gap:28px;animation:fadeUp .4s ease}
     .main{flex:1;min-width:0}.sidebar{width:230px;flex-shrink:0}
@@ -59,7 +61,8 @@
     .sb-avatar{width:34px;height:34px;border-radius:9px;background:var(--deep);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--faint);flex-shrink:0;transition:color .15s}
     .sb-item.active .sb-avatar{color:var(--text)}
     .sb-sname{font-size:13px;color:var(--dim);font-weight:500;transition:color .15s}.sb-item.active .sb-sname{color:var(--bright)}
-    .sb-spack{font-size:9px;color:var(--faint);font-family:var(--mono);letter-spacing:.5px;margin-top:1px}
+    /* FIX 7: sb-spack var(--faint) -> var(--muted) */
+    .sb-spack{font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:.5px;margin-top:1px}
     .sb-divider{height:1px;background:var(--border);margin:14px 0}
     .sb-add-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
     .sb-add-input{width:100%;padding:10px 12px;background:var(--input);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-family:var(--sans);outline:none;margin-bottom:8px;transition:border-color .2s}
@@ -80,11 +83,13 @@
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
     .stat{background:var(--input);border:1px solid var(--border-hi);border-radius:10px;padding:14px 12px;text-align:center}
     .stat-lbl{font-size:9px;color:var(--dim);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
-    .stat-val{font-size:16px;font-weight:700;color:var(--text);font-family:var(--mono)}
+    /* FIX 5: stat-val var(--text) -> var(--bright) */
+    .stat-val{font-size:16px;font-weight:700;color:var(--bright);font-family:var(--mono)}
     .prog-wrap{margin-bottom:18px}.prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
     .prog-lbl{font-size:9px;color:var(--accent);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
     .prog-ct{font-size:12px;color:var(--dim);font-family:var(--mono)}
-    .prog-track{height:3px;background:var(--border-hi);border-radius:2px;overflow:hidden}
+    /* FIX 8: progress track var(--border-hi) -> #2a2a2a */
+    .prog-track{height:3px;background:#2a2a2a;border-radius:2px;overflow:hidden}
     .prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .6s ease}
     .info-grid{display:grid;grid-template-columns:1fr 2fr;gap:8px}
     .info-box{background:var(--input);border:1px solid var(--border-hi);border-radius:10px;padding:14px}
@@ -94,7 +99,8 @@
     .ed{cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.1);padding-bottom:1px;transition:border-color .2s}.ed:hover{border-color:rgba(255,255,255,.25)}
     .ed-inp{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:4px 8px;outline:none;color:inherit;font:inherit;width:100%}
     .ed-ta{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:8px 10px;outline:none;color:inherit;font:inherit;width:100%;min-height:60px;resize:vertical}
-    .ph{color:var(--faint);font-style:italic}
+    /* FIX 4: placeholder var(--faint) -> var(--muted) */
+    .ph{color:var(--muted);font-style:italic}
 
     .rm-header{display:flex;justify-content:space-between;align-items:baseline;margin:32px 0 16px}
     .rm-title{font-size:20px;font-family:var(--serif);font-weight:700;color:var(--text)}
@@ -110,8 +116,11 @@
     .sess-num.completed{background:var(--green-bg);border:1px solid rgba(92,184,92,.1);color:var(--green)}
     .sess-num.locked{background:#0e0e0e;border:1px solid var(--border);color:var(--faint)}
     .sess-info{flex:1;min-width:0}.sess-tr{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap}
-    .sess-t{font-size:17px;font-weight:600;font-family:var(--serif);color:var(--text)}.sess-t.lk{color:var(--faint)}
-    .sess-meta{font-size:12px;color:var(--faint);display:flex;align-items:center;gap:8px;flex-wrap:wrap}.sess-meta .sep{color:#222}
+    .sess-t{font-size:17px;font-weight:600;font-family:var(--serif);color:var(--text)}
+    /* FIX 3: sess-t.lk var(--faint) -> var(--dim) */
+    .sess-t.lk{color:var(--dim)}
+    /* FIX 2: sess-meta var(--faint) -> var(--dim) */
+    .sess-meta{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap}.sess-meta .sep{color:#222}
     .sess-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0;margin-right:4px}
     .reorder-btn{background:none;border:1px solid transparent;border-radius:4px;cursor:pointer;padding:2px;color:var(--faint);transition:all .15s;display:flex;align-items:center;justify-content:center}
     .reorder-btn:hover:not(:disabled){color:var(--accent);border-color:rgba(201,122,69,.2);background:rgba(201,122,69,.05)}
@@ -336,7 +345,7 @@ function dashHTML(){
       <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/course.html" class="nav-link">Course</a><a href="/foundations/translating-words-on-the-test/vedamark.html" class="nav-link">VedaMark</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
-    ${t?'<div class="edit-banner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Editing mode — click any text to edit</span></div>':''}
+    ${t?'<div class="edit-banner"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span>Editing mode — click any text to edit</span></div>':''}
     <div class="layout">
       <div class="main">
         ${!s?`<div class="empty"><h3>${t?'Select or add a student':'No roadmap assigned yet'}</h3><p>${t?'Add a student by email in the panel.':'Your tutor will set up your dashboard soon.'}</p></div>`:
