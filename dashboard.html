@@ -252,6 +252,9 @@
     .ws-unflagged{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
     @media(max-width:768px){.ws-stats{grid-template-columns:repeat(2,1fr)}.ws-entry-hd{gap:6px}}
 
+    .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+    .hw-num{font-family:var(--mono);font-size:12px;color:var(--dim);flex-shrink:0;min-width:18px}
+    .hw-copy-msg{font-size:11px;color:var(--dim);font-family:var(--mono);padding:4px 0;text-align:center}
     .footer{text-align:center;padding:40px 0 20px;font-family:var(--mono);font-size:11px;letter-spacing:4px}
     .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
     .loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:1px}
@@ -273,7 +276,7 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{}};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null};
 
 const TEMPLATES={
 'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
@@ -692,7 +695,7 @@ function sessHTML(ss,i){
       </div>
       <div class="slbl">Homework${lk&&!t?' <span class="lkn">— unlocks after session</span>':''}</div>
       <div class="hw-list">
-        ${(ss.homework||[]).map(h=>{
+        ${(ss.homework||[]).map((h,hi)=>{
           const sl=lk&&!t;
           const desc=h.description||'';
           const steps=desc.split('\n').filter(l=>l.trim());
@@ -701,6 +704,7 @@ function sessHTML(ss,i){
           const checkableIndices=steps.map((l,idx)=>l.trim().startsWith('--')?null:idx).filter(idx=>idx!==null);
           const allDone=checkableSteps.length>0&&checkableIndices.every(idx=>sc[idx]===true);
           const hwDone=h.completed||(checkableSteps.length>0&&allDone);
+          const hwCount=ss.homework.length;
           const descHtml=steps.map((l,si)=>{
             const isLabel=l.trim().startsWith('--');
             if(isLabel)return`<div class="hw-label">${esc(l.trim().substring(2).trim())}</div>`;
@@ -710,14 +714,16 @@ function sessHTML(ss,i){
           return`<div class="hw ${sl?'lk':''} ${hwDone?'hw-done':''}">
             <div class="hw-top">
               ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':`<div class="hw-cb ${hwDone?'checked':''}" data-hc="${h.id}" data-steps="${steps.length}">${hwDone?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`}
+              <span class="hw-num">${hi+1}.</span>
               ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
+              ${!sl&&t?`<div class="hw-reorder"><button class="reorder-btn" data-hmv="up" data-hid="${h.id}" data-hsi="${hi}"${hi===0?' disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button><button class="reorder-btn" data-hmv="down" data-hid="${h.id}" data-hsi="${hi}"${hi===hwCount-1?' disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button></div>`:''}
               ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}
             </div>
             ${!sl?(t?`${desc?`<div class="hw-desc">${descHtml}<div class="hw-desc-edit-btn" data-adesc="${h.id}" title="Edit steps" style="margin-top:8px;font-size:10px;color:var(--faint);cursor:pointer;font-family:var(--mono);opacity:.5;transition:opacity .2s">✎ edit steps</div></div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
             ${!sl&&wsType(h.label)?`<div class="ws-card-footer"><button class="ws-open-btn" data-wsopen="${h.id}" data-wstype="${wsType(h.label)}">Open Worksheet →</button><span class="ws-summary-line">${esc(wsSummaryText(h.id,wsType(h.label)))}</span></div>`:''}
           </div>`;
         }).join('')}
-        ${t?`<button class="add-b" data-ah-open="${ss.id}" style="border-color:rgba(201,122,69,.3);color:var(--accent)">+ Add Homework</button>`:''}
+        ${t?`<button class="add-b" data-ah-open="${ss.id}" style="border-color:rgba(201,122,69,.3);color:var(--accent)">+ Add Homework</button><button class="add-b" data-hcopy="${ss.id}" style="margin-top:6px;opacity:.7">↑ Copy from previous session</button>${S.hwCopyMsg&&S.hwCopyMsgSess===ss.id?`<div class="hw-copy-msg">${esc(S.hwCopyMsg)}</div>`:''}`:''}
       </div>
       ${t||ss.tutor_notes?`<div class="slbl">Session Notes${!t?' from Your Tutor':''}</div><div class="tn-box">${t?ed(ss.tutor_notes||'','session-'+ss.id+'-tutor_notes',true):esc(ss.tutor_notes||'')}</div>`:''}
     </div>`;
@@ -1143,7 +1149,7 @@ function bind(){
     await db.from('students').update({time_factor:this.value}).eq('id',S.selId);
     await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
@@ -1201,6 +1207,11 @@ function bind(){
   document.querySelectorAll('[data-addclaim]').forEach(btn=>{btn.addEventListener('click',async()=>{await addClaimToEntry(btn.dataset.addclaim,parseInt(btn.dataset.addclaimentry));});});
   // Worksheet: meta tags
   document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
+  // Homework reorder
+  document.querySelectorAll('[data-hmv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const dir=b.dataset.hmv;const hid=b.dataset.hid;const hi=parseInt(b.dataset.hsi);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hid));if(!sess)return;const hw=sess.homework;const j=dir==='up'?hi-1:hi+1;if(j<0||j>=hw.length)return;const a=hw[hi],bh=hw[j];const aOrd=a.sort_order,bOrd=bh.sort_order;await db.from('homework').update({sort_order:-999}).eq('id',a.id);await db.from('homework').update({sort_order:aOrd}).eq('id',bh.id);await db.from('homework').update({sort_order:bOrd}).eq('id',a.id);await loadStudent(S.selId);R();});});
+  // Copy homework from previous session
+  document.querySelectorAll('[data-hcopy]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const sessId=b.dataset.hcopy;const sess=S.sessions.find(s=>s.id===sessId);if(!sess)return;const prevSess=S.sessions.find(s=>s.session_number===sess.session_number-1);if(!prevSess||!prevSess.homework||prevSess.homework.length===0){S.hwCopyMsg='No previous session homework to copy';S.hwCopyMsgSess=sessId;R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);return;}const base=(sess.homework?.length)||0;for(let ci=0;ci<prevSess.homework.length;ci++){const ph=prevSess.homework[ci];await db.from('homework').insert({session_id:sessId,label:ph.label,hw_type:ph.hw_type||'drill',description:ph.description||null,sort_order:base+ci});}S.hwCopyMsg=`Copied ${prevSess.homework.length} item${prevSess.homework.length===1?'':'s'}`;S.hwCopyMsgSess=sessId;await loadStudent(S.selId);R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);});});
+  // Add session button
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
