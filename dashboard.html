@@ -192,6 +192,66 @@
     .picker-add:hover{background:rgba(201,122,69,.2);border-color:var(--accent)}
     .picker-add:disabled{opacity:.4;cursor:not-allowed}
 
+    /* Worksheet */
+    .ws-card-footer{margin:14px 0 0 30px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .ws-open-btn{padding:8px 16px;border-radius:8px;border:1px solid rgba(201,122,69,.3);background:rgba(201,122,69,.06);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .ws-open-btn:hover{background:rgba(201,122,69,.12);border-color:var(--accent)}
+    .ws-summary-line{font-size:11px;color:var(--dim);font-family:var(--mono)}
+    .ws-back{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.3px;cursor:pointer;padding:4px 0;margin-bottom:20px;background:none;border:none;transition:opacity .2s}
+    .ws-back:hover{opacity:.7}
+    .ws-wrap{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:12px}
+    .ws-title{font-family:var(--serif);font-size:22px;color:var(--bright);margin-bottom:4px}
+    .ws-subtitle{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.3px;margin-bottom:16px}
+    .ws-desc{padding:14px 18px;background:rgba(201,122,69,.04);border-left:2px solid rgba(201,122,69,.2);border-radius:0 8px 8px 0;color:var(--text);font-size:13px;line-height:1.7;margin-bottom:20px}
+    .ws-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
+    .ws-stat{background:var(--input);border:1px solid var(--border-hi);border-radius:10px;padding:14px 12px;text-align:center}
+    .ws-stat-num{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--bright);line-height:1;margin-bottom:6px}
+    .ws-stat-lbl{font-size:9px;color:var(--dim);font-family:var(--mono);font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+    .ws-entry{background:rgba(18,16,14,.6);border:1px solid var(--border-hi);border-radius:14px;padding:20px;margin-bottom:14px}
+    .ws-entry-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+    .ws-entry-lbl{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--bright);letter-spacing:.3px;flex-shrink:0}
+    .ws-qnum{width:52px;padding:6px 8px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;text-align:center;outline:none;transition:border-color .2s}
+    .ws-qnum:focus{border-color:var(--faint)}
+    .ws-sel{padding:6px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+    .ws-sel:focus{border-color:var(--faint)}
+    .ws-sec-lbl{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin:14px 0 8px}
+    .ws-field{width:100%;padding:10px 12px;background:var(--input);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;resize:vertical;line-height:1.6;transition:border-color .2s}
+    .ws-field:focus{border-color:var(--faint)}
+    .ws-toggle-row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+    .ws-toggle-lbl{font-size:13px;color:var(--text);flex:1;min-width:120px}
+    .ws-toggle-btns{display:flex;gap:4px}
+    .ws-toggle-btn{padding:5px 14px;border-radius:6px;border:1px solid var(--border-hi);background:transparent;color:var(--dim);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .ws-toggle-btn:hover{border-color:var(--faint);color:var(--text)}
+    .ws-toggle-btn.active{background:rgba(201,122,69,.15);border-color:var(--accent);color:var(--accent);font-weight:700}
+    .ws-ac-grid{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+    .ws-ac-row{display:flex;align-items:center;gap:8px}
+    .ws-ac-badge{width:24px;height:24px;border-radius:6px;background:var(--deep);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--dim);cursor:pointer;flex-shrink:0;transition:all .15s;user-select:none}
+    .ws-ac-badge:hover{border-color:var(--faint)}
+    .ws-ac-badge.correct{background:rgba(92,184,92,.15);border-color:rgba(92,184,92,.4);color:#5cb85c}
+    .ws-ac-badge.wrong{background:rgba(217,83,79,.12);border-color:rgba(217,83,79,.3);color:#d9534f}
+    .ws-ac-inp{flex:1;padding:6px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .2s}
+    .ws-ac-inp:focus{border-color:var(--faint)}
+    .ws-add-btn{width:100%;padding:12px;background:transparent;border:1.5px dashed rgba(201,122,69,.3);border-radius:10px;color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;margin-top:8px}
+    .ws-add-btn:hover{border-color:var(--accent);background:rgba(201,122,69,.04)}
+    .ws-key-box{padding:14px 16px;background:rgba(201,122,69,.04);border:1px solid rgba(201,122,69,.1);border-radius:10px;margin-bottom:16px}
+    .ws-key-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .ws-key-row{display:flex;gap:8px;padding:3px 0;font-size:12px;color:var(--text);line-height:1.6}
+    .ws-key-arrow{color:var(--accent);flex-shrink:0;font-family:var(--mono)}
+    .ws-claim-num{width:20px;height:20px;border-radius:50%;background:var(--deep);border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--dim);flex-shrink:0}
+    .ws-claim-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .ws-claim-inp{flex:1;padding:6px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .2s}
+    .ws-claim-inp:focus{border-color:var(--faint)}
+    .ws-add-claim{font-family:var(--mono);font-size:10px;color:var(--accent);cursor:pointer;padding:2px 0;transition:opacity .2s;background:none;border:none;letter-spacing:.3px}
+    .ws-add-claim:hover{opacity:.7}
+    .ws-pass-tags{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+    .ws-tag{padding:5px 12px;border-radius:6px;border:1px solid var(--border-hi);background:transparent;color:var(--dim);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .ws-tag:hover{border-color:var(--faint);color:var(--text)}
+    .ws-tag.active{background:rgba(201,122,69,.12);border-color:rgba(201,122,69,.4);color:var(--accent);font-weight:700}
+    .ws-synthesis{background:rgba(201,122,69,.03);border:1px solid rgba(201,122,69,.08);border-radius:12px;padding:18px;margin-top:8px}
+    .ws-synth-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+    .ws-unflagged{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+    @media(max-width:768px){.ws-stats{grid-template-columns:repeat(2,1fr)}.ws-entry-hd{gap:6px}}
+
     .footer{text-align:center;padding:40px 0 20px;font-family:var(--mono);font-size:11px;letter-spacing:4px}
     .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
     .loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:1px}
@@ -213,7 +273,7 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:''};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{}};
 
 const TEMPLATES={
 'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
@@ -425,6 +485,7 @@ function R(){
   const a=document.getElementById('app');
   if(S.view==='loading')a.innerHTML='<div class="loading">LOADING</div>';
   else if(S.view==='login')a.innerHTML=loginHTML();
+  else if(S.wsView)a.innerHTML=wsShellHTML();
   else a.innerHTML=dashHTML();
   bind();
 }
@@ -472,11 +533,22 @@ async function loadStudent(id){
   const{data:st}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('id',id).single();
   S.student=st;
   const{data:sess}=await db.from('sessions').select('*').eq('student_id',id).order('session_number');
+  const allHwIds=[];
   for(let s of(sess||[])){
     const{data:g}=await db.from('session_goals').select('*').eq('session_id',s.id).order('sort_order');s.goals=g||[];
     const{data:h}=await db.from('homework').select('*').eq('session_id',s.id).order('sort_order');s.homework=h||[];
+    for(const hw of s.homework)allHwIds.push(hw.id);
   }
   S.sessions=sess||[];
+  // Load worksheet entries for all homework items
+  if(allHwIds.length>0){
+    const{data:wse}=await db.from('worksheet_entries').select('*').in('homework_id',allHwIds).order('entry_number');
+    S.wsEntries={};
+    for(const e of(wse||[])){
+      if(!S.wsEntries[e.homework_id])S.wsEntries[e.homework_id]=[];
+      S.wsEntries[e.homework_id].push(e);
+    }
+  }else{S.wsEntries={};}
 }
 
 async function addStudent(){
@@ -507,6 +579,36 @@ function ed(val,id,ml){
 function getStepCompletions(h){
   if(!h.step_completions)return[];
   try{return JSON.parse(h.step_completions);}catch(e){return[];}
+}
+
+function wsType(label){
+  if(!label)return null;
+  const l=label.toLowerCase().trim();
+  if(l==='blind review')return'blind_review';
+  if(l==='confidence log')return'confidence_log';
+  if(l==='rc blind review'||l==='rc passage breakdown')return'rc_claim_tracking';
+  return null;
+}
+
+function wsSummaryText(hwId,type){
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type===type);
+  if(entries.length===0)return'No entries yet';
+  if(type==='blind_review'){
+    const timing=entries.filter(e=>e.data&&e.data.category==='timing').length;
+    const knowledge=entries.filter(e=>e.data&&e.data.category==='knowledge').length;
+    const sloppy=entries.filter(e=>e.data&&e.data.category==='sloppy').length;
+    return`${entries.length} reviewed · ${timing} timing · ${knowledge} knowledge · ${sloppy} sloppy`;
+  }
+  if(type==='confidence_log'){
+    const changed=entries.filter(e=>e.data&&e.data.changed_answer===true).length;
+    const right1st=entries.filter(e=>e.data&&e.data.right_first_time===true).length;
+    const bad=entries.filter(e=>e.data&&e.data.flag_correct===false).length;
+    return`${entries.length} flagged · ${changed} changed · ${right1st} right 1st · ${bad} bad flags`;
+  }
+  if(type==='rc_claim_tracking'){
+    return`${entries.length} paragraph${entries.length===1?'':'s'} tracked`;
+  }
+  return'';
 }
 
 function dashHTML(){
@@ -612,6 +714,7 @@ function sessHTML(ss,i){
               ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}
             </div>
             ${!sl?(t?`${desc?`<div class="hw-desc">${descHtml}<div class="hw-desc-edit-btn" data-adesc="${h.id}" title="Edit steps" style="margin-top:8px;font-size:10px;color:var(--faint);cursor:pointer;font-family:var(--mono);opacity:.5;transition:opacity .2s">✎ edit steps</div></div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
+            ${!sl&&wsType(h.label)?`<div class="ws-card-footer"><button class="ws-open-btn" data-wsopen="${h.id}" data-wstype="${wsType(h.label)}">Open Worksheet →</button><span class="ws-summary-line">${esc(wsSummaryText(h.id,wsType(h.label)))}</span></div>`:''}
           </div>`;
         }).join('')}
         ${t?`<button class="add-b" data-ah-open="${ss.id}" style="border-color:rgba(201,122,69,.3);color:var(--accent)">+ Add Homework</button>`:''}
@@ -641,7 +744,260 @@ function sessHTML(ss,i){
     </div>${body}</div>`;
 }
 
-/* ---- PICKER ---- */
+/* ---- WORKSHEET SHELL ---- */
+function wsShellHTML(){
+  const v=S.wsView;
+  const name=S.student&&S.student.profiles?S.student.profiles.first_name||S.student.profiles.email||'':'';
+  let inner='';
+  if(v.type==='blind_review')inner=wsBlindReviewHTML(v,name);
+  else if(v.type==='confidence_log')inner=wsConfidenceLogHTML(v,name);
+  else if(v.type==='rc_claim_tracking')inner=wsRCClaimHTML(v,name);
+  return`
+    <div class="nav">
+      <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${S.isTutor?'Tutor':'Student'}</span></div>
+      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a></div>
+      <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
+    </div>
+    <div class="layout">
+      <div class="main">
+        <button class="ws-back" id="ws-back-btn">← Back to Roadmap</button>
+        ${inner}
+        <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>
+      </div>
+    </div>`;
+}
+
+function wsEntryData(hwId,entryNum){
+  const arr=S.wsEntries[hwId]||[];
+  const e=arr.find(x=>x.entry_number===entryNum);
+  return e?e.data:{};
+}
+
+function wsToggle(hwId,entryNum,type,field,val,label,opts=['Yes','No']){
+  const d=wsEntryData(hwId,entryNum);
+  const cur=d[field];
+  return`<div class="ws-toggle-row">
+    <span class="ws-toggle-lbl">${label}</span>
+    <div class="ws-toggle-btns">
+      ${opts.map((o,i)=>{
+        const bval=i===0?true:false;
+        const active=cur===bval;
+        return`<button class="ws-toggle-btn${active?' active':''}" data-wstog="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" data-wsval="${bval}">${esc(o)}</button>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function wsField(hwId,entryNum,type,field,placeholder,rows){
+  const d=wsEntryData(hwId,entryNum);
+  const val=d[field]||'';
+  return`<textarea class="ws-field" style="min-height:${rows===1?44:rows===2?64:80}px" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" placeholder="${esc(placeholder)}">${esc(val)}</textarea>`;
+}
+
+function wsInp(hwId,entryNum,type,field,placeholder,cls){
+  const d=wsEntryData(hwId,entryNum);
+  const val=d[field]||'';
+  return`<input class="${cls||'ws-qnum'}" type="text" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" placeholder="${esc(placeholder)}" value="${esc(val)}">`;
+}
+
+function wsDrop(hwId,entryNum,type,field,options){
+  const d=wsEntryData(hwId,entryNum);
+  const cur=d[field]||'';
+  return`<select class="ws-sel" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}">${options.map(o=>`<option value="${esc(o)}"${cur===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+}
+
+/* ---- BLIND REVIEW ---- */
+function wsBlindReviewHTML(v,name){
+  const hwId=v.homework_id;
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='blind_review');
+  const flaggedEntries=entries.filter(e=>!e.data?.is_unflagged);
+  const unflaggedEntries=entries.filter(e=>e.data?.is_unflagged);
+  const timing=flaggedEntries.filter(e=>e.data?.category==='timing').length;
+  const knowledge=flaggedEntries.filter(e=>e.data?.category==='knowledge').length;
+  const sloppy=flaggedEntries.filter(e=>e.data?.category==='sloppy').length;
+
+  function entryHTML(e,idx,isUnflagged){
+    const en=e.entry_number;const d=e.data||{};
+    const acLetters=['A','B','C','D','E'];
+    const acs=d.answer_choices||{};
+    return`<div class="ws-entry">
+      <div class="ws-entry-hd">
+        <span class="ws-entry-lbl">Question ${idx+1}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
+        ${wsInp(hwId,en,'blind_review','question_num','14')}
+        ${wsDrop(hwId,en,'blind_review','section',['LR','RC'])}
+        ${!isUnflagged?wsDrop(hwId,en,'blind_review','result',['Correct','Missed']):''}
+        ${!isUnflagged?wsDrop(hwId,en,'blind_review','category',['Timing','Knowledge','Sloppy']):''}
+        ${isUnflagged?wsDrop(hwId,en,'blind_review','miss_type',['Strategy','Knowledge']):''}
+      </div>
+      ${!isUnflagged?`
+      <div class="ws-sec-lbl">Strategic Review</div>
+      ${wsToggle(hwId,en,'blind_review','flag_justified','Flag justified?')}
+      ${wsToggle(hwId,en,'blind_review','ten_second_fix','10-second fix?')}
+      <div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What caused you to flag this question?</div>
+      ${wsField(hwId,en,'blind_review','flag_reason','Walk through what happened in your head...',2)}
+      <div class="ws-sec-lbl">Knowledge Review</div>
+      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">Core argument (don't look back at stimulus)</div>
+      ${wsField(hwId,en,'blind_review','core_argument','Premise: ...\nConclusion: ...',2)}
+      <div style="margin:10px 0 6px;font-size:13px;color:var(--text)">Answer choices — why each is right or wrong</div>
+      <div class="ws-ac-grid">
+        ${acLetters.map(l=>{
+          const acData=acs[l]||{};const state=acData.state||'';
+          return`<div class="ws-ac-row">
+            <div class="ws-ac-badge${state==='correct'?' correct':state==='wrong'?' wrong':''}" data-acbadge="${hwId}" data-acentry="${en}" data-acletter="${l}">${l}</div>
+            <input class="ws-ac-inp" type="text" data-acfield="${hwId}" data-acentry="${en}" data-acletter="${l}" placeholder="Why ${l} is right or wrong..." value="${esc(acData.text||'')}">
+          </div>`;
+        }).join('')}
+      </div>`
+      :`
+      ${d.miss_type==='Strategy'?`<div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What habit made you overconfident?</div>${wsField(hwId,en,'blind_review','miss_note','The habit that got me was...',2)}`
+      :`<div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What topic do you need to review?</div>${wsField(hwId,en,'blind_review','miss_note','I need to review...',2)}`}
+      `}
+    </div>`;
+  }
+
+  return`<div class="ws-wrap">
+    <div class="ws-title">Blind Review Worksheet</div>
+    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
+    <div class="ws-desc">Review every question you flagged. The goal is to figure out if your flags were justified and whether your misses were timing, knowledge, or sloppy work.</div>
+    <div class="ws-stats">
+      <div class="ws-stat"><div class="ws-stat-num">${flaggedEntries.length}</div><div class="ws-stat-lbl">Reviewed</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${timing}</div><div class="ws-stat-lbl">Timing</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${knowledge}</div><div class="ws-stat-lbl">Knowledge</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${sloppy}</div><div class="ws-stat-lbl">Sloppy</div></div>
+    </div>
+    ${flaggedEntries.map((e,i)=>entryHTML(e,i,false)).join('')}
+    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="blind_review" data-wsaddunflagged="false">+ Add Another Question</button>
+    ${flaggedEntries.length>0?`<div class="ws-unflagged">
+      <div class="ws-sec-lbl" style="margin-top:0">Missed Questions You Didn't Flag</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:14px;font-family:var(--mono)">Questions you got wrong but didn't flag — was it strategy or knowledge?</div>
+      ${unflaggedEntries.map((e,i)=>entryHTML(e,i,true)).join('')}
+      <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="blind_review" data-wsaddunflagged="true">+ Add Unflagged Miss</button>
+    </div>`:''}
+  </div>`;
+}
+
+/* ---- CONFIDENCE LOG ---- */
+function wsConfidenceLogHTML(v,name){
+  const hwId=v.homework_id;
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='confidence_log');
+  const changed=entries.filter(e=>e.data?.changed_answer===true).length;
+  const right1st=entries.filter(e=>e.data?.right_first_time===true).length;
+  const bad=entries.filter(e=>e.data?.flag_correct===false).length;
+  const confidenceOpts=['Re-read one line from stimulus','Re-read 1-2 answer choices','Re-read 4-5 answer choices','Re-start full process (stimulus + answer choices)','Didn\'t understand stimulus (below 70%)'];
+
+  function entryHTML(e,idx){
+    const en=e.entry_number;const d=e.data||{};
+    return`<div class="ws-entry">
+      <div class="ws-entry-hd">
+        <span class="ws-entry-lbl">Question ${idx+1}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
+        ${wsInp(hwId,en,'confidence_log','question_num','8')}
+        ${wsDrop(hwId,en,'confidence_log','section',['LR','RC'])}
+      </div>
+      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">What caused you to flag this question?</div>
+      ${wsField(hwId,en,'confidence_log','flag_cause','Walk through what happened...',2)}
+      ${wsToggle(hwId,en,'confidence_log','changed_answer','After coming back, did you change your answer?')}
+      ${d.changed_answer===true?wsToggle(hwId,en,'confidence_log','right_first_time','Were you right the first time?'):''}
+      <div style="margin:10px 0 4px;font-size:13px;color:var(--text)">Under timed conditions, what did you think you needed to improve your confidence to 90%?</div>
+      ${wsDrop(hwId,en,'confidence_log','confidence_fix',confidenceOpts)}
+      ${wsToggle(hwId,en,'confidence_log','flag_correct','Was the decision to flag correct?')}
+    </div>`;
+  }
+
+  return`<div class="ws-wrap">
+    <div class="ws-title">Confidence Log</div>
+    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
+    <div class="ws-desc">Every time you go back to a question, you're spending time. This log helps you figure out if that time was justified — and what you could have done on the first pass to avoid going back. The goal is to build the habit of resolving questions in one pass.</div>
+    <div class="ws-key-box">
+      <div class="ws-key-title">Key</div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read one line</strong> — Not a good flag. 10-second fix, do it right there.</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read 1–2 answer choices</strong> — Not a good flag. Quick check, do it right there.</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read 4–5 answer choices</strong> — Good flag. Lost in the answers, need full second pass.</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-start full process</strong> — Good flag. Genuinely needed more time.</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Didn't understand stimulus (below 70%)</strong> — Skip it. Re-read the one line giving you trouble.</span></div>
+    </div>
+    <div class="ws-stats">
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Total Flagged</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${changed}</div><div class="ws-stat-lbl">Changed Answer</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${right1st}</div><div class="ws-stat-lbl">Right 1st Time</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${bad}</div><div class="ws-stat-lbl">Bad Flags</div></div>
+    </div>
+    ${entries.map((e,i)=>entryHTML(e,i)).join('')}
+    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="confidence_log" data-wsaddunflagged="false">+ Add Another Question</button>
+  </div>`;
+}
+
+/* ---- RC CLAIM TRACKING ---- */
+function wsRCClaimHTML(v,name){
+  const hwId=v.homework_id;
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='rc_claim_tracking');
+  const paragraphEntries=entries.filter(e=>!e.data?.is_synthesis);
+  const synthEntry=entries.find(e=>e.data?.is_synthesis);
+  const synthEntryNum=synthEntry?synthEntry.entry_number:null;
+  const difficultyOpts=['Easy','Medium','Hard','RC That Breaks You'];
+  const typeOpts=['Science','Art','Law','History','Philosophy','Social Science'];
+  // Passage meta stored on entry_number=0 or first entry
+  const metaEntry=entries.find(e=>e.data?.is_meta);
+  const metaNum=metaEntry?metaEntry.entry_number:0;
+  const metaD=metaEntry?metaEntry.data:{};
+
+  function paragraphHTML(e,idx){
+    const en=e.entry_number;const d=e.data||{};
+    const claims=d.claims||[''];
+    const isFirst=idx===0;
+    return`<div class="ws-entry">
+      <div class="ws-entry-hd">
+        <span class="ws-entry-lbl">Paragraph ${idx+1}</span>
+      </div>
+      <div class="ws-sec-lbl" style="margin-top:0">Claim Tracking</div>
+      ${claims.map((c,ci)=>`<div class="ws-claim-row">
+        <div class="ws-claim-num">${ci+1}</div>
+        <input class="ws-claim-inp" type="text" data-claimsave="${hwId}" data-claimentry="${en}" data-claimidx="${ci}" placeholder="One distinct claim..." value="${esc(c)}">
+      </div>`).join('')}
+      <button class="ws-add-claim" data-addclaim="${hwId}" data-addclaimentry="${en}">+ Add claim</button>
+      <div class="ws-sec-lbl">Paragraph Main Point</div>
+      ${wsField(hwId,en,'rc_claim_tracking','main_point','What is this paragraph mainly saying?',1)}
+      ${isFirst?`
+      <div class="ws-sec-lbl">Structure Prediction</div>
+      ${wsField(hwId,en,'rc_claim_tracking','structure_prediction','How will the passage unfold?',1)}
+      <div class="ws-sec-lbl">Sneak Peek</div>
+      ${wsField(hwId,en,'rc_claim_tracking','sneak_peek','Do the opening words confirm or change your prediction?',1)}
+      `:`
+      <div class="ws-sec-lbl">Structural Role</div>
+      ${wsField(hwId,en,'rc_claim_tracking','structural_role','e.g., background, development, contrast...',1)}
+      `}
+    </div>`;
+  }
+
+  const nextSynthNum=synthEntryNum||(entries.length>0?Math.max(...entries.map(e=>e.entry_number))+1:1);
+
+  return`<div class="ws-wrap">
+    <div class="ws-title">RC Claim Tracking</div>
+    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
+    <div class="ws-desc">Track the author's claims paragraph by paragraph. The goal is to build active reading habits — predict, check, and map the passage structure before answering questions.</div>
+    <div class="ws-sec-lbl" style="margin-top:0">Passage Tags</div>
+    <div class="ws-pass-tags" style="margin-bottom:8px">
+      ${difficultyOpts.map(d=>`<button class="ws-tag${metaD.difficulty===d?' active':''}" data-metatag="${hwId}" data-metafield="difficulty" data-metaval="${esc(d)}" data-metaentry="${metaNum}">${d}</button>`).join('')}
+    </div>
+    <div class="ws-pass-tags">
+      ${typeOpts.map(d=>`<button class="ws-tag${metaD.type===d?' active':''}" data-metatag="${hwId}" data-metafield="type" data-metaval="${esc(d)}" data-metaentry="${metaNum}">${d}</button>`).join('')}
+    </div>
+    <div style="margin-bottom:20px">${wsField(hwId,metaNum,'rc_claim_tracking','passage_desc','Optional: brief description of the passage...',1)}</div>
+    <div class="ws-stats" style="grid-template-columns:repeat(1,1fr);max-width:160px">
+      <div class="ws-stat"><div class="ws-stat-num">${paragraphEntries.length}</div><div class="ws-stat-lbl">Paragraphs</div></div>
+    </div>
+    ${paragraphEntries.map((e,i)=>paragraphHTML(e,i)).join('')}
+    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="rc_claim_tracking" data-wsaddunflagged="false">+ Add Paragraph</button>
+    <div class="ws-synthesis">
+      <div class="ws-synth-title">Final Synthesis</div>
+      <div style="margin-bottom:4px;font-size:13px;color:var(--text)">Overall Passage Main Point (one sentence)</div>
+      ${wsField(hwId,nextSynthNum,'rc_claim_tracking','overall_main_point','The main point of this passage is...',1)}
+      <div style="margin:10px 0 4px;font-size:13px;color:var(--text)">Structural Summary</div>
+      ${wsField(hwId,nextSynthNum,'rc_claim_tracking','structural_summary','How do the paragraphs work together?',2)}
+    </div>
+  </div>`;
+}
 function openPicker(sessId){
   if(document.getElementById('hw-picker-overlay'))return;
   const selected=new Set();
@@ -724,7 +1080,7 @@ function openPicker(sessId){
       return;
     }
     // Cancel
-    if(e.target.closest('#picker-cancel-btn')||e.target.id==='hw-picker-overlay'){
+    if(e.target.closest('#picker-cancel-btn')){
       closePicker();return;
     }
     // Add
@@ -752,10 +1108,7 @@ function openPicker(sessId){
     }
   });
 
-  // Close on backdrop click handled above (e.target.id check)
-  // Prevent panel clicks from closing
-  overlay.querySelector('.picker-panel').addEventListener('click',e=>e.stopPropagation());
-  // Re-attach backdrop
+  // Close on backdrop click only
   overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
 }
 
@@ -828,6 +1181,26 @@ function bind(){
       ta.focus();
     });
   });});
+  // Worksheet: open
+  document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:''};R();});});
+  // Worksheet: back
+  document.getElementById('ws-back-btn')?.addEventListener('click',async()=>{const hwId=S.wsView?.homework_id;S.wsView=null;if(hwId)await reloadWsEntries(hwId);R();});
+  // Worksheet: save text/select fields on blur
+  document.querySelectorAll('[data-wssave]').forEach(el=>{el.addEventListener('change',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);if(el.dataset.wstype==='blind_review'&&el.dataset.wsfield==='miss_type')R();});el.addEventListener('blur',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);});});
+  // Worksheet: toggle buttons
+  document.querySelectorAll('[data-wstog]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveWsToggle(btn.dataset.wstog,parseInt(btn.dataset.wsentry),btn.dataset.wstype,btn.dataset.wsfield,btn.dataset.wsval);});});
+  // Worksheet: add entry
+  document.querySelectorAll('[data-wsadd]').forEach(btn=>{btn.addEventListener('click',async()=>{await addWsEntry(btn.dataset.wsadd,btn.dataset.wsaddtype,btn.dataset.wsaddunflagged);});});
+  // Worksheet: answer choice badge click
+  document.querySelectorAll('[data-acbadge]').forEach(b=>{b.addEventListener('click',async()=>{const states=['','correct','wrong'];const cur=b.classList.contains('correct')?'correct':b.classList.contains('wrong')?'wrong':'';const next=states[(states.indexOf(cur)+1)%3];await saveAcField(b.dataset.acbadge,parseInt(b.dataset.acentry),b.dataset.acletter,'state',next);});});
+  // Worksheet: answer choice text fields
+  document.querySelectorAll('[data-acfield]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveAcField(inp.dataset.acfield,parseInt(inp.dataset.acentry),inp.dataset.acletter,'text',inp.value);});});
+  // Worksheet: claim inputs
+  document.querySelectorAll('[data-claimsave]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveClaimField(inp.dataset.claimsave,parseInt(inp.dataset.claimentry),parseInt(inp.dataset.claimidx),inp.value);});});
+  // Worksheet: add claim
+  document.querySelectorAll('[data-addclaim]').forEach(btn=>{btn.addEventListener('click',async()=>{await addClaimToEntry(btn.dataset.addclaim,parseInt(btn.dataset.addclaimentry));});});
+  // Worksheet: meta tags
+  document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
 }
@@ -853,6 +1226,106 @@ async function saveEd(eid,val){
   else if(type==='goal')await db.from('session_goals').update({[field]:val}).eq('id',mid);
   else if(type==='hw')await db.from('homework').update({[field]:val}).eq('id',mid);
   await loadStudent(S.selId);R();
+}
+
+async function saveWsField(hwId,entryNum,type,field,value){
+  // Get current data for this entry
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type===type);
+  const curData=existing?{...existing.data}:{};
+  curData[field]=value;
+  if(existing){
+    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
+  }else{
+    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});
+  }
+  await reloadWsEntries(hwId);
+}
+
+async function saveWsToggle(hwId,entryNum,type,field,val){
+  const bval=val==='true'?true:false;
+  await saveWsField(hwId,entryNum,type,field,bval);
+  if(S.wsView)R();
+}
+
+async function saveAcField(hwId,entryNum,letter,fieldName,value){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='blind_review');
+  const curData=existing?{...existing.data}:{};
+  if(!curData.answer_choices)curData.answer_choices={};
+  if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
+  curData.answer_choices[letter][fieldName]=value;
+  if(existing){
+    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
+  }else{
+    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});
+  }
+  await reloadWsEntries(hwId);
+  R();
+}
+
+async function saveClaimField(hwId,entryNum,claimIdx,value){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
+  const curData=existing?{...existing.data}:{};
+  const claims=[...(curData.claims||[])];
+  while(claims.length<=claimIdx)claims.push('');
+  claims[claimIdx]=value;
+  curData.claims=claims;
+  if(existing){
+    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
+  }else{
+    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
+  }
+  await reloadWsEntries(hwId);
+}
+
+async function addClaimToEntry(hwId,entryNum){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
+  const curData=existing?{...existing.data}:{};
+  const claims=[...(curData.claims||[]),''];
+  curData.claims=claims;
+  if(existing){
+    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
+  }else{
+    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
+  }
+  await reloadWsEntries(hwId);
+  R();
+}
+
+async function reloadWsEntries(hwId){
+  const{data:wse}=await db.from('worksheet_entries').select('*').eq('homework_id',hwId).order('entry_number');
+  S.wsEntries[hwId]=wse||[];
+}
+
+async function addWsEntry(hwId,type,isUnflagged){
+  const arr=S.wsEntries[hwId]||[];
+  const relevant=arr.filter(e=>e.entry_type===type);
+  const nextNum=relevant.length>0?Math.max(...relevant.map(e=>e.entry_number))+1:1;
+  const initData={};
+  if(isUnflagged==='true'||isUnflagged===true)initData.is_unflagged=true;
+  if(type==='rc_claim_tracking')initData.claims=[''];
+  await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:nextNum,entry_type:type,data:initData});
+  await reloadWsEntries(hwId);
+  R();
+}
+
+async function saveMetaTag(hwId,entryNum,field,val){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
+  const curData=existing?{...existing.data}:{};
+  // Toggle: if same value, unset
+  curData[field]=curData[field]===val?null:val;
+  curData.is_meta=true;
+  if(existing){
+    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
+  }else{
+    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
+  }
+  await reloadWsEntries(hwId);
+  R();
 }
 
 async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
