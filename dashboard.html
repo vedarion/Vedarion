@@ -164,7 +164,6 @@
     .hw-desc-ph:hover{opacity:.8}
     .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#bbb;font-size:14px;line-height:1.8;white-space:pre-line}
 
-    /* Picker overlay */
     .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:32px 20px;overflow-y:auto}
     .picker-panel{background:var(--surface);border:1px solid var(--border-hi);border-radius:18px;width:100%;max-width:660px;padding:28px;box-shadow:0 32px 64px rgba(0,0,0,.6);animation:fadeUp .2s ease}
     .picker-title{font-family:var(--serif);font-size:18px;color:var(--bright);margin-bottom:4px}
@@ -192,7 +191,6 @@
     .picker-add:hover{background:rgba(201,122,69,.2);border-color:var(--accent)}
     .picker-add:disabled{opacity:.4;cursor:not-allowed}
 
-    /* Worksheet */
     .ws-card-footer{margin:14px 0 0 30px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
     .ws-open-btn{padding:8px 16px;border-radius:8px;border:1px solid rgba(201,122,69,.3);background:rgba(201,122,69,.06);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px}
     .ws-open-btn:hover{background:rgba(201,122,69,.12);border-color:var(--accent)}
@@ -528,7 +526,6 @@ async function loadUser(){
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('profile_id',user.id);
     if(sts&&sts.length>0){S.students=sts;S.selId=sts[0].id;S.student=sts[0];await loadStudent(sts[0].id);}else{S.student=null;S.sessions=[];}
   }
-  // ← REMOVED: if(!S.isTutor){window.location.href='/dashboard.html';return;}
   S.view='dash';S.loginLoad=false;R();
 }
 
@@ -623,7 +620,7 @@ function dashHTML(){
   return`
     <div class="nav">
       <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">My Hub</a></div>
+      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">Dashboard</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
 
@@ -749,7 +746,6 @@ function sessHTML(ss,i){
     </div>${body}</div>`;
 }
 
-/* ---- WORKSHEET SHELL ---- */
 function wsShellHTML(){
   const v=S.wsView;
   const name=S.student&&S.student.profiles?S.student.profiles.first_name||S.student.profiles.email||'':'';
@@ -760,7 +756,7 @@ function wsShellHTML(){
   return`
     <div class="nav">
       <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${S.isTutor?'Tutor':'Student'}</span></div>
-      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">My Hub</a></div>
+      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">Dashboard</a></div>
       <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
     </div>
     <div class="layout">
@@ -811,7 +807,6 @@ function wsDrop(hwId,entryNum,type,field,options){
   return`<select class="ws-sel" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}">${options.map(o=>`<option value="${esc(o)}"${cur===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
 }
 
-/* ---- BLIND REVIEW ---- */
 function wsBlindReviewHTML(v,name){
   const hwId=v.homework_id;
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='blind_review');
@@ -882,7 +877,6 @@ function wsBlindReviewHTML(v,name){
   </div>`;
 }
 
-/* ---- CONFIDENCE LOG ---- */
 function wsConfidenceLogHTML(v,name){
   const hwId=v.homework_id;
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='confidence_log');
@@ -933,7 +927,6 @@ function wsConfidenceLogHTML(v,name){
   </div>`;
 }
 
-/* ---- RC CLAIM TRACKING ---- */
 function wsRCClaimHTML(v,name){
   const hwId=v.homework_id;
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='rc_claim_tracking');
@@ -1006,107 +999,47 @@ function wsRCClaimHTML(v,name){
 function openPicker(sessId){
   if(document.getElementById('hw-picker-overlay'))return;
   const selected=new Set();
-
   function checkSVG(){return'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';}
-
   function buildPickerHTML(){
     const groupsHTML=Object.entries(HW_CARDS).map(([gkey,group])=>{
       const cardsHTML=group.cards.map((card,ci)=>{
-        const key=gkey+'-'+ci;
-        const isSel=selected.has(key);
+        const key=gkey+'-'+ci;const isSel=selected.has(key);
         const shortDesc=card.desc?card.desc.replace(/--[^\n]*/g,'').split('\n').filter(l=>l.trim()).slice(0,2).join(' · ').substring(0,120):'Custom card — you fill everything';
-        return`<div class="picker-card${isSel?' selected':''}" data-pkey="${key}">
-          <div class="picker-check">${isSel?checkSVG():''}</div>
-          <div class="picker-card-info">
-            <div class="picker-card-name">${esc(card.label)}</div>
-            <div class="picker-card-desc">${esc(shortDesc||'Empty card')}</div>
-          </div>
-        </div>`;
+        return`<div class="picker-card${isSel?' selected':''}" data-pkey="${key}"><div class="picker-check">${isSel?checkSVG():''}</div><div class="picker-card-info"><div class="picker-card-name">${esc(card.label)}</div><div class="picker-card-desc">${esc(shortDesc||'Empty card')}</div></div></div>`;
       }).join('');
-      return`<div class="picker-group">
-        <div class="picker-group-label">${esc(group.group)}</div>
-        <div class="picker-grid">${cardsHTML}</div>
-      </div>`;
+      return`<div class="picker-group"><div class="picker-group-label">${esc(group.group)}</div><div class="picker-grid">${cardsHTML}</div></div>`;
     }).join('');
-
     const n=selected.size;
-    return`<div class="picker-overlay" id="hw-picker-overlay">
-      <div class="picker-panel">
-        <div class="picker-title">Add Homework</div>
-        <div class="picker-sub">Select cards, then click Add. You can edit or delete after.</div>
-        ${groupsHTML}
-        <div class="picker-footer">
-          <div class="picker-count" id="picker-count-lbl"><span>${n}</span> card${n===1?'':'s'} selected</div>
-          <div class="picker-actions">
-            <button class="picker-cancel" id="picker-cancel-btn">Cancel</button>
-            <button class="picker-add" id="picker-add-btn" ${n===0?'disabled':''}>Add${n>0?' '+n:''} Card${n===1?'':'s'}</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
+    return`<div class="picker-overlay" id="hw-picker-overlay"><div class="picker-panel"><div class="picker-title">Add Homework</div><div class="picker-sub">Select cards, then click Add. You can edit or delete after.</div>${groupsHTML}<div class="picker-footer"><div class="picker-count" id="picker-count-lbl"><span>${n}</span> card${n===1?'':'s'} selected</div><div class="picker-actions"><button class="picker-cancel" id="picker-cancel-btn">Cancel</button><button class="picker-add" id="picker-add-btn" ${n===0?'disabled':''}>Add${n>0?' '+n:''} Card${n===1?'':'s'}</button></div></div></div></div>`;
   }
-
   function updateOverlay(){
-    const overlay=document.getElementById('hw-picker-overlay');
-    if(!overlay)return;
-    overlay.querySelectorAll('[data-pkey]').forEach(el=>{
-      const key=el.dataset.pkey;
-      const isSel=selected.has(key);
-      el.classList.toggle('selected',isSel);
-      const chk=el.querySelector('.picker-check');
-      if(chk)chk.innerHTML=isSel?checkSVG():'';
-    });
-    const n=selected.size;
-    const lbl=overlay.querySelector('#picker-count-lbl');
-    if(lbl)lbl.innerHTML=`<span>${n}</span> card${n===1?'':'s'} selected`;
-    const addBtn=overlay.querySelector('#picker-add-btn');
-    if(addBtn){addBtn.textContent=`Add${n>0?' '+n:''} Card${n===1?'':'s'}`;addBtn.disabled=n===0;}
+    const overlay=document.getElementById('hw-picker-overlay');if(!overlay)return;
+    overlay.querySelectorAll('[data-pkey]').forEach(el=>{const key=el.dataset.pkey;const isSel=selected.has(key);el.classList.toggle('selected',isSel);const chk=el.querySelector('.picker-check');if(chk)chk.innerHTML=isSel?checkSVG():'';});
+    const n=selected.size;const lbl=overlay.querySelector('#picker-count-lbl');if(lbl)lbl.innerHTML=`<span>${n}</span> card${n===1?'':'s'} selected`;
+    const addBtn=overlay.querySelector('#picker-add-btn');if(addBtn){addBtn.textContent=`Add${n>0?' '+n:''} Card${n===1?'':'s'}`;addBtn.disabled=n===0;}
   }
-
-  function closePicker(){
-    const o=document.getElementById('hw-picker-overlay');
-    if(o)o.remove();
-  }
-
+  function closePicker(){const o=document.getElementById('hw-picker-overlay');if(o)o.remove();}
   document.body.insertAdjacentHTML('beforeend',buildPickerHTML());
-
   const overlay=document.getElementById('hw-picker-overlay');
-
   overlay.addEventListener('click',async e=>{
     const card=e.target.closest('[data-pkey]');
-    if(card){
-      const key=card.dataset.pkey;
-      if(selected.has(key))selected.delete(key);else selected.add(key);
-      updateOverlay();
-      return;
-    }
-    if(e.target.closest('#picker-cancel-btn')){
-      closePicker();return;
-    }
+    if(card){const key=card.dataset.pkey;if(selected.has(key))selected.delete(key);else selected.add(key);updateOverlay();return;}
+    if(e.target.closest('#picker-cancel-btn')){closePicker();return;}
     if(e.target.closest('#picker-add-btn')){
       if(selected.size===0)return;
-      const addBtn=overlay.querySelector('#picker-add-btn');
-      addBtn.disabled=true;addBtn.textContent='Adding...';
-      const sess=S.sessions.find(s=>s.id===sessId);
-      let sortOrder=(sess?.homework?.length)||0;
+      const addBtn=overlay.querySelector('#picker-add-btn');addBtn.disabled=true;addBtn.textContent='Adding...';
+      const sess=S.sessions.find(s=>s.id===sessId);let sortOrder=(sess?.homework?.length)||0;
       const tf=S.student?S.student.time_factor||'1x':'1x';
       for(const key of selected){
-        const[gkey,ci]=key.split('-');
-        const group=HW_CARDS[gkey];
-        if(!group)continue;
-        const card=group.cards[parseInt(ci)];
-        if(!card)continue;
+        const[gkey,ci]=key.split('-');const group=HW_CARDS[gkey];if(!group)continue;
+        const card=group.cards[parseInt(ci)];if(!card)continue;
         const lbl=card.label==='Blank (custom)'?'New assignment':card.label;
-        const rawDesc=card.desc||null;
-        const desc=rawDesc?applyTiming(rawDesc,tf):null;
-        await db.from('homework').insert({session_id:sessId,label:lbl,hw_type:'drill',description:desc,sort_order:sortOrder});
-        sortOrder++;
+        const rawDesc=card.desc||null;const desc=rawDesc?applyTiming(rawDesc,tf):null;
+        await db.from('homework').insert({session_id:sessId,label:lbl,hw_type:'drill',description:desc,sort_order:sortOrder});sortOrder++;
       }
-      closePicker();
-      await loadStudent(S.selId);R();
+      closePicker();await loadStudent(S.selId);R();
     }
   });
-
   overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
 }
 
@@ -1127,29 +1060,21 @@ function bind(){
   document.getElementById('add-btn')?.addEventListener('click',addStudent);
   document.getElementById('add-tpl')?.addEventListener('change',function(){S.addTpl=this.value;});
   document.getElementById('apply-tpl')?.addEventListener('click',async()=>{
-    if(!S.selId)return;
-    const sel=document.getElementById('tpl-apply');
-    const tplKey=sel?sel.value:'';
-    if(!tplKey||!TEMPLATES[tplKey])return;
-    const btn=document.getElementById('apply-tpl');
-    btn.textContent='Applying...';btn.disabled=true;
-    await applyTemplate(S.selId,tplKey);
-    await loadStudent(S.selId);R();
+    if(!S.selId)return;const sel=document.getElementById('tpl-apply');const tplKey=sel?sel.value:'';
+    if(!tplKey||!TEMPLATES[tplKey])return;const btn=document.getElementById('apply-tpl');
+    btn.textContent='Applying...';btn.disabled=true;await applyTemplate(S.selId,tplKey);await loadStudent(S.selId);R();
   });
   document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
-    await db.from('students').update({time_factor:this.value}).eq('id',S.selId);
-    await loadStudent(S.selId);R();
+    await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
   });
   document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
-    while(sc.length<steps.length)sc.push(false);
-    sc[si]=!sc[si];
+    while(sc.length<steps.length)sc.push(false);sc[si]=!sc[si];
     const checkableIndices=steps.map((l,i)=>l.trim().startsWith('--')?null:i).filter(i=>i!==null);
     const allDone=checkableIndices.length>0&&checkableIndices.every(i=>sc[i]===true);
-    await db.from('homework').update({step_completions:JSON.stringify(sc),completed:allDone}).eq('id',hid);
-    await loadStudent(S.selId);R();
+    await db.from('homework').update({step_completions:JSON.stringify(sc),completed:allDone}).eq('id',hid);await loadStudent(S.selId);R();
   });});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
@@ -1159,22 +1084,18 @@ function bind(){
   document.querySelectorAll('[data-ah-open]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openPicker(btn.dataset.ahOpen);});});
   document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;
-    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===id);
-    const curDesc=hw?hw.description||'':'';
+    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===id);const curDesc=hw?hw.description||'':'';
     const parent=b.closest('.hw-desc')||b;
     parent.outerHTML=`<div class="hw-edit-wrap"><div class="hw-edit-toolbar"><button class="hw-link-btn" data-linkfor="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link</button></div><textarea class="hw-desc-edit" data-eid="hw-${id}-description" placeholder="Add steps, one per line..." style="width:100%;margin:0">${esc(curDesc)}</textarea></div>`;
     const ta=document.querySelector(`[data-eid="hw-${id}-description"]`);ta.focus();
     ta.addEventListener('blur',e=>{if(e.relatedTarget&&e.relatedTarget.classList.contains('hw-link-btn'))return;saveEd(`hw-${id}-description`,ta.value);});
     ta.addEventListener('keydown',e=>{if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
     document.querySelector(`.hw-link-btn[data-linkfor="${id}"]`).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
-      const start=ta.selectionStart,end=ta.selectionEnd;
-      const sel=ta.value.substring(start,end);
+      const start=ta.selectionStart,end=ta.selectionEnd;const sel=ta.value.substring(start,end);
       if(!sel){alert('Highlight a word first, then click Link');ta.focus();return;}
-      const url=prompt('Enter URL for "'+sel+'":');
-      if(!url){ta.focus();return;}
+      const url=prompt('Enter URL for "'+sel+'":');if(!url){ta.focus();return;}
       const before=ta.value.substring(0,start);const after=ta.value.substring(end);
-      ta.value=before+'['+sel+']('+url+')'+after;
-      ta.focus();
+      ta.value=before+'['+sel+']('+url+')'+after;ta.focus();
     });
   });});
   document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:''};R();});});
@@ -1200,10 +1121,8 @@ function startEd(el){
   const eid=el.dataset.eid,ml=el.dataset.ml==='true';
   const isHwDesc=el.classList.contains('hw-desc');
   const cur=el.textContent==='Click to add...'?'':el.textContent;
-  if(ml){
-    const cls=isHwDesc?'hw-desc-edit':'ed-ta';
-    el.outerHTML=`<textarea class="${cls}" data-eid="${eid}">${esc(cur)}</textarea>`;
-  }else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
+  if(ml){const cls=isHwDesc?'hw-desc-edit':'ed-ta';el.outerHTML=`<textarea class="${cls}" data-eid="${eid}">${esc(cur)}</textarea>`;}
+  else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
   const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();
   inp.addEventListener('blur',()=>saveEd(eid,inp.value));
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!ml)saveEd(eid,inp.value);if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
@@ -1222,20 +1141,14 @@ async function saveEd(eid,val){
 async function saveWsField(hwId,entryNum,type,field,value){
   const arr=S.wsEntries[hwId]||[];
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type===type);
-  const curData=existing?{...existing.data}:{};
-  curData[field]=value;
-  if(existing){
-    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
-  }else{
-    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});
-  }
+  const curData=existing?{...existing.data}:{};curData[field]=value;
+  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});}
   await reloadWsEntries(hwId);
 }
 
 async function saveWsToggle(hwId,entryNum,type,field,val){
-  const bval=val==='true'?true:false;
-  await saveWsField(hwId,entryNum,type,field,bval);
-  if(S.wsView)R();
+  const bval=val==='true'?true:false;await saveWsField(hwId,entryNum,type,field,bval);if(S.wsView)R();
 }
 
 async function saveAcField(hwId,entryNum,letter,fieldName,value){
@@ -1245,44 +1158,28 @@ async function saveAcField(hwId,entryNum,letter,fieldName,value){
   if(!curData.answer_choices)curData.answer_choices={};
   if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
   curData.answer_choices[letter][fieldName]=value;
-  if(existing){
-    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
-  }else{
-    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});
-  }
-  await reloadWsEntries(hwId);
-  R();
+  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});}
+  await reloadWsEntries(hwId);R();
 }
 
 async function saveClaimField(hwId,entryNum,claimIdx,value){
   const arr=S.wsEntries[hwId]||[];
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
   const curData=existing?{...existing.data}:{};
-  const claims=[...(curData.claims||[])];
-  while(claims.length<=claimIdx)claims.push('');
-  claims[claimIdx]=value;
-  curData.claims=claims;
-  if(existing){
-    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
-  }else{
-    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
-  }
+  const claims=[...(curData.claims||[])];while(claims.length<=claimIdx)claims.push('');claims[claimIdx]=value;curData.claims=claims;
+  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
   await reloadWsEntries(hwId);
 }
 
 async function addClaimToEntry(hwId,entryNum){
   const arr=S.wsEntries[hwId]||[];
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
-  const curData=existing?{...existing.data}:{};
-  const claims=[...(curData.claims||[]),''];
-  curData.claims=claims;
-  if(existing){
-    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
-  }else{
-    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
-  }
-  await reloadWsEntries(hwId);
-  R();
+  const curData=existing?{...existing.data}:{};const claims=[...(curData.claims||[]),''];curData.claims=claims;
+  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
+  await reloadWsEntries(hwId);R();
 }
 
 async function reloadWsEntries(hwId){
@@ -1291,30 +1188,23 @@ async function reloadWsEntries(hwId){
 }
 
 async function addWsEntry(hwId,type,isUnflagged){
-  const arr=S.wsEntries[hwId]||[];
-  const relevant=arr.filter(e=>e.entry_type===type);
+  const arr=S.wsEntries[hwId]||[];const relevant=arr.filter(e=>e.entry_type===type);
   const nextNum=relevant.length>0?Math.max(...relevant.map(e=>e.entry_number))+1:1;
   const initData={};
   if(isUnflagged==='true'||isUnflagged===true)initData.is_unflagged=true;
   if(type==='rc_claim_tracking')initData.claims=[''];
   await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:nextNum,entry_type:type,data:initData});
-  await reloadWsEntries(hwId);
-  R();
+  await reloadWsEntries(hwId);R();
 }
 
 async function saveMetaTag(hwId,entryNum,field,val){
   const arr=S.wsEntries[hwId]||[];
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
   const curData=existing?{...existing.data}:{};
-  curData[field]=curData[field]===val?null:val;
-  curData.is_meta=true;
-  if(existing){
-    await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);
-  }else{
-    await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});
-  }
-  await reloadWsEntries(hwId);
-  R();
+  curData[field]=curData[field]===val?null:val;curData.is_meta=true;
+  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
+  await reloadWsEntries(hwId);R();
 }
 
 async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
