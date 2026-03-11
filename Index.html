@@ -28,20 +28,13 @@
             border-bottom: 1px solid #1a1a1a;
             padding: 14px 20px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #999;
-            letter-spacing: 0.5px;
-            text-decoration: none;
+            letter-spacing: 0.3px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .announcement-bar:hover {
-            background: #1a1210;
-            color: #ccc;
         }
 
         .announce-dot {
@@ -50,10 +43,27 @@
             background: #C65D3B;
             border-radius: 50%;
             animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        .announce-link {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 0 16px;
+            border-right: 1px solid #444;
+        }
+
+        .announce-link:last-child {
+            border-right: none;
+        }
+
+        .announce-link:hover {
+            color: #ccc;
         }
 
         .announce-cta {
-            color: #C65D3B;
+            color: #ccc;
             font-weight: 500;
         }
 
@@ -130,9 +140,9 @@
         
         .hero-tagline {
             font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 22px;
-            font-weight: 400;
-            color: #B0B0B0;
+            font-size: 28px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.75);
             margin-bottom: 15px;
             letter-spacing: 1px;
             line-height: 1.5;
@@ -600,8 +610,13 @@
             }
 
             .announcement-bar {
-                font-size: 11px;
-                padding: 8px 16px;
+                font-size: 10px;
+                padding: 10px 12px;
+                flex-wrap: wrap;
+            }
+
+            .announce-link {
+                padding: 0 10px;
             }
             
             .nav-links {
@@ -618,7 +633,7 @@
             }
             
             .hero-tagline {
-                font-size: 18px;
+                font-size: 23px;
             }
 
             .tagline-big {
@@ -690,10 +705,12 @@
 </head>
 <body>
     <!-- Announcement Bar -->
-    <a href="rsvp.html" class="announcement-bar">
+    <div class="announcement-bar">
         <span class="announce-dot"></span>
-        Free LSAT Strategy Session · March 5, 8 PM CST · <span class="announce-cta">Reserve your spot</span>
-    </a>
+        <a href="officehour.html" class="announce-link">Free Office Hour · Sun 3/15, 4:30 PM CT · <span class="announce-cta">RSVP</span></a>
+        <a href="practice.html" class="announce-link">Free Practice Session · Tue 3/17, 6 PM CT · <span class="announce-cta">RSVP</span></a>
+        <a href="course.html" class="announce-link">Live courses launching April 4 · <span class="announce-cta">Learn more</span></a>
+    </div>
 
     <!-- Nav -->
     <nav class="nav" style="top: 48px;">
@@ -708,7 +725,6 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1 class="hero-brand"><span class="v-accent">V</span>EDARION</h1>
         <p class="hero-tagline">LSAT simplified.<br><span class="tagline-big">Advanced Pattern Recognition for higher scores.</span></p>
 
         <!-- Value Props Side by Side -->
