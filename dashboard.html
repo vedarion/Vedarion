@@ -88,6 +88,12 @@
     .unenrolled-text{font-size:13px;color:var(--dim);line-height:1.7}
     .unenrolled-cta{font-family:var(--mono);font-size:12px;color:var(--bright);font-weight:600;margin-top:4px;letter-spacing:.3px}
 
+    .student-list{display:flex;flex-direction:column}
+    .student-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+    .student-item:last-child{border-bottom:none;padding-bottom:0}
+    .student-name{font-size:13px;color:var(--text);font-weight:500}
+    .student-status{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.3px}
+
     .hub-footer{text-align:center;padding:48px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:4px;color:#1e1e1e}
     .hub-footer .v{color:rgba(201,122,69,.2)}
 
@@ -121,7 +127,7 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let H={user:null,profile:null,student:null,sessions:[]};
+let H={user:null,profile:null,isTutor:false,student:null,sessions:[],tutorStudents:[]};
 
 document.getElementById('ann-close').addEventListener('click',()=>{
   document.getElementById('ann-bar').classList.add('hidden');
@@ -133,6 +139,9 @@ function render(){
   const p=H.profile;
   const s=H.student;
   const name=p?.first_name||(H.user?.email?.split('@')[0])||'there';
+  const isTutor=H.isTutor;
+
+  /* --- Student roadmap data (for student view) --- */
   const hasTutor=!!(s&&s.assigned_tutor_id);
   const sessions=H.sessions||[];
   const completed=sessions.filter(x=>x.status==='completed'&&x.session_number>0).length;
@@ -140,8 +149,26 @@ function render(){
   const pct=total>0?Math.max((completed/total)*100,4):4;
   const next=sessions.find(x=>x.status==='upcoming');
 
-  const tutoringCard=hasTutor
-    ?`<a href="/roadmap.html" class="pcard">
+  /* --- Third card: tutor vs student vs unenrolled --- */
+  let tutoringCard='';
+
+  if(isTutor){
+    const sts=H.tutorStudents||[];
+    const count=sts.length;
+    tutoringCard=`<a href="/roadmap.html" class="pcard">
+        <div class="pcard-label">1-on-1 Tutoring</div>
+        <div class="pcard-title">Tutor Dashboard</div>
+        <div class="pcard-sub">${count} active student${count!==1?'s':''}</div>
+        <div class="pcard-divider"></div>
+        <div class="student-list">
+          ${sts.map(st=>`<div class="student-item">
+            <span class="student-name">${esc(st.profiles?.first_name||st.profiles?.email||'Student')}</span>
+            <span class="student-status">${esc(st.package_type||'')}</span>
+          </div>`).join('')}
+        </div>
+      </a>`;
+  } else if(hasTutor){
+    tutoringCard=`<a href="/roadmap.html" class="pcard">
         <div class="pcard-label">1-on-1 Tutoring</div>
         <div class="pcard-title">Your Roadmap</div>
         <div class="pcard-sub">Active</div>
@@ -163,8 +190,9 @@ function render(){
             <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
           </div>
         </div>
-      </a>`
-    :`<a href="/pricing.html" class="pcard">
+      </a>`;
+  } else {
+    tutoringCard=`<a href="/pricing.html" class="pcard">
         <div class="pcard-label">1-on-1 Tutoring</div>
         <div class="pcard-title">Your Roadmap</div>
         <div class="pcard-sub">Not enrolled</div>
@@ -174,6 +202,7 @@ function render(){
           <div class="unenrolled-cta">Purchase a tutoring package</div>
         </div>
       </a>`;
+  }
 
   document.getElementById('app').innerHTML=`
     <nav class="nav">
@@ -259,16 +288,27 @@ async function init(){
 
   const{data:prof}=await db.from('profiles').select('*').eq('id',H.user.id).single();
   H.profile=prof;
+  H.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
 
-  const{data:sts}=await db.from('students').select('*').eq('profile_id',H.user.id).limit(1);
-  H.student=sts&&sts.length>0?sts[0]:null;
+  if(H.isTutor){
+    /* Tutor: fetch assigned students */
+    const{data:sts}=await db.from('students')
+      .select('*, profiles!profile_id(first_name, email)')
+      .eq('assigned_tutor_id',H.user.id)
+      .order('created_at',{ascending:false});
+    H.tutorStudents=sts||[];
+  } else {
+    /* Student: fetch own record + sessions */
+    const{data:sts}=await db.from('students').select('*').eq('profile_id',H.user.id).limit(1);
+    H.student=sts&&sts.length>0?sts[0]:null;
 
-  if(H.student&&H.student.assigned_tutor_id){
-    const{data:sess}=await db.from('sessions')
-      .select('id,title,status,session_number')
-      .eq('student_id',H.student.id)
-      .order('session_number');
-    H.sessions=sess||[];
+    if(H.student&&H.student.assigned_tutor_id){
+      const{data:sess}=await db.from('sessions')
+        .select('id,title,status,session_number')
+        .eq('student_id',H.student.id)
+        .order('session_number');
+      H.sessions=sess||[];
+    }
   }
 
   render();
