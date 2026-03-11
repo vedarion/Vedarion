@@ -141,7 +141,6 @@ function render(){
   const name=p?.first_name||(H.user?.email?.split('@')[0])||'there';
   const isTutor=H.isTutor;
 
-  /* --- Student roadmap data (for student view) --- */
   const hasTutor=!!(s&&s.assigned_tutor_id);
   const sessions=H.sessions||[];
   const completed=sessions.filter(x=>x.status==='completed'&&x.session_number>0).length;
@@ -149,7 +148,6 @@ function render(){
   const pct=total>0?Math.max((completed/total)*100,4):4;
   const next=sessions.find(x=>x.status==='upcoming');
 
-  /* --- Third card: tutor vs student vs unenrolled --- */
   let tutoringCard='';
 
   if(isTutor){
@@ -288,17 +286,19 @@ async function init(){
 
   const{data:prof}=await db.from('profiles').select('*').eq('id',H.user.id).single();
   H.profile=prof;
-  H.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
 
-  if(H.isTutor){
-    /* Tutor: fetch assigned students */
-    const{data:sts}=await db.from('students')
-      .select('*, profiles!profile_id(first_name, email)')
-      .eq('assigned_tutor_id',H.user.id)
-      .order('created_at',{ascending:false});
-    H.tutorStudents=sts||[];
+  /* Tutor detection: try fetching students assigned to this user.
+     If any come back, this user is a tutor. Bypasses RLS on profiles.role. */
+  const{data:tutorSts}=await db.from('students')
+    .select('*, profiles!profile_id(first_name, email)')
+    .eq('assigned_tutor_id',H.user.id)
+    .order('created_at',{ascending:false});
+
+  if(tutorSts&&tutorSts.length>0){
+    H.isTutor=true;
+    H.tutorStudents=tutorSts;
   } else {
-    /* Student: fetch own record + sessions */
+    H.isTutor=false;
     const{data:sts}=await db.from('students').select('*').eq('profile_id',H.user.id).limit(1);
     H.student=sts&&sts.length>0?sts[0]:null;
 
