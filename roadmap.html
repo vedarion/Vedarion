@@ -67,6 +67,17 @@
     .sb-tpl-sel:hover,.tpl-apply-sel:hover{border-color:var(--faint);color:var(--text)}
     .sb-msg{font-size:11px;margin-top:8px;font-family:var(--sans);line-height:1.4}.sb-msg.err{color:var(--red)}.sb-msg.ok{color:var(--green)}
     .sb-empty{color:var(--faint);font-size:11px;text-align:center;padding:20px 0;font-family:var(--mono)}
+    .sb-archive-toggle{display:flex;align-items:center;gap:8px;padding:8px 0;cursor:pointer;transition:color .2s;color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.5px}
+    .sb-archive-toggle:hover{color:var(--dim)}
+    .sb-archive-toggle svg{transition:transform .2s}
+    .sb-archive-toggle.open svg{transform:rotate(90deg)}
+    .sb-archive-count{background:var(--deep);border-radius:4px;padding:1px 6px;font-size:9px;color:var(--muted)}
+    .sb-archived-list{display:flex;flex-direction:column;gap:2px;padding:4px 0}
+    .sb-archived-item{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-radius:8px;transition:all .15s}
+    .sb-archived-item:hover{background:rgba(255,255,255,.02)}
+    .sb-archived-name{font-size:12px;color:var(--faint);font-family:var(--sans)}
+    .sb-restore-btn{background:none;border:none;color:var(--accent);font-family:var(--mono);font-size:9px;cursor:pointer;padding:2px 8px;border-radius:4px;transition:all .15s;letter-spacing:.3px;opacity:.6}
+    .sb-restore-btn:hover{opacity:1;background:rgba(201,122,69,.08)}
 
     .profile{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:30px;margin-bottom:12px}
     .profile-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px}
@@ -285,7 +296,7 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null,archiveOpen:false};
 
 const TEMPLATES={
 'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
@@ -532,7 +543,11 @@ async function loadUser(){
   if(S.isTutor){
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('assigned_tutor_id',user.id).order('created_at',{ascending:false});
     S.students=sts||[];
-    if(S.students.length>0){S.selId=S.students[0].id;await loadStudent(S.students[0].id);}else{S.student=null;S.sessions=[];}
+    const actv=S.students.filter(st=>st.status!=='inactive');
+    const curStillValid=S.selId&&S.students.find(st=>st.id===S.selId&&st.status!=='inactive');
+    if(curStillValid){await loadStudent(S.selId);}
+    else if(actv.length>0){S.selId=actv[0].id;await loadStudent(actv[0].id);}
+    else{S.selId=null;S.student=null;S.sessions=[];}
   }else{
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('profile_id',user.id);
     if(sts&&sts.length>0){S.students=sts;S.selId=sts[0].id;S.student=sts[0];await loadStudent(sts[0].id);}else{S.student=null;S.sessions=[];}
@@ -608,8 +623,13 @@ function showSaved(ok=true){
 }
 
 function getStepCompletions(h){
-  if(!h.step_completions)return[];
-  try{return JSON.parse(h.step_completions);}catch(e){return[];}
+  if(!h.step_completions)return{};
+  try{
+    const p=JSON.parse(h.step_completions);
+    if(typeof p==='object'&&!Array.isArray(p))return p;
+    if(Array.isArray(p)){const steps=(h.description||'').split('\n').filter(l=>l.trim());const obj={};for(let i=0;i<steps.length;i++){const k=steps[i].trim();if(!k.startsWith('--')&&p[i]===true)obj[k]=true;}return obj;}
+    return{};
+  }catch(e){return{};}
 }
 
 function wsType(label){
@@ -679,7 +699,7 @@ function dashHTML(){
           <div class="info-grid">
             <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val">${t?ed(s.notes||'','student-notes',true):esc(s.notes||'—')}</div></div>
           </div>
-          ${t?`<div style="text-align:right;margin-top:14px"><button id="remove-student-btn" style="background:none;border:none;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;padding:4px 0;transition:color .2s;letter-spacing:.3px">Remove Student</button></div>`:''}
+          ${t?`<div style="text-align:right;margin-top:14px"><button id="archive-student-btn" style="background:none;border:none;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;padding:4px 0;transition:color .2s;letter-spacing:.3px">Archive Student</button></div>`:''}
         </div>
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
@@ -691,10 +711,25 @@ function dashHTML(){
       </div>
       ${t?`<div class="sidebar"><div class="sb-card">
         <div class="sb-title">My Students</div>
-        <div class="sb-list">${S.students.length===0?'<div class="sb-empty">No students yet</div>':''}${S.students.map(st=>{
-          const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';const init=n.charAt(0).toUpperCase();const active=st.id===S.selId;
-          return`<div class="sb-item ${active?'active':''}" data-pick="${st.id}"><div class="sb-avatar">${init}</div><div><div class="sb-sname">${esc(n)}</div><div class="sb-spack">${st.package_type||'5-session'}</div></div></div>`;
-        }).join('')}</div>
+        <div class="sb-list">${(()=>{
+          const actv=S.students.filter(st=>st.status!=='inactive');
+          const arch=S.students.filter(st=>st.status==='inactive');
+          if(actv.length===0&&arch.length===0)return'<div class="sb-empty">No students yet</div>';
+          let html=actv.map(st=>{
+            const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';const init=n.charAt(0).toUpperCase();const active=st.id===S.selId;
+            return`<div class="sb-item ${active?'active':''}" data-pick="${st.id}"><div class="sb-avatar">${init}</div><div><div class="sb-sname">${esc(n)}</div><div class="sb-spack">${st.package_type||'5-session'}</div></div></div>`;
+          }).join('');
+          if(arch.length>0){
+            html+=`<div class="sb-archive-toggle ${S.archiveOpen?'open':''}" id="archive-toggle"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 6 15 12 9 18"/></svg>Archived <span class="sb-archive-count">${arch.length}</span></div>`;
+            if(S.archiveOpen){
+              html+=`<div class="sb-archived-list">${arch.map(st=>{
+                const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';
+                return`<div class="sb-archived-item"><span class="sb-archived-name">${esc(n)}</span><button class="sb-restore-btn" data-restore="${st.id}">Restore</button></div>`;
+              }).join('')}</div>`;
+            }
+          }
+          return html;
+        })()}</div>
         <div class="sb-divider"></div>
         <div class="sb-add-title">Add Student</div>
         <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
@@ -729,14 +764,13 @@ function sessHTML(ss,i){
           const steps=desc.split('\n').filter(l=>l.trim());
           const sc=getStepCompletions(h);
           const checkableSteps=steps.filter(l=>!l.trim().startsWith('--'));
-          const checkableIndices=steps.map((l,idx)=>l.trim().startsWith('--')?null:idx).filter(idx=>idx!==null);
-          const allDone=checkableSteps.length>0&&checkableIndices.every(idx=>sc[idx]===true);
+          const allDone=checkableSteps.length>0&&checkableSteps.every(l=>sc[l.trim()]===true);
           const hwDone=h.completed||(checkableSteps.length>0&&allDone);
           const hwCount=ss.homework.length;
           const descHtml=steps.map((l,si)=>{
             const isLabel=l.trim().startsWith('--');
             if(isLabel)return`<div class="hw-label">${esc(l.trim().substring(2).trim())}</div>`;
-            const checked=sc[si]===true;
+            const checked=sc[l.trim()]===true;
             return`<div class="step ${checked?'step-done':''}"><div class="hw-step-cb ${checked?'checked':''}" data-hsc="${h.id}" data-si="${si}">${checked?'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div><span>${linkify(esc(l.trim()))}</span></div>`;
           }).join('');
           return`<div class="hw ${sl?'lk':''} ${hwDone?'hw-done':''}">
@@ -1073,7 +1107,9 @@ function bind(){
     alert('Password reset link sent to '+em);
   });
   document.getElementById('lo')?.addEventListener('click',doLogout);
-  document.getElementById('remove-student-btn')?.addEventListener('click',async()=>{if(!S.selId||!S.student)return;const name=S.student.profiles?.first_name||'this student';if(!confirm('Remove '+name+'? This will delete their roadmap, all sessions, goals, and homework.'))return;await db.from('students').delete().eq('id',S.selId);S.selId=null;S.student=null;S.sessions=[];S.exSess=-1;await loadUser();});
+  document.getElementById('archive-student-btn')?.addEventListener('click',async()=>{if(!S.selId||!S.student)return;const name=S.student.profiles?.first_name||'this student';if(!confirm('Archive '+name+'? They\'ll move to the archived section.'))return;await db.from('students').update({status:'inactive'}).eq('id',S.selId);const actv=S.students.filter(st=>st.id!==S.selId&&st.status!=='inactive');if(actv.length>0){S.selId=actv[0].id;await loadStudent(actv[0].id);}else{S.selId=null;S.student=null;S.sessions=[];S.exSess=-1;}await loadUser();});
+  document.getElementById('archive-toggle')?.addEventListener('click',()=>{S.archiveOpen=!S.archiveOpen;R();});
+  document.querySelectorAll('[data-restore]').forEach(btn=>{btn.addEventListener('click',async()=>{await db.from('students').update({status:'active'}).eq('id',btn.dataset.restore);await loadUser();});});
   document.querySelectorAll('[data-pick]').forEach(el=>{el.addEventListener('click',async()=>{S.selId=el.dataset.pick;S.exSess=-1;S.addMsg='';await loadStudent(el.dataset.pick);R();});});
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
@@ -1091,9 +1127,9 @@ function bind(){
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
-    while(sc.length<steps.length)sc.push(false);sc[si]=!sc[si];
-    const checkableIndices=steps.map((l,i)=>l.trim().startsWith('--')?null:i).filter(i=>i!==null);
-    const allDone=checkableIndices.length>0&&checkableIndices.every(i=>sc[i]===true);
+    const stepText=steps[si]?.trim();if(!stepText)return;sc[stepText]=!sc[stepText];
+    const checkableSteps=steps.filter(l=>!l.trim().startsWith('--'));
+    const allDone=checkableSteps.length>0&&checkableSteps.every(l=>sc[l.trim()]===true);
     await db.from('homework').update({step_completions:JSON.stringify(sc),completed:allDone}).eq('id',hid);await loadStudent(S.selId);R();
   });});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
