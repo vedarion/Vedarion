@@ -114,7 +114,11 @@
     .sess-t{font-size:17px;font-weight:600;font-family:var(--serif);color:var(--bright)}
     .sess-t.lk{color:var(--text)}
     .sess-meta{font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap}.sess-meta .sep{color:var(--faint)}
-    .sess-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0;margin-right:4px}
+    .sess[draggable="true"] .sess-hd{cursor:grab}
+    .sess[draggable="true"]:active .sess-hd{cursor:grabbing}
+    .sess.drag-over-above{border-top:2px solid var(--accent);margin-top:-1px}
+    .sess.drag-over-below{border-bottom:2px solid var(--accent);margin-bottom:-1px}
+    .sess.dragging{opacity:.35}
     .reorder-btn{background:none;border:1px solid transparent;border-radius:4px;cursor:pointer;padding:2px;color:var(--faint);transition:all .15s;display:flex;align-items:center;justify-content:center}
     .reorder-btn:hover:not(:disabled){color:var(--accent);border-color:rgba(201,122,69,.2);background:rgba(201,122,69,.05)}
     .reorder-btn:disabled{opacity:.15;cursor:not-allowed}
@@ -263,6 +267,7 @@
     .empty{text-align:center;padding:80px 20px}.empty h3{font-family:var(--serif);font-size:18px;color:var(--dim);margin-bottom:10px;font-weight:400}.empty p{font-size:13px;color:var(--faint)}
     .save-toast{position:fixed;bottom:24px;right:24px;padding:8px 18px;background:rgba(92,184,92,.15);border:1px solid rgba(92,184,92,.3);border-radius:8px;color:var(--green);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.5px;z-index:200;opacity:0;transform:translateY(8px);transition:all .2s ease;pointer-events:none}
     .save-toast.show{opacity:1;transform:translateY(0)}
+    .save-toast.error{background:rgba(217,83,79,.15);border-color:rgba(217,83,79,.3);color:var(--red)}
 
     @media(max-width:768px){
       .layout{flex-direction:column-reverse;padding:20px 16px;gap:20px}
@@ -539,11 +544,19 @@ async function loadStudent(id){
   const{data:st}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('id',id).single();
   S.student=st;
   const{data:sess}=await db.from('sessions').select('*').eq('student_id',id).order('session_number');
-  const allHwIds=[];
+  const sessIds=(sess||[]).map(s=>s.id);
+  let allGoals=[],allHw=[];
+  if(sessIds.length>0){
+    const[gRes,hRes]=await Promise.all([
+      db.from('session_goals').select('*').in('session_id',sessIds).order('sort_order'),
+      db.from('homework').select('*').in('session_id',sessIds).order('sort_order')
+    ]);
+    allGoals=gRes.data||[];allHw=hRes.data||[];
+  }
+  const allHwIds=allHw.map(h=>h.id);
   for(let s of(sess||[])){
-    const{data:g}=await db.from('session_goals').select('*').eq('session_id',s.id).order('sort_order');s.goals=g||[];
-    const{data:h}=await db.from('homework').select('*').eq('session_id',s.id).order('sort_order');s.homework=h||[];
-    for(const hw of s.homework)allHwIds.push(hw.id);
+    s.goals=allGoals.filter(g=>g.session_id===s.id);
+    s.homework=allHw.filter(h=>h.session_id===s.id);
   }
   S.sessions=sess||[];
   if(allHwIds.length>0){
@@ -587,9 +600,11 @@ function edDate(val,id){
 }
 
 let _saveToast=null,_saveTimer=null;
-function showSaved(){
-  if(!_saveToast){_saveToast=document.createElement('div');_saveToast.className='save-toast';_saveToast.textContent='Saved';document.body.appendChild(_saveToast);}
-  _saveToast.classList.add('show');clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>_saveToast.classList.remove('show'),1200);
+function showSaved(ok=true){
+  if(!_saveToast){_saveToast=document.createElement('div');_saveToast.className='save-toast';document.body.appendChild(_saveToast);}
+  _saveToast.textContent=ok?'Saved':'Save failed';
+  _saveToast.classList.toggle('error',!ok);
+  _saveToast.classList.add('show');clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>_saveToast.classList.remove('show'),ok?1200:3000);
 }
 
 function getStepCompletions(h){
@@ -741,7 +756,7 @@ function sessHTML(ss,i){
       ${t||ss.tutor_notes?`<div class="slbl">Session Notes${!t?' from Your Tutor':''}</div><div class="tn-box">${t?ed(ss.tutor_notes||'','session-'+ss.id+'-tutor_notes',true):esc(ss.tutor_notes||'')}</div>`:''}
     </div>`;
   }
-  return`<div class="sess ${up?'up':''} ${lk&&!t?'lk-s':''}">
+  return`<div class="sess ${up?'up':''} ${lk&&!t?'lk-s':''}" ${t?'draggable="true" data-dsi="'+i+'"':''}>
     <div class="sess-hd" data-tog="${i}">
       <div class="sess-num ${ss.status}">${cp?'✓':ss.session_number}</div>
       <div class="sess-info">
@@ -755,10 +770,6 @@ function sessHTML(ss,i){
           ${t?`<span>${edDate(ss.session_date||'','session-'+ss.id+'-session_date')}</span>`:`<span>${dt}</span>`}
         </div>
       </div>
-      ${t?`<div class="sess-reorder" onclick="event.stopPropagation()">
-        <button class="reorder-btn" data-mv="up" data-si="${i}" title="Move up"${i===0?' disabled':''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
-        <button class="reorder-btn" data-mv="down" data-si="${i}" title="Move down"${i===S.sessions.length-1?' disabled':''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      </div>`:''}
       <svg class="chev ${ex?'open':''}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
     </div>${body}</div>`;
 }
@@ -1076,7 +1087,7 @@ function bind(){
   document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
     await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.sess-reorder')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
@@ -1089,7 +1100,23 @@ function bind(){
   document.querySelectorAll('.tn-box').forEach(box=>{box.addEventListener('click',e=>{if(e.target.closest('.ed'))return;const edEl=box.querySelector('.ed');if(edEl)startEd(edEl);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);S.exSess=-1;await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-mv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const i=parseInt(b.dataset.si);const dir=b.dataset.mv;const j=dir==='up'?i-1:i+1;if(j<0||j>=S.sessions.length)return;const a=S.sessions[i],b2=S.sessions[j];const aNum=a.session_number,bNum=b2.session_number;await db.from('sessions').update({session_number:-999}).eq('id',a.id);await db.from('sessions').update({session_number:aNum}).eq('id',b2.id);await db.from('sessions').update({session_number:bNum}).eq('id',a.id);await loadStudent(S.selId);R();});});
+  /* Session drag-and-drop reorder */
+  let _dragIdx=null;
+  document.querySelectorAll('.sess[data-dsi]').forEach(card=>{
+    card.addEventListener('dragstart',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta'))return;_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
+    card.addEventListener('dragend',()=>{document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('dragging','drag-over-above','drag-over-below');});_dragIdx=null;});
+  });
+  document.querySelectorAll('.sess').forEach((card,ci)=>{
+    card.addEventListener('dragover',e=>{e.preventDefault();if(_dragIdx===null||_dragIdx===ci)return;e.dataTransfer.dropEffect='move';const rect=card.getBoundingClientRect();const mid=rect.top+rect.height/2;document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('drag-over-above','drag-over-below');});card.classList.add(e.clientY<mid?'drag-over-above':'drag-over-below');});
+    card.addEventListener('dragleave',()=>{card.classList.remove('drag-over-above','drag-over-below');});
+    card.addEventListener('drop',async e=>{e.preventDefault();if(_dragIdx===null||_dragIdx===ci)return;document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('drag-over-above','drag-over-below','dragging');});
+      const from=_dragIdx,to=ci;_dragIdx=null;
+      const ordered=[...S.sessions];const[moved]=ordered.splice(from,1);ordered.splice(to,0,moved);
+      let err=null;
+      for(let k=0;k<ordered.length;k++){const r=await db.from('sessions').update({session_number:k}).eq('id',ordered[k].id);if(r.error)err=r.error;}
+      await loadStudent(S.selId);R();showSaved(!err);
+    });
+  });
   document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{if(!confirm('Delete this goal?'))return;await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ah-open]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openPicker(btn.dataset.ahOpen);});});
@@ -1145,20 +1172,22 @@ function startEd(el){
 async function saveEd(eid,val){
   const first=eid.indexOf('-');const last=eid.lastIndexOf('-');
   const type=eid.substring(0,first);const field=eid.substring(last+1);const mid=eid.substring(first+1,last);
-  if(type==='student'){if(field==='name')await db.from('profiles').update({first_name:val}).eq('id',S.student.profile_id);else{const v=field==='sessions_bought'?parseInt(val)||0:val;await db.from('students').update({[field]:v}).eq('id',S.selId);}}
-  else if(type==='session')await db.from('sessions').update({[field]:val}).eq('id',mid);
-  else if(type==='goal')await db.from('session_goals').update({[field]:val}).eq('id',mid);
-  else if(type==='hw')await db.from('homework').update({[field]:val}).eq('id',mid);
-  await loadStudent(S.selId);R();showSaved();
+  let err=null;
+  if(type==='student'){if(field==='name'){const r=await db.from('profiles').update({first_name:val}).eq('id',S.student.profile_id);err=r.error;}else{const v=field==='sessions_bought'?parseInt(val)||0:val;const r=await db.from('students').update({[field]:v}).eq('id',S.selId);err=r.error;}}
+  else if(type==='session'){const r=await db.from('sessions').update({[field]:val}).eq('id',mid);err=r.error;}
+  else if(type==='goal'){const r=await db.from('session_goals').update({[field]:val}).eq('id',mid);err=r.error;}
+  else if(type==='hw'){const r=await db.from('homework').update({[field]:val}).eq('id',mid);err=r.error;}
+  await loadStudent(S.selId);R();showSaved(!err);
 }
 
 async function saveWsField(hwId,entryNum,type,field,value){
   const arr=S.wsEntries[hwId]||[];
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type===type);
   const curData=existing?{...existing.data}:{};curData[field]=value;
-  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});}
-  await reloadWsEntries(hwId);showSaved();
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});err=r.error;}
+  await reloadWsEntries(hwId);showSaved(!err);
 }
 
 async function saveWsToggle(hwId,entryNum,type,field,val){
@@ -1172,9 +1201,10 @@ async function saveAcField(hwId,entryNum,letter,fieldName,value){
   if(!curData.answer_choices)curData.answer_choices={};
   if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
   curData.answer_choices[letter][fieldName]=value;
-  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});}
-  await reloadWsEntries(hwId);R();showSaved();
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});err=r.error;}
+  await reloadWsEntries(hwId);R();showSaved(!err);
 }
 
 async function saveClaimField(hwId,entryNum,claimIdx,value){
@@ -1182,9 +1212,10 @@ async function saveClaimField(hwId,entryNum,claimIdx,value){
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
   const curData=existing?{...existing.data}:{};
   const claims=[...(curData.claims||[])];while(claims.length<=claimIdx)claims.push('');claims[claimIdx]=value;curData.claims=claims;
-  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
-  await reloadWsEntries(hwId);showSaved();
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});err=r.error;}
+  await reloadWsEntries(hwId);showSaved(!err);
 }
 
 async function addClaimToEntry(hwId,entryNum){
@@ -1216,9 +1247,10 @@ async function saveMetaTag(hwId,entryNum,field,val){
   const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
   const curData=existing?{...existing.data}:{};
   curData[field]=curData[field]===val?null:val;curData.is_meta=true;
-  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
-  await reloadWsEntries(hwId);R();showSaved();
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});err=r.error;}
+  await reloadWsEntries(hwId);R();showSaved(!err);
 }
 
 async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
