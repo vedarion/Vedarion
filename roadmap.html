@@ -92,6 +92,8 @@
 
     .ed{cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.1);padding-bottom:1px;transition:border-color .2s}.ed:hover{border-color:rgba(255,255,255,.25)}
     .ed-inp{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:4px 8px;outline:none;color:inherit;font:inherit;width:100%}
+    .ed-inp[type="date"]{font-family:var(--mono);font-size:12px;color:var(--bright);padding:6px 10px;color-scheme:dark}
+    .ed-inp[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.6);cursor:pointer}
     .ed-ta{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:8px 10px;outline:none;color:inherit;font:inherit;width:100%;min-height:60px;resize:vertical}
     .ph{color:var(--muted);font-style:italic}
 
@@ -162,7 +164,9 @@
     .hw-edit-toolbar button svg{width:11px;height:11px}
     .hw-desc-ph{margin:8px 0 0 29px;font-size:11px;color:var(--faint);font-style:italic;cursor:pointer;padding:4px 0;opacity:.5;transition:opacity .2s}
     .hw-desc-ph:hover{opacity:.8}
-    .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#bbb;font-size:14px;line-height:1.8;white-space:pre-line}
+    .tn-box{padding:16px 18px;background:var(--input);border-radius:10px;border-left:2px solid #222;color:#bbb;font-size:14px;line-height:1.8;white-space:pre-line;cursor:text}
+    .tn-box .ed{display:block;min-height:40px;width:100%}
+    .tn-box .ed .ph{opacity:.7}
 
     .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:32px 20px;overflow-y:auto}
     .picker-panel{background:var(--surface);border:1px solid var(--border-hi);border-radius:18px;width:100%;max-width:660px;padding:28px;box-shadow:0 32px 64px rgba(0,0,0,.6);animation:fadeUp .2s ease}
@@ -257,6 +261,8 @@
     .footer .v{color:var(--accent)}.footer .rest{color:#1a1a1a}
     .loading{display:flex;align-items:center;justify-content:center;min-height:60vh;color:var(--faint);font-family:var(--mono);font-size:12px;letter-spacing:1px}
     .empty{text-align:center;padding:80px 20px}.empty h3{font-family:var(--serif);font-size:18px;color:var(--dim);margin-bottom:10px;font-weight:400}.empty p{font-size:13px;color:var(--faint)}
+    .save-toast{position:fixed;bottom:24px;right:24px;padding:8px 18px;background:rgba(92,184,92,.15);border:1px solid rgba(92,184,92,.3);border-radius:8px;color:var(--green);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.5px;z-index:200;opacity:0;transform:translateY(8px);transition:all .2s ease;pointer-events:none}
+    .save-toast.show{opacity:1;transform:translateY(0)}
 
     @media(max-width:768px){
       .layout{flex-direction:column-reverse;padding:20px 16px;gap:20px}
@@ -570,9 +576,20 @@ async function addStudent(){
 }
 
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function fmtDate(d){if(!d)return'';try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){return d;}}
 function ed(val,id,ml){
   if(val)return`<span class="ed" data-eid="${id}" data-ml="${ml}">${esc(val)}</span>`;
   return`<span class="ed" data-eid="${id}" data-ml="${ml}"><span class="ph">Click to add...</span></span>`;
+}
+function edDate(val,id){
+  if(val)return`<span class="ed" data-eid="${id}" data-ml="false" data-raw="${esc(val)}">${esc(fmtDate(val))}</span>`;
+  return`<span class="ed" data-eid="${id}" data-ml="false"><span class="ph">Click to add...</span></span>`;
+}
+
+let _saveToast=null,_saveTimer=null;
+function showSaved(){
+  if(!_saveToast){_saveToast=document.createElement('div');_saveToast.className='save-toast';_saveToast.textContent='Saved';document.body.appendChild(_saveToast);}
+  _saveToast.classList.add('show');clearTimeout(_saveTimer);_saveTimer=setTimeout(()=>_saveToast.classList.remove('show'),1200);
 }
 
 function getStepCompletions(h){
@@ -635,7 +652,7 @@ function dashHTML(){
             ${statBox('Current Avg',s.current_average,'student-current_average',t)}
             ${statBox('LR',s.lr_average,'student-lr_average',t)}
             ${statBox('RC',s.rc_average,'student-rc_average',t)}
-            ${statBox('Test Date',s.test_date,'student-test_date',t)}
+            ${statBox('Test Date',s.test_date,'student-test_date',t,true)}
             <div class="stat">
               <div class="stat-lbl">Time</div>
               <div class="stat-val">
@@ -647,6 +664,7 @@ function dashHTML(){
           <div class="info-grid">
             <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val">${t?ed(s.notes||'','student-notes',true):esc(s.notes||'—')}</div></div>
           </div>
+          ${t?`<div style="text-align:right;margin-top:14px"><button id="remove-student-btn" style="background:none;border:none;color:var(--faint);font-family:var(--mono);font-size:10px;cursor:pointer;padding:4px 0;transition:color .2s;letter-spacing:.3px">Remove Student</button></div>`:''}
         </div>
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
@@ -672,7 +690,7 @@ function dashHTML(){
     </div>`;
 }
 
-function statBox(lbl,val,eid,t){return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(val||'',eid,false):esc(val||'—')}</div></div>`;}
+function statBox(lbl,val,eid,t,isDate){return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?(isDate?edDate(val||'',eid):ed(val||'',eid,false)):esc(isDate?fmtDate(val)||'—':val||'—')}</div></div>`;}
 
 function sessHTML(ss,i){
   const t=S.isTutor,ex=S.exSess===i,lk=ss.status==='locked',up=ss.status==='upcoming',cp=ss.status==='completed';
@@ -681,7 +699,7 @@ function sessHTML(ss,i){
   let body='';
   if(ex){
     body=`<div class="sess-body">
-      ${t?`<div class="tc"><span class="tc-lbl">TUTOR</span><button class="tc-btn" data-cyc="${ss.id}" data-st="${ss.status}">${ss.status.toUpperCase()}</button></div>`:''}
+      ${t?`<div class="tc"><span class="tc-lbl">TUTOR</span><button class="tc-btn" data-cyc="${ss.id}" data-st="${ss.status}">${ss.status.toUpperCase()}</button><button class="tc-btn" data-delsess="${ss.id}" style="color:var(--red);border-color:rgba(217,83,79,.2)">DELETE SESSION</button></div>`:''}
       <div class="desc">${t?ed(ss.description||'','session-'+ss.id+'-description',true):esc(ss.description||'')}</div>
       <div class="slbl">Session Goals</div>
       <div class="g-list">
@@ -734,7 +752,7 @@ function sessHTML(ss,i){
         <div class="sess-meta">
           ${t?`<span>${ed(ss.subtitle||'','session-'+ss.id+'-subtitle',false)}</span>`:`<span>${esc(ss.subtitle||'')}</span>`}
           <span class="sep">·</span>
-          ${t?`<span>${ed(ss.session_date||'','session-'+ss.id+'-session_date',false)}</span>`:`<span>${dt}</span>`}
+          ${t?`<span>${edDate(ss.session_date||'','session-'+ss.id+'-session_date')}</span>`:`<span>${dt}</span>`}
         </div>
       </div>
       ${t?`<div class="sess-reorder" onclick="event.stopPropagation()">
@@ -1044,6 +1062,7 @@ function bind(){
     alert('Password reset link sent to '+em);
   });
   document.getElementById('lo')?.addEventListener('click',doLogout);
+  document.getElementById('remove-student-btn')?.addEventListener('click',async()=>{if(!S.selId||!S.student)return;const name=S.student.profiles?.first_name||'this student';if(!confirm('Remove '+name+'? This will delete their roadmap, all sessions, goals, and homework.'))return;await db.from('students').delete().eq('id',S.selId);S.selId=null;S.student=null;S.sessions=[];S.exSess=-1;await loadUser();});
   document.querySelectorAll('[data-pick]').forEach(el=>{el.addEventListener('click',async()=>{S.selId=el.dataset.pick;S.exSess=-1;S.addMsg='';await loadStudent(el.dataset.pick);R();});});
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
@@ -1067,12 +1086,14 @@ function bind(){
     await db.from('homework').update({step_completions:JSON.stringify(sc),completed:allDone}).eq('id',hid);await loadStudent(S.selId);R();
   });});
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
+  document.querySelectorAll('.tn-box').forEach(box=>{box.addEventListener('click',e=>{if(e.target.closest('.ed'))return;const edEl=box.querySelector('.ed');if(edEl)startEd(edEl);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);S.exSess=-1;await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-mv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const i=parseInt(b.dataset.si);const dir=b.dataset.mv;const j=dir==='up'?i-1:i+1;if(j<0||j>=S.sessions.length)return;const a=S.sessions[i],b2=S.sessions[j];const aNum=a.session_number,bNum=b2.session_number;await db.from('sessions').update({session_number:-999}).eq('id',a.id);await db.from('sessions').update({session_number:aNum}).eq('id',b2.id);await db.from('sessions').update({session_number:bNum}).eq('id',a.id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{if(!confirm('Delete this goal?'))return;await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-ah-open]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openPicker(btn.dataset.ahOpen);});});
-  document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{if(!confirm('Delete this homework item?'))return;await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;
     const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===id);const curDesc=hw?hw.description||'':'';
     const parent=b.closest('.hw-desc')||b;
@@ -1110,12 +1131,15 @@ function bind(){
 function startEd(el){
   const eid=el.dataset.eid,ml=el.dataset.ml==='true';
   const isHwDesc=el.classList.contains('hw-desc');
+  const isDate=eid.endsWith('-session_date')||eid.endsWith('-test_date');
   const cur=el.textContent==='Click to add...'?'':el.textContent;
   if(ml){const cls=isHwDesc?'hw-desc-edit':'ed-ta';el.outerHTML=`<textarea class="${cls}" data-eid="${eid}">${esc(cur)}</textarea>`;}
+  else if(isDate){const today=new Date().toISOString().split('T')[0];const raw=el.dataset.raw||'';const dateVal=raw&&raw.match(/\d{4}-\d{2}-\d{2}/)?raw:today;el.outerHTML=`<input class="ed-inp" type="date" data-eid="${eid}" value="${dateVal}">`;}
   else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
-  const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();
+  const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();if(isDate)try{inp.showPicker();}catch(e){}
   inp.addEventListener('blur',()=>saveEd(eid,inp.value));
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!ml)saveEd(eid,inp.value);if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
+  if(isDate)inp.addEventListener('change',()=>saveEd(eid,inp.value));
 }
 
 async function saveEd(eid,val){
@@ -1125,7 +1149,7 @@ async function saveEd(eid,val){
   else if(type==='session')await db.from('sessions').update({[field]:val}).eq('id',mid);
   else if(type==='goal')await db.from('session_goals').update({[field]:val}).eq('id',mid);
   else if(type==='hw')await db.from('homework').update({[field]:val}).eq('id',mid);
-  await loadStudent(S.selId);R();
+  await loadStudent(S.selId);R();showSaved();
 }
 
 async function saveWsField(hwId,entryNum,type,field,value){
@@ -1134,7 +1158,7 @@ async function saveWsField(hwId,entryNum,type,field,value){
   const curData=existing?{...existing.data}:{};curData[field]=value;
   if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
   else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});}
-  await reloadWsEntries(hwId);
+  await reloadWsEntries(hwId);showSaved();
 }
 
 async function saveWsToggle(hwId,entryNum,type,field,val){
@@ -1150,7 +1174,7 @@ async function saveAcField(hwId,entryNum,letter,fieldName,value){
   curData.answer_choices[letter][fieldName]=value;
   if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
   else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});}
-  await reloadWsEntries(hwId);R();
+  await reloadWsEntries(hwId);R();showSaved();
 }
 
 async function saveClaimField(hwId,entryNum,claimIdx,value){
@@ -1160,7 +1184,7 @@ async function saveClaimField(hwId,entryNum,claimIdx,value){
   const claims=[...(curData.claims||[])];while(claims.length<=claimIdx)claims.push('');claims[claimIdx]=value;curData.claims=claims;
   if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
   else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
-  await reloadWsEntries(hwId);
+  await reloadWsEntries(hwId);showSaved();
 }
 
 async function addClaimToEntry(hwId,entryNum){
@@ -1194,7 +1218,7 @@ async function saveMetaTag(hwId,entryNum,field,val){
   curData[field]=curData[field]===val?null:val;curData.is_meta=true;
   if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
   else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
-  await reloadWsEntries(hwId);R();
+  await reloadWsEntries(hwId);R();showSaved();
 }
 
 async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
