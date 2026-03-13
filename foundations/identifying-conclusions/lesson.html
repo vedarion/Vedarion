@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Identifying Conclusions - VEDARION</title>
+    <title>Premises and Conclusions - VEDARION</title>
     <style>
         * {
             margin: 0;
@@ -60,26 +60,12 @@
             text-align: center;
         }
         
-        .breadcrumb {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-        
         .page-title {
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 4px;
             color: white;
             margin: 0;
-        }
-        
-        .page-subtitle {
-            font-size: 13px;
-            color: #888;
-            margin-top: 8px;
-            letter-spacing: 1px;
         }
         
         .tab-nav {
@@ -110,20 +96,18 @@
             border-bottom-color: #C65D3B;
         }
         
-        .tab-link.coming-soon {
-            color: #444;
-            cursor: default;
-        }
-        
-        .tab-link.coming-soon::after {
-            content: " (soon)";
-            font-size: 10px;
-        }
-        
         .container {
             max-width: 650px;
             margin: 0 auto;
             padding: 40px 20px;
+        }
+
+        .intro-text {
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
         
         .flowchart {
@@ -135,21 +119,17 @@
         .step {
             background: white;
             border: 1px solid #E0E0E0;
+            border-left: 3px solid #C65D3B;
             padding: 20px 25px;
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .step.highlight {
-            border-color: #C65D3B;
-            border-width: 2px;
         }
         
         .step-number {
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #C65D3B;
+            background: #0A0A0A;
             color: white;
             font-size: 11px;
             font-weight: 600;
@@ -161,7 +141,7 @@
             position: absolute;
             top: -10px;
             left: 20px;
-            background: #333;
+            background: #0A0A0A;
             color: white;
             font-size: 11px;
             font-weight: 600;
@@ -199,7 +179,7 @@
             content: "→";
             position: absolute;
             left: 0;
-            color: #999;
+            color: #C65D3B;
         }
         
         .arrow {
@@ -209,30 +189,10 @@
             font-size: 18px;
         }
         
-        .inner-question {
-            background: #F9F9F9;
-            border: 1px dashed #DDD;
-            padding: 12px 15px;
-            margin-top: 12px;
-            font-size: 12px;
-        }
-        
-        .inner-question ul {
-            margin-top: 8px;
-        }
-        
-        .warning-box {
-            background: #FFF8F0;
-            border: 1px solid #C65D3B;
-            padding: 10px 15px;
-            margin-top: 12px;
-            font-size: 12px;
-            color: #0A0A0A;
-        }
-        
         .example-box {
-            background: #F5F5F5;
-            border: 1px solid #E0E0E0;
+            background: #FAF8F5;
+            border: 1px solid #E8E0D8;
+            
             padding: 12px 15px;
             margin-top: 12px;
             font-size: 12px;
@@ -259,17 +219,6 @@
             line-height: 1.5;
         }
         
-        .section-divider {
-            background: #0A0A0A;
-            color: white;
-            text-align: center;
-            padding: 12px 20px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        
         .keyword {
             display: inline-block;
             background: #FFF3ED;
@@ -279,17 +228,6 @@
             color: #C65D3B;
             font-weight: 600;
             margin: 2px 3px;
-        }
-        
-        .tip-box {
-            background: #F5F5F5;
-            border: 1px dashed #CCC;
-            padding: 15px 20px;
-            margin-top: 0;
-        }
-        
-        .tip-box .step-content {
-            font-size: 12px;
         }
         
         .slim-divider {
@@ -410,25 +348,23 @@
     </nav>
     
     <div class="page-header">
-        <h1 class="page-title">IDENTIFYING CONCLUSIONS</h1>
+        <h1 class="page-title">PREMISES AND CONCLUSIONS</h1>
     </div>
     
     <div class="tab-nav">
-        <a href="#" class="tab-link coming-soon">Video</a>
-        <a href="#" class="tab-link active">Lesson</a>
+        <a href="video.html" class="tab-link">Video</a>
+        <a href="#" class="tab-link active">Cheat Sheet</a>
     </div>
     
     <div class="container">
+
+        <p class="intro-text">The words that tell you what's a conclusion and what's a premise. Memorize these and you'll catch it in most stimuli.</p>
+
         <div class="flowchart">
             
-            <div class="section-divider">Start Here</div>
-            
-            <div class="arrow">↓</div>
-            
-            <!-- Step 1 -->
+            <!-- Conclusion Indicators -->
             <div class="step">
-                <div class="step-number">STEP 1</div>
-                <div class="step-title">Memorize Conclusion Indicators</div>
+                <div class="step-number">CONCLUSION INDICATORS</div>
                 <div class="step-content">
                     When you see these words, what comes <strong>after</strong> them is almost always the conclusion.
                     <div style="margin-top: 12px;">
@@ -449,12 +385,11 @@
             
             <div class="arrow">↓</div>
             
-            <!-- Step 2 -->
+            <!-- Premise Indicators -->
             <div class="step">
-                <div class="step-number">STEP 2</div>
-                <div class="step-title">Memorize Premise Indicators</div>
+                <div class="step-number">PREMISE INDICATORS</div>
                 <div class="step-content">
-                    These words signal supporting evidence — what comes after them is <strong>not</strong> the conclusion. Use process of elimination.
+                    These words signal supporting evidence. What comes after them is usually a premise.
                     <div style="margin-top: 12px;">
                         <span class="keyword">because</span>
                         <span class="keyword">for</span>
@@ -472,96 +407,15 @@
             
             <div class="arrow">↓</div>
             
-            <div class="tip-box">
-                <div class="step-content">
-                    <strong>Steps 1 & 2 are your foundation.</strong> Memorize these indicators and you'll catch the conclusion in most stimuli. But many LSAT questions don't include indicator words — that's where the advanced strategies come in.
-                </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="section-divider">Advanced</div>
-            
-            <div class="arrow">↓</div>
-            
-            <!-- Step 3 -->
-            <div class="step highlight">
-                <div class="step-number">STEP 3</div>
-                <div class="step-title">The "Why Test"</div>
-                <div class="step-content">
-                    When there are no indicator words, take two sentences and plug them into this template:
-                    <div class="inner-question">
-                        <strong>"Because [Sentence A], therefore [Sentence B]."</strong>
-                        <div style="margin-top: 8px; font-size: 12px; color: #666; line-height: 1.8;">
-                            If the logical flow makes sense → <strong>Sentence B is the conclusion</strong><br>
-                            If it doesn't make sense → flip them and try again
-                        </div>
-                    </div>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <div class="stimulus">"The restaurant is always crowded. The food must be good."</div>
-                        <div class="explanation">
-                            No indicator words. So test it:<br><br>
-                            "Because the restaurant is always crowded, therefore the food must be good." ✓ Makes sense.<br><br>
-                            Flip: "Because the food must be good, therefore the restaurant is always crowded." ✗ Awkward.<br><br>
-                            → <strong>"The food must be good"</strong> is the conclusion.
-                        </div>
-                    </div>
-                    <div class="warning-box">
-                        <strong>This is the game-changer.</strong> The Why Test works even when there are zero indicator words. Practice it until it becomes automatic.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <!-- Step 4 -->
-            <div class="step highlight">
-                <div class="step-number">STEP 4</div>
-                <div class="step-title">The Habit: Opinion vs. Fact</div>
-                <div class="step-content">
-                    As you read each sentence, ask: <strong>does this sound like something the author needs to support?</strong>
-                    <div class="inner-question">
-                        <strong>If it's a fact</strong> — just how the world is; something observable or given
-                        <ul>
-                            <li>Likely a <strong>premise</strong> or context</li>
-                        </ul>
-                    </div>
-                    <div class="inner-question">
-                        <strong>If it's an opinion</strong> — a judgment, interpretation, or claim about what should be
-                        <ul>
-                            <li>Likely the <strong>conclusion</strong></li>
-                        </ul>
-                    </div>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <div class="stimulus">"Sales increased 30% last quarter. Clearly, the new marketing strategy is effective."</div>
-                        <div class="explanation">
-                            "Sales increased 30%" → Fact. Just data. (Premise)<br><br>
-                            "The new marketing strategy is effective" → Opinion. The author is making a claim that needs support. (Conclusion)
-                        </div>
-                    </div>
-                    <div class="warning-box">
-                        <strong>Build this into how you read.</strong> Don't wait to finish the stimulus — evaluate each sentence as you go. This is what separates active readers from passive ones.
-                    </div>
-                </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <div class="section-divider">Putting It All Together</div>
-            
-            <div class="arrow">↓</div>
-            
+            <!-- Quick Reference -->
             <div class="step">
-                <div class="step-label">SUMMARY</div>
-                <div class="step-title">Your System for Every Stimulus</div>
+                <div class="step-label">QUICK REFERENCE</div>
+                <div class="step-title">For Every Stimulus</div>
                 <div class="step-content">
                     <ul>
-                        <li><strong>Highlight</strong> conclusion indicators (therefore, hence, so...)</li>
-                        <li><strong>Highlight</strong> premise indicators (because, since, for...) and eliminate</li>
-                        <li><strong>No indicators?</strong> Use the Why Test — "Because [A], therefore [B]"</li>
-                        <li><strong>As you read:</strong> Ask — is this just a fact, or something that needs support?</li>
+                        <li><strong>Spot a conclusion indicator?</strong> What comes after it is the conclusion.</li>
+                        <li><strong>Spot a premise indicator?</strong> What comes after it is a premise. What's left is likely the conclusion.</li>
+                        <li><strong>Spot only one indicator?</strong> Use process of elimination to label what's remaining.</li>
                     </ul>
                 </div>
             </div>
