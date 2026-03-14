@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Point Questions — Worksheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #F3F1EE;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
+        .hero {
+            background: #0A0A0A;
+            padding: 30px 20px 20px;
+            text-align: center;
+        }
+        .back-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: white; }
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: white;
+            margin-top: 15px;
+        }
+        .page-subtitle {
+            color: #666;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .video-tabs {
+            background: #0A0A0A;
+            padding: 0 20px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .video-tabs a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+
+        .content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* Question source input */
+        .source-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .source-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .source-input {
+            flex: 1;
+            background: white;
+            border: 1px solid #DDD;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0A0A0A;
+            transition: border-color 0.3s;
+        }
+        .source-input:focus {
+            outline: none;
+            border-color: #C65D3B;
+        }
+        .source-input::placeholder { color: #BBB; }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border-left: 4px solid #C65D3B;
+            padding: 28px 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 6px;
+        }
+
+        .step-number {
+            background: #C65D3B;
+            color: white;
+            min-width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0A0A0A;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 16px;
+            margin-left: 44px;
+        }
+
+        .step-hint {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+            margin-bottom: 14px;
+            margin-left: 44px;
+        }
+
+        /* Text areas */
+        .response-area {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid #E0E0E0;
+            background: #FAFAFA;
+            padding: 14px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0A0A0A;
+            resize: vertical;
+            transition: border-color 0.3s;
+            line-height: 1.6;
+        }
+        .response-area:focus {
+            outline: none;
+            border-color: #C65D3B;
+            background: white;
+        }
+        .response-area::placeholder { color: #CCC; }
+
+        /* Method tags */
+        .method-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            margin-left: 44px;
+        }
+
+        .method-tag {
+            background: #F5F3F0;
+            border: 1.5px solid #E0DDD8;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .method-tag:hover {
+            border-color: #C65D3B;
+            color: #C65D3B;
+        }
+
+        .method-tag.selected {
+            background: #C65D3B;
+            border-color: #C65D3B;
+            color: white;
+        }
+
+        .method-tag .tag-check {
+            font-size: 11px;
+            display: none;
+        }
+
+        .method-tag.selected .tag-check {
+            display: inline;
+        }
+
+        /* Answer choices */
+        .answers-container {
+            margin-left: 44px;
+        }
+
+        .answer-row {
+            border: 1px solid #E8E5E0;
+            margin-bottom: 10px;
+            background: #FAFAF8;
+            transition: border-color 0.3s;
+        }
+
+        .answer-row.selected-correct {
+            border-color: #C65D3B;
+            background: #FFF9F7;
+        }
+
+        .answer-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            cursor: pointer;
+            gap: 12px;
+            user-select: none;
+        }
+
+        .answer-letter {
+            font-size: 14px;
+            font-weight: 700;
+            color: #999;
+            min-width: 24px;
+            height: 24px;
+            border: 2px solid #DDD;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .answer-row.selected-correct .answer-letter {
+            background: #C65D3B;
+            border-color: #C65D3B;
+            color: white;
+        }
+
+        .answer-label {
+            font-size: 13px;
+            color: #666;
+            flex: 1;
+        }
+
+        .answer-expand {
+            font-size: 11px;
+            color: #BBB;
+            transition: transform 0.2s;
+        }
+
+        .answer-row.open .answer-expand {
+            transform: rotate(180deg);
+        }
+
+        .answer-reasoning {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .answer-reasoning.open {
+            max-height: 200px;
+        }
+
+        .answer-reasoning textarea {
+            width: 100%;
+            min-height: 60px;
+            border: none;
+            border-top: 1px solid #EEE;
+            background: white;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-family: inherit;
+            color: #0A0A0A;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .answer-reasoning textarea:focus {
+            outline: none;
+        }
+        .answer-reasoning textarea::placeholder { color: #CCC; }
+
+        /* Clear button */
+        .clear-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .clear-btn {
+            background: none;
+            border: 1px solid #DDD;
+            color: #999;
+            padding: 10px 28px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .clear-btn:hover {
+            border-color: #C65D3B;
+            color: #C65D3B;
+        }
+
+        /* CTA */
+        .cta-section {
+            background: #0A0A0A;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .cta-button {
+            background: #C65D3B;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .page-title { font-size: 22px; }
+            .step-card { padding: 20px 18px; }
+            .step-desc, .step-hint, .method-tags, .answers-container { margin-left: 0; }
+            .source-bar { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn.html" class="back-link">← Back to Learn</a>
+        <h1 class="page-title">MAIN POINT QUESTIONS</h1>
+        <p class="page-subtitle">Work through any Main Point question using the strategy.</p>
+    </section>
+
+    <div class="video-tabs">
+        <a href="video.html">Video</a>
+        <a href="lesson.html">Lesson</a>
+        <a href="#" class="active">Worksheet</a>
+    </div>
+
+    <div class="content">
+
+        <!-- Question source -->
+        <div class="source-bar">
+            <span class="source-label">Question</span>
+            <input type="text" class="source-input" id="questionSource" placeholder="e.g. PT 92, Section 2, Q14">
+        </div>
+
+        <!-- Step 1 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Find the Main Point</div>
+            </div>
+            <p class="step-desc">Read the stimulus and identify the conclusion.</p>
+            <p class="step-hint">Which method did you use?</p>
+            <div class="method-tags">
+                <div class="method-tag" onclick="toggleTag(this)">
+                    <span class="tag-check">✓</span> Conclusion Indicator
+                </div>
+                <div class="method-tag" onclick="toggleTag(this)">
+                    <span class="tag-check">✓</span> Process of Elimination
+                </div>
+                <div class="method-tag" onclick="toggleTag(this)">
+                    <span class="tag-check">✓</span> The Why Test
+                </div>
+            </div>
+            <textarea class="response-area" placeholder="What is the main point of the argument?"></textarea>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Note the Details</div>
+            </div>
+            <p class="step-desc">Without looking back at the stimulus, restate the main point in your own words. Be specific — say the noun, verb, and predicate.</p>
+            <textarea class="response-area" placeholder="Write the main point in your own words..."></textarea>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Find the Best Match</div>
+            </div>
+            <p class="step-desc">Select the answer you think is correct. For each choice, explain why it's right or wrong.</p>
+
+            <div class="answers-container">
+                <div class="answer-row" id="answer-a">
+                    <div class="answer-header" onclick="toggleAnswer('a')">
+                        <div class="answer-letter">A</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">▾</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-a">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-b">
+                    <div class="answer-header" onclick="toggleAnswer('b')">
+                        <div class="answer-letter">B</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">▾</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-b">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-c">
+                    <div class="answer-header" onclick="toggleAnswer('c')">
+                        <div class="answer-letter">C</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">▾</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-c">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-d">
+                    <div class="answer-header" onclick="toggleAnswer('d')">
+                        <div class="answer-letter">D</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">▾</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-d">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-e">
+                    <div class="answer-header" onclick="toggleAnswer('e')">
+                        <div class="answer-letter">E</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">▾</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-e">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clear -->
+        <div class="clear-section">
+            <button class="clear-btn" onclick="clearAll()">Clear &amp; Start New Question</button>
+        </div>
+
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function toggleTag(el) {
+            el.classList.toggle('selected');
+        }
+
+        function toggleAnswer(letter) {
+            var row = document.getElementById('answer-' + letter);
+            var reasoning = document.getElementById('reasoning-' + letter);
+
+            // Toggle reasoning panel
+            row.classList.toggle('open');
+            reasoning.classList.toggle('open');
+
+            // Toggle correct selection (double-click to deselect)
+            if (!row.classList.contains('open')) {
+                // Closing — leave selection as is
+            }
+        }
+
+        // Click the letter circle to mark as your answer
+        document.querySelectorAll('.answer-letter').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var row = el.closest('.answer-row');
+                var wasSelected = row.classList.contains('selected-correct');
+
+                // Clear all selections
+                document.querySelectorAll('.answer-row').forEach(function(r) {
+                    r.classList.remove('selected-correct');
+                });
+
+                // Toggle this one
+                if (!wasSelected) {
+                    row.classList.add('selected-correct');
+                }
+            });
+        });
+
+        function clearAll() {
+            if (!confirm('Clear everything and start a new question?')) return;
+
+            // Clear source
+            document.getElementById('questionSource').value = '';
+
+            // Clear textareas
+            document.querySelectorAll('.response-area, .answer-reasoning textarea').forEach(function(ta) {
+                ta.value = '';
+            });
+
+            // Clear method tags
+            document.querySelectorAll('.method-tag').forEach(function(tag) {
+                tag.classList.remove('selected');
+            });
+
+            // Clear answer selections and close panels
+            document.querySelectorAll('.answer-row').forEach(function(row) {
+                row.classList.remove('selected-correct', 'open');
+            });
+            document.querySelectorAll('.answer-reasoning').forEach(function(panel) {
+                panel.classList.remove('open');
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script>requireAuth();</script>
+</body>
+</html>
