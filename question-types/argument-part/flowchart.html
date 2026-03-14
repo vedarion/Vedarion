@@ -3,72 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Argument Part - VEDARION</title>
+    <title>Argument Part — Flowchart - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #F3F1EE;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
         .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
         .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
         .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
         .nav-links { display: flex; gap: 40px; }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
-        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
-        .breadcrumb a { color: #888; text-decoration: none; }
-        .breadcrumb a:hover { color: #C65D3B; }
-        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
-        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
-        .flowchart-container { max-width: 550px; width: 100%; }
-        .flowchart { display: flex; flex-direction: column; gap: 0; }
-        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .step.highlight { border-color: #C65D3B; border-width: 2px; }
-        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
-        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
-        .step-content ul { list-style: none; margin-top: 8px; }
-        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
-        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
-        .branch-container { display: flex; gap: 15px; }
-        .branch { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 15px 20px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .branch .step-number { font-size: 10px; padding: 2px 8px; }
-        .branch .step-title { font-size: 12px; margin-bottom: 8px; }
-        .branch .step-content { font-size: 12px; }
-        .final-step { background: #0A0A0A; border: none; text-align: center; }
-        .final-step .step-title { margin-bottom: 5px; color: white; }
-        .final-step .step-content { color: #888; }
-        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
-        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
+
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+        .back-link:hover { color: white; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; margin-top: 15px; }
+
+        /* Prereq */
+        .prereq-wrapper { background: #0A0A0A; padding: 0 20px 16px; display: flex; justify-content: center; }
+        .prereq-box { max-width: 360px; width: 100%; }
+        .prereq-toggle { background: #1A1A1A; border: 1px solid #333; color: #999; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 10px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 100%; transition: all 0.3s; }
+        .prereq-toggle:hover { border-color: #555; color: #ccc; }
+        .prereq-toggle .arrow { font-size: 10px; transition: transform 0.3s; }
+        .prereq-toggle.open .arrow { transform: rotate(180deg); }
+        .prereq-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #1A1A1A; border: 1px solid #333; border-top: none; }
+        .prereq-panel.open { max-height: 200px; }
+        .prereq-panel a { display: block; padding: 12px 16px; color: #C65D3B; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.2s; border-bottom: 1px solid #222; }
+        .prereq-panel a:last-child { border-bottom: none; }
+        .prereq-panel a:hover { background: #222; color: #E07050; }
+        .prereq-panel a span { color: #666; font-weight: 400; margin-left: 6px; }
+
+        .video-tabs { background: #0A0A0A; padding: 0 20px 20px; display: flex; justify-content: center; gap: 20px; }
+        .video-tabs a { color: #888; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+
+        /* Flowchart */
+        .flowchart-section {
+            padding: 50px 20px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .flowchart-container {
+            max-width: 560px;
+            width: 100%;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* Step cards */
+        .step {
+            background: white;
+            padding: 24px 28px;
+            position: relative;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #E8E5E0;
+            border-left: 4px solid #C65D3B;
+        }
+
+        .step.key-step {
+            border: 2px solid #C65D3B;
+            border-left: 4px solid #C65D3B;
+            background: #FFFAF8;
+        }
+
+        .step-badge {
+            display: inline-block;
+            background: #C65D3B;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0A0A0A;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-content {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .step-content ul {
+            list-style: none;
+            margin-top: 6px;
+        }
+
+        .step-content li {
+            padding-left: 18px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .step-content li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #C65D3B;
+            font-weight: 600;
+        }
+
+        /* Arrow connector */
+        .arrow {
+            text-align: center;
+            padding: 8px 0;
+            color: #CCC;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .arrow::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #DDD;
+            z-index: -1;
+        }
+
+        /* Final step */
+        .final-step {
+            background: #0A0A0A;
+            border: none;
+            border-left: 4px solid #C65D3B;
+            text-align: center;
+            padding: 22px 28px;
+        }
+
+        .final-step .step-title {
+            color: white;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .final-step .step-content {
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* CTA */
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
         .cta-button:hover { background: #A04D2E; }
-        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .branch-container { flex-direction: column; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .page-title { font-size: 22px; }
+            .step { padding: 20px; }
+        }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
-            <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Argument Part</div>
-        <h1 class="page-title">Argument Part</h1>
+        <a href="/learn.html" class="back-link">← Back to Learn</a>
+        <h1 class="page-title">ARGUMENT PART / ROLE OF STATEMENT</h1>
     </section>
+
+    <div class="prereq-wrapper">
+        <div class="prereq-box">
+            <button class="prereq-toggle" onclick="togglePrereqs(this)">
+                Before you start
+                <span class="arrow">▾</span>
+            </button>
+            <div class="prereq-panel">
+                <a href="/foundations/identifying-conclusions/video.html">Premises and Conclusions <span>— Video</span></a>
+                <a href="/question-types/main-point/lesson.html">Main Point Questions <span>— Lesson</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-tabs">
+        <a href="#" style="color:#555; cursor:default;">Video coming soon</a>
+        <a href="lesson.html">Lesson</a>
+        <a href="worksheet.html">Worksheet</a>
+        <a href="#" class="active">Flowchart</a>
+    </div>
 
     <section class="flowchart-section">
         <div class="flowchart-container">
             <div class="flowchart">
+
                 <div class="step">
-                    <div class="step-number">STEP 1</div>
+                    <div class="step-badge">Step 1</div>
                     <div class="step-title">Read the Question Stem</div>
                     <div class="step-content">
                         <ul>
@@ -77,89 +232,89 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
                 <div class="step">
-                    <div class="step-number">STEP 2</div>
+                    <div class="step-badge">Step 2</div>
                     <div class="step-title">Read the Stimulus</div>
                     <div class="step-content">
                         <ul>
                             <li>Label each sentence: conclusion, support, background</li>
-                            <li>Understand the passage fully</li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
-                <div class="step highlight">
-                    <div class="step-number">STEP 3</div>
+
+                <div class="step key-step">
+                    <div class="step-badge">Step 3</div>
                     <div class="step-title">Describe the Referenced Sentence</div>
                     <div class="step-content">
                         <ul>
-                            <li>Predict: What is its function in the argument?</li>
+                            <li>Predict: what is its function in the argument?</li>
+                            <li>Always describe it before looking at answer choices</li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
-                <div class="branch-container">
-                    <div class="branch">
-                        <div class="step-number">STEP 4A</div>
-                        <div class="step-title">If You Have a Prediction</div>
-                        <div class="step-content">
-                            <ul>
-                                <li>Go into Hunt Mode</li>
-                                <li>Start with answer choices that match</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="branch">
-                        <div class="step-number">STEP 4B</div>
-                        <div class="step-title">If No Prediction</div>
-                        <div class="step-content">
-                            <ul>
-                                <li>Go through each answer sequentially</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
+
                 <div class="step">
-                    <div class="step-number">STEP 5</div>
-                    <div class="step-title">Evaluate & Select</div>
+                    <div class="step-badge">Step 4</div>
+                    <div class="step-title">Hunt for the Best Match</div>
                     <div class="step-content">
                         <ul>
-                            <li>Ask: Does this capture the role of the sentence?</li>
+                            <li>Look for the answer choice that matches your prediction</li>
+                            <li>Start with the choices that sound closest</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-badge">Step 5</div>
+                    <div class="step-title">Evaluate &amp; Select</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Ask: does this capture the role of the sentence?</li>
                             <li>Pick the best description</li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
                 <div class="step final-step">
                     <div class="step-title">Correct Answer Check</div>
                     <div class="step-content">
                         Descriptively accurate · Every word reflects the stimulus
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
     <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
     </section>
 
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
+
+    <script>
+        function togglePrereqs(btn) {
+            btn.classList.toggle('open');
+            btn.nextElementSibling.classList.toggle('open');
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script>requireAuth();</script>
 </body>
 </html>
