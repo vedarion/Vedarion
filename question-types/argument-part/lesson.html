@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argument Part - Lesson - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #F3F1EE; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+        .back-link:hover { color: white; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; margin-top: 15px; }
+        .prereq-wrapper { background: #0A0A0A; padding: 0 20px 16px; display: flex; justify-content: center; }
+        .prereq-box { max-width: 360px; width: 100%; }
+        .prereq-toggle { background: #1A1A1A; border: 1px solid #333; color: #999; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 10px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 100%; transition: all 0.3s; }
+        .prereq-toggle:hover { border-color: #555; color: #ccc; }
+        .prereq-toggle .arrow { font-size: 10px; transition: transform 0.3s; }
+        .prereq-toggle.open .arrow { transform: rotate(180deg); }
+        .prereq-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #1A1A1A; border: 1px solid #333; border-top: none; }
+        .prereq-panel.open { max-height: 200px; }
+        .prereq-panel a { display: block; padding: 12px 16px; color: #C65D3B; text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.2s; border-bottom: 1px solid #222; }
+        .prereq-panel a:last-child { border-bottom: none; }
+        .prereq-panel a:hover { background: #222; color: #E07050; }
+        .prereq-panel a span { color: #666; font-weight: 400; margin-left: 6px; }
+        .video-tabs { background: #0A0A0A; padding: 0 20px 20px; display: flex; justify-content: center; gap: 20px; }
+        .video-tabs a { color: #888; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+        .content { max-width: 720px; margin: 0 auto; padding: 50px 20px 60px; }
+        .section-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #C65D3B; margin-bottom: 10px; }
+        .section-heading { font-size: 22px; font-weight: 600; color: #0A0A0A; margin-bottom: 28px; letter-spacing: 0.5px; }
+        .strategy-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 55px; }
+        .step-card { background: white; border-left: 4px solid #C65D3B; padding: 22px 24px; display: flex; gap: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .step-number { background: #C65D3B; color: white; min-width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+        .step-content h3 { font-size: 16px; font-weight: 700; color: #0A0A0A; margin-bottom: 6px; }
+        .step-content p { font-size: 14px; color: #666; line-height: 1.6; }
+        .step-content ul { list-style: none; margin-top: 8px; }
+        .step-content ul li { font-size: 14px; color: #333; padding: 4px 0 4px 16px; position: relative; }
+        .step-content ul li::before { content: "\2192"; position: absolute; left: 0; color: #C65D3B; font-size: 12px; }
+        .step-connector { text-align: center; padding: 2px 0; color: #CCC; font-size: 16px; }
+        .section-divider { height: 1px; background: #DDD; margin: 10px 0 45px; }
+        .concept-card { background: white; padding: 28px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #E8E5E0; }
+        .concept-title { font-size: 17px; font-weight: 700; color: #0A0A0A; margin-bottom: 12px; }
+        .concept-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+        .role-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; align-items: baseline; }
+        .role-name { font-size: 13px; font-weight: 700; color: #C65D3B; white-space: nowrap; }
+        .role-explanation { font-size: 13px; color: #555; line-height: 1.5; }
+        .callout { background: #C65D3B; color: white; padding: 18px 22px; font-size: 14px; line-height: 1.6; margin-top: 20px; margin-bottom: 20px; }
+        .callout strong { font-weight: 700; }
+        .check-card { background: #0A0A0A; padding: 22px 28px; margin-top: 20px; }
+        .check-title { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: white; margin-bottom: 8px; }
+        .check-desc { font-size: 14px; color: #999; line-height: 1.6; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .page-title { font-size: 22px; } .step-card { padding: 18px 16px; } .concept-card { padding: 20px; } .role-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn.html" class="back-link">&larr; Back to Learn</a>
+        <h1 class="page-title">ARGUMENT PART / ROLE OF STATEMENT</h1>
+    </section>
+
+    <div class="prereq-wrapper">
+        <div class="prereq-box">
+            <button class="prereq-toggle" onclick="togglePrereqs(this)">
+                Before you start
+                <span class="arrow">&#9662;</span>
+            </button>
+            <div class="prereq-panel">
+                <a href="/foundations/identifying-conclusions/video.html">Premises and Conclusions <span>&mdash; Video</span></a>
+                <a href="/question-types/main-point/lesson.html">Main Point Questions <span>&mdash; Lesson</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-tabs">
+        <a href="#" style="color:#555; cursor:default;">Video coming soon</a>
+        <a href="#" class="active">Lesson</a>
+        <a href="worksheet.html">Worksheet</a>
+        <a href="flowchart.html">Flowchart</a>
+    </div>
+
+    <div class="content">
+        <div class="section-label">STRATEGY</div>
+        <h2 class="section-heading">How to Approach Argument Part Questions</h2>
+
+        <div class="strategy-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Read the Question Stem</h3>
+                    <p>Identify the referenced sentence. Underline or highlight it so you know exactly what you're looking for.</p>
+                </div>
+            </div>
+            <div class="step-connector">&darr;</div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Read the Stimulus</h3>
+                    <p>Label each sentence by its role in the argument:</p>
+                    <ul>
+                        <li>Conclusion</li>
+                        <li>Premise / Support</li>
+                        <li>Background / Context</li>
+                        <li>Other People's View</li>
+                        <li>Illustration / Example</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step-connector">&darr;</div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Describe the Referenced Sentence</h3>
+                    <p>Predict its function in the argument. Always do this before looking at the answer choices. What role does it play?</p>
+                </div>
+            </div>
+            <div class="step-connector">&darr;</div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Hunt for the Best Match</h3>
+                    <p>Go into hunt mode &mdash; look for the answer choice that matches your prediction. Start with the choices that sound closest to what you described.</p>
+                </div>
+            </div>
+            <div class="step-connector">&darr;</div>
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Evaluate &amp; Select</h3>
+                    <p>Ask: does this capture the role of the sentence? Pick the best description.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="section-label">KEY CONCEPTS</div>
+        <h2 class="section-heading">Roles a Sentence Can Play</h2>
+
+        <div class="concept-card">
+            <div class="concept-title">Common Roles in an Argument</div>
+            <p class="concept-desc">When you break down a stimulus, every sentence is doing one of these jobs. Learning to spot them quickly is the core skill for this question type.</p>
+            <div class="role-grid">
+                <span class="role-name">Conclusion</span>
+                <span class="role-explanation">The main claim the argument is trying to establish. Everything else is in service of this.</span>
+                <span class="role-name">Premise / Support</span>
+                <span class="role-explanation">Evidence or reasoning offered to back up the conclusion.</span>
+                <span class="role-name">Background / Context</span>
+                <span class="role-explanation">Sets the scene but doesn't directly support or oppose the conclusion.</span>
+                <span class="role-name">Other People's View</span>
+                <span class="role-explanation">A position or claim attributed to others. Usually the view the author disagrees with. Often introduced by "some argue," "many believe," or "critics claim."</span>
+                <span class="role-name">Illustration / Example</span>
+                <span class="role-explanation">A specific case used to clarify or support a broader point.</span>
+                <span class="role-name">Intermediate Conclusion</span>
+                <span class="role-explanation">A claim that is both supported by premises and used to support the main conclusion. It's a conclusion and a premise at the same time.</span>
+            </div>
+        </div>
+
+        <div class="callout">
+            <strong>Always predict before you look at the answers.</strong> If you go in without a prediction, the answer choices all start to sound the same. Your prediction is your anchor.
+        </div>
+
+        <div class="check-card">
+            <div class="check-title">Correct Answer Check</div>
+            <p class="check-desc">The right answer is descriptively accurate &mdash; every word in it reflects what's actually in the stimulus. If even one word doesn't match, it's wrong.</p>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function togglePrereqs(btn) {
+            btn.classList.toggle('open');
+            btn.nextElementSibling.classList.toggle('open');
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script>requireAuth();</script>
+</body>
+</html>

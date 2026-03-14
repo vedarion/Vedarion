@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argument Part - Worksheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #F3F1EE; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+        .back-link:hover { color: white; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; margin-top: 15px; }
+        .page-subtitle { color: #666; font-size: 13px; margin-top: 8px; }
+        .video-tabs { background: #0A0A0A; padding: 0 20px 20px; display: flex; justify-content: center; gap: 20px; }
+        .video-tabs a { color: #888; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+        .content { max-width: 720px; margin: 0 auto; padding: 40px 20px 60px; }
+        .source-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; }
+        .source-label { font-size: 12px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+        .source-input { flex: 1; background: white; border: 1px solid #DDD; padding: 10px 14px; font-size: 14px; font-family: inherit; color: #0A0A0A; transition: border-color 0.3s; }
+        .source-input:focus { outline: none; border-color: #C65D3B; }
+        .source-input::placeholder { color: #BBB; }
+        .step-card { background: white; border-left: 4px solid #C65D3B; padding: 28px 28px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+        .step-number { background: #C65D3B; color: white; min-width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+        .step-title { font-size: 17px; font-weight: 700; color: #0A0A0A; }
+        .step-desc { font-size: 13px; color: #888; margin-bottom: 16px; margin-left: 44px; line-height: 1.5; }
+        .response-area { width: 100%; min-height: 80px; border: 1px solid #E0E0E0; background: #FAFAFA; padding: 14px; font-size: 14px; font-family: inherit; color: #0A0A0A; resize: vertical; transition: border-color 0.3s; line-height: 1.6; }
+        .response-area:focus { outline: none; border-color: #C65D3B; background: white; }
+        .response-area::placeholder { color: #CCC; }
+        .step-connector { text-align: center; padding: 6px 0; color: #CCC; font-size: 16px; }
+        .sentence-list { margin-left: 44px; }
+        .sentence-row { background: #FAFAF8; border: 1px solid #E8E5E0; padding: 14px; margin-bottom: 10px; position: relative; }
+        .sentence-row-top { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; }
+        .sentence-num { background: #E8E5E0; color: #888; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .sentence-input { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 8px 10px; font-size: 13px; font-family: inherit; color: #0A0A0A; transition: border-color 0.3s; line-height: 1.5; min-height: 36px; resize: vertical; }
+        .sentence-input:focus { outline: none; border-color: #C65D3B; }
+        .sentence-input::placeholder { color: #CCC; }
+        .remove-sentence { background: none; border: none; color: #CCC; font-size: 16px; cursor: pointer; padding: 4px; transition: color 0.2s; line-height: 1; }
+        .remove-sentence:hover { color: #C65D3B; }
+        .role-input-row { display: flex; align-items: center; gap: 8px; margin-left: 30px; }
+        .role-label { font-size: 11px; font-weight: 600; color: #BBB; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
+        .role-input { flex: 1; background: white; border: none; border-bottom: 1px solid #E0E0E0; padding: 4px 2px; font-size: 13px; font-family: inherit; color: #C65D3B; font-weight: 600; transition: border-color 0.3s; }
+        .role-input:focus { outline: none; border-color: #C65D3B; }
+        .role-input::placeholder { color: #DDD; font-weight: 400; }
+        .add-sentence-btn { background: none; border: 1px dashed #CCC; color: #999; padding: 10px 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; width: 100%; text-align: center; margin-top: 4px; }
+        .add-sentence-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+        .answers-container { margin-left: 44px; }
+        .answer-row { border: 1px solid #E8E5E0; margin-bottom: 10px; background: #FAFAF8; transition: border-color 0.3s; }
+        .answer-row.selected-correct { border-color: #C65D3B; background: #FFF9F7; }
+        .answer-header { display: flex; align-items: center; padding: 14px 16px; cursor: pointer; gap: 12px; user-select: none; }
+        .answer-letter { font-size: 14px; font-weight: 700; color: #999; min-width: 24px; height: 24px; border: 2px solid #DDD; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+        .answer-row.selected-correct .answer-letter { background: #C65D3B; border-color: #C65D3B; color: white; }
+        .answer-label { font-size: 13px; color: #666; flex: 1; }
+        .answer-expand { font-size: 11px; color: #BBB; transition: transform 0.2s; }
+        .answer-row.open .answer-expand { transform: rotate(180deg); }
+        .answer-reasoning { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .answer-reasoning.open { max-height: 200px; }
+        .answer-reasoning textarea { width: 100%; min-height: 60px; border: none; border-top: 1px solid #EEE; background: white; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #0A0A0A; resize: vertical; line-height: 1.5; }
+        .answer-reasoning textarea:focus { outline: none; }
+        .answer-reasoning textarea::placeholder { color: #CCC; }
+        .clear-section { text-align: center; margin-top: 30px; }
+        .clear-btn { background: none; border: 1px solid #DDD; color: #999; padding: 10px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+        .clear-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .page-title { font-size: 22px; } .step-card { padding: 20px 18px; } .step-desc, .answers-container, .sentence-list { margin-left: 0; } .source-bar { flex-direction: column; align-items: flex-start; } .role-input-row { margin-left: 0; } .sentence-row-top { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn.html" class="back-link">&larr; Back to Learn</a>
+        <h1 class="page-title">ARGUMENT PART / ROLE OF STATEMENT</h1>
+        <p class="page-subtitle">Work through any Argument Part question using the strategy.</p>
+    </section>
+
+    <div class="video-tabs">
+        <a href="#" style="color:#555; cursor:default;">Video coming soon</a>
+        <a href="lesson.html">Lesson</a>
+        <a href="#" class="active">Worksheet</a>
+        <a href="flowchart.html">Flowchart</a>
+    </div>
+
+    <div class="content">
+        <div class="source-bar">
+            <span class="source-label">Question</span>
+            <input type="text" class="source-input" id="questionSource" placeholder="e.g. PT 92, Section 2, Q14">
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Read the Question Stem</div>
+            </div>
+            <p class="step-desc">Identify the referenced sentence. Underline or highlight it.</p>
+            <textarea class="response-area" style="min-height: 60px;" placeholder="Copy or describe the referenced sentence here..."></textarea>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Read the Stimulus</div>
+            </div>
+            <p class="step-desc">Break down each sentence and label its role in the argument.</p>
+            <div class="sentence-list" id="sentenceList">
+                <div class="sentence-row">
+                    <div class="sentence-row-top">
+                        <div class="sentence-num">1</div>
+                        <textarea class="sentence-input" rows="1" placeholder="Type or paste a sentence..."></textarea>
+                        <button class="remove-sentence" onclick="removeSentence(this)" title="Remove">&times;</button>
+                    </div>
+                    <div class="role-input-row">
+                        <span class="role-label">Role:</span>
+                        <input type="text" class="role-input" placeholder="e.g. conclusion, premise, background...">
+                    </div>
+                </div>
+            </div>
+            <div style="margin-left: 44px;">
+                <button class="add-sentence-btn" onclick="addSentence()">+ Add another sentence</button>
+            </div>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Describe the Referenced Sentence</div>
+            </div>
+            <p class="step-desc">Predict: what is its function in the argument? Always describe it before looking at the answer choices.</p>
+            <textarea class="response-area" placeholder="Describe the role in your own words. What does this sentence do in the argument?"></textarea>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Find the Best Match</div>
+            </div>
+            <p class="step-desc">Hunt for the answer choice that matches your prediction. For each choice, explain why it's right or wrong.</p>
+            <div class="answers-container">
+                <div class="answer-row" id="answer-a">
+                    <div class="answer-header" onclick="toggleAnswer('a')">
+                        <div class="answer-letter">A</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&darr;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-a">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-b">
+                    <div class="answer-header" onclick="toggleAnswer('b')">
+                        <div class="answer-letter">B</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&darr;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-b">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-c">
+                    <div class="answer-header" onclick="toggleAnswer('c')">
+                        <div class="answer-letter">C</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&darr;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-c">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-d">
+                    <div class="answer-header" onclick="toggleAnswer('d')">
+                        <div class="answer-letter">D</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&darr;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-d">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-e">
+                    <div class="answer-header" onclick="toggleAnswer('e')">
+                        <div class="answer-letter">E</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&darr;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-e">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear-section">
+            <button class="clear-btn" onclick="clearAll()">Clear &amp; Start New Question</button>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        var sentenceCount = 1;
+
+        function addSentence() {
+            sentenceCount++;
+            var list = document.getElementById('sentenceList');
+            var row = document.createElement('div');
+            row.className = 'sentence-row';
+            row.innerHTML = '<div class="sentence-row-top"><div class="sentence-num">' + sentenceCount + '</div><textarea class="sentence-input" rows="1" placeholder="Type or paste a sentence..."></textarea><button class="remove-sentence" onclick="removeSentence(this)" title="Remove">\u00d7</button></div><div class="role-input-row"><span class="role-label">Role:</span><input type="text" class="role-input" placeholder="e.g. conclusion, premise, background..."></div>';
+            list.appendChild(row);
+            row.querySelector('.sentence-input').focus();
+        }
+
+        function removeSentence(btn) {
+            var list = document.getElementById('sentenceList');
+            if (list.children.length > 1) {
+                btn.closest('.sentence-row').remove();
+                renumberSentences();
+            }
+        }
+
+        function renumberSentences() {
+            var rows = document.querySelectorAll('#sentenceList .sentence-row');
+            rows.forEach(function(row, i) {
+                row.querySelector('.sentence-num').textContent = i + 1;
+            });
+            sentenceCount = rows.length;
+        }
+
+        function toggleAnswer(letter) {
+            var row = document.getElementById('answer-' + letter);
+            var reasoning = document.getElementById('reasoning-' + letter);
+            row.classList.toggle('open');
+            reasoning.classList.toggle('open');
+        }
+
+        document.querySelectorAll('.answer-letter').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var row = el.closest('.answer-row');
+                var wasSelected = row.classList.contains('selected-correct');
+                document.querySelectorAll('.answer-row').forEach(function(r) {
+                    r.classList.remove('selected-correct');
+                });
+                if (!wasSelected) {
+                    row.classList.add('selected-correct');
+                }
+            });
+        });
+
+        function clearAll() {
+            if (!confirm('Clear everything and start a new question?')) return;
+            document.getElementById('questionSource').value = '';
+            document.querySelectorAll('.response-area, .answer-reasoning textarea').forEach(function(ta) {
+                ta.value = '';
+            });
+            document.querySelectorAll('.answer-row').forEach(function(row) {
+                row.classList.remove('selected-correct', 'open');
+            });
+            document.querySelectorAll('.answer-reasoning').forEach(function(panel) {
+                panel.classList.remove('open');
+            });
+            sentenceCount = 1;
+            var list = document.getElementById('sentenceList');
+            list.innerHTML = '<div class="sentence-row"><div class="sentence-row-top"><div class="sentence-num">1</div><textarea class="sentence-input" rows="1" placeholder="Type or paste a sentence..."></textarea><button class="remove-sentence" onclick="removeSentence(this)" title="Remove">\u00d7</button></div><div class="role-input-row"><span class="role-label">Role:</span><input type="text" class="role-input" placeholder="e.g. conclusion, premise, background..."></div></div>';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script>requireAuth();</script>
+</body>
+</html>
