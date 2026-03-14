@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Point Questions — Lesson - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #F3F1EE;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
+        .hero {
+            background: #0A0A0A;
+            padding: 30px 20px 20px;
+            text-align: center;
+        }
+        .back-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: white; }
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: white;
+            margin-top: 15px;
+        }
+
+        .prereq-wrapper {
+            background: #0A0A0A;
+            padding: 0 20px 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .prereq-box { max-width: 360px; width: 100%; }
+        .prereq-toggle {
+            background: #1A1A1A;
+            border: 1px solid #333;
+            color: #999;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .prereq-toggle:hover { border-color: #555; color: #ccc; }
+        .prereq-toggle .arrow { font-size: 10px; transition: transform 0.3s; }
+        .prereq-toggle.open .arrow { transform: rotate(180deg); }
+        .prereq-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #1A1A1A;
+            border: 1px solid #333;
+            border-top: none;
+        }
+        .prereq-panel.open { max-height: 200px; }
+        .prereq-panel a {
+            display: block;
+            padding: 12px 16px;
+            color: #C65D3B;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .prereq-panel a:hover { background: #222; color: #E07050; }
+        .prereq-panel a span { color: #666; font-weight: 400; margin-left: 6px; }
+
+        .video-tabs {
+            background: #0A0A0A;
+            padding: 0 20px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .video-tabs a {
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+
+        .content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 50px 20px 60px;
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #C65D3B;
+            margin-bottom: 10px;
+        }
+
+        .section-heading {
+            font-size: 22px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+        }
+
+        .strategy-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 55px;
+        }
+
+        .step-card {
+            background: white;
+            border-left: 4px solid #C65D3B;
+            padding: 22px 24px;
+            display: flex;
+            gap: 18px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .step-number {
+            background: #C65D3B;
+            color: white;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0A0A0A;
+            margin-bottom: 6px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .step-content ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+        .step-content ul li {
+            font-size: 14px;
+            color: #333;
+            padding: 4px 0 4px 16px;
+            position: relative;
+        }
+        .step-content ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #C65D3B;
+            font-size: 12px;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: #DDD;
+            margin: 10px 0 45px;
+        }
+
+        .method-card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid #E8E5E0;
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .method-number {
+            background: #C65D3B;
+            color: white;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .method-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0A0A0A;
+        }
+
+        .method-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .indicator-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill {
+            background: #F5F3F0;
+            border: 1px solid #E5E2DD;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pill::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: #C65D3B;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .template-box {
+            background: #0A0A0A;
+            padding: 22px 24px;
+            margin-bottom: 18px;
+        }
+
+        .template-box p {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            font-style: italic;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .template-results {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+
+        .result-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .result-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .result-icon.check { color: #2E7D32; }
+        .result-icon.muted { color: #999; }
+
+        .result-text { color: #444; }
+        .result-text strong { color: #0A0A0A; }
+
+        .callout {
+            background: #C65D3B;
+            color: white;
+            padding: 18px 22px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+        .callout strong { font-weight: 700; }
+
+        .cta-section {
+            background: #0A0A0A;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .cta-button {
+            background: #C65D3B;
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .page-title { font-size: 22px; }
+            .method-card { padding: 20px; }
+            .step-card { padding: 18px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn.html" class="back-link">← Back to Learn</a>
+        <h1 class="page-title">MAIN POINT QUESTIONS</h1>
+    </section>
+
+    <div class="prereq-wrapper">
+        <div class="prereq-box">
+            <button class="prereq-toggle" onclick="togglePrereqs(this)">
+                Before you start
+                <span class="arrow">▾</span>
+            </button>
+            <div class="prereq-panel">
+                <a href="/foundations/identifying-conclusions/video.html">Premises and Conclusions <span>— Video</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-tabs">
+        <a href="video.html">Video</a>
+        <a href="#" class="active">Lesson</a>
+    </div>
+
+    <div class="content">
+
+        <!-- STRATEGY -->
+        <div class="section-label">STRATEGY</div>
+        <h2 class="section-heading">How to Approach Main Point Questions</h2>
+
+        <div class="strategy-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Find the Main Point</h3>
+                    <p>Use one of three ways:</p>
+                    <ul>
+                        <li>Conclusion indicators</li>
+                        <li>Process of elimination</li>
+                        <li>The Why Test</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Note the Details</h3>
+                    <p>Can you put it in your own words without looking back? Say your noun, verb, and predicate clearly.</p>
+                </div>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Find the Best Match</h3>
+                    <p>Find the answer choice that best captures it.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- THREE WAYS -->
+        <div class="section-label">FINDING THE CONCLUSION</div>
+        <h2 class="section-heading">Three Ways to Find the Main Point</h2>
+
+        <!-- Method 1 -->
+        <div class="method-card">
+            <div class="method-header">
+                <div class="method-number">1</div>
+                <div class="method-title">Conclusion Indicators</div>
+            </div>
+            <p class="method-desc">If you spot one of these, the sentence it introduces is the conclusion.</p>
+            <div class="indicator-pills">
+                <span class="pill">Therefore</span>
+                <span class="pill">Thus</span>
+                <span class="pill">Hence</span>
+                <span class="pill">So</span>
+                <span class="pill">Consequently</span>
+                <span class="pill">It follows that</span>
+                <span class="pill">This shows that</span>
+                <span class="pill">This means that</span>
+                <span class="pill">We can conclude that</span>
+                <span class="pill">It can be properly inferred that</span>
+            </div>
+        </div>
+
+        <!-- Method 2 -->
+        <div class="method-card">
+            <div class="method-header">
+                <div class="method-number">2</div>
+                <div class="method-title">Process of Elimination</div>
+            </div>
+            <p class="method-desc">No conclusion indicator? Look for a premise indicator instead. Whatever it supports is the conclusion.</p>
+            <div class="indicator-pills">
+                <span class="pill">Because</span>
+                <span class="pill">Since</span>
+                <span class="pill">For</span>
+                <span class="pill">After all</span>
+                <span class="pill">Given that</span>
+                <span class="pill">Due to the fact that</span>
+                <span class="pill">This is supported by</span>
+                <span class="pill">The reason is that</span>
+                <span class="pill">As indicated by</span>
+                <span class="pill">This is evidenced by</span>
+            </div>
+        </div>
+
+        <!-- Method 3 -->
+        <div class="method-card">
+            <div class="method-header">
+                <div class="method-number">3</div>
+                <div class="method-title">The Why Test</div>
+            </div>
+            <p class="method-desc">When there are no indicator words, take two sentences and plug them into this template:</p>
+
+            <div class="template-box">
+                <p>"Because [Sentence A], therefore [Sentence B]."</p>
+            </div>
+
+            <div class="template-results">
+                <div class="result-row">
+                    <span class="result-icon check">✓</span>
+                    <span class="result-text">If the logical flow makes sense → <strong>Sentence B is the conclusion</strong></span>
+                </div>
+                <div class="result-row">
+                    <span class="result-icon muted">↻</span>
+                    <span class="result-text">If it doesn't make sense → flip them and try again</span>
+                </div>
+            </div>
+
+            <div class="callout">
+                <strong>This is the game-changer.</strong> The Why Test works even when there are zero indicator words. Practice it until it becomes automatic.
+            </div>
+        </div>
+
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function togglePrereqs(btn) {
+            btn.classList.toggle('open');
+            btn.nextElementSibling.classList.toggle('open');
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script>requireAuth();</script>
+</body>
+</html>
