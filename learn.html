@@ -487,4 +487,5 @@
                 document.querySelectorAll('.path-card')[1].classList.add('active');
                 document.getElementById('advanced-path').classList.add('active');
             }
-            document.querySelector('.path-content
+            document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
