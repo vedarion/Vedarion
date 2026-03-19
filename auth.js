@@ -1,7 +1,6 @@
 // =============================================
 // VEDARION AUTH SYSTEM
 // =============================================
-// Replace these with your actual Supabase credentials
 const SUPABASE_URL = 'https://fqshijwiushtrncinjif.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_mA1mUh0atDsGPYFclPoj8A_4c2bcYTR';
 
@@ -27,7 +26,7 @@ async function updateNavAuth() {
 
         // Dashboard link
         const dashLink = document.createElement('a');
-        dashLink.href = 'dashboard.html';
+        dashLink.href = '/dashboard.html';
         dashLink.textContent = 'Dashboard';
         dashLink.className = 'auth-link';
         navLinks.appendChild(dashLink);
@@ -40,12 +39,12 @@ async function updateNavAuth() {
         signOutLink.addEventListener('click', async (e) => {
             e.preventDefault();
             await vedarionAuth.auth.signOut();
-            window.location.href = 'index.html';
+            window.location.href = '/index.html';
         });
         navLinks.appendChild(signOutLink);
     } else {
         const signInLink = document.createElement('a');
-        signInLink.href = 'login.html';
+        signInLink.href = '/login.html';
         signInLink.textContent = 'Sign In';
         signInLink.className = 'auth-link';
         navLinks.appendChild(signInLink);
@@ -66,7 +65,7 @@ vedarionAuth.auth.onAuthStateChange((event, session) => {
 async function requireAuth() {
     const { data: { session } } = await vedarionAuth.auth.getSession();
     if (!session) {
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
         return null;
     }
     return session;
@@ -83,7 +82,7 @@ async function getCurrentUser() {
     };
 }
 
-async function redirectIfLoggedIn(destination = 'dashboard.html') {
+async function redirectIfLoggedIn(destination = '/dashboard.html') {
     const { data: { session } } = await vedarionAuth.auth.getSession();
     if (session) {
         window.location.href = destination;
