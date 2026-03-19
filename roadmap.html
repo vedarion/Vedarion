@@ -149,6 +149,9 @@
     .g-list{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
     .g-item{display:flex;align-items:flex-start;gap:12px;color:var(--bright);font-size:15px;line-height:1.6}
     .g-arrow{color:var(--accent);flex-shrink:0;margin-top:2px;font-size:12px;opacity:.8}
+    .goals-ta{width:100%;padding:12px 14px;background:rgba(18,16,14,.8);border:1px solid rgba(255,255,255,.06);border-radius:10px;color:var(--bright);font-size:15px;line-height:1.9;font-family:var(--sans);outline:none;resize:none;overflow:hidden;min-height:48px;transition:border-color .2s;margin-bottom:24px}
+    .goals-ta:focus{border-color:rgba(201,122,69,.25)}
+    .goals-ta::placeholder{color:var(--faint)}
     .rm-btn{background:none;border:none;color:var(--faint);cursor:pointer;font-size:14px;padding:0 4px;flex-shrink:0;line-height:1;transition:color .15s}.rm-btn:hover{color:var(--dim)}
     .add-b{background:none;border:1px dashed var(--border);border-radius:8px;color:var(--faint);cursor:pointer;padding:9px;font-size:10px;font-family:var(--mono);width:100%;transition:all .2s;letter-spacing:.3px}
     .add-b:hover{border-color:var(--faint);color:var(--muted)}
@@ -752,10 +755,8 @@ function sessHTML(ss,i){
       ${t?`<div class="tc"><span class="tc-lbl">TUTOR</span><button class="tc-btn" data-cyc="${ss.id}" data-st="${ss.status}">${ss.status.toUpperCase()}</button><button class="tc-btn" data-delsess="${ss.id}" style="color:var(--red);border-color:rgba(217,83,79,.2)">DELETE SESSION</button></div>`:''}
       <div class="desc">${t?ed(ss.description||'','session-'+ss.id+'-description',true):esc(ss.description||'')}</div>
       <div class="slbl">Session Goals</div>
-      <div class="g-list">
-        ${(ss.goals||[]).map(g=>`<div class="g-item"><span class="g-arrow">→</span>${t?`<span style="flex:1">${ed(g.goal_text,'goal-'+g.id+'-goal_text',false)}</span><button class="rm-btn" data-rg="${g.id}">×</button>`:`<span>${esc(g.goal_text)}</span>`}</div>`).join('')}
-        ${t?`<button class="add-b" data-ag="${ss.id}">+ Add Goal</button>`:''}
-      </div>
+      ${t?`<textarea class="goals-ta" data-goals="${ss.id}" placeholder="One goal per line...">${esc((ss.goals||[]).map(g=>g.goal_text).join('\n'))}</textarea>`
+      :`<div class="g-list">${(ss.goals||[]).map(g=>`<div class="g-item"><span class="g-arrow">→</span><span>${esc(g.goal_text)}</span></div>`).join('')}</div>`}
       <div class="slbl">Homework${lk&&!t?' <span class="lkn">— unlocks after session</span>':''}</div>
       <div class="hw-list">
         ${(ss.homework||[]).map((h,hi)=>{
@@ -1123,7 +1124,7 @@ function bind(){
   document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
     await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]')||e.target.closest('.goals-ta'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
@@ -1189,6 +1190,21 @@ function bind(){
   document.querySelectorAll('[data-hcopy]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const sessId=b.dataset.hcopy;const sess=S.sessions.find(s=>s.id===sessId);if(!sess)return;const prevSess=S.sessions.find(s=>s.session_number===sess.session_number-1);if(!prevSess||!prevSess.homework||prevSess.homework.length===0){S.hwCopyMsg='No previous session homework to copy';S.hwCopyMsgSess=sessId;R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);return;}const base=(sess.homework?.length)||0;for(let ci=0;ci<prevSess.homework.length;ci++){const ph=prevSess.homework[ci];await db.from('homework').insert({session_id:sessId,label:ph.label,hw_type:ph.hw_type||'drill',description:ph.description||null,sort_order:base+ci});}S.hwCopyMsg=`Copied ${prevSess.homework.length} item${prevSess.homework.length===1?'':'s'}`;S.hwCopyMsgSess=sessId;await loadStudent(S.selId);R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
+  /* Goals textarea auto-grow and save */
+  document.querySelectorAll('.goals-ta').forEach(ta=>{
+    function autoGrow(){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
+    autoGrow();
+    ta.addEventListener('input',autoGrow);
+    ta.addEventListener('blur',async()=>{
+      const lines=ta.value.split('\n').map(l=>l.trim()).filter(l=>l);
+      const sessId=ta.dataset.goals;
+      await db.from('session_goals').delete().eq('session_id',sessId);
+      for(let i=0;i<lines.length;i++){
+        await db.from('session_goals').insert({session_id:sessId,goal_text:lines[i],sort_order:i});
+      }
+      await loadStudent(S.selId);showSaved(true);
+    });
+  });
 }
 
 function startEd(el){
