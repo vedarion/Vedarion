@@ -70,6 +70,20 @@
             margin-bottom: 40px;
         }
 
+        .context-banner {
+            background: rgba(198, 93, 59, 0.08);
+            border: 1px solid rgba(198, 93, 59, 0.2);
+            color: #ccc;
+            padding: 14px 16px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .context-banner a { color: #C65D3B; text-decoration: none; }
+        .context-banner a:hover { text-decoration: underline; }
+
         .form-group { margin-bottom: 24px; }
 
         .form-group label {
@@ -157,7 +171,7 @@
             <a href="index.html">Home</a>
             <a href="learn.html">Learn</a>
             <a href="pricing.html">Pricing</a>
-            <a href="signup.html">Sign Up</a>
+            <a href="login.html">Sign In</a>
         </div>
     </nav>
 
@@ -166,6 +180,7 @@
             <h1>Welcome Back</h1>
             <p class="subtitle">Sign in to continue your LSAT prep.</p>
 
+            <div class="context-banner" id="contextBanner"></div>
             <div class="error-msg" id="errorMsg"></div>
 
             <form id="loginForm">
@@ -186,7 +201,7 @@
             <div class="divider"></div>
 
             <div class="auth-footer">
-                Don't have an account? <a href="signup.html">Create one</a>
+                Don't have an account? <a href="signup.html">Create one free</a> — no credit card required.
             </div>
         </div>
     </div>
@@ -195,6 +210,20 @@
     <script src="auth.js"></script>
     <script>
         redirectIfLoggedIn();
+
+        // Show contextual banner if redirected from a gated section
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var reason = params.get('reason');
+            var banner = document.getElementById('contextBanner');
+            if (reason === 'free') {
+                banner.innerHTML = 'Sign in to continue — or <a href="signup.html">create a free account</a>. No credit card required.';
+                banner.style.display = 'block';
+            } else if (reason === 'paid') {
+                banner.innerHTML = 'This content requires a subscription. <a href="pricing.html">View pricing</a>';
+                banner.style.display = 'block';
+            }
+        })();
 
         const form = document.getElementById('loginForm');
         const errorMsg = document.getElementById('errorMsg');
@@ -217,7 +246,14 @@
 
                 if (error) throw error;
 
-                window.location.href = 'dashboard.html';
+                // Redirect back to where they came from, or dashboard
+                var redirect = sessionStorage.getItem('vedarion_redirect');
+                if (redirect) {
+                    sessionStorage.removeItem('vedarion_redirect');
+                    window.location.href = redirect;
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
             } catch (err) {
                 errorMsg.textContent = err.message || 'Invalid email or password.';
                 errorMsg.style.display = 'block';

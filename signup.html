@@ -167,8 +167,8 @@
 
     <div class="auth-wrapper">
         <div class="auth-card">
-            <h1>Create Your Account</h1>
-            <p class="subtitle">Start mastering the LSAT with pattern recognition.</p>
+            <h1>Create Your Free Account</h1>
+            <p class="subtitle">No credit card required. Start mastering the LSAT with pattern recognition.</p>
 
             <div class="error-msg" id="errorMsg"></div>
             <div class="success-msg" id="successMsg"></div>
@@ -243,7 +243,14 @@
                 }
 
                 if (data.session) {
-                    window.location.href = 'dashboard.html';
+                    // Redirect back to where they came from, or dashboard
+                    var redirect = sessionStorage.getItem('vedarion_redirect');
+                    if (redirect) {
+                        sessionStorage.removeItem('vedarion_redirect');
+                        window.location.href = redirect;
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
                 } else {
                     successMsg.textContent = 'Account created! Check your email to confirm, then sign in.';
                     successMsg.style.display = 'block';
