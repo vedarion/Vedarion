@@ -1140,7 +1140,7 @@ function bind(){
   /* Session drag-and-drop reorder */
   let _dragIdx=null;
   document.querySelectorAll('.sess[data-dsi]').forEach(card=>{
-    card.addEventListener('dragstart',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta'))return;_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
+    card.addEventListener('dragstart',e=>{if(e.target.closest('.sess-body')||e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')){e.preventDefault();return;}_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
     card.addEventListener('dragend',()=>{document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('dragging','drag-over-above','drag-over-below');});_dragIdx=null;});
   });
   document.querySelectorAll('.sess').forEach((card,ci)=>{
