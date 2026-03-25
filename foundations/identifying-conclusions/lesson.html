@@ -5,103 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premises and Conclusions - VEDARION</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             background: #FAFAFA;
+            color: #0A0A0A;
             min-height: 100vh;
         }
-        
-        .v-accent {
-            color: #C65D3B;
-            font-weight: 600;
-        }
-        
         .nav {
             background: #0A0A0A;
-            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
         }
-        
-        .nav-logo {
-            font-size: 16px;
+        .nav-brand {
+            font-size: 24px;
             font-weight: 300;
             letter-spacing: 4px;
             color: white;
             text-decoration: none;
         }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
         .nav-links a {
-            color: #999;
-            text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 1px;
-        }
-        
-        .nav-links a:hover {
-            color: white;
-        }
-        
-        .page-header {
-            background: #0A0A0A;
-            padding: 30px 40px 20px;
-            text-align: center;
-        }
-        
-        .page-title {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 4px;
-            color: white;
-            margin: 0;
-        }
-        
-        .tab-nav {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            background: #0A0A0A;
-            padding: 20px 20px 0;
-        }
-        
-        .tab-link {
-            padding: 12px 30px;
-            color: #666;
-            text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-link:hover {
             color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
         }
-        
-        .tab-link.active {
-            color: #C65D3B;
-            border-bottom-color: #C65D3B;
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
+        .hero {
+            background: #0A0A0A;
+            padding: 40px 20px 50px;
+            text-align: center;
+            border-bottom: 1px solid #222;
         }
-        
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .page-subtitle {
+            color: #666;
+            font-size: 15px;
         }
 
+        .tab-nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 16px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn:hover { color: #CCC; }
+        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .video-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        .video-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .group-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .group-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .group-subtitle {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .cheatsheet-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        .cheatsheet-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
         .intro-text {
             color: #888;
             font-size: 14px;
@@ -109,13 +119,11 @@
             margin-bottom: 30px;
             line-height: 1.6;
         }
-        
         .flowchart {
             display: flex;
             flex-direction: column;
             gap: 0;
         }
-        
         .step {
             background: white;
             border: 1px solid #E0E0E0;
@@ -124,7 +132,6 @@
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        
         .step-number {
             position: absolute;
             top: -10px;
@@ -136,19 +143,6 @@
             padding: 3px 10px;
             letter-spacing: 1px;
         }
-        
-        .step-label {
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #0A0A0A;
-            color: white;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            letter-spacing: 1px;
-        }
-        
         .step-title {
             font-size: 14px;
             font-weight: 600;
@@ -157,68 +151,32 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
         .step-content {
             font-size: 13px;
             color: #666;
             line-height: 1.6;
         }
-        
         .step-content ul {
             list-style: none;
             margin-top: 8px;
         }
-        
         .step-content li {
             padding-left: 15px;
             position: relative;
             margin-bottom: 5px;
         }
-        
         .step-content li:before {
             content: "→";
             position: absolute;
             left: 0;
             color: #C65D3B;
         }
-        
         .arrow {
             text-align: center;
             padding: 8px 0;
             color: #CCC;
             font-size: 18px;
         }
-        
-        .example-box {
-            background: #FAF8F5;
-            border: 1px solid #E8E0D8;
-            
-            padding: 12px 15px;
-            margin-top: 12px;
-            font-size: 12px;
-            color: #555;
-        }
-        
-        .example-box .example-label {
-            font-weight: 600;
-            color: #0A0A0A;
-            margin-bottom: 6px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .example-box .stimulus {
-            font-style: italic;
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-        
-        .example-box .explanation {
-            color: #666;
-            line-height: 1.5;
-        }
-        
         .keyword {
             display: inline-block;
             background: #FFF3ED;
@@ -229,212 +187,175 @@
             font-weight: 600;
             margin: 2px 3px;
         }
-        
-        .slim-divider {
-            height: 0;
-            border-top: 1px solid #E0E0E0;
-            margin: 0;
+        .example-box {
+            background: #FAF8F5;
+            border: 1px solid #E8E0D8;
+            padding: 12px 15px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
         }
-        
-        .cta-section {
-            background: #0A0A0A;
-            padding: 30px 40px;
-            text-align: center;
-        }
-        
-        .cta-text {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 25px;
+        .example-box .example-label {
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 6px;
+            font-size: 11px;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .example-box .stimulus {
+            font-style: italic;
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
-        
-        .btn {
-            padding: 15px 35px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background: #C65D3B;
-            color: white;
-            border: 1px solid #C65D3B;
-        }
-        
-        .btn-primary:hover {
-            background: #A84D31;
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: #C65D3B;
-            border: 1px solid #C65D3B;
-        }
-        
-        .btn-secondary:hover {
-            background: #C65D3B;
-            color: white;
-        }
-        
-        .site-footer {
-            background: #0A0A0A;
-            padding: 20px 40px;
-            text-align: center;
-            font-size: 12px;
+        .example-box .explanation {
             color: #666;
+            line-height: 1.5;
         }
-        
-        .site-footer a {
-            color: #C65D3B;
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #888;
             text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
-        
-        .site-footer a:hover {
-            text-decoration: underline;
+        .back-link:hover { color: #C65D3B; }
+
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
         }
-        
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
         @media (max-width: 650px) {
-            .nav {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                gap: 20px;
-            }
-            
-            .page-header {
-                padding: 20px;
-            }
-            
-            .page-title {
-                font-size: 20px;
-            }
-            
-            .tab-link {
-                padding: 10px 15px;
-                font-size: 11px;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .btn {
-                padding: 12px 25px;
-            }
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .tab-btn { padding: 14px 16px; font-size: 10px; }
         }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <a href="../../Index.html" class="nav-logo"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
+            <a href="../../about.html">About</a>
             <a href="../../pricing.html">Pricing</a>
-            <a href="../../learn.html">Learn</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
         </div>
     </nav>
-    
-    <div class="page-header">
+
+    <section class="hero">
         <h1 class="page-title">PREMISES AND CONCLUSIONS</h1>
-    </div>
-    
+        <p class="page-subtitle">The building blocks of every LSAT argument</p>
+    </section>
+
     <div class="tab-nav">
-        <a href="video.html" class="tab-link">Video</a>
-        <a href="#" class="tab-link active">Cheat Sheet</a>
+        <button class="tab-btn active" data-tab="lesson">Lesson</button>
+        <button class="tab-btn" data-tab="cheatsheet">Cheat Sheet</button>
     </div>
-    
-    <div class="container">
 
-        <p class="intro-text">The words that tell you what's a conclusion and what's a premise. Memorize these and you'll catch it in most stimuli.</p>
+    <div class="tab-content active" data-tab="lesson">
+        <section class="video-section">
+            <div class="video-container">
+                <div class="group-header">
+                    <h2 class="group-title">How to Identify Premises and Conclusions</h2>
+                    <p class="group-subtitle">Watch this first. Then review the Cheat Sheet tab.</p>
+                </div>
+                <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/1c6f50c7-25ef-4ef9-8129-f40c8415b54d?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
+            </div>
+        </section>
+    </div>
 
-        <div class="flowchart">
-            
-            <!-- Conclusion Indicators -->
-            <div class="step">
-                <div class="step-number">CONCLUSION INDICATORS</div>
-                <div class="step-content">
-                    When you see these words, what comes <strong>after</strong> them is almost always the conclusion.
-                    <div style="margin-top: 12px;">
-                        <span class="keyword">therefore</span>
-                        <span class="keyword">hence</span>
-                        <span class="keyword">so</span>
-                        <span class="keyword">thus</span>
-                        <span class="keyword">consequently</span>
-                        <span class="keyword">it follows that</span>
+    <div class="tab-content" data-tab="cheatsheet">
+        <section class="cheatsheet-section">
+            <div class="cheatsheet-container">
+                <p class="intro-text">The words that tell you what's a conclusion and what's a premise. Memorize these and you'll catch it in most stimuli.</p>
+
+                <div class="flowchart">
+                    <div class="step">
+                        <div class="step-number">CONCLUSION INDICATORS</div>
+                        <div class="step-content">
+                            When you see these words, what comes <strong>after</strong> them is almost always the conclusion.
+                            <div style="margin-top: 12px;">
+                                <span class="keyword">therefore</span>
+                                <span class="keyword">hence</span>
+                                <span class="keyword">so</span>
+                                <span class="keyword">thus</span>
+                                <span class="keyword">consequently</span>
+                                <span class="keyword">it follows that</span>
+                            </div>
+                            <div class="example-box">
+                                <div class="example-label">Example</div>
+                                <div class="stimulus">"All birds have feathers. Penguins are birds. <strong>Therefore</strong>, penguins have feathers."</div>
+                                <div class="explanation">"Therefore" signals the conclusion → <strong>"penguins have feathers"</strong> is the conclusion.</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <div class="stimulus">"All birds have feathers. Penguins are birds. <strong>Therefore</strong>, penguins have feathers."</div>
-                        <div class="explanation">"Therefore" signals the conclusion → <strong>"penguins have feathers"</strong> is the conclusion.</div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="step">
+                        <div class="step-number">PREMISE INDICATORS</div>
+                        <div class="step-content">
+                            These words signal supporting evidence. What comes after them is usually a premise.
+                            <div style="margin-top: 12px;">
+                                <span class="keyword">because</span>
+                                <span class="keyword">for</span>
+                                <span class="keyword">since</span>
+                                <span class="keyword">given that</span>
+                                <span class="keyword">as indicated by</span>
+                            </div>
+                            <div class="example-box">
+                                <div class="example-label">Example</div>
+                                <div class="stimulus">"Penguins have feathers <strong>because</strong> all birds have feathers and penguins are birds."</div>
+                                <div class="explanation">"Because" signals the premise → everything after it is support. What's left — <strong>"penguins have feathers"</strong> — is the conclusion.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="step">
+                        <div class="step-number">QUICK REFERENCE</div>
+                        <div class="step-title">For Every Stimulus</div>
+                        <div class="step-content">
+                            <ul>
+                                <li><strong>Spot a conclusion indicator?</strong> What comes after it is the conclusion.</li>
+                                <li><strong>Spot a premise indicator?</strong> What comes after it is a premise. What's left is likely the conclusion.</li>
+                                <li><strong>Spot only one indicator?</strong> Use process of elimination to label what's remaining.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
+                <a href="../../learn.html" class="back-link">← Back to Learn</a>
             </div>
-            
-            <div class="arrow">↓</div>
-            
-            <!-- Premise Indicators -->
-            <div class="step">
-                <div class="step-number">PREMISE INDICATORS</div>
-                <div class="step-content">
-                    These words signal supporting evidence. What comes after them is usually a premise.
-                    <div style="margin-top: 12px;">
-                        <span class="keyword">because</span>
-                        <span class="keyword">for</span>
-                        <span class="keyword">since</span>
-                        <span class="keyword">given that</span>
-                        <span class="keyword">as indicated by</span>
-                    </div>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <div class="stimulus">"Penguins have feathers <strong>because</strong> all birds have feathers and penguins are birds."</div>
-                        <div class="explanation">"Because" signals the premise → everything after it is support. What's left — <strong>"penguins have feathers"</strong> — is the conclusion.</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="arrow">↓</div>
-            
-            <!-- Quick Reference -->
-            <div class="step">
-                <div class="step-label">QUICK REFERENCE</div>
-                <div class="step-title">For Every Stimulus</div>
-                <div class="step-content">
-                    <ul>
-                        <li><strong>Spot a conclusion indicator?</strong> What comes after it is the conclusion.</li>
-                        <li><strong>Spot a premise indicator?</strong> What comes after it is a premise. What's left is likely the conclusion.</li>
-                        <li><strong>Spot only one indicator?</strong> Use process of elimination to label what's remaining.</li>
-                    </ul>
-                </div>
-            </div>
-            
-        </div>
+        </section>
     </div>
-    
-    <div class="slim-divider"></div>
-    
-    <div class="cta-section">
-        <p class="cta-text">Want to work through this together with real LSAT questions?</p>
-        <div class="cta-buttons">
-            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="btn btn-primary">FREE 15-MIN CONSULTATION</a>
-            <a href="../../pricing.html" class="btn btn-secondary">BOOK A SESSION</a>
-        </div>
-    </div>
-    
-    <div class="site-footer">
-        Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a>
-    </div>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector('.tab-content[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

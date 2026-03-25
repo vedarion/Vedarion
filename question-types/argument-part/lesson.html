@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Argument Part - Lesson - VEDARION</title>
+    <title>Argument Part / Role of Statement - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #F3F1EE; color: #0A0A0A; min-height: 100vh; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
         .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
         .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
         .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
         .nav-links { display: flex; gap: 40px; }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; }
-        .back-link { color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
-        .back-link:hover { color: white; }
-        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; margin-top: 15px; }
-        .prereq-wrapper { background: #0A0A0A; padding: 0 20px 16px; display: flex; justify-content: center; }
+
+        .hero { background: #0A0A0A; padding: 40px 20px 50px; text-align: center; border-bottom: 1px solid #222; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; margin-bottom: 15px; color: white; }
+        .page-subtitle { color: #666; font-size: 15px; }
+
+        .prereq-wrapper { background: #0A0A0A; padding: 12px 20px 0; display: flex; justify-content: center; }
         .prereq-box { max-width: 360px; width: 100%; }
         .prereq-toggle { background: #1A1A1A; border: 1px solid #333; color: #999; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 10px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 100%; transition: all 0.3s; }
         .prereq-toggle:hover { border-color: #555; color: #ccc; }
@@ -29,13 +30,28 @@
         .prereq-panel a:last-child { border-bottom: none; }
         .prereq-panel a:hover { background: #222; color: #E07050; }
         .prereq-panel a span { color: #666; font-weight: 400; margin-left: 6px; }
-        .video-tabs { background: #0A0A0A; padding: 0 20px 20px; display: flex; justify-content: center; gap: 20px; }
-        .video-tabs a { color: #888; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
-        .video-tabs a:hover { color: white; }
-        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
-        .content { max-width: 720px; margin: 0 auto; padding: 50px 20px 60px; }
+
+        .tab-nav { background: #0A0A0A; display: flex; justify-content: center; border-bottom: 1px solid #222; }
+        .tab-btn { background: none; border: none; color: #666; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 16px 30px; cursor: pointer; transition: all 0.3s ease; border-bottom: 2px solid transparent; text-decoration: none; }
+        .tab-btn:hover { color: #CCC; }
+        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .video-section { background: #FAFAFA; padding: 40px 20px; }
+        .video-container { max-width: 700px; margin: 0 auto; }
+        .group-header { text-align: center; margin-bottom: 25px; }
+        .group-title { font-size: 18px; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+        .group-subtitle { color: #888; font-size: 13px; }
+
+        .cheatsheet-section { background: #FAFAFA; padding: 50px 20px 60px; }
+        .cheatsheet-container { max-width: 720px; margin: 0 auto; }
+
         .section-label { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #C65D3B; margin-bottom: 10px; }
         .section-heading { font-size: 22px; font-weight: 600; color: #0A0A0A; margin-bottom: 28px; letter-spacing: 0.5px; }
+        .section-divider { height: 1px; background: #DDD; margin: 10px 0 45px; }
+
         .strategy-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 55px; }
         .step-card { background: white; border-left: 4px solid #C65D3B; padding: 22px 24px; display: flex; gap: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
         .step-number { background: #C65D3B; color: white; min-width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
@@ -43,164 +59,196 @@
         .step-content p { font-size: 14px; color: #666; line-height: 1.6; }
         .step-content ul { list-style: none; margin-top: 8px; }
         .step-content ul li { font-size: 14px; color: #333; padding: 4px 0 4px 16px; position: relative; }
-        .step-content ul li::before { content: "\2192"; position: absolute; left: 0; color: #C65D3B; font-size: 12px; }
-        .step-connector { text-align: center; padding: 2px 0; color: #CCC; font-size: 16px; }
-        .section-divider { height: 1px; background: #DDD; margin: 10px 0 45px; }
+        .step-content ul li::before { content: "→"; position: absolute; left: 0; color: #C65D3B; font-size: 12px; }
+
         .concept-card { background: white; padding: 28px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #E8E5E0; }
         .concept-title { font-size: 17px; font-weight: 700; color: #0A0A0A; margin-bottom: 12px; }
         .concept-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px; }
         .role-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; align-items: baseline; }
         .role-name { font-size: 13px; font-weight: 700; color: #C65D3B; white-space: nowrap; }
         .role-explanation { font-size: 13px; color: #555; line-height: 1.5; }
+
         .callout { background: #C65D3B; color: white; padding: 18px 22px; font-size: 14px; line-height: 1.6; margin-top: 20px; margin-bottom: 20px; }
         .callout strong { font-weight: 700; }
+
         .check-card { background: #0A0A0A; padding: 22px 28px; margin-top: 20px; }
         .check-title { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: white; margin-bottom: 8px; }
         .check-desc { font-size: 14px; color: #999; line-height: 1.6; }
-        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
-        .cta-button:hover { background: #A04D2E; }
-        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
-        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
-        .cta-secondary a:hover { color: white; }
+
+        .back-link { display: inline-block; margin-top: 30px; color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s ease; }
+        .back-link:hover { color: #C65D3B; }
+
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .page-title { font-size: 22px; } .step-card { padding: 18px 16px; } .concept-card { padding: 20px; } .role-grid { grid-template-columns: 1fr; } }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .tab-btn { padding: 14px 12px; font-size: 10px; }
+            .step-card { padding: 18px 16px; }
+            .concept-card { padding: 20px; }
+            .role-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="/about.html">About</a>
-            <a href="/pricing.html">Pricing</a>
-            <a href="/learn.html" class="active">Learn</a>
-            <a href="/index.html#testimonials">Testimonials</a>
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
         </div>
     </nav>
 
     <section class="hero">
-        <a href="/learn.html" class="back-link">&larr; Back to Learn</a>
         <h1 class="page-title">ARGUMENT PART / ROLE OF STATEMENT</h1>
+        <p class="page-subtitle">What role does this sentence play in the argument?</p>
     </section>
 
     <div class="prereq-wrapper">
         <div class="prereq-box">
-            <button class="prereq-toggle" onclick="togglePrereqs(this)">
+            <button class="prereq-toggle" id="prereq-toggle">
                 Before you start
-                <span class="arrow">&#9662;</span>
+                <span class="arrow">▾</span>
             </button>
-            <div class="prereq-panel">
-                <a href="/foundations/identifying-conclusions/video.html">Premises and Conclusions <span>&mdash; Video</span></a>
-                <a href="/question-types/main-point/lesson.html">Main Point Questions <span>&mdash; Lesson</span></a>
+            <div class="prereq-panel" id="prereq-panel">
+                <a href="../../foundations/identifying-conclusions/lesson.html">Premises and Conclusions <span>— Lesson</span></a>
+                <a href="../../question-types/main-point/lesson.html">Main Point Questions <span>— Lesson</span></a>
             </div>
         </div>
     </div>
 
-    <div class="video-tabs">
-        <a href="video.html">Video</a>
-        <a href="#" class="active">Lesson</a>
-        <a href="worksheet.html">Worksheet</a>
-        <a href="flowchart.html">Flowchart</a>
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="lesson">Lesson</button>
+        <button class="tab-btn" data-tab="cheatsheet">Cheat Sheet</button>
+        <a href="worksheet.html" class="tab-btn" style="text-decoration:none;">Worksheet</a>
+        <a href="flowchart.html" class="tab-btn" style="text-decoration:none;">Flowchart</a>
     </div>
 
-    <div class="content">
-        <div class="section-label">STRATEGY</div>
-        <h2 class="section-heading">How to Approach Argument Part Questions</h2>
-
-        <div class="strategy-steps">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Read the Question Stem</h3>
-                    <p>Identify the referenced sentence. Underline or highlight it so you know exactly what you're looking for.</p>
+    <div class="tab-content active" data-tab="lesson">
+        <section class="video-section">
+            <div class="video-container">
+                <div class="group-header">
+                    <h2 class="group-title">Argument Part / Role of Statement</h2>
+                    <p class="group-subtitle">Watch this first. Then review the Cheat Sheet tab.</p>
                 </div>
+                <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/a0c2ab39-0605-4dca-95df-3b1e0f00c158?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
             </div>
-            <div class="step-connector">&darr;</div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Read the Stimulus</h3>
-                    <p>Label each sentence by its role in the argument:</p>
-                    <ul>
-                        <li>Conclusion</li>
-                        <li>Premise / Support</li>
-                        <li>Background / Context</li>
-                        <li>Other People's View</li>
-                        <li>Illustration / Example</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="step-connector">&darr;</div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Describe the Referenced Sentence</h3>
-                    <p>Predict its function in the argument. Always do this before looking at the answer choices. What role does it play?</p>
-                </div>
-            </div>
-            <div class="step-connector">&darr;</div>
-            <div class="step-card">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Hunt for the Best Match</h3>
-                    <p>Go into hunt mode &mdash; look for the answer choice that matches your prediction. Start with the choices that sound closest to what you described.</p>
-                </div>
-            </div>
-            <div class="step-connector">&darr;</div>
-            <div class="step-card">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <h3>Evaluate &amp; Select</h3>
-                    <p>Ask: does this capture the role of the sentence? Pick the best description.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-divider"></div>
-
-        <div class="section-label">KEY CONCEPTS</div>
-        <h2 class="section-heading">Roles a Sentence Can Play</h2>
-
-        <div class="concept-card">
-            <div class="concept-title">Common Roles in an Argument</div>
-            <p class="concept-desc">When you break down a stimulus, every sentence is doing one of these jobs. Learning to spot them quickly is the core skill for this question type.</p>
-            <div class="role-grid">
-                <span class="role-name">Conclusion</span>
-                <span class="role-explanation">The main claim the argument is trying to establish. Everything else is in service of this.</span>
-                <span class="role-name">Premise / Support</span>
-                <span class="role-explanation">Evidence or reasoning offered to back up the conclusion.</span>
-                <span class="role-name">Background / Context</span>
-                <span class="role-explanation">Sets the scene but doesn't directly support or oppose the conclusion.</span>
-                <span class="role-name">Other People's View</span>
-                <span class="role-explanation">A position or claim attributed to others. Usually the view the author disagrees with. Often introduced by "some argue," "many believe," or "critics claim."</span>
-                <span class="role-name">Illustration / Example</span>
-                <span class="role-explanation">A specific case used to clarify or support a broader point.</span>
-                <span class="role-name">Intermediate Conclusion</span>
-                <span class="role-explanation">A claim that is both supported by premises and used to support the main conclusion. It's a conclusion and a premise at the same time.</span>
-            </div>
-        </div>
-
-        <div class="callout">
-            <strong>Always predict before you look at the answers.</strong> If you go in without a prediction, the answer choices all start to sound the same. Your prediction is your anchor.
-        </div>
-
-        <div class="check-card">
-            <div class="check-title">Correct Answer Check</div>
-            <p class="check-desc">The right answer is descriptively accurate &mdash; every word in it reflects what's actually in the stimulus. If even one word doesn't match, it's wrong.</p>
-        </div>
+        </section>
     </div>
 
-    <section class="cta-section">
-        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
-        <p class="cta-secondary">or <a href="/pricing.html">view pricing</a></p>
-    </section>
+    <div class="tab-content" data-tab="cheatsheet">
+        <section class="cheatsheet-section">
+            <div class="cheatsheet-container">
+
+                <div class="section-label">STRATEGY</div>
+                <h2 class="section-heading">How to Approach Argument Part Questions</h2>
+
+                <div class="strategy-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Read the Question Stem</h3>
+                            <p>Identify the referenced sentence. Underline or highlight it so you know exactly what you're looking for.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Read the Stimulus</h3>
+                            <p>Label each sentence by its role in the argument:</p>
+                            <ul>
+                                <li>Conclusion</li>
+                                <li>Premise / Support</li>
+                                <li>Background / Context</li>
+                                <li>Other People's View</li>
+                                <li>Illustration / Example</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Describe the Referenced Sentence</h3>
+                            <p>Predict its function in the argument. Always do this before looking at the answer choices. What role does it play?</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Hunt for the Best Match</h3>
+                            <p>Go into hunt mode — look for the answer choice that matches your prediction. Start with the choices that sound closest to what you described.</p>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Evaluate & Select</h3>
+                            <p>Ask: does this capture the role of the sentence? Pick the best description.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-divider"></div>
+
+                <div class="section-label">KEY CONCEPTS</div>
+                <h2 class="section-heading">Roles a Sentence Can Play</h2>
+
+                <div class="concept-card">
+                    <div class="concept-title">Common Roles in an Argument</div>
+                    <p class="concept-desc">When you break down a stimulus, every sentence is doing one of these jobs. Learning to spot them quickly is the core skill for this question type.</p>
+                    <div class="role-grid">
+                        <span class="role-name">Conclusion</span>
+                        <span class="role-explanation">The main claim the argument is trying to establish. Everything else is in service of this.</span>
+                        <span class="role-name">Premise / Support</span>
+                        <span class="role-explanation">Evidence or reasoning offered to back up the conclusion.</span>
+                        <span class="role-name">Background / Context</span>
+                        <span class="role-explanation">Sets the scene but doesn't directly support or oppose the conclusion.</span>
+                        <span class="role-name">Other People's View</span>
+                        <span class="role-explanation">A position or claim attributed to others. Usually the view the author disagrees with. Often introduced by "some argue," "many believe," or "critics claim."</span>
+                        <span class="role-name">Illustration / Example</span>
+                        <span class="role-explanation">A specific case used to clarify or support a broader point.</span>
+                        <span class="role-name">Intermediate Conclusion</span>
+                        <span class="role-explanation">A claim that is both supported by premises and used to support the main conclusion. It's a conclusion and a premise at the same time.</span>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <strong>Always predict before you look at the answers.</strong> If you go in without a prediction, the answer choices all start to sound the same. Your prediction is your anchor.
+                </div>
+
+                <div class="check-card">
+                    <div class="check-title">Correct Answer Check</div>
+                    <p class="check-desc">The right answer is descriptively accurate — every word in it reflects what's actually in the stimulus. If even one word doesn't match, it's wrong.</p>
+                </div>
+
+                <a href="../../learn.html" class="back-link">← Back to Learn</a>
+            </div>
+        </section>
+    </div>
 
     <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#c6b0a3a2a7b4afa9a8e8b2b3b2a9b4afa8a186a1aba7afaae8a5a9ab"><span class="__cf_email__" data-cfemail="8ef8ebeaeffce7e1e0a0fafbfae1fce7e0e9cee9e3efe7e2a0ede1e3">[email&#160;protected]</span></a></p>
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        function togglePrereqs(btn) {
-            btn.classList.toggle('open'
+    <script>
+        document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector('.tab-content[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
+            });
+        });
+
+        document.getElementById('prereq-toggle').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('prereq-panel').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

@@ -77,35 +77,6 @@
             font-size: 15px;
         }
 
-        /* Main tabs: Lessons | Reference */
-        .main-tab-nav {
-            background: #0A0A0A;
-            display: flex;
-            justify-content: center;
-            border-bottom: 1px solid #222;
-        }
-
-        .main-tab-btn {
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            padding: 18px 35px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
-        }
-
-        .main-tab-btn:hover { color: white; }
-        .main-tab-btn.active { color: white; border-bottom-color: #C65D3B; }
-
-        .main-tab-content { display: none; }
-        .main-tab-content.active { display: block; }
-
-        /* Step nav */
         .step-nav-bar {
             background: #111;
             display: flex;
@@ -133,18 +104,17 @@
         .step-panel { display: none; }
         .step-panel.active { display: block; }
 
-        /* Sub tabs */
         .sub-tab-nav {
-            background: #F5F5F5;
+            background: #0A0A0A;
             display: flex;
             justify-content: center;
-            border-bottom: 1px solid #E0E0E0;
+            border-bottom: 1px solid #222;
         }
 
         .sub-tab-btn {
             background: none;
             border: none;
-            color: #888;
+            color: #666;
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
@@ -155,8 +125,8 @@
             border-bottom: 2px solid transparent;
         }
 
-        .sub-tab-btn:hover { color: #0A0A0A; }
-        .sub-tab-btn.active { color: #0A0A0A; border-bottom-color: #C65D3B; }
+        .sub-tab-btn:hover { color: #CCC; }
+        .sub-tab-btn.active { color: white; border-bottom-color: #C65D3B; }
 
         .sub-tab-content { display: none; }
         .sub-tab-content.active { display: block; }
@@ -406,7 +376,6 @@
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
             .page-title { font-size: 22px; }
-            .main-tab-btn { padding: 15px 20px; font-size: 11px; }
             .step-nav-btn-main { padding: 14px 16px; font-size: 10px; }
             .sub-tab-btn { padding: 12px 14px; font-size: 10px; }
         }
@@ -428,23 +397,12 @@
         <p class="page-subtitle">The if-then relationship — the backbone of LSAT reasoning</p>
     </section>
 
-    <!-- Main tabs -->
-    <div class="main-tab-nav">
-        <button class="main-tab-btn active" data-maintab="lessons">Lessons</button>
-        <button class="main-tab-btn" data-maintab="reference">Reference</button>
+    <div class="step-nav-bar">
+        <button class="step-nav-btn-main active" data-step="1">Step 1: Sufficient & Necessary</button>
+        <button class="step-nav-btn-main" data-step="2">Step 2: Contrapositive</button>
+        <button class="step-nav-btn-main" data-step="ref">Reference</button>
     </div>
 
-    <!-- ======================== -->
-    <!-- LESSONS                  -->
-    <!-- ======================== -->
-    <div id="maintab-lessons" class="main-tab-content active">
-
-        <div class="step-nav-bar">
-            <button class="step-nav-btn-main active" data-step="1">Step 1: Sufficient & Necessary</button>
-            <button class="step-nav-btn-main" data-step="2">Step 2: Contrapositive</button>
-        </div>
-
-        <!-- STEP 1 -->
         <div class="step-panel active" data-step="1">
             <div class="sub-tab-nav" data-group="step1">
                 <button class="sub-tab-btn active" data-subtab="s1-lesson">Lesson</button>
@@ -452,7 +410,6 @@
                 <button class="sub-tab-btn" data-subtab="s1-necessary">Practice: Necessary</button>
             </div>
 
-            <!-- Lesson -->
             <div class="sub-tab-content active" data-subtab="s1-lesson">
                 <section class="video-section">
                     <div class="video-container">
@@ -465,7 +422,6 @@
                 </section>
             </div>
 
-            <!-- Practice: Sufficient -->
             <div class="sub-tab-content" data-subtab="s1-sufficient">
                 <section class="video-section">
                     <div class="video-container">
@@ -532,7 +488,6 @@
                 </section>
             </div>
 
-            <!-- Practice: Necessary -->
             <div class="sub-tab-content" data-subtab="s1-necessary">
                 <section class="video-section">
                     <div class="video-container">
@@ -600,14 +555,12 @@
             </div>
         </div>
 
-        <!-- STEP 2 -->
         <div class="step-panel" data-step="2">
             <div class="sub-tab-nav" data-group="step2">
                 <button class="sub-tab-btn active" data-subtab="s2-lesson">Lesson</button>
                 <button class="sub-tab-btn" data-subtab="s2-practice">Guided Practice</button>
             </div>
 
-            <!-- Lesson -->
             <div class="sub-tab-content active" data-subtab="s2-lesson">
                 <section class="video-section">
                     <div class="video-container">
@@ -615,12 +568,11 @@
                             <h2 class="group-title">The Contrapositive</h2>
                             <p class="group-subtitle">Flip the direction and negate both sides. Watch this first.</p>
                         </div>
-                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Video: The Contrapositive — coming soon</p></div>
+                        <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/aa04057e-ba16-4c91-9554-47a786a533d7?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
                     </div>
                 </section>
             </div>
 
-            <!-- Guided Practice -->
             <div class="sub-tab-content" data-subtab="s2-practice">
                 <section class="video-section">
                     <div class="video-container">
@@ -628,7 +580,7 @@
                             <h2 class="group-title">Guided Practice: Contrapositive</h2>
                         </div>
 
-                        <div class="video-placeholder"><div class="play-icon">▶</div><p>Guided Practice Video: Contrapositive — coming soon</p></div>
+                        <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/fda8e841-6d3d-451e-87a9-f7f88d493b77?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
 
                         <div class="try-first-note"><strong>Tip:</strong> Try the questions below first, then come back and watch the video.</div>
 
@@ -658,54 +610,49 @@
                             <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>First, set up the original: Drive → License. Then flip and negate:</strong> NOT license → NOT drive. If you don't have a license, you can't drive. (A) negates the sufficient without flipping — that's not valid.</p></div>
                         </div>
 
-                        <div class="question-card" data-correct="A">
+                        <div class="question-card" data-correct="B">
                             <div class="question-prompt">
-                                <div class="question-label">Apply</div>
+                                <div class="question-label">Contrapositive</div>
                                 <p class="question-sentence">"If a book is published, then it has been edited."</p>
-                                <p class="question-ask">A book has not been edited. What can we conclude?</p>
+                                <p class="question-ask">What is the contrapositive?</p>
                             </div>
                             <div class="answer-options">
-                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It has not been published.</span></div>
-                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If it has been edited, then it has been published.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If it has not been edited, then it has not been published.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>This is the contrapositive in action.</strong> Published → Edited. Contrapositive: NOT edited → NOT published. The book hasn't been edited, so it can't have been published.</p></div>
-                        </div>
-
-                        <div class="question-card" data-correct="A">
-                            <div class="question-prompt">
-                                <div class="question-label">Apply</div>
-                                <p class="question-sentence">"If it snows, then schools close."</p>
-                                <p class="question-ask">Schools did not close. What can we conclude?</p>
-                            </div>
-                            <div class="answer-options">
-                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">It did not snow.</span></div>
-                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">It snowed but schools stayed open anyway.</span></div>
-                            </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Contrapositive: NOT close → NOT snow.</strong> If schools didn't close, it didn't snow. (B) is impossible — the original says snow guarantees closures.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Published → Edited becomes: NOT edited → NOT published. (A) flips the direction but doesn't negate — knowing a book was edited doesn't mean it was published.</p></div>
                         </div>
 
                         <div class="question-card" data-correct="B">
                             <div class="question-prompt">
-                                <div class="question-label">Apply</div>
+                                <div class="question-label">Contrapositive</div>
                                 <p class="question-sentence">"If it snows, then schools close."</p>
-                                <p class="question-ask">It did not snow. What can we conclude?</p>
+                                <p class="question-ask">What is the contrapositive?</p>
                             </div>
                             <div class="answer-options">
-                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">Schools did not close.</span></div>
-                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If it did not snow, then schools did not close.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If schools did not close, then it did not snow.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Negating the sufficient tells us nothing.</strong> Snow → Close. We know it didn't snow, but schools could still close for another reason. The contrapositive only works when we negate the necessary side.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Snow → Close becomes: NOT close → NOT snow. If schools didn't close, it didn't snow. (A) negates the sufficient without flipping — schools could still close for other reasons.</p></div>
+                        </div>
+
+                        <div class="question-card" data-correct="B">
+                            <div class="question-prompt">
+                                <div class="question-label">Contrapositive</div>
+                                <p class="question-sentence">"An enrolled student must pay tuition."</p>
+                                <p class="question-ask">What is the contrapositive?</p>
+                            </div>
+                            <div class="answer-options">
+                                <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If a student is not enrolled, then they do not pay tuition.</span></div>
+                                <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If a student has not paid tuition, then they are not enrolled.</span></div>
+                            </div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Enrolled → Pay tuition becomes: NOT pay tuition → NOT enrolled. (A) negates the sufficient without flipping — a student who isn't enrolled could still owe tuition for other reasons.</p></div>
                         </div>
                     </div>
                 </section>
             </div>
         </div>
-    </div>
-
-    <!-- ======================== -->
-    <!-- REFERENCE                -->
-    <!-- ======================== -->
-    <div id="maintab-reference" class="main-tab-content">
+    <div class="step-panel" data-step="ref">
         <section class="reference-section">
             <div class="reference-container">
                 <p class="reference-intro">Quick reference for conditional logic. Bookmark this page and come back to it while practicing.</p>
@@ -752,17 +699,6 @@
     </footer>
 
     <script>
-        // Main tabs (Lessons / Reference)
-        document.querySelectorAll('.main-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.main-tab-content').forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById('maintab-' + btn.dataset.maintab).classList.add('active');
-            });
-        });
-
-        // Step nav
         document.querySelectorAll('.step-nav-btn-main').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.step-nav-btn-main').forEach(b => b.classList.remove('active'));
@@ -772,7 +708,6 @@
             });
         });
 
-        // Sub tabs
         document.querySelectorAll('.sub-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const panel = btn.closest('.step-panel');
@@ -783,7 +718,6 @@
             });
         });
 
-        // Questions
         document.querySelectorAll('.question-card').forEach(card => {
             const correct = card.dataset.correct;
             const options = card.querySelectorAll('.answer-option');

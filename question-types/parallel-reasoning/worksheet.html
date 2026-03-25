@@ -5,616 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parallel Reasoning Worksheet - VEDARION</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: #0A0A0A;
-            color: #E0E0E0;
-            min-height: 100vh;
-        }
-        
-        /* Nav */
-        .nav {
-            background: #0A0A0A;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 50px;
-            border-bottom: 1px solid #222;
-        }
-        
-        .nav-brand {
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 4px;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .nav-brand .v-accent {
-            color: #C65D3B;
-            font-weight: 700;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-        
-        .nav-links a {
-            color: #888;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            color: white;
-        }
-        
-        /* Hero */
-        .hero {
-            background: #0A0A0A;
-            padding: 30px 20px 20px;
-            text-align: center;
-            border-bottom: 1px solid #222;
-        }
-        
-        .page-title {
-            font-size: 28px;
-            font-weight: 400;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-            color: white;
-        }
-        
-        .page-subtitle {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            background: #0A0A0A;
-            padding: 20px 20px 0;
-        }
-        
-        .tab-link {
-            padding: 12px 30px;
-            color: #666;
-            text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-link:hover {
-            color: #888;
-        }
-        
-        .tab-link.active {
-            color: #C65D3B;
-            border-bottom-color: #C65D3B;
-        }
-        
-        /* Main Content */
-        .main-content {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px 60px;
-            min-height: calc(100vh - 200px);
-        }
-        
-        /* Watermark */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        /* Worksheet Content */
-        .worksheet {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .section {
-            margin-bottom: 30px;
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #C65D3B;
-        }
-        
-        .section-line {
-            flex: 1;
-            height: 1px;
-            background: #333;
-        }
-        
-        .section-break {
-            background: #FAFAFA;
-            height: 30px;
-            margin: 30px -20px;
-            width: calc(100% + 40px);
-        }
-        
-        .core-instructions {
-            background: #0d0d0d;
-            border: 1px solid #222;
-            border-left: 3px solid #C65D3B;
-            border-radius: 4px;
-            padding: 15px 18px;
-            margin-bottom: 20px;
-        }
-        
-        .instruction-main {
-            font-size: 13px;
-            color: #B0B0B0;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-        
-        .instruction-detail {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 8px;
-        }
-        
-        .instruction-detail .highlight {
-            color: #E0E0E0;
-            font-weight: 600;
-        }
-        
-        .instruction-warning {
-            font-size: 11px;
-            color: #666;
-            font-style: italic;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        .input-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #888;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-        
-        .input-field {
-            width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 12px 15px;
-            color: #E0E0E0;
-            font-size: 14px;
-            font-family: inherit;
-            resize: vertical;
-            transition: border-color 0.3s ease;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: #C65D3B;
-        }
-        
-        .input-field::placeholder {
-            color: #444;
-        }
-        
-        .input-field.input-short {
-            font-size: 15px;
-            padding: 14px 15px;
-        }
-        
-        textarea.input-field {
-            min-height: 70px;
-        }
-        
-        /* Question Type Toggle */
-        .question-type-toggle {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .type-btn {
-            flex: 1;
-            padding: 12px 20px;
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 4px;
-            color: #888;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .type-btn:hover {
-            border-color: #555;
-        }
-        
-        .type-btn.active {
-            border-color: #C65D3B;
-            background: #1a1210;
-            color: #E0E0E0;
-        }
-        
-        /* Answer Choice */
-        .answer-choice {
-            background: #111;
-            border: 1px solid #333;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .answer-choice.skipped {
-            opacity: 0.3;
-        }
-        
-        .answer-choice.eliminated {
-            opacity: 0.4;
-            border-color: #5a2d2d;
-        }
-        
-        .answer-choice.picked {
-            border-color: #2d5a2d;
-            box-shadow: 0 0 10px rgba(90, 154, 90, 0.3);
-        }
-        
-        .answer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 15px;
-            background: #0d0d0d;
-            border-bottom: 1px solid #333;
-        }
-        
-        .answer-letter {
-            font-size: 14px;
-            font-weight: 600;
-            color: #E0E0E0;
-        }
-        
-        .answer-status {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .status-btn {
-            padding: 5px 10px;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border: 1px solid #333;
-            border-radius: 3px;
-            background: transparent;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .status-btn:hover {
-            border-color: #555;
-            color: #888;
-        }
-        
-        .status-btn.skip.active {
-            background: #2e2e1a;
-            border-color: #5a5a2d;
-            color: #9a9a5a;
-        }
-        
-        .status-btn.eliminate.active {
-            background: #2e1a1a;
-            border-color: #5a2d2d;
-            color: #9a5a5a;
-        }
-        
-        .status-btn.pickgo.active {
-            background: #1a2e1a;
-            border-color: #2d5a2d;
-            color: #5a9a5a;
-        }
-        
-        .answer-body {
-            padding: 15px;
-        }
-        
-        .test-step {
-            margin-bottom: 15px;
-        }
-        
-        .test-step:last-child {
-            margin-bottom: 0;
-        }
-        
-        .test-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #888;
-            margin-bottom: 6px;
-        }
-        
-        .test-label span {
-            color: #E0E0E0;
-        }
-        
-        .test-description {
-            font-size: 11px;
-            color: #555;
-            margin-bottom: 8px;
-        }
-        
-        .test-key {
-            font-size: 11px;
-            color: #777;
-            margin-bottom: 10px;
-            font-style: italic;
-        }
-        
-        /* Final Selection */
-        .final-selection {
-            background: #111;
-            border: 1px solid #C65D3B;
-            border-radius: 4px;
-            padding: 20px;
-        }
-        
-        .final-instruction {
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        
-        .final-answer {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .final-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #E0E0E0;
-        }
-        
-        .final-input {
-            width: 60px;
-            background: #0A0A0A;
-            border: 2px solid #C65D3B;
-            border-radius: 4px;
-            padding: 10px;
-            color: #C65D3B;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            text-transform: uppercase;
-        }
-        
-        .final-input:focus {
-            outline: none;
-        }
-        
-        /* Action Buttons */
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            padding: 12px 30px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background: #C65D3B;
-            border: none;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #A04D2E;
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid #333;
-            color: #888;
-        }
-        
-        .btn-secondary:hover {
-            border-color: #555;
-            color: #E0E0E0;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            background: #0A0A0A;
-            border-top: 1px solid #222;
-            padding: 40px 20px;
-            text-align: center;
-            margin-top: 40px;
-        }
-        
-        .cta-section p {
-            color: #888;
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .cta-button {
-            background: #C65D3B;
-            color: white;
-            padding: 14px 30px;
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .cta-button:hover {
-            background: #A04D2E;
-        }
-        
-        .cta-button-secondary {
-            background: transparent;
-            border: 1px solid #C65D3B;
-            color: #C65D3B;
-        }
-        
-        .cta-button-secondary:hover {
-            background: #C65D3B;
-            color: white;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #0A0A0A;
-            border-top: 1px solid #222;
-            color: #555;
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 13px;
-        }
-        
-        .footer a {
-            color: #C65D3B;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 650px) {
-            .nav {
-                padding: 20px;
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .nav-links {
-                gap: 25px;
-            }
-            
-            .page-title {
-                font-size: 22px;
-            }
-            
-            .question-type-toggle {
-                flex-direction: column;
-            }
-            
-            .watermark {
-                width: 280px;
-                height: 280px;
-            }
-            
-            .tab-link {
-                padding: 10px 15px;
-                font-size: 11px;
-            }
-            
-            .answer-status {
-                gap: 5px;
-            }
-            
-            .status-btn {
-                padding: 4px 8px;
-                font-size: 9px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #0A0A0A; color: #E0E0E0; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #222; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; margin-bottom: 10px; color: white; }
+        .page-subtitle { color: #666; font-size: 14px; }
+        .tab-nav { display: flex; justify-content: center; gap: 0; background: #0A0A0A; padding: 20px 20px 0; }
+        .tab-link { padding: 12px 30px; color: #666; text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
+        .tab-link:hover { color: #888; }
+        .tab-link.active { color: #C65D3B; border-bottom-color: #C65D3B; }
+        .video-intro { max-width: 800px; margin: 30px auto 0; padding: 0 20px; }
+        .video-intro p { font-size: 14px; color: #888; letter-spacing: 0.5px; text-align: center; margin-bottom: 15px; }
+        .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; background: #111; border: 1px solid #333; overflow: hidden; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .main-content { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 20px 60px; min-height: calc(100vh - 200px); }
+        .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; opacity: 0.03; pointer-events: none; z-index: 0; }
+        .worksheet { position: relative; z-index: 1; }
+        .section { margin-bottom: 30px; }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .section-title { font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; }
+        .section-line { flex: 1; height: 1px; background: #333; }
+        .section-break { background: #FAFAFA; height: 30px; margin: 30px -20px; width: calc(100% + 40px); }
+        .core-instructions { background: #0d0d0d; border: 1px solid #222; border-left: 3px solid #C65D3B; border-radius: 4px; padding: 15px 18px; margin-bottom: 20px; }
+        .instruction-main { font-size: 13px; color: #B0B0B0; margin-bottom: 10px; line-height: 1.5; }
+        .instruction-detail { font-size: 12px; color: #888; margin-bottom: 8px; }
+        .instruction-detail .highlight { color: #E0E0E0; font-weight: 600; }
+        .instruction-warning { font-size: 11px; color: #666; font-style: italic; }
+        .input-group { margin-bottom: 15px; }
+        .input-label { display: block; font-size: 13px; font-weight: 600; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .input-field { width: 100%; background: #111; border: 1px solid #333; border-radius: 4px; padding: 12px 15px; color: #E0E0E0; font-size: 14px; font-family: inherit; resize: vertical; transition: border-color 0.3s ease; }
+        .input-field:focus { outline: none; border-color: #C65D3B; }
+        .input-field::placeholder { color: #444; }
+        .input-field.input-short { font-size: 15px; padding: 14px 15px; }
+        textarea.input-field { min-height: 70px; }
+        .question-type-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+        .type-btn { flex: 1; padding: 12px 20px; background: #111; border: 1px solid #333; border-radius: 4px; color: #888; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+        .type-btn:hover { border-color: #555; }
+        .type-btn.active { border-color: #C65D3B; background: #1a1210; color: #E0E0E0; }
+        .answer-choice { background: #111; border: 1px solid #333; border-radius: 4px; margin-bottom: 15px; overflow: hidden; transition: all 0.3s ease; }
+        .answer-choice.skipped { opacity: 0.3; }
+        .answer-choice.eliminated { opacity: 0.4; border-color: #5a2d2d; }
+        .answer-choice.picked { border-color: #2d5a2d; box-shadow: 0 0 10px rgba(90, 154, 90, 0.3); }
+        .answer-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #0d0d0d; border-bottom: 1px solid #333; }
+        .answer-letter { font-size: 14px; font-weight: 600; color: #E0E0E0; }
+        .answer-status { display: flex; gap: 8px; }
+        .status-btn { padding: 5px 10px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; border: 1px solid #333; border-radius: 3px; background: transparent; color: #666; cursor: pointer; transition: all 0.3s ease; }
+        .status-btn:hover { border-color: #555; color: #888; }
+        .status-btn.skip.active { background: #2e2e1a; border-color: #5a5a2d; color: #9a9a5a; }
+        .status-btn.eliminate.active { background: #2e1a1a; border-color: #5a2d2d; color: #9a5a5a; }
+        .status-btn.pickgo.active { background: #1a2e1a; border-color: #2d5a2d; color: #5a9a5a; }
+        .answer-body { padding: 15px; }
+        .test-step { margin-bottom: 15px; }
+        .test-step:last-child { margin-bottom: 0; }
+        .test-label { font-size: 12px; font-weight: 600; color: #888; margin-bottom: 6px; }
+        .test-label span { color: #E0E0E0; }
+        .test-description { font-size: 11px; color: #555; margin-bottom: 8px; }
+        .test-key { font-size: 11px; color: #777; margin-bottom: 10px; font-style: italic; }
+        .final-selection { background: #111; border: 1px solid #C65D3B; border-radius: 4px; padding: 20px; }
+        .final-instruction { font-size: 13px; color: #888; margin-bottom: 15px; line-height: 1.6; }
+        .final-answer { display: flex; align-items: center; gap: 15px; }
+        .final-label { font-size: 14px; font-weight: 600; color: #E0E0E0; }
+        .final-input { width: 60px; background: #0A0A0A; border: 2px solid #C65D3B; border-radius: 4px; padding: 10px; color: #C65D3B; font-size: 18px; font-weight: 600; text-align: center; text-transform: uppercase; }
+        .final-input:focus { outline: none; }
+        .actions { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .btn { padding: 12px 30px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background: #C65D3B; border: none; color: white; }
+        .btn-primary:hover { background: #A04D2E; }
+        .cta-section { background: #0A0A0A; border-top: 1px solid #222; padding: 40px 20px; text-align: center; margin-top: 40px; }
+        .cta-section p { color: #888; font-size: 15px; margin-bottom: 20px; }
+        .cta-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-button-secondary { background: transparent; border: 1px solid #C65D3B; color: #C65D3B; }
+        .cta-button-secondary:hover { background: #C65D3B; color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .question-type-toggle { flex-direction: column; } .watermark { width: 280px; height: 280px; } .tab-link { padding: 10px 15px; font-size: 11px; } .answer-status { gap: 5px; } .status-btn { padding: 4px 8px; font-size: 9px; } }
     </style>
 </head>
 <body>
-    <!-- Nav -->
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
+            <a href="../../about.html">About</a>
             <a href="../../pricing.html">Pricing</a>
-            <a href="../../learn.html">Learn</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
         </div>
     </nav>
 
-    <!-- Hero -->
     <section class="hero">
         <h1 class="page-title">PARALLEL REASONING</h1>
         <p class="page-subtitle">Interactive Practice Worksheet</p>
     </section>
 
-    <!-- Tab Navigation -->
     <div class="tab-nav">
-        <a href="video.html" class="tab-link">Video</a>
         <a href="worksheet.html" class="tab-link active">Worksheet</a>
         <a href="flowchart.html" class="tab-link">Flowchart</a>
     </div>
 
-    <!-- Main Content -->
+    <div class="video-intro">
+        <p>Watch the walkthrough first, then try the worksheet below.</p>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/E1_GvXUAqKc" title="Parallel Reasoning Tutorial - VEDARION" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <div class="main-content">
-        <!-- Watermark -->
         <svg class="watermark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
             <defs>
                 <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -629,9 +133,7 @@
             <rect x="182" y="320" width="36" height="4" fill="#C65D3B" rx="2"/>
         </svg>
 
-        <!-- Worksheet -->
         <div class="worksheet">
-            <!-- Question Type -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Question Type</span>
@@ -643,7 +145,6 @@
                 </div>
             </div>
 
-            <!-- Premise and Conclusion -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Premise and Conclusion</span>
@@ -659,10 +160,8 @@
                 </div>
             </div>
 
-            <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Evaluate the Argument -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Evaluate the Argument</span>
@@ -674,8 +173,8 @@
                 </div>
                 <div class="core-instructions">
                     <p class="instruction-main">Do the premises connect to each other?</p>
-                    <p class="instruction-detail"><span class="highlight">YES →</span> What's the valid inference from the combination? Use that to evaluate the conclusion.</p>
-                    <p class="instruction-detail"><span class="highlight">NO →</span> Think about each premise separately when evaluating support for the conclusion.</p>
+                    <p class="instruction-detail"><span class="highlight">YES &#8594;</span> What's the valid inference from the combination? Use that to evaluate the conclusion.</p>
+                    <p class="instruction-detail"><span class="highlight">NO &#8594;</span> Think about each premise separately when evaluating support for the conclusion.</p>
                     <p class="instruction-warning">Note: No gaps in Parallel Reasoning (gaps = Parallel Flaw)</p>
                 </div>
                 <div class="input-group" id="flawGroup">
@@ -684,17 +183,15 @@
                 </div>
             </div>
 
-            <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Abstract Structure -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Abstract Structure</span>
                     <div class="section-line"></div>
                 </div>
                 <div class="core-instructions">
-                    <p class="instruction-main">Write the argument pattern in abstract terms — nothing to do with the actual content.</p>
+                    <p class="instruction-main">Write the argument pattern in abstract terms &#8212; nothing to do with the actual content.</p>
                     <p class="instruction-detail">Example: "All A are B. X is A. Therefore, X is B."</p>
                     <p class="instruction-warning">DO NOT SKIP THIS. If you struggle here, it will be worse in the answer choices.</p>
                 </div>
@@ -704,10 +201,8 @@
                 </div>
             </div>
 
-            <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Shallow Dip Strategy -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Shallow Dip Strategy</span>
@@ -723,18 +218,15 @@
                 </div>
             </div>
 
-            <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Answer Choices -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Answer Choices</span>
                     <div class="section-line"></div>
                 </div>
                 <p style="font-size: 12px; color: #555; margin-bottom: 15px;">For each answer: Shallow dip first. If markers exist, read piece by piece and predict what comes next.</p>
-                
-                <!-- Answer A -->
+
                 <div class="answer-choice" id="answerA">
                     <div class="answer-header">
                         <span class="answer-letter">Answer Choice A</span>
@@ -748,7 +240,7 @@
                         <div class="test-step">
                             <div class="test-label"><span>1.</span> Shallow Dip</div>
                             <div class="test-description">Does this answer have your markers?</div>
-                            <input type="text" class="input-field" placeholder="Yes/No — If no, skip to next answer">
+                            <input type="text" class="input-field" placeholder="Yes/No &#8212; If no, skip to next answer">
                         </div>
                         <div class="test-step">
                             <div class="test-label"><span>2.</span> Piece-by-Piece</div>
@@ -759,7 +251,6 @@
                     </div>
                 </div>
 
-                <!-- Answer B -->
                 <div class="answer-choice" id="answerB">
                     <div class="answer-header">
                         <span class="answer-letter">Answer Choice B</span>
@@ -773,17 +264,17 @@
                         <div class="test-step">
                             <div class="test-label"><span>1.</span> Shallow Dip</div>
                             <div class="test-description">Does this answer have your markers?</div>
-                            <input type="text" class="input-field" placeholder="Yes/No — If no, skip to next answer">
+                            <input type="text" class="input-field" placeholder="Yes/No &#8212; If no, skip to next answer">
                         </div>
                         <div class="test-step">
                             <div class="test-label"><span>2.</span> Piece-by-Piece</div>
                             <div class="test-description">Read first part. What does it need to say NEXT to match your structure?</div>
+                            <div class="test-key">Predicting helps you spot subtle trap answer choices.</div>
                             <input type="text" class="input-field" placeholder="Does it match your prediction?">
                         </div>
                     </div>
                 </div>
 
-                <!-- Answer C -->
                 <div class="answer-choice" id="answerC">
                     <div class="answer-header">
                         <span class="answer-letter">Answer Choice C</span>
@@ -797,7 +288,7 @@
                         <div class="test-step">
                             <div class="test-label"><span>1.</span> Shallow Dip</div>
                             <div class="test-description">Does this answer have your markers?</div>
-                            <input type="text" class="input-field" placeholder="Yes/No — If no, skip to next answer">
+                            <input type="text" class="input-field" placeholder="Yes/No &#8212; If no, skip to next answer">
                         </div>
                         <div class="test-step">
                             <div class="test-label"><span>2.</span> Piece-by-Piece</div>
@@ -808,7 +299,6 @@
                     </div>
                 </div>
 
-                <!-- Answer D -->
                 <div class="answer-choice" id="answerD">
                     <div class="answer-header">
                         <span class="answer-letter">Answer Choice D</span>
@@ -822,7 +312,7 @@
                         <div class="test-step">
                             <div class="test-label"><span>1.</span> Shallow Dip</div>
                             <div class="test-description">Does this answer have your markers?</div>
-                            <input type="text" class="input-field" placeholder="Yes/No — If no, skip to next answer">
+                            <input type="text" class="input-field" placeholder="Yes/No &#8212; If no, skip to next answer">
                         </div>
                         <div class="test-step">
                             <div class="test-label"><span>2.</span> Piece-by-Piece</div>
@@ -833,7 +323,6 @@
                     </div>
                 </div>
 
-                <!-- Answer E -->
                 <div class="answer-choice" id="answerE">
                     <div class="answer-header">
                         <span class="answer-letter">Answer Choice E</span>
@@ -847,7 +336,7 @@
                         <div class="test-step">
                             <div class="test-label"><span>1.</span> Shallow Dip</div>
                             <div class="test-description">Does this answer have your markers?</div>
-                            <input type="text" class="input-field" placeholder="Yes/No — If no, skip to next answer">
+                            <input type="text" class="input-field" placeholder="Yes/No &#8212; If no, skip to next answer">
                         </div>
                         <div class="test-step">
                             <div class="test-label"><span>2.</span> Piece-by-Piece</div>
@@ -857,12 +346,11 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
-            <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Final Selection -->
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">Final Answer</span>
@@ -870,8 +358,8 @@
                 </div>
                 <div class="final-selection">
                     <p class="final-instruction">If an answer matches your structure/flaw:<br>
-                    • Select it and move on<br>
-                    • Don't second-guess — saves significant time</p>
+                    &#8226; Select it and move on<br>
+                    &#8226; Don't second-guess &#8212; saves significant time</p>
                     <div class="final-answer">
                         <span class="final-label">Final Answer:</span>
                         <input type="text" class="final-input" id="finalAnswer" maxlength="1" placeholder="?">
@@ -879,91 +367,50 @@
                 </div>
             </div>
 
-            <!-- Actions -->
             <div class="actions">
                 <button class="btn btn-primary" onclick="clearWorksheet()">Clear & Reset</button>
             </div>
         </div>
     </div>
 
-    <!-- CTA Section -->
     <section class="cta-section">
         <p>Want to solidify this and work through more questions together?</p>
         <div class="cta-buttons">
-            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Free 15-Min Consultation</a>
-            <a href="../../pricing.html" class="cta-button cta-button-secondary">Book a Session</a>
+            <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+            <a href="../../pricing.html" class="cta-button cta-button-secondary">View Pricing</a>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
     <script>
         function setQuestionType(button, type) {
-            document.querySelectorAll('.type-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
         }
 
         function setAnswerStatus(letter, status) {
             const answerChoice = document.getElementById('answer' + letter);
             const buttons = answerChoice.querySelectorAll('.status-btn');
-            
-            // Remove all active states and classes
             buttons.forEach(btn => btn.classList.remove('active'));
             answerChoice.classList.remove('skipped', 'eliminated', 'picked');
-            
-            // Find the clicked button and toggle
             const clickedBtn = answerChoice.querySelector('.status-btn.' + status);
-            
-            if (status === 'skip') {
-                clickedBtn.classList.add('active');
-                answerChoice.classList.add('skipped');
-            } else if (status === 'eliminate') {
-                clickedBtn.classList.add('active');
-                answerChoice.classList.add('eliminated');
-            } else if (status === 'pickgo') {
-                clickedBtn.classList.add('active');
-                answerChoice.classList.add('picked');
-                // Auto-fill final answer
-                document.getElementById('finalAnswer').value = letter;
-            }
+            if (status === 'skip') { clickedBtn.classList.add('active'); answerChoice.classList.add('skipped'); }
+            else if (status === 'eliminate') { clickedBtn.classList.add('active'); answerChoice.classList.add('eliminated'); }
+            else if (status === 'pickgo') { clickedBtn.classList.add('active'); answerChoice.classList.add('picked'); document.getElementById('finalAnswer').value = letter; }
         }
 
         function clearWorksheet() {
-            // Clear all text inputs and textareas
-            document.querySelectorAll('.input-field, .final-input').forEach(input => {
-                input.value = '';
-            });
-            
-            // Reset question type to Parallel Reasoning
-            document.querySelectorAll('.type-btn').forEach((btn, index) => {
-                if (index === 0) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // Reset all status buttons and answer states
-            document.querySelectorAll('.status-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelectorAll('.answer-choice').forEach(choice => {
-                choice.classList.remove('skipped', 'eliminated', 'picked');
-            });
-            
-            // Scroll to top
+            document.querySelectorAll('.input-field, .final-input').forEach(input => { input.value = ''; });
+            document.querySelectorAll('.type-btn').forEach((btn, index) => { if (index === 0) btn.classList.add('active'); else btn.classList.remove('active'); });
+            document.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.answer-choice').forEach(choice => choice.classList.remove('skipped', 'eliminated', 'picked'));
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Auto-uppercase final answer
-        document.getElementById('finalAnswer').addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
+        document.getElementById('finalAnswer').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
     </script>
 </body>
 </html>
