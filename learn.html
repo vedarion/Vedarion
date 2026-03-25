@@ -560,6 +560,21 @@
                     }
                 });
             });
+
+            // Auto-check when clicking a Lesson link
+            document.querySelectorAll('.lesson-meta a').forEach(function(link) {
+                if (link.textContent.trim() !== 'Lesson') return;
+                link.addEventListener('click', function() {
+                    var item = link.closest('[data-slug]');
+                    if (!item) return;
+                    var check = item.querySelector('.lesson-check');
+                    if (!check.classList.contains('completed')) {
+                        check.classList.add('completed');
+                        vedarionAuth.from('lesson_completions')
+                            .upsert({ user_id: userId, lesson_slug: item.dataset.slug });
+                    }
+                });
+            });
         }
     })();
     </script>
