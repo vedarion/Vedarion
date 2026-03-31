@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chained Conditionals - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .breadcrumb { background: #0A0A0A; padding: 15px 50px; }
+        .breadcrumb a { color: #666; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; }
+        .breadcrumb a:hover { color: #888; }
+        .breadcrumb span { color: #444; font-size: 13px; margin: 0 8px; }
+        .breadcrumb .current { color: #888; font-size: 13px; }
+        .lesson-header { background: #0A0A0A; padding: 20px 50px 30px; }
+        .lesson-section-label { color: #C65D3B; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .lesson-title { color: white; font-size: 32px; font-weight: 400; letter-spacing: 1px; margin-bottom: 8px; }
+        .lesson-subtitle { color: #666; font-size: 15px; }
+        .tab-nav { background: #0A0A0A; padding: 0 50px; display: flex; gap: 0; border-bottom: 1px solid #222; }
+        .tab-btn { background: none; border: none; color: #666; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 16px 30px; cursor: pointer; transition: color 0.3s ease; position: relative; font-family: inherit; }
+        .tab-btn.active { color: white; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: #C65D3B; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .video-section { background: #0A0A0A; padding: 0 0 30px; }
+        .video-container { max-width: 900px; margin: 0 auto; padding: 0 50px; }
+        .video-wrapper { position: relative; padding-top: 56.25%; background: #111; border: 1px solid #222; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-summary { max-width: 700px; margin: 0 auto; padding: 40px 50px; }
+        .content-heading { font-size: 18px; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .content-text { font-size: 15px; line-height: 1.8; color: #444; margin-bottom: 20px; }
+        .key-concepts { list-style: none; margin-bottom: 30px; }
+        .key-concepts li { font-size: 14px; color: #444; padding: 8px 0; border-bottom: 1px solid #EEE; padding-left: 20px; position: relative; }
+        .key-concepts li::before { content: '→'; position: absolute; left: 0; color: #C65D3B; font-weight: 600; }
+        .next-lesson { display: flex; align-items: center; justify-content: space-between; background: #F5F5F5; padding: 20px 25px; border: 1px solid #E0E0E0; margin-top: 30px; text-decoration: none; color: #0A0A0A; transition: border-color 0.3s ease; }
+        .next-lesson:hover { border-color: #C65D3B; }
+        .next-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; margin-bottom: 4px; }
+        .next-name { font-size: 16px; font-weight: 500; }
+        .next-arrow { font-size: 20px; color: #C65D3B; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 15px 20px; }
+            .lesson-header { padding: 20px 20px 30px; }
+            .lesson-title { font-size: 26px; }
+            .tab-nav { padding: 0 20px; }
+            .tab-btn { padding: 16px 20px; }
+            .video-container { padding: 0 20px; }
+            .video-summary { padding: 30px 20px; }
+            .next-lesson { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>›</span>
+        <a href="../../learn.html">Foundations</a>
+        <span>›</span>
+        <span class="current">Chained Conditionals</span>
+    </div>
+
+    <!-- Lesson Header -->
+    <div class="lesson-header">
+        <div class="lesson-section-label">Foundations</div>
+        <h1 class="lesson-title">Chained Conditionals</h1>
+        <p class="lesson-subtitle">Linking A → B → C and drawing valid conclusions across the chain.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('video')">Video</button>
+    </div>
+
+    <!-- ==================== VIDEO TAB ==================== -->
+    <div id="tab-video" class="tab-content active">
+        <section class="video-section">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://iframe.mediadelivery.net/embed/600986/be531b78-9092-4f17-ae65-2b1340dab831?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <div class="video-summary">
+            <h2 class="content-heading">What you'll learn</h2>
+            <p class="content-text">
+                Once you know how a single conditional works, the next step is connecting them. When the necessary condition of one statement is the sufficient condition of another, you can chain them together — and the LSAT loves testing whether you can follow that chain correctly.
+            </p>
+
+            <ul class="key-concepts">
+                <li>How to link conditionals: if A → B and B → C, then A → C</li>
+                <li>Drawing valid conclusions across a chain</li>
+                <li>Contrapositives of chained conditionals</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT. No strings attached.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector('.tab-btn').classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+            window.scrollTo({ top: document.querySelector('.tab-nav').offsetTop - 10, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
