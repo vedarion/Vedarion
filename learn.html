@@ -145,7 +145,7 @@
                                 <span class="lesson-title">Chained Conditionals</span>
                             </div>
                             <div class="lesson-meta">
-                                <span class="coming-soon">Lesson coming soon</span>
+                                <a href="foundations/chained-conditionals/lesson.html">Lesson</a>
                             </div>
                         </div>
                     </li>
@@ -462,7 +462,7 @@
     </section>
 
     <footer class="footer">
-        <p>Questions? <a href="mailto:rahela@vedarion.com">rahela@vedarion.com</a></p>
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -485,12 +485,6 @@
         document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    /*
-     * Tiered access gate
-     * -  data-requires-auth="free"  → needs free account
-     * -  data-requires-auth="paid"  → needs paid subscription (future)
-     * Foundations (no data-requires-auth) → open to everyone
-     */
     (async function() {
         var session = null;
         try {
@@ -498,21 +492,17 @@
             session = result.data.session;
         } catch(e) {}
 
-        // Intercept clicks on links inside gated sections
         document.querySelectorAll('[data-requires-auth] a[href]').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 var level = link.closest('[data-requires-auth]').getAttribute('data-requires-auth');
 
                 if (level === 'free' && !session) {
                     e.preventDefault();
-                    // Save where they were trying to go so we can redirect back after login
                     sessionStorage.setItem('vedarion_redirect', link.getAttribute('href'));
                     window.location.href = 'login.html?reason=free';
                 }
 
                 if (level === 'paid') {
-                    // Future: check subscription status
-                    // For now, treat same as free
                     if (!session) {
                         e.preventDefault();
                         sessionStorage.setItem('vedarion_redirect', link.getAttribute('href'));
@@ -521,11 +511,10 @@
                 }
             });
         });
-        // Lesson completion tracking
+
         if (session) {
             var userId = session.user.id;
 
-            // Load existing completions
             try {
                 var completions = await vedarionAuth.from('lesson_completions')
                     .select('lesson_slug')
@@ -540,7 +529,6 @@
                 }
             } catch(e) {}
 
-            // Toggle on click
             document.querySelectorAll('.lesson-check').forEach(function(check) {
                 check.addEventListener('click', async function(e) {
                     e.stopPropagation();
@@ -561,7 +549,6 @@
                 });
             });
 
-            // Auto-check when clicking a Lesson link
             document.querySelectorAll('.lesson-meta a').forEach(function(link) {
                 if (link.textContent.trim() !== 'Lesson') return;
                 link.addEventListener('click', async function(e) {
