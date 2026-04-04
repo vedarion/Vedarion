@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Method of Reasoning - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .breadcrumb { background: #0A0A0A; padding: 15px 50px; }
+        .breadcrumb a { color: #666; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; }
+        .breadcrumb a:hover { color: #888; }
+        .breadcrumb span { color: #444; font-size: 13px; margin: 0 8px; }
+        .breadcrumb .current { color: #888; font-size: 13px; }
+        .lesson-header { background: #0A0A0A; padding: 20px 50px 30px; }
+        .lesson-section-label { color: #C65D3B; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .lesson-title { color: white; font-size: 32px; font-weight: 400; letter-spacing: 1px; margin-bottom: 8px; }
+        .lesson-subtitle { color: #666; font-size: 15px; }
+
+        .tab-nav { background: #0A0A0A; padding: 0 50px; display: flex; gap: 0; border-bottom: 1px solid #222; }
+        .tab-btn { background: none; border: none; color: #666; font-size: 13px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 16px 30px; cursor: pointer; transition: color 0.3s ease; position: relative; font-family: inherit; }
+        .tab-btn.active { color: white; }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: #C65D3B; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .video-section { background: #0A0A0A; padding: 0 0 30px; }
+        .video-container { max-width: 900px; margin: 0 auto; padding: 0 50px; }
+        .video-wrapper { position: relative; padding-top: 56.25%; background: #111; border: 1px solid #222; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        .cheat-sheet { max-width: 700px; margin: 0 auto; padding: 45px 50px 60px; }
+
+        .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; margin-bottom: 20px; }
+
+        .step { margin-bottom: 18px; }
+        .step-number { font-weight: 700; color: #C65D3B; font-size: 15px; }
+        .step-text { font-size: 15px; color: #0A0A0A; line-height: 1.6; }
+
+        .step-sub { padding-left: 28px; margin-top: 8px; }
+        .step-question { font-size: 14px; color: #444; font-style: italic; line-height: 1.6; margin-bottom: 8px; }
+        .step-question strong { font-style: italic; }
+        .step-flow { font-size: 14px; color: #0A0A0A; }
+        .step-flow .orange { color: #C65D3B; font-weight: 700; }
+
+        .pro-tip { background: #F2ECE8; padding: 16px 20px; margin-top: 25px; margin-bottom: 0; }
+        .pro-tip-label { font-weight: 700; color: #C65D3B; font-size: 14px; }
+        .pro-tip-text { font-size: 14px; color: #444; line-height: 1.6; }
+
+        .divider { border: none; border-top: 1px solid #E0E0E0; margin: 40px 0; }
+
+        .type-item { margin-bottom: 14px; }
+        .type-name { font-weight: 700; font-size: 14px; color: #0A0A0A; }
+        .type-desc { font-size: 14px; color: #444; line-height: 1.6; }
+
+        .umbrella { margin-top: 24px; }
+        .umbrella-label { font-weight: 700; font-size: 14px; color: #C65D3B; margin-bottom: 10px; }
+        .umbrella-sub { padding-left: 20px; margin-bottom: 8px; }
+        .umbrella-sub .sub-name { font-weight: 600; font-size: 13px; color: #0A0A0A; }
+        .umbrella-sub .sub-desc { font-size: 13px; color: #666; }
+
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 15px 20px; }
+            .lesson-header { padding: 20px 20px 35px; }
+            .lesson-title { font-size: 26px; }
+            .tab-nav { padding: 0 20px; }
+            .tab-btn { padding: 16px 20px; }
+            .video-container { padding: 0 20px; }
+            .cheat-sheet { padding: 35px 20px 50px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>›</span>
+        <a href="../../learn.html">Argument Structure</a>
+        <span>›</span>
+        <span class="current">Method of Reasoning</span>
+    </div>
+
+    <div class="lesson-header">
+        <div class="lesson-section-label">Argument Structure Questions</div>
+        <h1 class="lesson-title">Method of Reasoning</h1>
+        <p class="lesson-subtitle">How does the author use the premises to support the conclusion?</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('video')">Video</button>
+        <button class="tab-btn" onclick="switchTab('cheatsheet')">Cheat Sheet</button>
+    </div>
+
+    <!-- ==================== VIDEO TAB ==================== -->
+    <div id="tab-video" class="tab-content active">
+        <section class="video-section">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://iframe.mediadelivery.net/embed/600986/2946ab0c-5658-4531-8404-cd391e315e0b?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== CHEAT SHEET TAB ==================== -->
+    <div id="tab-cheatsheet" class="tab-content">
+    <div class="cheat-sheet">
+
+        <div class="section-label">Identify the Question</div>
+
+        <p style="font-size: 14px; color: #444; margin-bottom: 16px;">Look for stems that ask how the argument works:</p>
+
+        <div style="margin-bottom: 8px; font-size: 14px; color: #0A0A0A; font-style: italic; padding-left: 10px;">"...method of reasoning used in the argument?"</div>
+        <div style="margin-bottom: 8px; font-size: 14px; color: #0A0A0A; font-style: italic; padding-left: 10px;">"The argument proceeds by..."</div>
+        <div style="margin-bottom: 8px; font-size: 14px; color: #0A0A0A; font-style: italic; padding-left: 10px;">"The argument derives its conclusion by..."</div>
+        <div style="margin-bottom: 20px; font-size: 14px; color: #0A0A0A; font-style: italic; padding-left: 10px;">"...technique or strategy employed by the argument?"</div>
+
+        <hr class="divider">
+
+        <div class="section-label">The Method</div>
+
+        <div class="step">
+            <span class="step-number">Step 1</span>
+            <span class="step-text">Identify the question stem.</span>
+        </div>
+
+        <div class="step">
+            <span class="step-number">Step 2</span>
+            <span class="step-text">Read the stimulus.</span>
+        </div>
+
+        <div class="step">
+            <span class="step-number">Step 3</span>
+            <span class="step-text">Label the premises and conclusion.</span>
+        </div>
+
+        <div class="step">
+            <span class="step-number">Step 4</span>
+            <span class="step-text">Note how the premises support the conclusion.</span>
+        </div>
+
+        <div class="step">
+            <span class="step-number">Step 5</span>
+            <span class="step-text">Check each answer choice:</span>
+            <div class="step-sub">
+                <p class="step-question">Is <strong>every word</strong> accurately describing how the premises support the conclusion?</p>
+                <p class="step-flow"><span class="orange">Yes</span> → that's your answer. &nbsp;&nbsp;&nbsp; <span class="orange">No</span> → move on.</p>
+            </div>
+        </div>
+
+        <div class="pro-tip">
+            <span class="pro-tip-label">Pro tip: </span>
+            <span class="pro-tip-text">If you have a clear prediction from Step 4, scan the answer choices and start with the ones that match.</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="section-label">Common Types</div>
+
+        <div class="umbrella">
+            <div class="umbrella-label">Supporting their conclusion</div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Applying a rule or principle</span>
+                <span class="sub-desc"> — applies a rule or conditional to a specific fact to reach a conclusion</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Providing an example</span>
+                <span class="sub-desc"> — supports a general claim by pointing to a specific instance of it</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Appealing to an analogy</span>
+                <span class="sub-desc"> — compares the situation to a different but structurally similar one</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Weighing options</span>
+                <span class="sub-desc"> — considers different possibilities: citing costs/benefits or eliminating alternatives</span>
+            </div>
+        </div>
+
+        <div class="umbrella">
+            <div class="umbrella-label">Responding to another argument</div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Disputing a premise</span>
+                <span class="sub-desc"> — disagrees with the factual support in the other argument</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Questioning an assumption</span>
+                <span class="sub-desc"> — challenges an unstated premise the other argument relies on</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Providing counterevidence</span>
+                <span class="sub-desc"> — presents evidence that undermines the other argument's conclusion</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Offering an alternative explanation</span>
+                <span class="sub-desc"> — proposes a different cause or reason than the one being assumed</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Drawing a distinction</span>
+                <span class="sub-desc"> — shows that two things being treated as the same are actually different</span>
+            </div>
+            <div class="umbrella-sub">
+                <span class="sub-name">Points out a flaw in reasoning</span>
+                <span class="sub-desc"> — identifies a logical error: circular reasoning, causal confusion, or confusing sufficient & necessary</span>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (tab === 'video') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            }
+            document.getElementById('tab-' + tab).classList.add('active');
+            window.scrollTo({ top: document.querySelector('.tab-nav').offsetTop - 10, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
