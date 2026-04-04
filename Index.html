@@ -17,56 +17,6 @@
             background: #0A0A0A;
         }
         
-        /* Announcement Bar */
-        .announcement-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: #111;
-            border-bottom: 1px solid #1a1a1a;
-            padding: 14px 20px;
-            text-align: center;
-            font-size: 13px;
-            color: #999;
-            letter-spacing: 0.3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .announce-dot {
-            width: 6px;
-            height: 6px;
-            background: #C65D3B;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            flex-shrink: 0;
-        }
-
-        .announce-link {
-            color: #999;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            padding: 0 16px;
-        }
-
-        .announce-link:hover {
-            color: #ccc;
-        }
-
-        .announce-cta {
-            color: #ccc;
-            font-weight: 500;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
         /* Nav */
         .nav {
             position: absolute;
@@ -118,7 +68,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 160px 20px 40px;
+            padding: 120px 20px 40px;
         }
         
         .hero-brand {
@@ -603,23 +553,13 @@
                 flex-direction: column;
                 gap: 20px;
             }
-
-            .announcement-bar {
-                font-size: 10px;
-                padding: 10px 12px;
-                flex-wrap: wrap;
-            }
-
-            .announce-link {
-                padding: 0 10px;
-            }
             
             .nav-links {
                 gap: 25px;
             }
             
             .hero {
-                padding: 140px 20px 40px;
+                padding: 100px 20px 40px;
             }
             
             .hero-brand {
@@ -699,18 +639,13 @@
     </style>
 </head>
 <body>
-    <!-- Announcement Bar -->
-    <div class="announcement-bar">
-        <span class="announce-dot"></span>
-        <a href="course.html" class="announce-link">Live courses launching April 4 · <span class="announce-cta">Learn more</span></a>
-    </div>
 
     <!-- Nav -->
-    <nav class="nav" style="top: 48px;">
+    <nav class="nav">
         <a href="index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
             <a href="learn.html">Learn</a>
-            <a href="course.html">Courses</a>
+            <a href="roadmap.html">Dashboard</a>
             <a href="pricing.html">Pricing</a>
             <a href="index.html#results">Testimonials</a>
         </div>

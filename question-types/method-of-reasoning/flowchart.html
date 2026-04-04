@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Method of Reasoning Flowchart - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .v-accent { color: #C65D3B; font-weight: 700; }
+
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .step {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 20px 25px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .step.highlight {
+            border-color: #C65D3B;
+            border-width: 2px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #C65D3B;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            letter-spacing: 1px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step-content {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .step-content ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .step-content li {
+            padding-left: 15px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .step-content li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #999;
+        }
+
+        .arrow {
+            text-align: center;
+            padding: 8px 0;
+            color: #CCC;
+            font-size: 18px;
+        }
+
+        .branch-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .branch {
+            flex: 1;
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 15px 20px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
+        .branch.yes {
+            border-color: #C65D3B;
+            border-width: 2px;
+        }
+
+        .branch .branch-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 6px;
+        }
+
+        .branch .step-content {
+            font-size: 12px;
+        }
+
+        .final-step {
+            background: #0A0A0A;
+            border: none;
+            text-align: center;
+        }
+
+        .final-step .step-title {
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .final-step .step-content {
+            color: #888;
+        }
+
+        .pro-tip {
+            background: #F2ECE8;
+            border: none;
+            margin-top: 20px;
+            padding: 18px 22px;
+        }
+
+        .pro-tip .tip-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #C65D3B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .pro-tip .step-content {
+            font-size: 13px;
+            color: #444;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"><span class="v-accent">V</span>EDARION</div>
+            <h1 class="title">Method of Reasoning</h1>
+        </div>
+
+        <div class="flowchart">
+            <div class="step">
+                <div class="step-number">STEP 1</div>
+                <div class="step-title">Identify the Question Stem</div>
+                <div class="step-content">
+                    <ul>
+                        <li>"...method of reasoning used in the argument?"</li>
+                        <li>"The argument proceeds by..."</li>
+                        <li>"The argument derives its conclusion by..."</li>
+                        <li>"...technique or strategy employed by the argument?"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step">
+                <div class="step-number">STEP 2</div>
+                <div class="step-title">Read the Stimulus</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Read the full stimulus carefully</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step">
+                <div class="step-number">STEP 3</div>
+                <div class="step-title">Label the Premises and Conclusion</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Identify what's being argued and what supports it</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step highlight">
+                <div class="step-number">STEP 4</div>
+                <div class="step-title">Note How the Premises Support the Conclusion</div>
+                <div class="step-content">
+                    <ul>
+                        <li>What is the author doing with the premises to reach the conclusion?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step">
+                <div class="step-number">STEP 5</div>
+                <div class="step-title">Check Each Answer Choice</div>
+                <div class="step-content">
+                    Is <strong>every word</strong> accurately describing how the premises support the conclusion?
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="branch-container">
+                <div class="branch yes">
+                    <div class="branch-label">Yes</div>
+                    <div class="step-content">That's your answer.</div>
+                </div>
+                <div class="branch">
+                    <div class="branch-label">No</div>
+                    <div class="step-content">Move on to the next choice.</div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="step final-step">
+                <div class="step-title">Correct Answer Check</div>
+                <div class="step-content">
+                    Every word must accurately describe the argument's reasoning.
+                </div>
+            </div>
+        </div>
+
+        <div class="pro-tip">
+            <div class="tip-label">Pro Tip</div>
+            <div class="step-content">
+                If you have a clear prediction from Step 4, scan the answer choices and start with the ones that match.
+            </div>
+        </div>
+
+        <div class="footer">
+            vedarion.com
+        </div>
+
+        <svg class="watermark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+            <defs>
+                <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF8C5A"/>
+                    <stop offset="45%" stop-color="#C65D3B"/>
+                    <stop offset="100%" stop-color="#8B3A1D"/>
+                </linearGradient>
+                <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#C65D3B" stop-opacity="0.9"/>
+                    <stop offset="50%" stop-color="#C65D3B" stop-opacity="0.2"/>
+                    <stop offset="100%" stop-color="#C65D3B" stop-opacity="0.7"/>
+                </linearGradient>
+            </defs>
+            <circle cx="200" cy="200" r="185" fill="none" stroke="url(#ringGradient)" stroke-width="2.5"/>
+            <polygon points="200,305 80,95 130,95 200,235 270,95 320,95" fill="url(#vGradient)"/>
+            <rect x="182" y="320" width="36" height="4" fill="#C65D3B" rx="2"/>
+        </svg>
+    </div>
+</body>
+</html>
