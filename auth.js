@@ -21,16 +21,6 @@ async function updateNavAuth() {
     existingAuth.forEach(el => el.remove());
 
     if (session) {
-        // Get user's first name
-        const firstName = session.user.user_metadata?.first_name || 'Student';
-
-        // Dashboard link
-        const dashLink = document.createElement('a');
-        dashLink.href = '/dashboard.html';
-        dashLink.textContent = 'Dashboard';
-        dashLink.className = 'auth-link';
-        navLinks.appendChild(dashLink);
-
         // Sign out link
         const signOutLink = document.createElement('a');
         signOutLink.href = '#';
