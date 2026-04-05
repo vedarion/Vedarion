@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sufficient Assumption — Theory - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 20px 20px 35px; text-align: center; }
+        .back-link { display: inline-block; color: #666; font-size: 13px; text-decoration: none; margin-bottom: 18px; transition: color 0.3s; }
+        .back-link:hover { color: #C65D3B; }
+        .page-title { font-size: 26px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
+        .page-subtitle { color: #666; font-size: 14px; margin-top: 10px; }
+        .video-tabs { display: flex; justify-content: center; gap: 0; background: #0A0A0A; padding-bottom: 0; }
+        .video-tabs a { font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #555; text-decoration: none; padding: 10px 24px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .video-tabs a:hover { color: #888; }
+        .video-tabs a.active { color: #C65D3B; border-bottom-color: #C65D3B; }
+        .content { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+        .video-container { margin-bottom: 30px; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .page-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about.html">About</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/learn.html" class="active">Learn</a>
+            <a href="/index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn.html" class="back-link">&larr; Back to Learn</a>
+        <h1 class="page-title">SUFFICIENT ASSUMPTION</h1>
+        <p class="page-subtitle">Theory: How to make the argument valid.</p>
+    </section>
+
+    <div class="video-tabs">
+        <a href="#" class="active">Theory</a>
+        <a href="lesson.html">Lesson</a>
+        <a href="worksheet.html">Worksheet</a>
+        <a href="flowchart.html">Flowchart</a>
+    </div>
+
+    <div class="content">
+        <div class="video-container">
+            <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/838168de-999a-4b7e-aef6-fcc21d6ea8bb?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <div class="cta-secondary">or <a href="/pricing.html">view pricing</a></div>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+    <script data-cfasync="false">requireAuth();</script>
+</body>
+</html>
