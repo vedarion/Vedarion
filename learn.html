@@ -61,6 +61,17 @@
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+
+        /* Sub-lesson rows */
+        .sub-lessons { list-style: none; margin: 0; padding: 0; }
+        .sub-lesson-item { background: #FAFAF8; border: 1px solid #E8E5E0; border-top: none; margin-bottom: 0; }
+        .sub-lesson-item:last-child { margin-bottom: 10px; }
+        .sub-lesson-item .lesson-content { padding: 14px 20px 14px 55px; }
+        .sub-lesson-item .lesson-title { font-size: 14px; color: #555; }
+        .sub-lesson-item .lesson-meta a { font-weight: 500; color: #555; }
+        .sub-lesson-item .lesson-meta a:hover { color: #C65D3B; }
+        .sub-lesson-item .lesson-check { width: 18px; height: 18px; }
+
         @media (max-width: 650px) {
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
@@ -69,6 +80,8 @@
             .path-card { max-width: 100%; }
             .lesson-content { flex-direction: column; align-items: flex-start; gap: 10px; }
             .lesson-meta { padding-left: 29px; }
+            .sub-lesson-item .lesson-content { padding-left: 40px; }
+            .sub-lesson-item .lesson-meta { padding-left: 29px; }
         }
     </style>
 </head>
@@ -105,7 +118,7 @@
     <div id="core-path" class="path-content active">
         <div class="hero-spacer"></div>
 
-        <!-- SECTION 1: FOUNDATIONS — fully open, no auth -->
+        <!-- SECTION 1: FOUNDATIONS -->
         <div class="section-header">
             <div class="section-number">1</div>
             <h2 class="section-title">Foundations</h2>
@@ -166,7 +179,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: ARGUMENT STRUCTURE — requires free account -->
+        <!-- SECTION 2: ARGUMENT STRUCTURE -->
         <div class="section-header">
             <div class="section-number">2</div>
             <h2 class="section-title">Argument Structure Questions</h2>
@@ -220,7 +233,7 @@
             </div>
         </section>
 
-        <!-- SECTION 3: MOST FREQUENT — requires free account -->
+        <!-- SECTION 3: MOST FREQUENT -->
         <div class="section-header">
             <div class="section-number">3</div>
             <h2 class="section-title">Most Frequent Question Types</h2>
@@ -229,7 +242,9 @@
             <div class="lessons-container">
                 <p class="section-description">Master the question types you'll see most often.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="sufficient-assumption">
+
+                    <!-- SUFFICIENT ASSUMPTION — with sub-rows -->
+                    <li class="lesson-item available" data-slug="sufficient-assumption" style="margin-bottom:0;">
                         <div class="lesson-content">
                             <div class="lesson-info">
                                 <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -238,10 +253,35 @@
                             <div class="lesson-meta">
                                 <a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a>
                                 <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
+                                <a href="question-types/sufficient-assumption/worksheet.html">Worksheet</a>
                             </div>
                         </div>
+                        <ul class="sub-lessons">
+                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-theory">
+                                <div class="lesson-content">
+                                    <div class="lesson-info">
+                                        <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                        <span class="lesson-title">Theory</span>
+                                    </div>
+                                    <div class="lesson-meta">
+                                        <a href="question-types/sufficient-assumption/theory.html">Video</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-lesson">
+                                <div class="lesson-content">
+                                    <div class="lesson-info">
+                                        <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                        <span class="lesson-title">Lesson</span>
+                                    </div>
+                                    <div class="lesson-meta">
+                                        <a href="question-types/sufficient-assumption/lesson.html">Video</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="lesson-item available" data-slug="necessary-assumption">
                         <div class="lesson-content">
                             <div class="lesson-info">
@@ -298,7 +338,7 @@
             </div>
         </section>
 
-        <!-- SECTION 4: COMPLETE TOOLKIT — requires free account -->
+        <!-- SECTION 4: COMPLETE TOOLKIT -->
         <div class="section-header">
             <div class="section-number">4</div>
             <h2 class="section-title">Complete Your Toolkit</h2>
@@ -377,7 +417,7 @@
         </section>
     </div>
 
-    <!-- ====== ADVANCED PATH — all sections require free account ====== -->
+    <!-- ====== ADVANCED PATH ====== -->
     <div id="advanced-path" class="path-content">
         <div class="hero-spacer"></div>
 

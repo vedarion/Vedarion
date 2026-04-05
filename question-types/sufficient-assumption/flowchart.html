@@ -6,143 +6,213 @@
     <title>Sufficient Assumption - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
-        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
-        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
-        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        body { font-family: 'Georgia', serif; background: #0A0A0A; color: #333; }
+
+        /* Nav */
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: #0A0A0A; }
+        .nav-brand { text-decoration: none; color: white; font-size: 16px; font-weight: 400; letter-spacing: 3px; }
+        .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #888; text-decoration: none; font-family: 'Calibri', 'Helvetica Neue', sans-serif; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
+
+        /* Hero */
         .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
-        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
+        .breadcrumb { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; margin-bottom: 20px; }
         .breadcrumb a { color: #888; text-decoration: none; }
         .breadcrumb a:hover { color: #C65D3B; }
         .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
-        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
-        .flowchart-container { max-width: 500px; width: 100%; }
+
+        /* Flowchart */
+        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; background: #FAF8F5; }
+        .flowchart-container { max-width: 520px; width: 100%; }
         .flowchart { display: flex; flex-direction: column; gap: 0; }
+
+        /* Steps */
         .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .step.highlight { border-color: #C65D3B; border-width: 2px; }
-        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
+        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-family: 'Calibri', sans-serif; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
         .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-content { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; line-height: 1.6; }
         .step-content ul { list-style: none; margin-top: 8px; }
         .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "•"; position: absolute; left: 0; color: #999; }
-        .step-note { font-size: 13px; color: #444; margin-top: 12px; font-style: italic; line-height: 1.5; }
+        .step-content li:before { content: "\2192"; position: absolute; left: 0; color: #999; }
+
+        /* Key insight callout */
+        .key-insight { margin-top: 12px; padding: 10px 14px; background: #FDF5F2; border-left: 3px solid #C65D3B; font-size: 13px; line-height: 1.5; }
+        .key-insight strong { color: #C65D3B; }
+
+        /* Mandatory badge */
+        .mandatory-badge { display: inline-block; background: #C65D3B; color: white; font-family: 'Calibri', sans-serif; font-size: 10px; font-weight: 600; padding: 2px 8px; letter-spacing: 1px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; }
+
+        /* Formula display */
+        .formula-box { background: #F0EDE8; border-radius: 6px; padding: 16px 20px; margin: 12px 0; text-align: center; }
+        .formula-box .formula { font-size: 15px; font-weight: 600; color: #0A0A0A; letter-spacing: 0.5px; }
+        .formula-box .formula .op { color: #999; font-weight: 400; }
+        .formula-box .formula .accent { color: #C65D3B; }
+
+        /* Conditional display */
+        .conditional-pair { display: flex; gap: 12px; margin: 10px 0; justify-content: center; }
+        .conditional-tag { background: #F0EDE8; border-radius: 4px; padding: 8px 18px; font-family: 'Georgia', serif; font-size: 14px; font-weight: 600; color: #0A0A0A; text-align: center; min-width: 90px; }
+        .conditional-or { font-family: 'Calibri', sans-serif; font-size: 13px; color: #999; display: flex; align-items: center; }
+
+        /* Arrow divider */
         .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
+
+        /* Final step */
         .final-step { background: #0A0A0A; border: none; text-align: center; }
         .final-step .step-title { margin-bottom: 5px; color: white; }
         .final-step .step-content { color: #888; }
-        .trap-step { background: #1A1A1A; border: 1px solid #333; }
-        .trap-step .step-title { color: #C65D3B; }
-        .trap-step .step-content { color: #999; }
-        .trap-step .step-content li:before { color: #C65D3B; content: "⚠"; }
+
+        /* Trap answers */
+        .wrong-answers { background: #F9F7F4; border: 1px dashed #CCC; padding: 20px 25px; margin-top: 15px; }
+        .wrong-answers .step-title { font-size: 12px; color: #666; margin-bottom: 12px; }
+        .trap-item { margin-bottom: 12px; }
+        .trap-item:last-child { margin-bottom: 0; }
+        .trap-label { font-family: 'Calibri', sans-serif; font-size: 13px; font-weight: 600; color: #0A0A0A; margin-bottom: 2px; }
+        .trap-tag { display: inline-block; background: #F0EDE8; border-radius: 3px; padding: 2px 8px; font-family: 'Georgia', serif; font-size: 12px; font-weight: 600; color: #0A0A0A; margin-left: 6px; }
+        .trap-desc { font-family: 'Calibri', sans-serif; font-size: 12px; color: #888; margin-top: 2px; }
+
+        /* CTA */
         .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
         .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-family: 'Calibri', sans-serif; font-size: 12px; font-weight: 600; text-decoration: none; display: inline-block; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
         .cta-button:hover { background: #A04D2E; }
         .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
-        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+
+        /* Footer */
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-family: 'Calibri', sans-serif; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+
+        /* Mobile */
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 20px; }
+            .page-title { font-size: 22px; }
+            .conditional-pair { flex-direction: column; align-items: center; }
+            .cta-button { display: block; margin: 10px auto; max-width: 250px; }
+        }
     </style>
 </head>
 <body>
+    <!-- Nav -->
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
+            <a href="../../about.html">About</a>
             <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+            <a href="../../learn.html" class="active">Learn</a>
         </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Sufficient Assumption</div>
+        <div class="breadcrumb">
+            <a href="../../learn.html">Learn</a> &rarr; Sufficient Assumption
+        </div>
         <h1 class="page-title">Sufficient Assumption</h1>
     </section>
 
+    <!-- Flowchart -->
     <section class="flowchart-section">
         <div class="flowchart-container">
             <div class="flowchart">
+
+                <!-- STEP 1: Question Stem -->
                 <div class="step">
                     <div class="step-number">STEP 1</div>
                     <div class="step-title">Read the Question Stem</div>
                     <div class="step-content">
                         Identify as Sufficient Assumption. Look for:
                         <ul>
-                            <li>"If assumed, the conclusion follows logically"</li>
-                            <li>"If true, allows the conclusion to be properly drawn"</li>
-                            <li>"If valid, justifies the reasoning"</li>
+                            <li>&ldquo;If assumed, the conclusion follows logically&rdquo;</li>
+                            <li>&ldquo;If true, allows the conclusion to be properly drawn&rdquo;</li>
+                            <li>&ldquo;If valid, justifies the reasoning&rdquo;</li>
                         </ul>
-                        <p class="step-note">The question stem is asking you to find an answer choice that makes the conclusion 100% true.</p>
+                        <div class="key-insight">
+                            <strong>Key Insight:</strong> The question is asking you to find an answer choice that makes the conclusion 100% true.
+                        </div>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="arrow">&darr;</div>
+
+                <!-- STEP 2: Strategy -->
                 <div class="step">
                     <div class="step-number">STEP 2</div>
                     <div class="step-title">Stimulus Strategy</div>
                     <div class="step-content">
                         <ul>
                             <li>Identify Premise(s) &amp; Conclusion</li>
-                            <li>Core argument — simplify Premise and Conclusion</li>
-                            <li>Identify the gap — express in Premise → Conclusion form</li>
+                            <li>Core Argument &mdash; Simplify the premise and conclusion down to their essential elements</li>
+                            <li>Identify the Gap <span class="mandatory-badge">Mandatory</span><br>Express in Premise &rarr; Conclusion form</li>
                         </ul>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="arrow">&darr;</div>
+
+                <!-- STEP 3: Answer Choices -->
                 <div class="step highlight">
                     <div class="step-number">STEP 3</div>
                     <div class="step-title">Answer Choice Strategy</div>
                     <div class="step-content">
-                        <ul>
-                            <li>Hunt Mode → scan for your prediction</li>
-                            <li>Correct answer: P → C &nbsp;or&nbsp; /C → /P</li>
-                            <li>If not found → POE (start with answer choice A)</li>
-                        </ul>
+                        <strong style="color:#0A0A0A;">Hunt Mode &mdash; start here</strong><br>
+                        Scan the answer choices for your prediction. The correct answer is:
+                        <div class="conditional-pair">
+                            <div class="conditional-tag">P &rarr; C</div>
+                            <div class="conditional-or">or</div>
+                            <div class="conditional-tag">/C &rarr; /P</div>
+                        </div>
+                        <div style="font-style:italic; color:#888; margin: 6px 0 14px; font-size: 12px;">
+                            Verify: Premise + Answer Choice &rarr; does the Conclusion follow 100%?
+                        </div>
+                        <strong style="color:#0A0A0A;">If Hunt Mode doesn&rsquo;t work &rarr; Process of Elimination</strong><br>
+                        Go through each answer choice and ask:
+                        <div class="formula-box">
+                            <div class="formula">Premise <span class="op">+</span> Answer Choice <span class="op">=</span> Will I get to the <strong>Conclusion</strong>?</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="arrow">&darr;</div>
+
+                <!-- Right Answer Check -->
                 <div class="step final-step">
                     <div class="step-title">Right Answer Check</div>
                     <div class="step-content">
-                        Premise + Answer Choice → you should 100% be able to arrive at the Conclusion.
+                        Answer Choice + Premise = Conclusion <strong style="color:#C65D3B;">100%</strong>
                     </div>
                 </div>
 
-                <div class="arrow">↓</div>
+            </div>
 
-                <div class="step trap-step">
-                    <div class="step-title">⚠ Trap Answer Choices</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Wrong direction: Conclusion → Premise</li>
-                            <li>Wrong negation: /Premise → /Conclusion</li>
-                            <li>Strengthens but does not guarantee a conclusion</li>
-                        </ul>
-                    </div>
+            <!-- Trap Answers -->
+            <div class="wrong-answers">
+                <div class="step-title">&mdash; TRAP ANSWER CHOICES &mdash;</div>
+                <div class="trap-item">
+                    <div class="trap-label">Wrong Direction <span class="trap-tag">C &rarr; P</span></div>
+                    <div class="trap-desc">Connects the right concepts but flips the direction. The gap goes from P to C, not the reverse.</div>
+                </div>
+                <div class="trap-item">
+                    <div class="trap-label">Wrong Negation <span class="trap-tag">/P &rarr; /C</span></div>
+                    <div class="trap-desc">Negates both sides without flipping &mdash; a classic conditional logic error. The valid form is /C &rarr; /P.</div>
+                </div>
+                <div class="trap-item">
+                    <div class="trap-label">Explainer Trap <span class="trap-tag">Restates what&rsquo;s already established</span></div>
+                    <div class="trap-desc">Restates something the argument already establishes. It doesn&rsquo;t add the missing link between premise and conclusion.</div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA -->
     <section class="cta-section">
         <p>Want to work through this together?</p>
         <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+        <a href="../../learn.html" class="cta-button secondary">&larr; Back to Learn</a>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
-    </footer>
-</body>
-</html>
+        <p>Questions? <a href="/cdn-cgi/l/email-protection#0f796a6b6e7d666061217b7a7b607d6661684f68626e6663216c6062"><span class="__c
