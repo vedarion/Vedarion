@@ -33,7 +33,6 @@
         .lessons-list { list-style: none; }
         .lesson-item { background: white; border: 1px solid #E0E0E0; margin-bottom: 10px; transition: border-color 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
         .lesson-item:hover { border-color: #C65D3B; }
-        .lesson-item.available:hover { border-color: #C65D3B; background: #FFFAF8; }
         .lesson-content { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; color: #0A0A0A; }
         .lesson-info { display: flex; align-items: center; gap: 15px; }
         .lesson-check { width: 20px; height: 20px; border-radius: 3px; border: 1.5px solid #CCC; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
@@ -42,14 +41,38 @@
         .lesson-check .check-svg { display: none; }
         .lesson-check.completed .check-svg { display: block; }
         .lesson-title { font-size: 15px; }
-        .lesson-meta { display: flex; align-items: center; gap: 15px; color: #888; font-size: 12px; }
+        .lesson-meta { display: flex; align-items: center; gap: 15px; color: #888; font-size: 12px; flex-shrink: 0; }
         .lesson-meta a { color: #0A0A0A; text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
         .lesson-meta a:hover { color: #C65D3B; }
         .lesson-meta .separator { color: #CCC; }
         .lesson-meta .coming-soon { color: #888; font-weight: 400; }
-        .ai-badge { background: #C65D3B; color: white; font-size: 8px; padding: 2px 5px; border-radius: 3px; letter-spacing: .5px; font-weight: 700; margin-right: 4px; vertical-align: middle; }
         .path-content { display: none; }
         .path-content.active { display: block; }
+
+        .preview-strip { background: #F6F4F1; border-top: 1px solid #EDEBE7; padding: 8px 20px 8px 55px; display: flex; align-items: center; gap: 8px; }
+        .preview-strip.expandable { cursor: pointer; transition: background 0.2s; }
+        .preview-strip.expandable:hover { background: #F0EDE8; }
+        .preview-strip .preview-count { font-size: 12px; color: #BBB; font-weight: 600; }
+        .preview-strip .preview-count.done { color: #C65D3B; }
+        .preview-strip .preview-dot { font-size: 12px; color: #DDD; }
+        .preview-strip .preview-text { font-size: 12px; color: #BBB; flex: 1; }
+        .preview-strip .preview-chevron { transition: transform 0.3s; }
+        .lesson-item.has-accordion.open .preview-strip .preview-chevron { transform: rotate(180deg); }
+        .lesson-item.has-accordion.open .preview-strip .preview-text { color: #999; }
+        .lesson-item.has-accordion.open .preview-strip .preview-count { color: #999; }
+        .lesson-item.has-accordion.open .preview-strip .preview-count.done { color: #C65D3B; }
+
+        .sub-lessons { list-style: none; margin: 0; padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .lesson-item.has-accordion.open .sub-lessons { max-height: 500px; }
+        .sub-lesson-item { background: #FAFAF8; border-top: 1px solid #EDEBE7; }
+        .sub-lesson-item .lesson-content { padding: 14px 20px 14px 55px; }
+        .sub-lesson-item .lesson-title { font-size: 14px; color: #555; }
+        .sub-lesson-item .lesson-title a { color: #555; text-decoration: none; }
+        .sub-lesson-item .lesson-title a:hover { color: #C65D3B; }
+        .sub-lesson-item .lesson-meta a { font-weight: 500; color: #555; }
+        .sub-lesson-item .lesson-meta a:hover { color: #C65D3B; }
+        .sub-lesson-item .lesson-check { width: 18px; height: 18px; }
+
         .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
         .cta-section p { color: #888; font-size: 16px; margin-bottom: 8px; }
         .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-bottom: 20px; }
@@ -62,16 +85,6 @@
         .footer a { color: #C65D3B; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
 
-        /* Sub-lesson rows */
-        .sub-lessons { list-style: none; margin: 0; padding: 0; }
-        .sub-lesson-item { background: #FAFAF8; border: 1px solid #E8E5E0; border-top: none; margin-bottom: 0; }
-        .sub-lesson-item:last-child { margin-bottom: 10px; }
-        .sub-lesson-item .lesson-content { padding: 14px 20px 14px 55px; }
-        .sub-lesson-item .lesson-title { font-size: 14px; color: #555; }
-        .sub-lesson-item .lesson-meta a { font-weight: 500; color: #555; }
-        .sub-lesson-item .lesson-meta a:hover { color: #C65D3B; }
-        .sub-lesson-item .lesson-check { width: 18px; height: 18px; }
-
         @media (max-width: 650px) {
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
@@ -80,6 +93,7 @@
             .path-card { max-width: 100%; }
             .lesson-content { flex-direction: column; align-items: flex-start; gap: 10px; }
             .lesson-meta { padding-left: 29px; }
+            .preview-strip { padding-left: 40px; }
             .sub-lesson-item .lesson-content { padding-left: 40px; }
             .sub-lesson-item .lesson-meta { padding-left: 29px; }
         }
@@ -119,299 +133,87 @@
         <div class="hero-spacer"></div>
 
         <!-- SECTION 1: FOUNDATIONS -->
-        <div class="section-header">
-            <div class="section-number">1</div>
-            <h2 class="section-title">Foundations</h2>
-        </div>
+        <div class="section-header"><div class="section-number">1</div><h2 class="section-title">Foundations</h2></div>
         <section class="lessons-section">
             <div class="lessons-container">
                 <p class="section-description">Build the core skills everything else depends on.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="premises-conclusions">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Premises and Conclusions</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="foundations/identifying-conclusions/lesson.html">Lesson</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="conditional-logic">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Conditional Logic Basics</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="foundations/conditional-logic/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="foundations/conditional-logic/cl-vedamark.html">VedaMark</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="chained-conditionals">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Chained Conditionals</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="foundations/chained-conditionals/lesson.html">Lesson</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="translating-words">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Translating Words on the Test</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="foundations/translating-words-on-the-test/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="foundations/translating-words-on-the-test/vedamark.html">VedaMark</a>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item available" data-slug="premises-conclusions"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Premises and Conclusions</span></div><div class="lesson-meta"><a href="foundations/identifying-conclusions/lesson.html">Lesson</a></div></div></li>
+                    <li class="lesson-item available" data-slug="conditional-logic"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Conditional Logic Basics</span></div><div class="lesson-meta"><a href="foundations/conditional-logic/lesson.html">Lesson</a><span class="separator">|</span><a href="foundations/conditional-logic/cl-vedamark.html">VedaMark</a></div></div></li>
+                    <li class="lesson-item available" data-slug="chained-conditionals"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Chained Conditionals</span></div><div class="lesson-meta"><a href="foundations/chained-conditionals/lesson.html">Lesson</a></div></div></li>
+                    <li class="lesson-item available" data-slug="translating-words"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Translating Words on the Test</span></div><div class="lesson-meta"><a href="foundations/translating-words-on-the-test/lesson.html">Lesson</a><span class="separator">|</span><a href="foundations/translating-words-on-the-test/vedamark.html">VedaMark</a></div></div></li>
                 </ul>
             </div>
         </section>
 
         <!-- SECTION 2: ARGUMENT STRUCTURE -->
-        <div class="section-header">
-            <div class="section-number">2</div>
-            <h2 class="section-title">Argument Structure Questions</h2>
-        </div>
+        <div class="section-header"><div class="section-number">2</div><h2 class="section-title">Argument Structure Questions</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Master the question types that test what an argument is doing.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="main-point">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Main Point</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/main-point/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/main-point/worksheet.html">Worksheet</a>
-                            </div>
-                        </div>
+                    <li class="lesson-item available has-accordion" data-slug="main-point"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Main Point</span></div><div class="lesson-meta"><a href="question-types/main-point/worksheet.html">Worksheet</a></div></div><div class="preview-strip expandable" onclick="toggleAccordion(this)"><span class="preview-count"></span><span class="preview-dot">·</span><span class="preview-text">Lesson · Practice</span><svg class="preview-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#CCC;"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                        <ul class="sub-lessons">
+                            <li class="sub-lesson-item available" data-slug="main-point-lesson"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/main-point/lesson.html">Lesson</a></span></div><div class="lesson-meta"><a href="question-types/main-point/lesson.html">Video</a></div></div></li>
+                        </ul>
                     </li>
-                    <li class="lesson-item available" data-slug="argument-part">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Argument Part / Role of Statement</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/argument-part/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/argument-part/worksheet.html">Worksheet</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/argument-part/flowchart.html">Flowchart</a>
-                            </div>
-                        </div>
+
+                    <li class="lesson-item available has-accordion" data-slug="argument-part"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Argument Part / Role of Statement</span></div><div class="lesson-meta"><a href="question-types/argument-part/worksheet.html">Worksheet</a><span class="separator">|</span><a href="question-types/argument-part/flowchart.html">Flowchart</a></div></div><div class="preview-strip expandable" onclick="toggleAccordion(this)"><span class="preview-count"></span><span class="preview-dot">·</span><span class="preview-text">Lesson · Practice</span><svg class="preview-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#CCC;"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                        <ul class="sub-lessons">
+                            <li class="sub-lesson-item available" data-slug="argument-part-lesson"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/argument-part/lesson.html">Lesson</a></span></div><div class="lesson-meta"><a href="question-types/argument-part/lesson.html">Video</a></div></div></li>
+                        </ul>
                     </li>
-                    <li class="lesson-item available" data-slug="method-of-reasoning">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Method of Reasoning</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/method-of-reasoning/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/method-of-reasoning/flowchart.html">Flowchart</a>
-                            </div>
-                        </div>
+
+                    <li class="lesson-item available has-accordion" data-slug="method-of-reasoning"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Method of Reasoning</span></div><div class="lesson-meta"><a href="question-types/method-of-reasoning/flowchart.html">Flowchart</a></div></div><div class="preview-strip expandable" onclick="toggleAccordion(this)"><span class="preview-count"></span><span class="preview-dot">·</span><span class="preview-text">Lesson · Practice</span><svg class="preview-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#CCC;"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                        <ul class="sub-lessons">
+                            <li class="sub-lesson-item available" data-slug="method-of-reasoning-lesson"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/method-of-reasoning/lesson.html">Lesson</a></span></div><div class="lesson-meta"><a href="question-types/method-of-reasoning/lesson.html">Video</a></div></div></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </section>
 
         <!-- SECTION 3: MOST FREQUENT -->
-        <div class="section-header">
-            <div class="section-number">3</div>
-            <h2 class="section-title">Most Frequent Question Types</h2>
-        </div>
+        <div class="section-header"><div class="section-number">3</div><h2 class="section-title">Most Frequent Question Types</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Master the question types you'll see most often.</p>
                 <ul class="lessons-list">
 
-                    <!-- SUFFICIENT ASSUMPTION — with sub-rows -->
-                    <li class="lesson-item available" data-slug="sufficient-assumption" style="margin-bottom:0;">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Sufficient Assumption</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/sufficient-assumption/worksheet.html">Worksheet</a>
-                            </div>
-                        </div>
+                    <li class="lesson-item available has-accordion" data-slug="sufficient-assumption"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Sufficient Assumption</span></div><div class="lesson-meta"><a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a><span class="separator">|</span><a href="question-types/sufficient-assumption/worksheet.html">Worksheet</a></div></div>
+                        <div class="preview-strip expandable" onclick="toggleAccordion(this)"><span class="preview-count"></span><span class="preview-dot">·</span><span class="preview-text">Theory · Lesson · Practice</span><svg class="preview-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#CCC;"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
                         <ul class="sub-lessons">
-                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-theory">
-                                <div class="lesson-content">
-                                    <div class="lesson-info">
-                                        <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                        <span class="lesson-title">Theory</span>
-                                    </div>
-                                    <div class="lesson-meta">
-                                        <a href="question-types/sufficient-assumption/theory.html">Video</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-lesson">
-                                <div class="lesson-content">
-                                    <div class="lesson-info">
-                                        <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                        <span class="lesson-title">Lesson</span>
-                                    </div>
-                                    <div class="lesson-meta">
-                                        <a href="question-types/sufficient-assumption/lesson.html">Video</a>
-                                    </div>
-                                </div>
-                            </li>
+                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-theory"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/sufficient-assumption/theory.html">Theory</a></span></div><div class="lesson-meta"><a href="question-types/sufficient-assumption/theory.html">Video</a></div></div></li>
+                            <li class="sub-lesson-item available" data-slug="sufficient-assumption-lesson"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/sufficient-assumption/lesson.html">Lesson</a></span></div><div class="lesson-meta"><a href="question-types/sufficient-assumption/lesson.html">Video</a></div></div></li>
                         </ul>
                     </li>
 
-                    <li class="lesson-item available" data-slug="necessary-assumption">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Necessary Assumption</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/necessary-assumption/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="strengthen-weaken">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Strengthen & Weaken</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/strengthen-weaken/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/strengthen-weaken/worksheet.html">Worksheet</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="flaw">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Flaw</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/flaw/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="must-be-true">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Must Be True</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/must-be-true/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item available" data-slug="necessary-assumption"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Necessary Assumption</span></div><div class="lesson-meta"><a href="question-types/necessary-assumption/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="strengthen-weaken"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Strengthen & Weaken</span></div><div class="lesson-meta"><a href="question-types/strengthen-weaken/flowchart.html">Flowchart</a><span class="separator">|</span><a href="question-types/strengthen-weaken/worksheet.html">Worksheet</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="flaw"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Flaw</span></div><div class="lesson-meta"><a href="question-types/flaw/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="must-be-true"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Must Be True</span></div><div class="lesson-meta"><a href="question-types/must-be-true/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
                 </ul>
             </div>
         </section>
 
         <!-- SECTION 4: COMPLETE TOOLKIT -->
-        <div class="section-header">
-            <div class="section-number">4</div>
-            <h2 class="section-title">Complete Your Toolkit</h2>
-        </div>
+        <div class="section-header"><div class="section-number">4</div><h2 class="section-title">Complete Your Toolkit</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Round out your skills with the remaining question types.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="most-strongly-supported">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Most Strongly Supported</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="resolve-reconcile-explain">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Resolve / Reconcile / Explain</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/resolve-reconcile-explain/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="evaluate">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Evaluate</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/evaluate/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="agree-disagree">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Agree / Disagree (Point at Issue)</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/agree-disagree/flowchart.html">Flowchart</a>
-                                <span class="separator">|</span>
-                                <span class="coming-soon">Worksheet coming soon</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="lesson-item available" data-slug="parallel-reasoning">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Parallel Reasoning</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="question-types/parallel-reasoning/worksheet.html">Worksheet</a>
-                                <span class="separator">|</span>
-                                <a href="question-types/parallel-reasoning/flowchart.html">Flowchart</a>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item available" data-slug="most-strongly-supported"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Most Strongly Supported</span></div><div class="lesson-meta"><a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="resolve-reconcile-explain"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Resolve / Reconcile / Explain</span></div><div class="lesson-meta"><a href="question-types/resolve-reconcile-explain/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="evaluate"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Evaluate</span></div><div class="lesson-meta"><a href="question-types/evaluate/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="agree-disagree"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Agree / Disagree (Point at Issue)</span></div><div class="lesson-meta"><a href="question-types/agree-disagree/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="parallel-reasoning"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Parallel Reasoning</span></div><div class="lesson-meta"><a href="question-types/parallel-reasoning/worksheet.html">Worksheet</a><span class="separator">|</span><a href="question-types/parallel-reasoning/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
                 </ul>
             </div>
         </section>
@@ -420,76 +222,30 @@
     <!-- ====== ADVANCED PATH ====== -->
     <div id="advanced-path" class="path-content">
         <div class="hero-spacer"></div>
-
-        <div class="section-header">
-            <div class="section-number">1</div>
-            <h2 class="section-title">Complex Conditionals</h2>
-        </div>
+        <div class="section-header"><div class="section-number">1</div><h2 class="section-title">Complex Conditionals</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Unless/Without/Except · None/Cannot · Combined Statements</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="complex-conditionals">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Complex Conditionals</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="advanced/complex-conditionals/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="advanced/complex-conditionals/cc-vedamark.html">VedaMark</a>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item available" data-slug="complex-conditionals"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Complex Conditionals</span></div><div class="lesson-meta"><a href="advanced/complex-conditionals/lesson.html">Lesson</a><span class="separator">|</span><a href="advanced/complex-conditionals/cc-vedamark.html">VedaMark</a></div></div></li>
                 </ul>
             </div>
         </section>
-
-        <div class="section-header">
-            <div class="section-number">2</div>
-            <h2 class="section-title">Advanced Translations</h2>
-        </div>
+        <div class="section-header"><div class="section-number">2</div><h2 class="section-title">Advanced Translations</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Few/Almost All · Required For · Comparative Statements · Tricky Grammar</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="advanced-translations">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Advanced Translations</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <a href="advanced/advanced-translations/lesson.html">Lesson</a>
-                                <span class="separator">|</span>
-                                <a href="advanced/advanced-translations/at-vedamark.html">VedaMark</a>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item available" data-slug="advanced-translations"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Advanced Translations</span></div><div class="lesson-meta"><a href="advanced/advanced-translations/lesson.html">Lesson</a><span class="separator">|</span><a href="advanced/advanced-translations/at-vedamark.html">VedaMark</a></div></div></li>
                 </ul>
             </div>
         </section>
-
-        <div class="section-header">
-            <div class="section-number">3</div>
-            <h2 class="section-title">Pattern Recognition</h2>
-        </div>
+        <div class="section-header"><div class="section-number">3</div><h2 class="section-title">Pattern Recognition</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Stop memorizing question types. Start seeing the patterns beneath them.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item" data-slug="argument-forms-traps">
-                        <div class="lesson-content">
-                            <div class="lesson-info">
-                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                                <span class="lesson-title">Argument Forms & Trap Answer Patterns</span>
-                            </div>
-                            <div class="lesson-meta">
-                                <span class="coming-soon">Coming soon</span>
-                            </div>
-                        </div>
-                    </li>
+                    <li class="lesson-item" data-slug="argument-forms-traps"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Argument Forms & Trap Answer Patterns</span></div><div class="lesson-meta"><span class="coming-soon">Coming soon</span></div></div></li>
                 </ul>
             </div>
         </section>
@@ -508,13 +264,41 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/auth.js"></script>
     <script>
+    function toggleAccordion(el) {
+        el.closest('.lesson-item').classList.toggle('open');
+    }
+
+    function updateAccordionCounts() {
+        document.querySelectorAll('.lesson-item.has-accordion').forEach(function(item) {
+            var subChecks = item.querySelectorAll('.sub-lessons .lesson-check');
+            if (subChecks.length === 0) return;
+            var total = subChecks.length;
+            var done = item.querySelectorAll('.sub-lessons .lesson-check.completed').length;
+            var countEl = item.querySelector('.preview-count');
+            var dotEl = item.querySelector('.preview-dot');
+            if (countEl) {
+                countEl.textContent = done + '/' + total;
+                if (done === total && total > 0) {
+                    countEl.classList.add('done');
+                } else {
+                    countEl.classList.remove('done');
+                }
+            }
+            if (dotEl) dotEl.style.display = '';
+            var parentCheck = item.querySelector(':scope > .lesson-content .lesson-check');
+            if (parentCheck) {
+                if (done === total && total > 0) {
+                    parentCheck.classList.add('completed');
+                } else {
+                    parentCheck.classList.remove('completed');
+                }
+            }
+        });
+    }
+
     function switchPath(path) {
-        document.querySelectorAll('.path-card').forEach(function(card) {
-            card.classList.remove('active');
-        });
-        document.querySelectorAll('.path-content').forEach(function(content) {
-            content.classList.remove('active');
-        });
+        document.querySelectorAll('.path-card').forEach(function(card) { card.classList.remove('active'); });
+        document.querySelectorAll('.path-content').forEach(function(content) { content.classList.remove('active'); });
         if (path === 'core') {
             document.querySelectorAll('.path-card')[0].classList.add('active');
             document.getElementById('core-path').classList.add('active');
@@ -535,75 +319,59 @@
         document.querySelectorAll('[data-requires-auth] a[href]').forEach(function(link) {
             link.addEventListener('click', function(e) {
                 var level = link.closest('[data-requires-auth]').getAttribute('data-requires-auth');
-
                 if (level === 'free' && !session) {
                     e.preventDefault();
                     sessionStorage.setItem('vedarion_redirect', link.getAttribute('href'));
                     window.location.href = 'login.html?reason=free';
                 }
-
-                if (level === 'paid') {
-                    if (!session) {
-                        e.preventDefault();
-                        sessionStorage.setItem('vedarion_redirect', link.getAttribute('href'));
-                        window.location.href = 'login.html?reason=paid';
-                    }
+                if (level === 'paid' && !session) {
+                    e.preventDefault();
+                    sessionStorage.setItem('vedarion_redirect', link.getAttribute('href'));
+                    window.location.href = 'login.html?reason=paid';
                 }
             });
         });
 
         if (session) {
             var userId = session.user.id;
-
             try {
-                var completions = await vedarionAuth.from('lesson_completions')
-                    .select('lesson_slug')
-                    .eq('user_id', userId);
+                var completions = await vedarionAuth.from('lesson_completions').select('lesson_slug').eq('user_id', userId);
                 if (completions.data) {
                     completions.data.forEach(function(row) {
                         var item = document.querySelector('[data-slug="' + row.lesson_slug + '"]');
                         if (item) {
-                            item.querySelector('.lesson-check').classList.add('completed');
+                            var check = item.querySelector('.lesson-check');
+                            if (check) check.classList.add('completed');
                         }
                     });
                 }
             } catch(e) {}
 
+            updateAccordionCounts();
+
             document.querySelectorAll('.lesson-check').forEach(function(check) {
                 check.addEventListener('click', async function(e) {
                     e.stopPropagation();
-                    var slug = check.closest('[data-slug]').dataset.slug;
+                    var item = check.closest('[data-slug]');
+                    if (!item) return;
+                    var slug = item.dataset.slug;
                     if (!slug) return;
+
+                    if (item.classList.contains('has-accordion') && !item.querySelector('.sub-lessons')) return;
+                    if (item.classList.contains('has-accordion') && item.querySelector(':scope > .lesson-content .lesson-check') === check) return;
 
                     if (check.classList.contains('completed')) {
                         check.classList.remove('completed');
-                        await vedarionAuth.from('lesson_completions')
-                            .delete()
-                            .eq('user_id', userId)
-                            .eq('lesson_slug', slug);
+                        await vedarionAuth.from('lesson_completions').delete().eq('user_id', userId).eq('lesson_slug', slug);
                     } else {
                         check.classList.add('completed');
-                        await vedarionAuth.from('lesson_completions')
-                            .upsert({ user_id: userId, lesson_slug: slug });
+                        await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
                     }
+                    updateAccordionCounts();
                 });
             });
-
-            document.querySelectorAll('.lesson-meta a').forEach(function(link) {
-                if (link.textContent.trim() !== 'Lesson') return;
-                link.addEventListener('click', async function(e) {
-                    var item = link.closest('[data-slug]');
-                    if (!item) return;
-                    var check = item.querySelector('.lesson-check');
-                    if (!check.classList.contains('completed')) {
-                        e.preventDefault();
-                        check.classList.add('completed');
-                        await vedarionAuth.from('lesson_completions')
-                            .upsert({ user_id: userId, lesson_slug: item.dataset.slug });
-                        window.location.href = link.getAttribute('href');
-                    }
-                });
-            });
+        } else {
+            updateAccordionCounts();
         }
     })();
     </script>
