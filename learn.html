@@ -258,10 +258,10 @@
     </section>
 
     <footer class="footer">
-        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+        <p>Questions? <a href="/cdn-cgi/l/email-protection#285e4d4c495a414746065c5d5c475a41464f684f45494144064b4745"><span class="__cf_email__" data-cfemail="dbadbebfbaa9b2b4b5f5afaeafb4a9b2b5bc9bbcb6bab2b7f5b8b4b6">[email&#160;protected]</span></a></p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/auth.js"></script>
     <script>
     function toggleAccordion(el) {
@@ -368,6 +368,23 @@
                         await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
                     }
                     updateAccordionCounts();
+                });
+            });
+
+            document.querySelectorAll('.sub-lesson-item a[href], .lesson-item:not(.has-accordion) .lesson-meta a[href]').forEach(function(link) {
+                link.addEventListener('click', async function(e) {
+                    var item = link.closest('[data-slug]');
+                    if (!item) return;
+                    var slug = item.dataset.slug;
+                    var check = item.querySelector('.lesson-check');
+                    if (!check || !slug) return;
+                    if (check.classList.contains('completed')) return;
+
+                    e.preventDefault();
+                    check.classList.add('completed');
+                    updateAccordionCounts();
+                    await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
+                    window.location.href = link.getAttribute('href');
                 });
             });
         } else {
