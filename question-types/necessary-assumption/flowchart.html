@@ -5,332 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Necessary Assumption - VEDARION</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: #FAFAFA;
-            color: #0A0A0A;
-            min-height: 100vh;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; }
         
         /* Nav */
-        .nav {
-            background: #0A0A0A;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 50px;
-            border-bottom: 1px solid #222;
-        }
-        
-        .nav-brand {
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 4px;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .nav-brand .v-accent {
-            color: #C65D3B;
-            font-weight: 700;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-        
-        .nav-links a {
-            color: #888;
-            text-decoration: none;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-        
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: white;
-        }
-        
+        .nav { background: #0A0A0A; padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: white; text-decoration: none; font-size: 16px; font-weight: 600; letter-spacing: 3px; }
+        .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
         /* Hero */
-        .hero {
-            background: #0A0A0A;
-            padding: 30px 20px 40px;
-            text-align: center;
-        }
-        
-        .breadcrumb {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        
-        .breadcrumb a {
-            color: #888;
-            text-decoration: none;
-        }
-        
-        .breadcrumb a:hover {
-            color: #C65D3B;
-        }
-        
-        .page-title {
-            font-size: 28px;
-            font-weight: 400;
-            letter-spacing: 4px;
-            color: white;
-            text-transform: uppercase;
-        }
-        
-        /* Flowchart Container */
-        .flowchart-section {
-            padding: 50px 20px;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .flowchart-container {
-            max-width: 500px;
-            width: 100%;
-        }
-        
-        .flowchart {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-        
-        .step {
-            background: white;
-            border: 1px solid #E0E0E0;
-            padding: 20px 25px;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .step.highlight {
-            border-color: #C65D3B;
-            border-width: 2px;
-        }
-        
-        .step-number {
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #C65D3B;
-            color: white;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            letter-spacing: 1px;
-        }
-        
-        .step-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0A0A0A;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .step-content {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        .step-content ul {
-            list-style: none;
-            margin-top: 8px;
-        }
-        
-        .step-content li {
-            padding-left: 15px;
-            position: relative;
-            margin-bottom: 5px;
-        }
-        
-        .step-content li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #999;
-        }
-        
-        .arrow {
-            text-align: center;
-            padding: 8px 0;
-            color: #CCC;
-            font-size: 18px;
-        }
-        
-        .branch-container {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .branch {
-            flex: 1;
-            background: white;
-            border: 1px solid #E0E0E0;
-            padding: 15px 20px;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .branch.highlight {
-            border-color: #C65D3B;
-            border-width: 2px;
-        }
-        
-        .branch .step-title {
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-        
-        .branch .step-content {
-            font-size: 12px;
-        }
-        
-        .final-step {
-            background: #0A0A0A;
-            border: none;
-            text-align: center;
-        }
-        
-        .final-step .step-title {
-            margin-bottom: 5px;
-            color: white;
-        }
-        
-        .final-step .step-content {
-            color: #888;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            background: #0A0A0A;
-            padding: 50px 20px;
-            text-align: center;
-        }
-        
-        .cta-section p {
-            color: #888;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-button {
-            background: #C65D3B;
-            color: white;
-            padding: 14px 30px;
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin: 0 10px;
-        }
-        
-        .cta-button:hover {
-            background: #A04D2E;
-        }
-        
-        .cta-button.secondary {
-            background: transparent;
-            border: 1px solid #444;
-            color: #888;
-        }
-        
-        .cta-button.secondary:hover {
-            border-color: #C65D3B;
-            color: white;
-        }
-        
-        /* Footer */
-        .footer {
-            background: #0A0A0A;
-            border-top: 1px solid #222;
-            color: #555;
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 13px;
-        }
-        
-        .footer a {
-            color: #C65D3B;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Mobile responsive */
-        @media (max-width: 650px) {
-            .nav {
-                padding: 20px;
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .nav-links {
-                gap: 25px;
-            }
-            
-            .page-title {
-                font-size: 22px;
-            }
-            
-            .branch-container {
-                flex-direction: column;
-            }
-            
-            .cta-button {
-                display: block;
-                margin: 10px auto;
-                max-width: 250px;
-            }
+        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
+        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #888; text-decoration: none; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
+        .page-subtitle { font-size: 14px; color: #C65D3B; margin-top: 10px; font-style: italic; letter-spacing: 1px; }
+
+        /* Flowchart */
+        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
+        .flowchart-container { max-width: 550px; width: 100%; }
+        .flowchart { display: flex; flex-direction: column; gap: 0; }
+        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .step.highlight { border-color: #C65D3B; border-width: 2px; }
+        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
+        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-content ul { list-style: none; margin-top: 8px; }
+        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
+        .step-content li:before { content: "–"; position: absolute; left: 0; color: #999; }
+        .keyword-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; margin-top: 10px; }
+        .keyword { font-size: 12px; color: #555; font-style: italic; padding: 4px 0; border-left: 2px solid #C65D3B; padding-left: 10px; }
+        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
+
+        /* Branch */
+        .branch-label { text-align: center; font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+        .branch-container { display: flex; gap: 15px; }
+        .branch { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 15px 20px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .branch.primary { border-color: #C65D3B; border-width: 2px; }
+        .branch .step-title { font-size: 12px; margin-bottom: 8px; }
+        .branch .step-content { font-size: 12px; }
+        .branch .step-content li { margin-bottom: 3px; }
+        .tip { margin-top: 10px; font-size: 11px; color: #C65D3B; font-style: italic; border-top: 1px solid #f0e8e3; padding-top: 8px; }
+        .tip strong { font-style: normal; }
+        .fallback-note { font-size: 11px; color: #999; margin-top: 8px; font-style: italic; }
+
+        /* Final step */
+        .final-step { background: #0A0A0A; border: none; text-align: center; }
+        .final-step .step-title { margin-bottom: 5px; color: white; }
+        .final-step .step-content { color: #888; }
+        .final-check-primary { color: #ccc; font-weight: 500; }
+
+        /* CTA */
+        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; margin-top: 60px; }
+        .cta-title { color: white; font-size: 18px; margin-bottom: 20px; letter-spacing: 1px; }
+        .cta-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .cta-button { display: inline-block; padding: 12px 30px; text-decoration: none; font-size: 13px; letter-spacing: 1px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-button.primary { background: #C65D3B; color: white; }
+        .cta-button.primary:hover { background: #a84d30; }
+        .cta-button.secondary { border: 1px solid #444; color: #888; }
+        .cta-button.secondary:hover { border-color: #888; color: white; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .nav { padding: 15px 20px; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .branch-container { flex-direction: column; }
+            .keyword-grid { grid-template-columns: 1fr; }
+            .cta-button { display: block; margin: 10px auto; max-width: 250px; }
         }
     </style>
 </head>
 <body>
     <!-- Nav -->
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="/" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
-            <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+            <a href="/about">About</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/learn" class="active">Learn</a>
         </div>
     </nav>
 
     <!-- Hero -->
     <section class="hero">
         <div class="breadcrumb">
-            <a href="../../Learn.html">Learn</a> → Necessary Assumption
+            <a href="/learn">Learn</a> → Necessary Assumption
         </div>
         <h1 class="page-title">Necessary Assumption</h1>
+        <p class="page-subtitle">Conditional Must Be True</p>
     </section>
 
     <!-- Flowchart -->
     <section class="flowchart-section">
         <div class="flowchart-container">
             <div class="flowchart">
+
+                <!-- Step 1: Question Stem -->
                 <div class="step">
                     <div class="step-number">STEP 1</div>
+                    <div class="step-title">Identify the Question Stem</div>
+                    <div class="step-content">
+                        Look for keywords that signal a Necessary Assumption question:
+                        <div class="keyword-grid">
+                            <div class="keyword">"requires an assumption"</div>
+                            <div class="keyword">"depends on assuming"</div>
+                            <div class="keyword">"assumes which of the following"</div>
+                            <div class="keyword">"relies on which assumption"</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <!-- Step 2: Read & Analyze -->
+                <div class="step">
+                    <div class="step-number">STEP 2</div>
                     <div class="step-title">Read & Analyze the Stimulus</div>
                     <div class="step-content">
                         <ul>
@@ -339,11 +132,12 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
+                <!-- Step 3: Core Argument -->
                 <div class="step">
-                    <div class="step-number">STEP 2</div>
+                    <div class="step-number">STEP 3</div>
                     <div class="step-title">Core Argument</div>
                     <div class="step-content">
                         <ul>
@@ -351,11 +145,12 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
+                <!-- Step 4: Identify the Gap -->
                 <div class="step highlight">
-                    <div class="step-number">STEP 3</div>
+                    <div class="step-number">STEP 4</div>
                     <div class="step-title">Identify the Gap & Translate if Helpful</div>
                     <div class="step-content">
                         <ul>
@@ -364,25 +159,29 @@
                         </ul>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
+                <!-- Step 5: Answer Choice Strategy -->
                 <div class="step">
-                    <div class="step-number">STEP 4</div>
-                    <div class="step-title">Choose Either Test</div>
+                    <div class="step-number">STEP 5</div>
+                    <div class="step-title">Answer Choice Strategy</div>
                     <div class="step-content">
+                        Start with the Must Be True test. Use the Negation Test as a fallback.
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
+                <!-- Branches -->
                 <div class="branch-container">
-                    <div class="branch highlight">
+                    <div class="branch primary">
                         <div class="step-title">Must Be True Test</div>
                         <div class="step-content">
                             <ul>
                                 <li>If the premises and conclusion are true, does this answer choice have to be true?</li>
                             </ul>
+                            <div class="tip"><strong>Tip:</strong> Embrace the conclusion.</div>
                         </div>
                     </div>
                     <div class="branch">
@@ -391,16 +190,19 @@
                             <ul>
                                 <li>If this were false, would the argument fall apart?</li>
                             </ul>
+                            <div class="fallback-note">See a negative word like "none"? Use this test to get rid of it.</div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="arrow">↓</div>
-                
+
+                <!-- Final check -->
                 <div class="step final-step">
                     <div class="step-title">Correct Answer Check</div>
                     <div class="step-content">
-                        Must be true for the argument to work · Negation destroys the argument
+                        <span class="final-check-primary">Must be true for the argument to work</span><br>
+                        Negation destroys the argument
                     </div>
                 </div>
             </div>
@@ -409,11 +211,11 @@
 
     <!-- CTA -->
     <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+        <div class="cta-title">Want to work through this together?</div>
+        <div class="cta-buttons">
+            <a href="/pricing" class="cta-button primary">Book a Session</a>
+            <a href="/learn" class="cta-button secondary">← Back to Learn</a>
+        </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#7503101114071c1a1b5b0100011a071c1b12351218141c195b161a18"><span class="__c
+</body>
+</html>

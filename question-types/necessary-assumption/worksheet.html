@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Necessary Assumption — Worksheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; background: #FAF8F5; color: #333; }
+
+        /* Nav */
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: #0A0A0A; }
+        .nav-brand { text-decoration: none; color: white; font-size: 16px; font-weight: 400; letter-spacing: 3px; }
+        .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { color: #888; text-decoration: none; font-family: 'Calibri', 'Helvetica Neue', sans-serif; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
+        /* Hero */
+        .hero { background: #0A0A0A; padding: 20px 20px 35px; text-align: center; }
+        .back-link { color: #888; text-decoration: none; font-family: 'Calibri', sans-serif; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s; }
+        .back-link:hover { color: white; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; margin-top: 15px; text-transform: uppercase; }
+        .page-subtitle { color: #666; font-family: 'Calibri', sans-serif; font-size: 13px; margin-top: 8px; }
+
+        /* Tabs */
+        .video-tabs { background: #0A0A0A; padding: 0 20px 20px; display: flex; justify-content: center; gap: 20px; }
+        .video-tabs a { color: #888; text-decoration: none; font-family: 'Calibri', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .video-tabs a:hover { color: white; }
+        .video-tabs a.active { color: white; border-bottom-color: #C65D3B; }
+
+        /* Content */
+        .content { max-width: 600px; margin: 0 auto; padding: 30px 20px 60px; }
+
+        /* Source bar */
+        .source-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #E8E0D8; }
+        .source-label { font-family: 'Calibri', sans-serif; font-size: 12px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+        .source-input { flex: 1; border: none; border-bottom: 1px solid #DDD; background: transparent; font-family: 'Calibri', sans-serif; font-size: 13px; color: #333; padding: 6px 0; }
+        .source-input:focus { outline: none; border-bottom-color: #C65D3B; }
+        .source-input::placeholder { color: #CCC; }
+
+        /* Step cards */
+        .step-card { background: white; border: 1px solid #E8E0D8; padding: 24px 24px 20px; margin-bottom: 0; }
+        .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+        .step-number { font-family: 'Calibri', sans-serif; font-size: 13px; font-weight: 700; color: #C65D3B; min-width: 30px; height: 30px; border: 2px solid #C65D3B; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .step-title { font-size: 15px; font-weight: 600; color: #0A0A0A; text-transform: uppercase; letter-spacing: 0.5px; }
+        .step-desc { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 14px; margin-left: 44px; }
+        .step-hint { font-family: 'Calibri', sans-serif; font-size: 12px; color: #999; font-style: italic; margin-bottom: 14px; margin-left: 44px; }
+        .step-connector { text-align: center; padding: 6px 0; color: #CCC; font-size: 16px; }
+
+        /* Sub-step labels */
+        .sub-label { font-family: 'Calibri', sans-serif; font-size: 12px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-left: 44px; }
+        .mandatory-badge { display: inline-block; background: #C65D3B; color: white; font-family: 'Calibri', sans-serif; font-size: 9px; font-weight: 700; padding: 2px 7px; letter-spacing: 0.8px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
+
+        /* Text areas */
+        .response-area { width: 100%; min-height: 80px; border: 1px solid #E0E0E0; background: #FAFAFA; padding: 14px; font-size: 14px; font-family: inherit; color: #0A0A0A; resize: vertical; transition: border-color 0.3s; line-height: 1.6; }
+        .response-area:focus { outline: none; border-color: #C65D3B; background: white; }
+        .response-area::placeholder { color: #CCC; }
+        .response-area.short { min-height: 50px; }
+
+        /* Gap display */
+        .gap-display { display: flex; align-items: center; gap: 10px; margin: 12px 0 6px 44px; }
+        .gap-box { flex: 1; }
+        .gap-box textarea { width: 100%; min-height: 40px; border: 1px solid #E0E0E0; background: #FAFAFA; padding: 10px; font-size: 13px; font-family: inherit; color: #0A0A0A; resize: vertical; transition: border-color 0.3s; }
+        .gap-box textarea:focus { outline: none; border-color: #C65D3B; background: white; }
+        .gap-box textarea::placeholder { color: #CCC; }
+        .gap-arrow { color: #C65D3B; font-size: 18px; font-weight: bold; flex-shrink: 0; }
+
+        /* Keyword examples */
+        .keyword-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; margin: 8px 0 0 44px; }
+        .keyword { font-family: 'Calibri', sans-serif; font-size: 12px; color: #888; font-style: italic; padding: 3px 0; border-left: 2px solid #C65D3B; padding-left: 8px; }
+
+        /* Method tags */
+        .method-section { margin-left: 44px; margin-bottom: 14px; }
+        .method-label { font-family: 'Calibri', sans-serif; font-size: 12px; font-weight: 600; color: #C65D3B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+        .method-desc { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; line-height: 1.5; }
+        .method-tip { font-family: 'Calibri', sans-serif; font-size: 12px; color: #C65D3B; font-style: italic; margin-top: 6px; }
+        .method-divider { text-align: center; color: #CCC; font-family: 'Calibri', sans-serif; font-size: 12px; margin: 14px 44px; letter-spacing: 2px; }
+        .method-fallback { font-family: 'Calibri', sans-serif; font-size: 12px; color: #999; font-style: italic; margin-top: 4px; }
+
+        /* Answers */
+        .answers-container { margin-left: 44px; margin-top: 16px; }
+        .answer-row { border: 1px solid #E8E0D8; margin-bottom: -1px; transition: all 0.2s; cursor: pointer; }
+        .answer-row:hover { border-color: #C65D3B; z-index: 1; position: relative; }
+        .answer-row.selected-correct { border-color: #C65D3B; background: #FDF8F6; }
+        .answer-header { display: flex; align-items: center; gap: 12px; padding: 10px 14px; }
+        .answer-letter { font-family: 'Calibri', sans-serif; font-size: 13px; font-weight: 700; color: #C65D3B; min-width: 24px; height: 24px; border: 1.5px solid #C65D3B; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .answer-row.selected-correct .answer-letter { background: #C65D3B; color: white; }
+        .answer-label { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; flex: 1; }
+        .answer-expand { font-size: 11px; color: #BBB; transition: transform 0.2s; }
+        .answer-row.open .answer-expand { transform: rotate(180deg); }
+        .answer-reasoning { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .answer-reasoning.open { max-height: 200px; }
+        .answer-reasoning textarea { width: 100%; min-height: 60px; border: none; border-top: 1px solid #EEE; background: white; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #0A0A0A; resize: vertical; line-height: 1.5; }
+        .answer-reasoning textarea:focus { outline: none; }
+        .answer-reasoning textarea::placeholder { color: #CCC; }
+
+        /* Verify box */
+        .verify-box { background: #F0EDE8; border-radius: 4px; padding: 12px 16px; margin: 14px 0 0 44px; text-align: center; }
+        .verify-box p { font-family: 'Calibri', sans-serif; font-size: 13px; color: #666; }
+        .verify-box strong { color: #0A0A0A; }
+
+        /* Clear button */
+        .clear-section { text-align: center; margin-top: 30px; }
+        .clear-btn { background: none; border: 1px solid #DDD; color: #999; padding: 10px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; font-family: inherit; }
+        .clear-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+
+        /* CTA */
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-family: 'Calibri', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-family: 'Calibri', sans-serif; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .cta-secondary a:hover { color: white; }
+
+        /* Footer */
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-family: 'Calibri', sans-serif; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .page-title { font-size: 22px; }
+            .step-card { padding: 20px 18px; }
+            .step-desc, .step-hint, .answers-container, .gap-display, .sub-label, .verify-box, .method-section, .method-divider, .keyword-grid { margin-left: 0; }
+            .source-bar { flex-direction: column; align-items: flex-start; }
+            .gap-display { flex-direction: column; }
+            .gap-arrow { transform: rotate(90deg); }
+            .keyword-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="/" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="/about">About</a>
+            <a href="/pricing">Pricing</a>
+            <a href="/learn" class="active">Learn</a>
+            <a href="/#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <a href="/learn" class="back-link">&larr; Back to Learn</a>
+        <h1 class="page-title">Necessary Assumption</h1>
+        <p class="page-subtitle">Work through any Necessary Assumption question using the strategy.</p>
+    </section>
+
+    <div class="video-tabs">
+        <a href="lesson">Lesson</a>
+        <a href="#" class="active">Worksheet</a>
+        <a href="flowchart">Flowchart</a>
+    </div>
+
+    <div class="content">
+
+        <!-- Question source -->
+        <div class="source-bar">
+            <span class="source-label">Question</span>
+            <input type="text" class="source-input" id="questionSource" placeholder="e.g. PT 92, Section 2, Q14">
+        </div>
+
+        <!-- Step 1: Read the Question Stem -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Read the Question Stem</div>
+            </div>
+            <p class="step-desc">Confirm it&rsquo;s a Necessary Assumption question. Look for these keywords:</p>
+            <div class="keyword-grid">
+                <div class="keyword">&ldquo;requires an assumption&rdquo;</div>
+                <div class="keyword">&ldquo;depends on assuming&rdquo;</div>
+                <div class="keyword">&ldquo;assumes which of the following&rdquo;</div>
+                <div class="keyword">&ldquo;relies on which assumption&rdquo;</div>
+            </div>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <!-- Step 2: Identify Premise & Conclusion -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Identify Premise(s) &amp; Conclusion</div>
+            </div>
+            <p class="step-desc">Read the stimulus. What is the author&rsquo;s evidence? What are they concluding?</p>
+            <div class="sub-label">Premise(s)</div>
+            <textarea class="response-area short" placeholder="What evidence does the author give?"></textarea>
+            <div class="sub-label" style="margin-top:12px;">Conclusion</div>
+            <textarea class="response-area short" placeholder="What is the author concluding?"></textarea>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <!-- Step 3: Core Argument & Gap -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Core Argument &amp; Gap</div>
+            </div>
+            <p class="step-desc">Simplify the argument down to its core. What concept is missing between premise and conclusion?</p>
+
+            <div class="sub-label">Simplified Argument</div>
+            <div class="gap-display">
+                <div class="gap-box">
+                    <textarea rows="1" placeholder="Premise (simplified)"></textarea>
+                </div>
+                <span class="gap-arrow">&rarr;</span>
+                <div class="gap-box">
+                    <textarea rows="1" placeholder="Conclusion (simplified)"></textarea>
+                </div>
+            </div>
+
+            <div class="sub-label" style="margin-top:14px;">Identify the Gap <span class="mandatory-badge">Predict</span></div>
+            <textarea class="response-area" placeholder="What&rsquo;s missing? What must the author be assuming to connect premise to conclusion? Translate to conditional form if helpful (A &rarr; B)."></textarea>
+        </div>
+
+        <div class="step-connector">&darr;</div>
+
+        <!-- Step 4: Answer Choices -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Answer Choices</div>
+            </div>
+
+            <!-- Must Be True -->
+            <div class="method-section">
+                <div class="method-label">Must Be True &mdash; start here</div>
+                <div class="method-desc">If the premises and conclusion are true, does this answer choice have to be true?</div>
+                <div class="method-tip">Tip: Embrace the conclusion.</div>
+            </div>
+
+            <div class="method-divider">&mdash; or &mdash;</div>
+
+            <!-- Negation Test -->
+            <div class="method-section">
+                <div class="method-label">Negation Test</div>
+                <div class="method-desc">If this answer were false, would the argument fall apart?</div>
+                <div class="method-fallback">See a negative word like &ldquo;none&rdquo;? Use this test to get rid of it.</div>
+            </div>
+
+            <!-- Answer rows A-E -->
+            <div class="answers-container">
+                <div class="answer-row" id="answer-a">
+                    <div class="answer-header" onclick="toggleAnswer('a')">
+                        <div class="answer-letter">A</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&#x25BC;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-a">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-b">
+                    <div class="answer-header" onclick="toggleAnswer('b')">
+                        <div class="answer-letter">B</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&#x25BC;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-b">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-c">
+                    <div class="answer-header" onclick="toggleAnswer('c')">
+                        <div class="answer-letter">C</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&#x25BC;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-c">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-d">
+                    <div class="answer-header" onclick="toggleAnswer('d')">
+                        <div class="answer-letter">D</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&#x25BC;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-d">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+                <div class="answer-row" id="answer-e">
+                    <div class="answer-header" onclick="toggleAnswer('e')">
+                        <div class="answer-letter">E</div>
+                        <span class="answer-label">Click to select &amp; explain</span>
+                        <span class="answer-expand">&#x25BC;</span>
+                    </div>
+                    <div class="answer-reasoning" id="reasoning-e">
+                        <textarea placeholder="Why is this right or wrong?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verify-box">
+                <p><strong>Must be true</strong> for the argument to work</p>
+            </div>
+        </div>
+
+        <!-- Clear -->
+        <div class="clear-section">
+            <button class="clear-btn" onclick="clearAll()">Clear &amp; Start New Question</button>
+        </div>
+
+    </div>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <div class="cta-secondary">or <a href="/pricing">view pricing</a></div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">
+        Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a>
+    </div>
+
+    <script>
+        function toggleAnswer(letter) {
+            var row = document.getElementById('answer-' + letter);
+            var panel = document.getElementById('reasoning-' + letter);
+            var wasOpen = row.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.answer-row').forEach(function(r) { r.classList.remove('open'); });
+            document.querySelectorAll('.answer-reasoning').forEach(function(p) { p.classList.remove('open'); });
+
+            if (!wasOpen) {
+                row.classList.add('open');
+                panel.classList.add('open');
+                panel.querySelector('textarea').focus();
+            }
+        }
+
+        // Click answer letter to mark correct
+        document.querySelectorAll('.answer-letter').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var row = el.closest('.answer-row');
+                var wasSelected = row.classList.contains('selected-correct');
+                document.querySelectorAll('.answer-row').forEach(function(r) { r.classList.remove('selected-correct'); });
+                if (!wasSelected) row.classList.add('selected-correct');
+            });
+        });
+
+        function clearAll() {
+            if (!confirm('Clear all responses and start a new question?')) return;
+            document.getElementById('questionSource').value = '';
+            document.querySelectorAll('.response-area, .answer-reasoning textarea, .gap-box textarea').forEach(function(ta) {
+                ta.value = '';
+            });
+            document.querySelectorAll('.answer-row').forEach(function(row) {
+                row.classList.remove('selected-correct', 'open');
+            });
+            document.querySelectorAll('.answer-reasoning').forEach(function(panel) {
+                panel.classList.remove('open');
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <script data-cfasync="false">requireAuth();</script>
+</body>
+</html>
