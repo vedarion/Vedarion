@@ -281,6 +281,17 @@
     .ws-synthesis{background:rgba(201,122,69,.03);border:1px solid rgba(201,122,69,.08);border-radius:12px;padding:18px;margin-top:8px}
     .ws-synth-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
     .ws-unflagged{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+    .ws-ita-field-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+    .ws-ita-field-lbl{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;min-width:80px}
+    .ws-ita-source{flex:1;min-width:180px;padding:8px 12px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .2s}
+    .ws-ita-source:focus{border-color:var(--faint)}
+    .ws-ita-decision{display:flex;gap:6px;flex-wrap:wrap}
+    .ws-ita-decision-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border-hi);background:transparent;color:var(--dim);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .ws-ita-decision-btn:hover{border-color:var(--faint);color:var(--text)}
+    .ws-ita-decision-btn.active{background:rgba(201,122,69,.15);border-color:var(--accent);color:var(--accent);font-weight:700}
+    .ws-ita-drill{display:flex;align-items:center;gap:8px}
+    .ws-ita-drill-inp{width:50px;padding:8px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:13px;text-align:center;outline:none;transition:border-color .2s}
+    .ws-ita-drill-inp:focus{border-color:var(--faint)}
     @media(max-width:768px){.ws-stats{grid-template-columns:repeat(2,1fr)}.ws-entry-hd{gap:6px}}
 
     .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
@@ -312,148 +323,7 @@ const db=window.supabase.createClient(SB_URL,SB_KEY);
 
 let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null,archiveOpen:false};
 
-const TEMPLATES={
-'advanced-5':{name:'Advanced 168+ (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
-{n:0,title:'Introduction',subtitle:'Session 0',description:'Get to know your tutor, talk through where you are, and walk through your roadmap together so you know exactly what\'s coming.',status:'upcoming',goals:['Get to know your tutor','Walk through your roadmap and what each session covers','Set expectations and next steps'],homework:[
-{label:'Book your next session',desc:''}
-]},
-{n:1,title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',status:'locked',
-goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],
-homework:[
-{label:'Insight to Action: LR Review',desc:'Review every missed question from our session\nFor each: was it strategy (knew the concept, wrong approach) or knowledge (didn\'t recognize the pattern)?\nWhat will you do differently next time?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
-{label:'Timing Log + LR Section',desc:'Take a fresh timed LR section (35 minutes)\nUse a stopwatch — write down how long you spent on each question\nGoal: first 10 questions done in 9 minutes\nGoal: no single question over 2 minutes on first pass\nFlag any question that took over 3 minutes\nIf you went over time, which questions caused it?\nBring your timing log to our next session'},
-{label:'Stimulus Breakdown Drill',desc:'Take every question you missed OR spent over 3 minutes on\nFor each one: write down the premise, the conclusion, and the gap\nFor every answer choice: write why it\'s right or wrong\nIf you can\'t identify the gap, mark it — that\'s what we fix together'},
-{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read'},
-{label:'Practice Test + Blind Review',desc:'Full PT under test conditions\nDuring the test: circle every question you weren\'t 100% sure about\nAfter the test: go back to every circled question untimed — take as long as you need\nCompare: did your answer change?\nAnswer changed and now correct → timing problem\nAnswer stayed wrong → knowledge problem\nCount how many were timing vs knowledge — bring this to our next session'}
-]},
-{n:2,title:'The Passage That Breaks You',subtitle:'Diagnostic',description:'Work through a hard Reading Comprehension passage together in real time. We\'ll slow down and examine how you read, what you notice, what you miss, and where time disappears.',status:'locked',
-goals:['Identify RC reading habits that cost time or accuracy','Test passage structure recognition on a difficult passage','Determine whether issues are comprehension, question strategy, or pacing'],
-homework:[
-{label:'Insight to Action: RC Review',desc:'Review every missed question from our session passage\nFor each: was it a reading issue (missed something in the passage) or a question strategy issue (understood the passage but picked wrong)?\nWhat will you do differently?\nDo 2 similar passage types\nResults improve → move on. If not → repeat or email tutor'},
-{label:'2 Hard RC Passages (untimed)',desc:'Focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nAfter finishing: did the summaries help you answer questions faster?'},
-{label:'1 RC Section (timed)',desc:'Full section under the clock\nTrack which passage took the most time and which questions you flagged'},
-{label:'1 LR Section (timed)',desc:'Keep LR momentum from Session 1\nSame Insight to Action process for any misses: strategy or knowledge?'},
-{label:'Practice Test + Blind Review',desc:''}
-]},
-{n:3,title:'LR Under the Clock',subtitle:'Timed Review',description:'Take a full timed LR section that day, then review it together question by question. Every miss and every hesitation gets examined.',status:'locked',
-goals:['Complete a timed LR section to simulate real test pressure','Review every flagged and missed question together','Identify patterns in errors — are they the same types from Session 1?'],
-homework:[
-{label:'Insight to Action: LR Review',desc:'Review every missed question from our session\nFor each: strategy or knowledge?\nAre these the same patterns from Session 1 or new ones?\nWhat will you do differently?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
-{label:'LR Section Reset',desc:'Take a fresh LR section when ready\nReview every miss with the same process\nCompare to Session 1 and Session 3 patterns — are you improving?\nClean section → ready for PT. If not → keep going'},
-{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read'},
-{label:'1 RC Section (timed)',desc:''},
-{label:'Practice Test + Blind Review',desc:''}
-]},
-{n:4,title:'RC Under the Clock',subtitle:'Timed Review',description:'Same approach as Session 3 but for Reading Comprehension. Full timed RC section followed by a detailed walkthrough of every passage and question.',status:'locked',
-goals:['Complete a timed RC section under test conditions','Review passage approach and question strategy for each passage','Compare weaknesses to Session 2 findings — what\'s improved, what hasn\'t'],
-homework:[
-{label:'Insight to Action: RC Review',desc:'Review every missed question from our timed section\nFor each: reading issue or question strategy issue?\nCompare to Session 2 findings — same problems or different?\nWhat will you do differently?\nDo 2 similar passage types\nResults improve → move on. If not → repeat or email tutor'},
-{label:'2 Hard RC Passages (untimed)',desc:'Untimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nCompare your approach now to Session 2 — what\'s changed?'},
-{label:'1 RC Section (timed)',desc:'Full section under the clock\nTrack timing per passage — are you faster than Session 2?'},
-{label:'1 LR Section (timed)',desc:'Keep LR sharp\nSame Insight to Action process for any misses'},
-{label:'Practice Test + Blind Review',desc:'Full PT under test conditions\nBlind review after — note confidence level on every question\nThis is your last PT before our final session'}
-]},
-{n:5,title:'Breaking the Plateau',subtitle:'Final Review',description:'Review a recent full practice test together with a focus on LR and RC. This is where everything from the first four sessions comes together. We\'ll build your game plan for test day.',status:'locked',
-goals:['Review a complete PT focusing on LR and RC sections','Confirm whether targeted weaknesses have improved','Build a test day strategy and final prep plan through April'],
-homework:[
-{label:'Final Insight to Action',desc:'Review your Insight to Action notes from all 4 previous sessions\nWhat patterns kept showing up?\nWhat changed in how you approach questions?\nWrite your 3 biggest takeaways'},
-{label:'Test Day Strategy',desc:'Write your section order preference and why\nWrite your timing plan for each section\nList your top 3 rules for test day (things you learned from our sessions)'},
-{label:'Continue the Process',desc:'Keep doing weekly PTs with blind review through April\nUse Insight to Action for every review\nIf you hit a wall → email tutor'}
-]}
-]},
-'foundation-5':{name:'Foundation 150s (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
-{n:1,title:'Full Diagnostic',subtitle:'Baseline & Pattern Audit',description:'We take a full timed PT (or recent official score) and do a deep dive into where points are being lost. The goal isn\'t just "what did you miss" — it\'s WHY. Are you misreading arguments? Getting lost in passages? Guessing on every conditional question? We map the patterns so every session after this has a clear target.',status:'upcoming',
-goals:['Complete a full timed diagnostic (PT or score report review)','Identify the 2-3 biggest point-loss patterns across LR, RC, and LG','Build a personalized 5-session attack plan based on what the diagnostic reveals'],
-homework:[
-{label:'Insight to Action: Diagnostic Review',desc:'Go through every question you missed on the diagnostic\nFor each one, write down: did you not understand the stimulus, or did you understand it but pick the wrong answer?\nGroup your misses — do you see clusters? (e.g., lots of missed conditional questions, or always down to two and picking wrong)\nBring your notes to Session 2 so we can compare with my analysis'},
-{label:'2 Hard RC Passages (untimed)',desc:'Pick 2 passages rated difficult from any PT\nRead each passage slowly — no timer\nAfter each passage, write a 1-sentence summary of the main point before looking at questions\nAnswer all questions, then review every miss: was it a reading issue or a question-interpretation issue?'},
-{label:'1 RC Section (timed)',desc:'Do a full 4-passage RC section under timed conditions\nDon\'t panic if you don\'t finish — note where you were when time ran out\nAfter: blind review any questions you were unsure about (no timer)\nCompare your timed answers to your blind review answers — the gap tells us how much is timing vs. understanding'},
-{label:'Practice Test + Blind Review',desc:'Take a full PT under timed conditions\nCircle any question you weren\'t 100% sure about during the test\nAfter scoring: go back to every circled question with no timer and try again\nCompare your timed score to your blind review score\nBring both scores to our next session'}
-]},
-{n:2,title:'Argument Structure Foundations',subtitle:'Core LR Skills',description:'Most points lost in the 150s come from not seeing how arguments are built. This session breaks down what a conclusion actually is, how to spot the gap between evidence and conclusion, and how to recognize when an author is making an assumption. Once you can see the skeleton of every argument, everything else clicks.',status:'locked',
-goals:['Consistently identify conclusions, evidence, and assumptions in LR stimuli','Understand the difference between stated information and the author\'s leap','Apply argument mapping to at least 10 LR questions with 80%+ accuracy'],
-homework:[
-{label:'Insight to Action: Argument Mapping Drill',desc:'Take 15 LR stimuli from any PT (ignore the questions for now)\nFor each one, underline the conclusion and bracket the evidence\nWrite the assumption in your own words — what\'s the gap between evidence and conclusion?\nIf you can\'t find it, mark it and bring it to our next session\nThen answer the actual questions — did seeing the structure help?'},
-{label:'Assumption Recognition Practice',desc:'Do 10 LR questions that ask you to find what the argument depends on\nFor each: before looking at answers, predict what the assumption is in your own words\nThen match your prediction to the answer choices\nTrack how often your prediction matched — aim for at least 6/10'},
-{label:'2 Hard RC Passages (untimed)',desc:'Pick 2 passages rated difficult from any PT\nAs you read, apply the same structure-spotting skills: what\'s the author\'s main claim? What\'s the evidence?\nWrite a 1-sentence main point before answering questions\nReview every miss'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nNote where you were when time was called\nBlind review after\nCompare timed vs. blind review scores'},
-{label:'Practice Test + Blind Review',desc:'Take a full PT under timed conditions\nCircle any question you weren\'t sure about\nBlind review after scoring\nBring both scores to next session'}
-]},
-{n:3,title:'Conditional Logic & Translations',subtitle:'Building the Foundation',description:'Conditional reasoning shows up everywhere on the LSAT — LR, RC, and especially LG. This session teaches you how to translate conditional statements into a consistent notation, how to find the contrapositive, and how to avoid the traps the test sets. We use real language patterns, not jargon.',status:'locked',
-goals:['Translate if/then, only if, unless, without, except, and no/none into conditional notation','For unless/without/except: identify the sufficient condition, negate it, show the full translation','For no/none: identify the necessary condition and negate it','Apply translations to at least 15 LR and LG problems with 75%+ accuracy'],
-homework:[
-{label:'Conditional Translation Drill',desc:'Take the 20 translation sentences from our session handout\nTranslate each one into conditional notation — write it out fully\nFor every unless/without/except: identify the sufficient condition, negate it, and write the full arrow\nFor every no/none: identify the necessary condition and negate it\nCheck against the answer key — aim for 16/20 or better\nRe-do any you missed until you can get them right without looking'},
-{label:'Insight to Action: Conditional LR Questions',desc:'Do 12 LR questions that involve conditional reasoning\nBefore picking an answer, write out any conditional statements in the stimulus\nTrack: did translating help you get it right? Or did you translate correctly but still miss — meaning the issue is elsewhere?\nBring your translations and results to Session 4'},
-{label:'2 Hard RC Passages (untimed)',desc:'Pick 2 difficult passages — look for ones with conditional or causal reasoning\nMark any conditional language in the passage as you read\nAnswer questions, review misses'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nBlind review after\nCompare scores and note any timing patterns'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions\nCircle uncertain questions\nBlind review after scoring\nBring both scores to next session'}
-]},
-{n:4,title:'Reading Comprehension Strategy',subtitle:'Structure Over Speed',description:'RC isn\'t about reading faster — it\'s about reading for the right things. This session builds a framework for how to approach each passage: what to look for on the first read, how to create a mental map of the passage structure, and how to use that map to answer questions without re-reading the whole passage every time.',status:'locked',
-goals:['Develop a consistent passage-reading approach: main point, author\'s tone, and structure','Practice passage mapping — identify purpose of each paragraph before answering questions','Reduce re-reading by knowing where to look for specific answer support'],
-homework:[
-{label:'Passage Mapping Practice',desc:'Do 4 RC passages (untimed)\nAfter reading each passage, write: (1) main point in one sentence, (2) author\'s attitude, (3) purpose of each paragraph in 5 words or less\nThen answer the questions using your map — try not to re-read entire paragraphs\nReview: did your map help? Were there questions where you still had to re-read? Why?'},
-{label:'Insight to Action: RC Miss Review',desc:'Look at all your RC misses from the last 2 PTs\nFor each miss: was it a reading issue (didn\'t understand the passage) or a question issue (understood passage but picked wrong answer)?\nFor reading issues: what did you miss on first read?\nFor question issues: what made the wrong answer attractive?\nWrite 1-2 takeaways you\'ll apply going forward'},
-{label:'2 Hard RC Passages (untimed)',desc:'Apply your new passage-mapping approach to 2 difficult passages\nCompare how it feels vs. your old approach\nNote what\'s working and what\'s still clunky'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section using your passage maps\nNote timing per passage if possible\nBlind review after\nCompare scores'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions\nCircle uncertain questions\nBlind review after scoring\nBring both scores to next session'}
-]},
-{n:5,title:'Integration & Next Steps',subtitle:'Putting It All Together',description:'Final session ties everything together. We review your progress from Session 1 to now, identify what\'s improved and what still needs work, and build a self-study plan for continued improvement. If you\'re continuing with more sessions, this becomes the launchpad for the next phase.',status:'locked',
-goals:['Compare diagnostic baseline to current performance — measure real improvement','Identify remaining weak areas and rank them by point impact','Create a structured self-study plan (or map out the next 5-session package)'],
-homework:[
-{label:'Final Insight to Action Review',desc:'Look at your Insight to Action notes from all 4 previous sessions\nWhat patterns have you fixed? What\'s still showing up?\nWrite a one-page summary: your 3 biggest improvements and your top 2 remaining weaknesses\nThis becomes your roadmap whether you continue with tutoring or study on your own'},
-{label:'Strategy Cheat Sheet',desc:'Create a 1-page personal cheat sheet of your go-to strategies\nInclude: argument structure steps, conditional translation rules, RC mapping approach\nThis should be in YOUR words — what clicks for you, not textbook definitions\nUse this as your warm-up sheet before every future PT'},
-{label:'2 Hard RC Passages (untimed)',desc:'Continue the habit — 2 hard passages, passage maps, full review'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nBlind review after\nCompare scores'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions — this is your final benchmark\nBlind review after scoring\nCompare to your Session 1 diagnostic'}
-]}
-]},
-'midrange-5':{name:'Mid-Range 160s (5 sessions)',package_type:'5-session',sessions_bought:5,sessions:[
-{n:1,title:'Targeted Diagnostic',subtitle:'Finding the Gaps',description:'You already have a solid foundation — you\'re not starting from scratch. The goal here is precision: figure out exactly where your points are leaking. We analyze recent PTs to identify the specific question patterns and passage types costing you the most, then build a plan that targets those gaps instead of reviewing stuff you already know.',status:'upcoming',
-goals:['Analyze 2-3 recent PTs to identify specific point-loss patterns (not just broad categories)','Distinguish between consistency issues (you sometimes get these right) and genuine gaps (you rarely get these right)','Prioritize the 2-3 highest-impact areas for the remaining 4 sessions'],
-homework:[
-{label:'Insight to Action: Gap Analysis',desc:'Pull up your last 3 PTs (or as many as you have)\nFor every miss, categorize it: (1) careless — you knew how to do it but made an error, (2) timing — you would\'ve gotten it right with more time, (3) genuine gap — you didn\'t know how to approach it\nCount up the categories — where are most of your misses falling?\nFor the "genuine gap" misses, look for patterns: same question type? Same reasoning pattern? Same passage structure?\nBring this analysis to Session 2'},
-{label:'2 Hard RC Passages (untimed)',desc:'Pick 2 passages rated difficult\nRead with full attention — no timer\nAnswer all questions, then review every miss\nNote: was the miss about the passage content or about how the question was worded?'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nTrack time per passage if possible (rough is fine)\nBlind review after\nCompare timed vs. blind review — the gap tells us how much is timing vs. skill'},
-{label:'Practice Test + Blind Review',desc:'Take a full PT under timed conditions\nCircle every question you weren\'t 100% certain about\nBlind review after scoring\nBring both scores and your circled-question analysis to next session'}
-]},
-{n:2,title:'LR Pattern Gaps',subtitle:'Closing the Leaks',description:'Based on your diagnostic, we zero in on the LR patterns costing you the most points. At the 160s level, it\'s usually 2-3 specific patterns — not a broad weakness. We\'ll work through those patterns in detail, build recognition strategies, and make sure you can spot them quickly on test day.',status:'locked',
-goals:['Master the 2-3 LR patterns identified in your diagnostic as highest point-loss areas','Build a recognition trigger for each pattern — what signals tell you which approach to use?','Hit 85%+ accuracy on targeted drill sets for those patterns'],
-homework:[
-{label:'Insight to Action: Targeted LR Drill',desc:'Do 20 LR questions focused on the patterns we identified in session\nFor each question: before answering, identify the pattern and your planned approach\nAfter answering, check: did you identify the pattern correctly? Did your approach work?\nFor any misses: was it a recognition issue (didn\'t see the pattern) or an execution issue (saw it but still got it wrong)?\nAim for 17/20 — if you\'re below 15, repeat with a fresh set before our next session'},
-{label:'Speed & Accuracy Check',desc:'Do 10 LR questions from your weak patterns, but this time under light time pressure (1 min 20 sec each)\nTrack which ones you got right, wrong, or skipped\nCompare to your untimed accuracy — if there\'s a big drop, we know pacing is a factor\nBring results to Session 3'},
-{label:'2 Hard RC Passages (untimed)',desc:'Pick 2 difficult passages\nFull review of all misses\nNote any patterns in RC misses that connect to what we\'re working on in LR'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nBlind review after\nCompare scores and track per-passage timing'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions\nCircle uncertain questions\nBlind review after scoring\nBring both scores to next session'}
-]},
-{n:3,title:'RC Deep Dive',subtitle:'Precision Reading',description:'At the 160s level, RC is often where the biggest jumps are hiding. You can read well enough to get the main idea, but the test rewards something more specific: understanding the author\'s structure, tracking viewpoint shifts, and knowing exactly where to look for answer support. We refine your approach to get those extra 3-5 points.',status:'locked',
-goals:['Sharpen passage reading to track structure, viewpoint shifts, and author tone with precision','Reduce time spent re-reading by building stronger first-read habits','Improve accuracy on "purpose" and "inference" questions — the ones that separate 160s from 170s'],
-homework:[
-{label:'Insight to Action: RC Structure Drill',desc:'Do 4 RC passages (untimed)\nAfter reading each one, write: main point (1 sentence), author\'s position (agrees/disagrees/neutral + why), and the function of each paragraph\nThen answer questions — for every question, note which part of your notes helped (or would have helped)\nFor misses: did your notes cover the relevant info? If not, what should you have tracked?'},
-{label:'Viewpoint Tracking Practice',desc:'Find 3 RC passages that involve multiple viewpoints (common in science and social science passages)\nAs you read, mark every viewpoint shift: who says what, and does the author agree?\nAnswer questions, then check: did tracking viewpoints help on any specific questions?\nThis is the skill that unlocks the trickiest RC questions'},
-{label:'2 Hard RC Passages (untimed)',desc:'Apply your refined reading approach\nFull review of all misses\nCompare accuracy to your earlier RC work — are you improving?'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section using refined approach\nNote if the approach feels faster, slower, or about the same\nBlind review after\nCompare scores'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions\nCircle uncertain questions\nBlind review after scoring\nBring both scores to next session'}
-]},
-{n:4,title:'Timing & Consistency',subtitle:'Performing Under Pressure',description:'You know the material — the question now is whether you can execute consistently under timed conditions. This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',status:'locked',
-goals:['Develop a section-level pacing strategy — know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol" — what to do when you\'re stuck so you don\'t burn 4 minutes'],
-homework:[
-{label:'Pacing Drill: LR Sections',desc:'Do 2 full LR sections, each timed at 35 minutes\nOn the first: use your normal approach — note where you feel rushed\nOn the second: apply the pacing strategy from our session (flag and move, return later)\nCompare accuracy and how you felt — which approach left fewer questions unanswered?\nBring both results to Session 5'},
-{label:'Insight to Action: Timing Leak Audit',desc:'Review your last 2 PTs and look at your timing patterns\nWhich sections did you run out of time on? Which passages or question sets ate the most time?\nFor each time crunch: was it one hard question that ate 4 minutes, or gradual slowness across many questions?\nWrite down 2-3 specific timing rules for yourself (e.g., "if I\'m not making progress after 90 seconds, flag and move")'},
-{label:'2 Hard RC Passages (untimed)',desc:'Continue the habit\nFull review of all misses'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section — apply pacing strategy\nBlind review after\nCompare scores'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions — treat this like test day\nApply your pacing rules and hard-question protocol\nBlind review after scoring\nBring both scores to final session'}
-]},
-{n:5,title:'Test Day Strategy & Review',subtitle:'Final Calibration',description:'Last session: we look at your full arc of improvement, lock in your test-day plan, and address anything that\'s still shaky. If you\'re continuing with more sessions, this becomes the pivot point. If this is it, you leave with a clear self-study roadmap and the confidence that you know exactly what to do on test day.',status:'locked',
-goals:['Review progress from diagnostic to now — quantify improvement and remaining gaps','Finalize a test-day plan: section order preferences, pacing rules, skip strategy, and mental reset routine','Build a self-study or next-phase plan targeting the remaining point gaps'],
-homework:[
-{label:'Final Insight to Action Review',desc:'Go through all your Insight to Action notes from Sessions 1-4\nWhat patterns have you fixed? What\'s still showing up?\nWrite a summary: your 3 biggest improvements and your top 2 remaining weaknesses\nThis is your study guide going forward'},
-{label:'Test Day Cheat Sheet',desc:'Create a 1-page personal cheat sheet for test day warm-up\nInclude: your pacing rules, your hard-question protocol, your RC reading steps, and your top 3 reminders\nWrite it in YOUR words — this is your pre-game routine\nUse it before your next 2 PTs to practice the warm-up habit'},
-{label:'2 Hard RC Passages (untimed)',desc:'Continue the habit — 2 hard passages, full review'},
-{label:'1 RC Section (timed)',desc:'Full timed RC section\nBlind review after\nCompare to your Session 1 RC performance'},
-{label:'Practice Test + Blind Review',desc:'Full PT under timed conditions — this is your final benchmark\nBlind review after scoring\nCompare to your Session 1 diagnostic'}
-]}
-]}
-};
+const TEMPLATES={};
 
 const HW_CARDS={
 'timing':{group:'Timing',cards:[
@@ -464,8 +334,8 @@ const HW_CARDS={
 'review':{group:'Review',cards:[
 {label:'Blind Review',desc:'Complete your Strategic Review for flagged questions\nComplete your Knowledge Review for flagged questions\nGrade and review missed unflagged questions\nCreate parallel arguments for any questions missed\nTake your findings to Insight to Action'},
 {label:'RC Blind Review',desc:'Complete your Strategic Review for flagged questions\nFor each passage where you flagged a question: fill out a Claim Tracking Worksheet\nGrade and review missed unflagged questions\nTake your findings to Insight to Action'},
-{label:'Insight to Action: LR',desc:'Review every missed question from blind review\nFor each: was it strategy (knew the concept, wrong approach) or knowledge (didn\'t recognize the pattern)?\nWhat will you do differently next time?\nDo 3 similar questions per miss\nGood results → move on. Still missing → repeat or email tutor'},
-{label:'Insight to Action: RC',desc:'Review every missed question from blind review\nFor each: was it a reading issue or a question strategy issue?\nWhat will you do differently?\nDo 2 similar passage types\nResults improve → move on. If not → repeat or email tutor'}
+{label:'Insight to Action: LR',desc:'Open the worksheet below\nLog every missed question and tag each as Strategy or Knowledge\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Not the question — the trap or concept behind it.\nWhat will you do differently next time?\nDrill 3 similar questions. Note your result.\nDecide: move on, repeat drills, or email tutor'},
+{label:'Insight to Action: RC',desc:'Open the worksheet below\nLog every missed question and tag each as Reading or Question Strategy\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Passage type, question type, or a comprehension issue\nWhat will you do differently next time?\nDo 2 similar passage types. Note your result.\nDecide: move on, repeat drills, or email tutor'}
 ]},
 'drills':{group:'Drills',cards:[
 {label:'Stimulus Breakdown Drill',desc:'Take every question you missed OR spent over 3 minutes on\nFor each one: write down the premise, the conclusion, and the gap\nFor every answer choice: write why it\'s right or wrong\nIf you can\'t identify the gap, mark it — that\'s what we fix together'},
@@ -652,6 +522,7 @@ function wsType(label){
   if(l==='blind review')return'blind_review';
   if(l==='confidence log')return'confidence_log';
   if(l==='rc blind review'||l==='rc passage breakdown')return'rc_claim_tracking';
+  if(l==='insight to action: lr'||l==='insight to action: rc'||l==='insight to action: lr review'||l==='insight to action: rc review'||l==='final insight to action')return'insight_to_action';
   return null;
 }
 
@@ -672,6 +543,16 @@ function wsSummaryText(hwId,type){
   }
   if(type==='rc_claim_tracking'){
     return`${entries.length} paragraph${entries.length===1?'':'s'} tracked`;
+  }
+  if(type==='insight_to_action'){
+    const main=entries.find(e=>e.data&&e.data.is_main);
+    if(!main)return'Not started';
+    const d=main.data||{};
+    const parts=[];
+    if(d.misses)parts.push('misses logged');
+    if(d.pattern)parts.push('pattern identified');
+    if(d.decision)parts.push(d.decision.toLowerCase());
+    return parts.length>0?parts.join(' · '):'In progress';
   }
   return'';
 }
@@ -717,7 +598,7 @@ function dashHTML(){
         </div>
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
-          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><select class="tpl-apply-sel" id="tpl-apply">${Object.keys(TEMPLATES).map(k=>'<option value="'+k+'">'+TEMPLATES[k].name+'</option>').join('')}</select><button class="add-b" id="apply-tpl" style="border-color:rgba(201,122,69,.3);color:var(--accent)">Apply Template</button><div style="text-align:center;color:var(--faint);font-size:10px;font-family:var(--mono);padding:4px 0">— or —</div><button class="add-b" id="add-first-s">+ Add Blank Session</button></div>`:''}
+          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><button class="add-b" id="add-first-s">+ Add Blank Session</button></div>`:''}
           ${S.sessions.map((ss,i)=>sessHTML(ss,i)).join('')}
           ${S.sessions.length>0&&t?'<button class="add-b" id="add-s">+ Add Session</button>':''}
         </div>`}
@@ -747,7 +628,6 @@ function dashHTML(){
         <div class="sb-divider"></div>
         <div class="sb-add-title">Add Student</div>
         <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
-        <select class="sb-tpl-sel" id="add-tpl"><option value="">No template (blank)</option>${Object.keys(TEMPLATES).map(k=>`<option value="${k}" ${S.addTpl===k?'selected':''}>${TEMPLATES[k].name}</option>`).join('')}</select>
         <button class="sb-add-btn" id="add-btn">Add by Email</button>
         ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${S.addMsg}</div>`:''}
       </div></div>`:''}
@@ -827,6 +707,7 @@ function wsShellHTML(){
   if(v.type==='blind_review')inner=wsBlindReviewHTML(v,name);
   else if(v.type==='confidence_log')inner=wsConfidenceLogHTML(v,name);
   else if(v.type==='rc_claim_tracking')inner=wsRCClaimHTML(v,name);
+  else if(v.type==='insight_to_action')inner=wsInsightToActionHTML(v,name);
   return`
     <div class="nav">
       <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${S.isTutor?'Tutor':'Student'}</span></div>
@@ -879,6 +760,72 @@ function wsDrop(hwId,entryNum,type,field,options){
   const d=wsEntryData(hwId,entryNum);
   const cur=d[field]||'';
   return`<select class="ws-sel" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}">${options.map(o=>`<option value="${esc(o)}"${cur===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+}
+
+function wsInsightToActionHTML(v,name){
+  const hwId=v.homework_id;
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='insight_to_action');
+  const main=entries.find(e=>e.data&&e.data.is_main);
+  const entryNum=main?main.entry_number:1;
+  const d=main?main.data||{}:{};
+  const isRC=(v.hw_label||'').toLowerCase().includes('rc');
+  const tag1=isRC?'Reading':'Strategy';
+  const tag2=isRC?'Question Strategy':'Knowledge';
+  const drillLabel=isRC?'Do 2 similar passage types':'Drill 3 similar questions';
+  const drillMax=isRC?2:3;
+  const patternPlaceholder=isRC
+    ?'Is it a passage type (science, law, history)? A question type? A comprehension issue? The pattern — not the question.'
+    :'What concept or trap keeps catching you? The pattern — not the question.';
+  const missesPlaceholder=isRC
+    ?'Q14 — Reading\nQ19 — Question Strategy\nQ22 — Reading'
+    :'Q14 — Knowledge\nQ19 — Strategy\nQ22 — Knowledge';
+  const decisionOpts=['Move on','Repeat drills','Email tutor'];
+  const curDecision=d.decision||'';
+  return`<div class="ws-wrap">
+    <div class="ws-title">Insight to Action ${isRC?'(RC)':'(LR)'}</div>
+    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
+    <div class="ws-desc">This is the synthesis step. Blind review gave you the per-question diagnosis. Now zoom out: what's the pattern across all your misses, and what will you actually do differently? Stop studying the question. Start studying the pattern behind it.</div>
+
+    <div class="ws-entry">
+      <div class="ws-ita-field-row">
+        <span class="ws-ita-field-lbl">Source</span>
+        <input class="ws-ita-source" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="source" placeholder="PT 92 · Section 2 · 4/23" value="${esc(d.source||'')}">
+      </div>
+
+      <div class="ws-sec-lbl">1. Log your misses</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">Tag each: ${tag1} (knew it, wrong approach) or ${tag2} (didn't recognize the pattern)</div>
+      ${wsITAField(hwId,entryNum,'misses',missesPlaceholder,3)}
+
+      <div class="ws-sec-lbl">2. Why did you miss them?</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">Be specific. Not "I should've trusted myself."</div>
+      ${wsITAField(hwId,entryNum,'why_missed','What actually went wrong on each one...',3)}
+
+      <div class="ws-sec-lbl">3. What's the pattern across these misses?</div>
+      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">This is the step most students skip. Look for what connects them.</div>
+      ${wsITAField(hwId,entryNum,'pattern',patternPlaceholder,3)}
+
+      <div class="ws-sec-lbl">4. What will you do differently next time?</div>
+      ${wsITAField(hwId,entryNum,'what_different','The concrete change to your approach — be specific...',2)}
+
+      <div class="ws-sec-lbl">5. ${drillLabel}</div>
+      <div class="ws-ita-drill">
+        <span style="font-size:13px;color:var(--text)">Result:</span>
+        <input class="ws-ita-drill-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="drill_result" placeholder="2" value="${esc(d.drill_result||'')}">
+        <span style="font-size:13px;color:var(--dim)">/ ${drillMax} correct</span>
+      </div>
+
+      <div class="ws-sec-lbl">6. Decision</div>
+      <div class="ws-ita-decision">
+        ${decisionOpts.map(o=>`<button class="ws-ita-decision-btn${curDecision===o?' active':''}" data-itadecision="${hwId}" data-itaentry="${entryNum}" data-itaval="${esc(o)}">${esc(o)}</button>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function wsITAField(hwId,entryNum,field,placeholder,rows){
+  const d=wsEntryData(hwId,entryNum);
+  const val=d[field]||'';
+  return`<textarea class="ws-field" style="min-height:${rows===1?44:rows===2?64:rows===3?96:80}px" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="${field}" placeholder="${esc(placeholder)}">${esc(val)}</textarea>`;
 }
 
 function wsBlindReviewHTML(v,name){
@@ -1126,12 +1073,6 @@ function bind(){
   document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
   document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
   document.getElementById('add-btn')?.addEventListener('click',addStudent);
-  document.getElementById('add-tpl')?.addEventListener('change',function(){S.addTpl=this.value;});
-  document.getElementById('apply-tpl')?.addEventListener('click',async()=>{
-    if(!S.selId)return;const sel=document.getElementById('tpl-apply');const tplKey=sel?sel.value:'';
-    if(!tplKey||!TEMPLATES[tplKey])return;const btn=document.getElementById('apply-tpl');
-    btn.textContent='Applying...';btn.disabled=true;await applyTemplate(S.selId,tplKey);await loadStudent(S.selId);R();
-  });
   document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
     await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
   });
@@ -1148,7 +1089,6 @@ function bind(){
   document.querySelectorAll('.tn-box').forEach(box=>{box.addEventListener('click',e=>{if(e.target.closest('.ed'))return;const edEl=box.querySelector('.ed');if(edEl)startEd(edEl);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);S.exSess=-1;await loadStudent(S.selId);R();});});
-  /* Session drag-and-drop reorder */
   let _dragIdx=null;
   document.querySelectorAll('.sess[data-dsi]').forEach(card=>{
     card.addEventListener('dragstart',e=>{if(e.target.closest('.sess-body')||e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')){e.preventDefault();return;}_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
@@ -1187,7 +1127,6 @@ function bind(){
       ta.value=before+'['+sel+']('+url+')'+after;ta.focus();
     });
   });});
-  /* Inline step editing — click to edit */
   document.querySelectorAll('.hw-st[data-stedit]').forEach(sp=>{sp.addEventListener('click',e=>{
     e.stopPropagation();if(document.querySelector('.hw-st-inp'))return;
     const hid=sp.dataset.stedit,si=parseInt(sp.dataset.stsi),isLabel=sp.dataset.stlabel==='1';
@@ -1207,7 +1146,6 @@ function bind(){
     inp.addEventListener('blur',save);
     inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();save();}if(ev.key==='Escape'){loadStudent(S.selId).then(R);}});
   });});
-  /* Right-click context menu on steps */
   document.querySelectorAll('.hw-st[data-stedit]').forEach(sp=>{sp.addEventListener('contextmenu',e=>{
     e.preventDefault();e.stopPropagation();
     document.querySelector('.hw-ctx')?.remove();
@@ -1230,7 +1168,6 @@ function bind(){
     menu.querySelectorAll('[data-ctx]').forEach(item=>{item.addEventListener('click',()=>handleCtx(item.dataset.ctx));});
     setTimeout(()=>{function dismiss(ev){if(!menu.contains(ev.target)){menu.remove();document.removeEventListener('click',dismiss);}}document.addEventListener('click',dismiss);},10);
   });});
-  /* Add step at bottom */
   document.querySelectorAll('[data-addstep]').forEach(btn=>{btn.addEventListener('click',async e=>{
     e.stopPropagation();const hid=btn.dataset.addstep;
     const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
@@ -1249,6 +1186,8 @@ function bind(){
   document.querySelectorAll('[data-claimsave]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveClaimField(inp.dataset.claimsave,parseInt(inp.dataset.claimentry),parseInt(inp.dataset.claimidx),inp.value);});});
   document.querySelectorAll('[data-addclaim]').forEach(btn=>{btn.addEventListener('click',async()=>{await addClaimToEntry(btn.dataset.addclaim,parseInt(btn.dataset.addclaimentry));});});
   document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
+  document.querySelectorAll('[data-itasave]').forEach(el=>{el.addEventListener('blur',async()=>{await saveItaField(el.dataset.itasave,parseInt(el.dataset.itaentry),el.dataset.itafield,el.value);});});
+  document.querySelectorAll('[data-itadecision]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveItaField(btn.dataset.itadecision,parseInt(btn.dataset.itaentry),'decision',btn.dataset.itaval);R();});});
   document.querySelectorAll('[data-hmv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const dir=b.dataset.hmv;const hid=b.dataset.hid;const hi=parseInt(b.dataset.hsi);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hid));if(!sess)return;const hw=[...sess.homework];const j=dir==='up'?hi-1:hi+1;if(j<0||j>=hw.length)return;
     const tmp=hw[hi];hw[hi]=hw[j];hw[j]=tmp;
     for(let k=0;k<hw.length;k++){await db.from('homework').update({sort_order:k}).eq('id',hw[k].id);}
@@ -1256,7 +1195,6 @@ function bind(){
   document.querySelectorAll('[data-hcopy]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const sessId=b.dataset.hcopy;const sess=S.sessions.find(s=>s.id===sessId);if(!sess)return;const prevSess=S.sessions.find(s=>s.session_number===sess.session_number-1);if(!prevSess||!prevSess.homework||prevSess.homework.length===0){S.hwCopyMsg='No previous session homework to copy';S.hwCopyMsgSess=sessId;R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);return;}const base=(sess.homework?.length)||0;for(let ci=0;ci<prevSess.homework.length;ci++){const ph=prevSess.homework[ci];await db.from('homework').insert({session_id:sessId,label:ph.label,hw_type:ph.hw_type||'drill',description:ph.description||null,sort_order:base+ci});}S.hwCopyMsg=`Copied ${prevSess.homework.length} item${prevSess.homework.length===1?'':'s'}`;S.hwCopyMsgSess=sessId;await loadStudent(S.selId);R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
   if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
-  /* Goals textarea auto-grow and save */
   document.querySelectorAll('.goals-ta').forEach(ta=>{
     function autoGrow(){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
     autoGrow();
@@ -1369,6 +1307,17 @@ async function saveMetaTag(hwId,entryNum,field,val){
   if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
   else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});err=r.error;}
   await reloadWsEntries(hwId);R();showSaved(!err);
+}
+
+async function saveItaField(hwId,entryNum,field,value){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='insight_to_action');
+  const curData=existing?{...existing.data}:{is_main:true};
+  curData[field]=value;curData.is_main=true;
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'insight_to_action',data:curData});err=r.error;}
+  await reloadWsEntries(hwId);showSaved(!err);
 }
 
 async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
