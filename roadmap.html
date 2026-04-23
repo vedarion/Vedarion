@@ -281,17 +281,38 @@
     .ws-synthesis{background:rgba(201,122,69,.03);border:1px solid rgba(201,122,69,.08);border-radius:12px;padding:18px;margin-top:8px}
     .ws-synth-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
     .ws-unflagged{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
-    .ws-ita-field-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
-    .ws-ita-field-lbl{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;min-width:80px}
-    .ws-ita-source{flex:1;min-width:180px;padding:8px 12px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .2s}
-    .ws-ita-source:focus{border-color:var(--faint)}
-    .ws-ita-decision{display:flex;gap:6px;flex-wrap:wrap}
-    .ws-ita-decision-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border-hi);background:transparent;color:var(--dim);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .15s;letter-spacing:.3px}
-    .ws-ita-decision-btn:hover{border-color:var(--faint);color:var(--text)}
-    .ws-ita-decision-btn.active{background:rgba(201,122,69,.15);border-color:var(--accent);color:var(--accent);font-weight:700}
-    .ws-ita-drill{display:flex;align-items:center;gap:8px}
-    .ws-ita-drill-inp{width:50px;padding:8px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:13px;text-align:center;outline:none;transition:border-color .2s}
-    .ws-ita-drill-inp:focus{border-color:var(--faint)}
+    /* Insight to Action — clean mockup styling */
+    .ita-card{background:rgba(18,16,14,.6);border:1px solid var(--border-hi);border-left:3px solid var(--accent);border-radius:14px;padding:28px 32px;margin-bottom:14px}
+    .ita-source-row{display:flex;align-items:center;gap:18px;padding-bottom:18px;border-bottom:1px dashed var(--border);margin-bottom:4px}
+    .ita-source-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
+    .ita-source-inp{flex:1;padding:6px 10px;background:transparent;border:none;color:var(--text);font-size:13px;font-family:var(--mono);outline:none;transition:color .2s}
+    .ita-source-inp:focus{color:var(--bright)}
+    .ita-source-inp::placeholder{color:var(--faint)}
+    .ita-step{padding:22px 0;border-bottom:1px dashed var(--border)}
+    .ita-step:last-of-type{border-bottom:none}
+    .ita-step-hd{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+    .ita-step-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid #333;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:3px}
+    .ita-step-cb:hover{border-color:var(--faint)}
+    .ita-step-cb.checked{background:var(--accent);border-color:var(--accent)}
+    .ita-step-title-wrap{flex:1;min-width:0}
+    .ita-step-title-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .ita-step-num{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;flex-shrink:0}
+    .ita-step-title{font-size:15px;color:var(--bright);font-weight:500;line-height:1.4}
+    .ita-step-caption{font-size:12px;color:var(--dim);font-style:italic;margin-top:4px;line-height:1.5}
+    .ita-step-body{margin-left:30px}
+    .ita-step-done .ita-step-title{opacity:.55;text-decoration:line-through}
+    .ita-step-done .ita-step-caption{opacity:.4}
+    .ita-field{width:100%;padding:10px 12px;background:var(--input);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;resize:vertical;line-height:1.6;transition:border-color .2s}
+    .ita-field:focus{border-color:var(--faint)}
+    .ita-field::placeholder{color:var(--muted)}
+    .ita-drill-row{display:flex;align-items:center;gap:10px}
+    .ita-drill-inp{width:48px;padding:8px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--bright);font-family:var(--mono);font-size:14px;font-weight:600;text-align:center;outline:none;transition:border-color .2s}
+    .ita-drill-inp:focus{border-color:var(--faint)}
+    .ita-drill-text{font-size:13px;color:var(--dim)}
+    .ita-decision{display:flex;gap:6px;flex-wrap:wrap}
+    .ita-decision-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border-hi);background:transparent;color:var(--dim);font-family:var(--mono);font-size:11px;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .ita-decision-btn:hover{border-color:var(--faint);color:var(--text)}
+    .ita-decision-btn.active{background:rgba(201,122,69,.15);border-color:var(--accent);color:var(--accent);font-weight:700}
     @media(max-width:768px){.ws-stats{grid-template-columns:repeat(2,1fr)}.ws-entry-hd{gap:6px}}
 
     .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
@@ -769,63 +790,74 @@ function wsInsightToActionHTML(v,name){
   const entryNum=main?main.entry_number:1;
   const d=main?main.data||{}:{};
   const isRC=(v.hw_label||'').toLowerCase().includes('rc');
-  const tag1=isRC?'Reading':'Strategy';
-  const tag2=isRC?'Question Strategy':'Knowledge';
-  const drillLabel=isRC?'Do 2 similar passage types':'Drill 3 similar questions';
-  const drillMax=isRC?2:3;
-  const patternPlaceholder=isRC
-    ?'Is it a passage type (science, law, history)? A question type? A comprehension issue? The pattern — not the question.'
-    :'What concept or trap keeps catching you? The pattern — not the question.';
-  const missesPlaceholder=isRC
-    ?'Q14 — Reading\nQ19 — Question Strategy\nQ22 — Reading'
-    :'Q14 — Knowledge\nQ19 — Strategy\nQ22 — Knowledge';
+
+  const steps=isRC?[
+    {field:'misses',title:'Log misses + tag each: reading or question strategy',caption:'Reading = missed something in the passage. Question Strategy = understood passage but picked wrong.',placeholder:'Q14 — Reading\nQ19 — Question Strategy\nQ22 — Reading',rows:3,type:'textarea'},
+    {field:'why_missed',title:'Why did I miss it?',caption:"Be specific. Not 'I ran out of time' — what went wrong on each one.",placeholder:'What actually went wrong...',rows:3,type:'textarea'},
+    {field:'pattern',title:"What's the pattern across these misses?",caption:'Passage type, question type, or a comprehension issue. Most students skip this step.',placeholder:'The pattern I keep hitting is...',rows:3,type:'textarea'},
+    {field:'what_different',title:'What will I do differently next time?',caption:'The concrete change to your approach.',placeholder:'Next time I will...',rows:2,type:'textarea'},
+    {field:'drill_result',title:'Do 2 similar passage types. Note the result.',caption:null,placeholder:'1',rows:0,type:'drill',max:2},
+    {field:'decision',title:'Decision',caption:null,placeholder:null,rows:0,type:'decision'}
+  ]:[
+    {field:'misses',title:'Log misses + tag each: strategy or knowledge',caption:"Strategy = knew the concept, wrong approach. Knowledge = didn't recognize the pattern.",placeholder:'Q14 — Knowledge\nQ19 — Strategy\nQ22 — Knowledge',rows:3,type:'textarea'},
+    {field:'why_missed',title:'Why did I miss it?',caption:"Be specific. Not 'I should've trusted myself.'",placeholder:"What actually went wrong — not 'I should've trusted myself'",rows:3,type:'textarea'},
+    {field:'pattern',title:"What's the pattern across these misses?",caption:'What concept or trap keeps catching you? The pattern — not the question. Most students skip this step.',placeholder:'The pattern I keep hitting is...',rows:3,type:'textarea'},
+    {field:'what_different',title:'What will I do differently next time?',caption:'The concrete change to your approach.',placeholder:'Next time I will...',rows:2,type:'textarea'},
+    {field:'drill_result',title:'Drill 3 similar questions. Note the result.',caption:null,placeholder:'2',rows:0,type:'drill',max:3},
+    {field:'decision',title:'Decision',caption:null,placeholder:null,rows:0,type:'decision'}
+  ];
+
+  const completedSteps=d.completed_steps||{};
   const decisionOpts=['Move on','Repeat drills','Email tutor'];
   const curDecision=d.decision||'';
+
   return`<div class="ws-wrap">
     <div class="ws-title">Insight to Action ${isRC?'(RC)':'(LR)'}</div>
     <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
     <div class="ws-desc">This is the synthesis step. Blind review gave you the per-question diagnosis. Now zoom out: what's the pattern across all your misses, and what will you actually do differently? Stop studying the question. Start studying the pattern behind it.</div>
 
-    <div class="ws-entry">
-      <div class="ws-ita-field-row">
-        <span class="ws-ita-field-lbl">Source</span>
-        <input class="ws-ita-source" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="source" placeholder="PT 92 · Section 2 · 4/23" value="${esc(d.source||'')}">
+    <div class="ita-card">
+      <div class="ita-source-row">
+        <span class="ita-source-lbl">Source</span>
+        <input class="ita-source-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="source" placeholder="PT 92 · Section 2 · 4/23" value="${esc(d.source||'')}">
       </div>
 
-      <div class="ws-sec-lbl">1. Log your misses</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">Tag each: ${tag1} (knew it, wrong approach) or ${tag2} (didn't recognize the pattern)</div>
-      ${wsITAField(hwId,entryNum,'misses',missesPlaceholder,3)}
-
-      <div class="ws-sec-lbl">2. Why did you miss them?</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">Be specific. Not "I should've trusted myself."</div>
-      ${wsITAField(hwId,entryNum,'why_missed','What actually went wrong on each one...',3)}
-
-      <div class="ws-sec-lbl">3. What's the pattern across these misses?</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:8px;font-family:var(--mono)">This is the step most students skip. Look for what connects them.</div>
-      ${wsITAField(hwId,entryNum,'pattern',patternPlaceholder,3)}
-
-      <div class="ws-sec-lbl">4. What will you do differently next time?</div>
-      ${wsITAField(hwId,entryNum,'what_different','The concrete change to your approach — be specific...',2)}
-
-      <div class="ws-sec-lbl">5. ${drillLabel}</div>
-      <div class="ws-ita-drill">
-        <span style="font-size:13px;color:var(--text)">Result:</span>
-        <input class="ws-ita-drill-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="drill_result" placeholder="2" value="${esc(d.drill_result||'')}">
-        <span style="font-size:13px;color:var(--dim)">/ ${drillMax} correct</span>
-      </div>
-
-      <div class="ws-sec-lbl">6. Decision</div>
-      <div class="ws-ita-decision">
-        ${decisionOpts.map(o=>`<button class="ws-ita-decision-btn${curDecision===o?' active':''}" data-itadecision="${hwId}" data-itaentry="${entryNum}" data-itaval="${esc(o)}">${esc(o)}</button>`).join('')}
-      </div>
+      ${steps.map((s,i)=>{
+        const stepNum=i+1;
+        const isDone=completedSteps[s.field]===true;
+        let bodyHtml='';
+        if(s.type==='textarea'){
+          const val=d[s.field]||'';
+          const minH=s.rows===1?44:s.rows===2?64:s.rows===3?96:80;
+          bodyHtml=`<textarea class="ita-field" style="min-height:${minH}px" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="${s.field}" placeholder="${esc(s.placeholder)}">${esc(val)}</textarea>`;
+        }else if(s.type==='drill'){
+          bodyHtml=`<div class="ita-drill-row">
+            <span class="ita-drill-text">Result:</span>
+            <input class="ita-drill-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="drill_result" placeholder="${esc(s.placeholder)}" value="${esc(d.drill_result||'')}">
+            <span class="ita-drill-text">/ ${s.max} correct</span>
+          </div>`;
+        }else if(s.type==='decision'){
+          bodyHtml=`<div class="ita-decision">
+            ${decisionOpts.map(o=>`<button class="ita-decision-btn${curDecision===o?' active':''}" data-itadecision="${hwId}" data-itaentry="${entryNum}" data-itaval="${esc(o)}">${esc(o)}</button>`).join('')}
+          </div>`;
+        }
+        const checkSvg=isDone?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':'';
+        return`<div class="ita-step${isDone?' ita-step-done':''}">
+          <div class="ita-step-hd">
+            <div class="ita-step-cb${isDone?' checked':''}" data-itastep="${s.field}" data-itaentry="${entryNum}" data-itahw="${hwId}">${checkSvg}</div>
+            <div class="ita-step-title-wrap">
+              <div class="ita-step-title-line">
+                <span class="ita-step-num">Step ${stepNum}</span>
+                <span class="ita-step-title">${esc(s.title)}</span>
+              </div>
+              ${s.caption?`<div class="ita-step-caption">${esc(s.caption)}</div>`:''}
+            </div>
+          </div>
+          <div class="ita-step-body">${bodyHtml}</div>
+        </div>`;
+      }).join('')}
     </div>
   </div>`;
-}
-
-function wsITAField(hwId,entryNum,field,placeholder,rows){
-  const d=wsEntryData(hwId,entryNum);
-  const val=d[field]||'';
-  return`<textarea class="ws-field" style="min-height:${rows===1?44:rows===2?64:rows===3?96:80}px" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="${field}" placeholder="${esc(placeholder)}">${esc(val)}</textarea>`;
 }
 
 function wsBlindReviewHTML(v,name){
@@ -1188,6 +1220,18 @@ function bind(){
   document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
   document.querySelectorAll('[data-itasave]').forEach(el=>{el.addEventListener('blur',async()=>{await saveItaField(el.dataset.itasave,parseInt(el.dataset.itaentry),el.dataset.itafield,el.value);});});
   document.querySelectorAll('[data-itadecision]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveItaField(btn.dataset.itadecision,parseInt(btn.dataset.itaentry),'decision',btn.dataset.itaval);R();});});
+  document.querySelectorAll('[data-itastep]').forEach(cb=>{cb.addEventListener('click',async()=>{
+    const hwId=cb.dataset.itahw;const entryNum=parseInt(cb.dataset.itaentry);const field=cb.dataset.itastep;
+    const arr=S.wsEntries[hwId]||[];
+    const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='insight_to_action');
+    const curData=existing?{...existing.data}:{is_main:true};
+    const completed=curData.completed_steps||{};
+    completed[field]=!completed[field];
+    curData.completed_steps=completed;curData.is_main=true;
+    if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
+    else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'insight_to_action',data:curData});}
+    await reloadWsEntries(hwId);R();
+  });});
   document.querySelectorAll('[data-hmv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const dir=b.dataset.hmv;const hid=b.dataset.hid;const hi=parseInt(b.dataset.hsi);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hid));if(!sess)return;const hw=[...sess.homework];const j=dir==='up'?hi-1:hi+1;if(j<0||j>=hw.length)return;
     const tmp=hw[hi];hw[hi]=hw[j];hw[j]=tmp;
     for(let k=0;k<hw.length;k++){await db.from('homework').update({sort_order:k}).eq('id',hw[k].id);}
