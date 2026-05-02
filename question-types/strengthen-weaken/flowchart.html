@@ -151,25 +151,37 @@
             line-height: 1.4;
         }
         
-        /* Key insight boxes */
-        .key-insight {
+        /* Key insight section */
+        .insight-step {
             background: #FDF5F1;
             border: 1px solid #E8D5CC;
-            padding: 12px 16px;
-            margin-top: 14px;
+            padding: 24px 28px;
+            position: relative;
+        }
+
+        .insight-step .step-title {
+            color: #C65D3B;
+        }
+
+        .insight-item {
+            margin-bottom: 16px;
+        }
+
+        .insight-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .insight-item-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #C65D3B;
+            margin-bottom: 4px;
+        }
+
+        .insight-item-desc {
             font-size: 12.5px;
             color: #555;
-            line-height: 1.5;
-        }
-        
-        .key-insight strong {
-            color: #C65D3B;
-            font-weight: 600;
-        }
-        
-        .key-insight .highlight {
-            color: #C65D3B;
-            font-weight: 600;
+            line-height: 1.6;
         }
         
         /* Core argument formula */
@@ -199,7 +211,7 @@
             font-weight: 700;
         }
         
-        /* Sub-steps (a, b, c) */
+        /* Sub-steps (a, b) */
         .sub-step {
             margin-bottom: 16px;
         }
@@ -237,6 +249,50 @@
             margin-top: 4px;
             padding-left: 28px;
             line-height: 1.5;
+        }
+
+        /* Prediction callout */
+        .keep-in-mind {
+            background: #FDF5F1;
+            border: 1px solid #E8D5CC;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .keep-in-mind strong {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+
+        /* Framework list */
+        .framework-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+
+        .framework-list {
+            list-style: none;
+        }
+
+        .framework-list li {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #333;
+            padding: 8px 12px;
+            background: #F8F8F8;
+            border: 1px solid #E0E0E0;
+            border-left: 3px solid #C65D3B;
+            margin-bottom: 6px;
+        }
+
+        .framework-list li:before {
+            display: none;
         }
         
         /* Answer choice strategy steps */
@@ -320,23 +376,6 @@
         .check-box .check-highlight {
             font-weight: 700;
         }
-
-        /* Final step */
-        .final-step {
-            background: #0A0A0A;
-            border: none;
-            text-align: center;
-            padding: 20px 28px;
-        }
-        
-        .final-step .step-title {
-            color: white;
-            margin-bottom: 6px;
-        }
-        
-        .final-step .step-content {
-            color: #888;
-        }
         
         .footer {
             text-align: center;
@@ -415,26 +454,37 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="key-insight">
-                        <strong>Key Insight:</strong> The question stem is asking you to <span class="highlight">assume the answer choices are true</span> and apply them to the stimulus.
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- KEY INSIGHTS -->
+            <div class="insight-step">
+                <div class="step-title">Key Insights</div>
+                <div class="step-content">
+                    <div class="insight-item">
+                        <div class="insight-item-title">Assume the answer choices are true.</div>
+                        <div class="insight-item-desc">The question stem is telling you to take each answer choice as fact and apply it to the stimulus.</div>
                     </div>
-                    <div class="key-insight" style="margin-top: 8px;">
-                        <strong>Key Insight:</strong> You're not proving or disproving — you're making the conclusion <span class="highlight">more or less likely.</span>
+                    <div class="insight-item">
+                        <div class="insight-item-title">More or less likely — not prove or disprove.</div>
+                        <div class="insight-item-desc">You don't need a slam dunk. The answer just needs to move the needle in the right direction.</div>
                     </div>
                 </div>
             </div>
 
             <div class="arrow">↓</div>
 
-            <!-- STEP 2: Analyze the Stimulus -->
+            <!-- STEP 2: Read & Analyze the Stimulus -->
             <div class="step">
                 <div class="step-number">STEP 2</div>
-                <div class="step-title">Analyze the Stimulus</div>
+                <div class="step-title">Read & Analyze the Stimulus</div>
                 <div class="step-content">
                     <div class="sub-step">
                         <span class="sub-label">a</span>
                         <span class="sub-title">Identify Premise(s) & Conclusion</span>
-                        <div class="sub-desc">Separate what's given from what's being argued.</div>
+                        <div class="sub-desc">What's the evidence and what's the author arguing?</div>
                     </div>
                     <div class="sub-step">
                         <span class="sub-label">b</span>
@@ -445,19 +495,36 @@
                             <div class="formula-box">Conclusion</div>
                         </div>
                     </div>
-                    <div class="sub-step">
-                        <span class="sub-label">c</span>
-                        <span class="sub-title">Identify the Gap</span>
-                        <div class="sub-desc">What's missing between Premise & Conclusion?</div>
-                    </div>
                 </div>
             </div>
 
             <div class="arrow">↓</div>
 
-            <!-- STEP 3: Answer Choice Strategy -->
+            <!-- STEP 3: Prediction -->
             <div class="step">
                 <div class="step-number">STEP 3</div>
+                <div class="step-title">Prediction</div>
+                <div class="step-content">
+                    <ul>
+                        <li>Identify the gap — what's missing between Premise & Conclusion?</li>
+                    </ul>
+                    <div class="keep-in-mind">
+                        <strong>Keep in mind:</strong> These questions are not prediction-friendly. Spotting the gap is helpful, but don't get married to your phrasing. The exact answer may look different than what you predicted.
+                    </div>
+                    <div class="framework-label">Use frameworks to guide your thinking:</div>
+                    <ul class="framework-list">
+                        <li>Part to Whole</li>
+                        <li>Cost vs. Benefit</li>
+                        <li>Correlation to Causation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 4: Answer Choice Strategy -->
+            <div class="step">
+                <div class="step-number">STEP 4</div>
                 <div class="step-title">Answer Choice Strategy</div>
                 <div class="step-content">
                     <div class="ac-step">

@@ -245,59 +245,40 @@
             min-height: 70px;
         }
         
-        /* Argument Types */
-        .argument-types {
+        /* Framework Types */
+        .framework-types {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
         
-        .argument-type {
+        .framework-type {
             background: #111;
             border: 1px solid #333;
             border-radius: 4px;
             padding: 12px 15px;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
             display: block;
         }
         
-        .argument-type:hover {
+        .framework-type:hover {
             border-color: #555;
         }
         
-        .argument-type.selected {
+        .framework-type.selected {
             border-color: #C65D3B;
             background: #1a1210;
         }
         
-        .argument-type-name {
+        .framework-type-name {
             font-size: 13px;
             font-weight: 600;
             color: #E0E0E0;
             margin-bottom: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         
-        .argument-type-name::after {
-            content: '→';
-            font-size: 12px;
-            color: #555;
-            transition: color 0.3s ease;
-        }
-        
-        .argument-type:hover .argument-type-name::after {
-            color: #C65D3B;
-        }
-        
-        div.argument-type .argument-type-name::after {
-            content: none;
-        }
-        
-        .argument-type-gap {
+        .framework-type-gap {
             font-size: 11px;
             color: #666;
             font-style: italic;
@@ -448,6 +429,25 @@
             outline: none;
         }
         
+        /* Prediction callout */
+        .prediction-callout {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            border-left: 3px solid #C65D3B;
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .prediction-callout strong {
+            color: #C65D3B;
+            font-style: normal;
+        }
+        
         /* Action Buttons */
         .actions {
             display: flex;
@@ -575,7 +575,7 @@
                 font-size: 22px;
             }
             
-            .argument-types {
+            .framework-types {
                 grid-template-columns: 1fr;
             }
             
@@ -608,11 +608,7 @@
         <p class="page-subtitle">Interactive Practice Worksheet</p>
     </section>
 
-    <!-- Tab Navigation -->
-    <div class="tab-nav">
-        <a href="flowchart.html" class="tab-link">Flowchart</a>
-        <a href="worksheet.html" class="tab-link active">Worksheet</a>
-    </div>
+
 
     <!-- Main Content -->
     <div class="main-content">
@@ -640,9 +636,9 @@
                     <div class="section-line"></div>
                 </div>
                 <div class="core-instructions">
-                    <p class="instruction-main">Cannot look back at the stimulus. From memory, write in as few words as possible.</p>
+                    <p class="instruction-main">Cannot look back at the stimulus. From memory, write in as few words as possible. This trains you to internalize the argument rather than copy words.</p>
                     <p class="instruction-detail">Clearly note: <span class="highlight">Noun</span>, <span class="highlight">Verb</span>, <span class="highlight">Predicate</span></p>
-                    <p class="instruction-warning">No referential phrasing allowed</p>
+                    <p class="instruction-warning">No referential phrasing (e.g., don't write "they" or "it" — use the actual noun)</p>
                 </div>
                 <div class="input-group">
                     <label class="input-label">Premise</label>
@@ -657,42 +653,40 @@
             <!-- White break -->
             <div class="section-break"></div>
 
-            <!-- Analysis -->
+            <!-- Prediction -->
             <div class="section">
                 <div class="section-header">
-                    <span class="section-title">Analysis</span>
+                    <span class="section-title">Prediction</span>
                     <div class="section-line"></div>
                 </div>
                 <div class="input-group">
-                    <label class="input-label">What's the gap between them?</label>
+                    <label class="input-label">What's the gap between Premise & Conclusion?</label>
                     <textarea class="input-field" id="gap" placeholder="What must be assumed for the conclusion to follow from the premise?"></textarea>
                 </div>
-            </div>
 
-            <!-- Helpful Tools -->
-            <div class="section">
-                <div class="section-header">
-                    <span class="section-title">Helpful Tools</span>
-                    <div class="section-line"></div>
-                </div>
-                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">Argument type (if recognizable):</p>
-                <div class="argument-types">
-                    <a href="../../learn/argument-patterns/correlation-causation.html" class="argument-type" onclick="toggleArgType(event, this)">
-                        <div class="argument-type-name">Correlation → Causation</div>
-                        <div class="argument-type-gap">Gap: reversed cause, third cause, coincidence</div>
-                    </a>
-                    <a href="../../learn/argument-patterns/sample-population.html" class="argument-type" onclick="toggleArgType(event, this)">
-                        <div class="argument-type-name">Sample → Population</div>
-                        <div class="argument-type-gap">Gap: is the sample representative?</div>
-                    </a>
-                    <a href="../../learn/argument-patterns/analogy.html" class="argument-type" onclick="toggleArgType(event, this)">
-                        <div class="argument-type-name">Analogy</div>
-                        <div class="argument-type-gap">Gap: are the two things comparable?</div>
-                    </a>
-                    <div class="argument-type" onclick="toggleArgType(event, this)">
-                        <div class="argument-type-name">Other</div>
-                        <div class="argument-type-gap">Gap: identify the specific assumption</div>
+                <!-- Frameworks -->
+                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">Framework (if recognizable):</p>
+                <div class="framework-types">
+                    <div class="framework-type" onclick="toggleFramework(this)">
+                        <div class="framework-type-name">Part to Whole</div>
+                        <div class="framework-type-gap">Gap: does the part represent the whole?</div>
                     </div>
+                    <div class="framework-type" onclick="toggleFramework(this)">
+                        <div class="framework-type-name">Cost vs. Benefit</div>
+                        <div class="framework-type-gap">Gap: are there hidden costs or overlooked benefits?</div>
+                    </div>
+                    <div class="framework-type" onclick="toggleFramework(this)">
+                        <div class="framework-type-name">Correlation to Causation</div>
+                        <div class="framework-type-gap">Gap: reversed cause, third cause, coincidence</div>
+                    </div>
+                    <div class="framework-type" onclick="toggleFramework(this)">
+                        <div class="framework-type-name">Other</div>
+                        <div class="framework-type-gap">Gap: identify the specific assumption</div>
+                    </div>
+                </div>
+
+                <div class="prediction-callout">
+                    <strong>Keep in mind:</strong> These questions are not prediction-friendly. Spotting the gap is helpful, but don't get married to your phrasing.
                 </div>
             </div>
 
@@ -705,7 +699,7 @@
                     <span class="section-title">Answer Choices</span>
                     <div class="section-line"></div>
                 </div>
-                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">For each answer, complete the test. Move on if any step fails.</p>
+                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">For each answer, complete the two-step test.</p>
                 
                 <!-- Answer A -->
                 <div class="answer-choice">
@@ -718,15 +712,14 @@
                     </div>
                     <div class="answer-body">
                         <div class="test-step">
-                            <div class="test-label"><span>1.</span> Relevance Test</div>
-                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <div class="test-label"><span>1.</span> Is the answer choice relevant?</div>
+                            <div class="test-description">Could this apply to the context or premise? (Low bar — if not, move on.)</div>
                             <input type="text" class="input-field" placeholder="If yes, how does it connect?">
                         </div>
                         <div class="test-step">
-                            <div class="test-label"><span>2.</span> Impact Test</div>
-                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
-                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
-                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                            <div class="test-label"><span>2.</span> Does AC + Premise strengthen or weaken the Conclusion?</div>
+                            <div class="test-description">Combine the answer choice with the premise. More likely or less likely?</div>
+                            <input type="text" class="input-field" placeholder="Strengthens / Weakens / No impact">
                         </div>
                     </div>
                 </div>
@@ -742,14 +735,14 @@
                     </div>
                     <div class="answer-body">
                         <div class="test-step">
-                            <div class="test-label"><span>1.</span> Relevance Test</div>
-                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <div class="test-label"><span>1.</span> Is the answer choice relevant?</div>
+                            <div class="test-description">Could this apply to the context or premise? (Low bar — if not, move on.)</div>
                             <input type="text" class="input-field" placeholder="If yes, how does it connect?">
                         </div>
                         <div class="test-step">
-                            <div class="test-label"><span>2.</span> Impact Test</div>
-                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
-                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                            <div class="test-label"><span>2.</span> Does AC + Premise strengthen or weaken the Conclusion?</div>
+                            <div class="test-description">Combine the answer choice with the premise. More likely or less likely?</div>
+                            <input type="text" class="input-field" placeholder="Strengthens / Weakens / No impact">
                         </div>
                     </div>
                 </div>
@@ -765,15 +758,14 @@
                     </div>
                     <div class="answer-body">
                         <div class="test-step">
-                            <div class="test-label"><span>1.</span> Relevance Test</div>
-                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <div class="test-label"><span>1.</span> Is the answer choice relevant?</div>
+                            <div class="test-description">Could this apply to the context or premise? (Low bar — if not, move on.)</div>
                             <input type="text" class="input-field" placeholder="If yes, how does it connect?">
                         </div>
                         <div class="test-step">
-                            <div class="test-label"><span>2.</span> Impact Test</div>
-                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
-                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
-                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                            <div class="test-label"><span>2.</span> Does AC + Premise strengthen or weaken the Conclusion?</div>
+                            <div class="test-description">Combine the answer choice with the premise. More likely or less likely?</div>
+                            <input type="text" class="input-field" placeholder="Strengthens / Weakens / No impact">
                         </div>
                     </div>
                 </div>
@@ -789,15 +781,14 @@
                     </div>
                     <div class="answer-body">
                         <div class="test-step">
-                            <div class="test-label"><span>1.</span> Relevance Test</div>
-                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <div class="test-label"><span>1.</span> Is the answer choice relevant?</div>
+                            <div class="test-description">Could this apply to the context or premise? (Low bar — if not, move on.)</div>
                             <input type="text" class="input-field" placeholder="If yes, how does it connect?">
                         </div>
                         <div class="test-step">
-                            <div class="test-label"><span>2.</span> Impact Test</div>
-                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
-                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
-                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                            <div class="test-label"><span>2.</span> Does AC + Premise strengthen or weaken the Conclusion?</div>
+                            <div class="test-description">Combine the answer choice with the premise. More likely or less likely?</div>
+                            <input type="text" class="input-field" placeholder="Strengthens / Weakens / No impact">
                         </div>
                     </div>
                 </div>
@@ -813,15 +804,14 @@
                     </div>
                     <div class="answer-body">
                         <div class="test-step">
-                            <div class="test-label"><span>1.</span> Relevance Test</div>
-                            <div class="test-description">Does this connect to the premise in any way? (low bar)</div>
+                            <div class="test-label"><span>1.</span> Is the answer choice relevant?</div>
+                            <div class="test-description">Could this apply to the context or premise? (Low bar — if not, move on.)</div>
                             <input type="text" class="input-field" placeholder="If yes, how does it connect?">
                         </div>
                         <div class="test-step">
-                            <div class="test-label"><span>2.</span> Impact Test</div>
-                            <div class="test-description">Premise + This Answer = What impact on conclusion?</div>
-                            <div class="test-key">Key: Keep if it can reasonably strengthen/weaken — even weak impact counts.</div>
-                            <input type="text" class="input-field" placeholder="Does it strengthen/weaken the link?">
+                            <div class="test-label"><span>2.</span> Does AC + Premise strengthen or weaken the Conclusion?</div>
+                            <div class="test-description">Combine the answer choice with the premise. More likely or less likely?</div>
+                            <input type="text" class="input-field" placeholder="Strengthens / Weakens / No impact">
                         </div>
                     </div>
                 </div>
@@ -837,9 +827,7 @@
                     <div class="section-line"></div>
                 </div>
                 <div class="final-selection">
-                    <p class="final-instruction">From remaining answers, pick the one with:<br>
-                    • Fewest linguistic issues<br>
-                    • No unreasonable assumptions between words and reasoning</p>
+                    <p class="final-instruction">From remaining answers, select the one where AC + Premise has the strongest impact on the conclusion in the right direction.</p>
                     <div class="final-answer">
                         <span class="final-label">Final Answer:</span>
                         <input type="text" class="final-input" id="finalAnswer" maxlength="1" placeholder="?">
@@ -858,7 +846,7 @@
     <section class="cta-section">
         <p>Want feedback on your approach?</p>
         <div class="cta-buttons">
-            <a href="https://calendly.com/vedarion-tutoring/free-15min-lsatgameplancall" class="cta-button">Free 15-Min Consultation</a>
+            <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Free 30-Min Consultation</a>
             <a href="../../pricing.html" class="cta-button cta-button-secondary">Book a Session</a>
         </div>
     </section>
@@ -869,9 +857,7 @@
     </footer>
 
     <script>
-        function toggleArgType(event, element) {
-            // Only toggle selection, don't navigate (user can right-click or ctrl+click to open link)
-            event.preventDefault();
+        function toggleFramework(element) {
             element.classList.toggle('selected');
         }
 
@@ -897,17 +883,14 @@
         }
 
         function clearWorksheet() {
-            // Clear all text inputs and textareas
             document.querySelectorAll('.input-field, .final-input').forEach(input => {
                 input.value = '';
             });
             
-            // Reset all argument type selections
-            document.querySelectorAll('.argument-type').forEach(type => {
+            document.querySelectorAll('.framework-type').forEach(type => {
                 type.classList.remove('selected');
             });
             
-            // Reset all keep/eliminate buttons and eliminated state
             document.querySelectorAll('.status-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -915,11 +898,9 @@
                 choice.classList.remove('eliminated');
             });
             
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Auto-uppercase final answer
         document.getElementById('finalAnswer').addEventListener('input', function() {
             this.value = this.value.toUpperCase();
         });
