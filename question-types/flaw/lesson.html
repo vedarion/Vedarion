@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negation - VEDARION</title>
+    <title>Flaw - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
@@ -13,6 +13,9 @@
         .nav-links { display: flex; gap: 40px; }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover { color: white; }
+        .banner { background: #0A0A0A; padding: 50px 20px 45px; text-align: center; }
+        .banner-title { font-size: 32px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: white; margin-bottom: 10px; }
+        .banner-subtitle { font-size: 16px; font-style: italic; color: #C65D3B; }
         .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
         .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
         .breadcrumb a:hover { color: #C65D3B; }
@@ -26,11 +29,18 @@
         .lesson-content { max-width: 800px; margin: 0 auto; padding: 0 50px 40px; }
         .video-container { position: relative; padding-top: 56.25%; margin-bottom: 40px; background: #0A0A0A; border-radius: 4px; overflow: hidden; }
         .video-container iframe { border: 0; position: absolute; top: 0; height: 100%; width: 100%; }
-        .learn-section h2 { font-size: 18px; font-weight: 600; color: #0A0A0A; margin-bottom: 15px; }
-        .learn-section p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 15px; }
-        .learn-section ul { list-style: none; margin-bottom: 20px; }
-        .learn-section li { font-size: 14px; color: #555; line-height: 1.7; padding-left: 18px; position: relative; margin-bottom: 8px; }
-        .learn-section li:before { content: "•"; position: absolute; left: 0; color: #C65D3B; font-weight: 700; }
+        .summary-section h2 { font-size: 18px; font-weight: 600; color: #0A0A0A; margin-bottom: 20px; }
+        .summary-section p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 15px; }
+        .summary-block { margin-bottom: 25px; }
+        .summary-block-title { font-size: 15px; font-weight: 600; color: #0A0A0A; margin-bottom: 8px; }
+        .summary-block p { font-size: 14px; color: #555; line-height: 1.7; }
+        .summary-block ul { list-style: none; margin-top: 8px; }
+        .summary-block li { font-size: 14px; color: #555; line-height: 1.7; padding-left: 18px; position: relative; margin-bottom: 8px; }
+        .summary-block li:before { content: "•"; position: absolute; left: 0; color: #C65D3B; font-weight: 700; }
+        .divider { height: 1px; background: #E0E0E0; margin: 30px 0; }
+        .takeaway-box { background: #FDF5F1; border: 2px solid #C65D3B; border-radius: 4px; padding: 18px 20px; margin-top: 25px; }
+        .takeaway-box p { font-size: 14px; color: #555; line-height: 1.6; margin: 0; }
+        .takeaway-box strong { color: #C65D3B; }
         .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
         .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
         .cta-button:hover { background: #A04D2E; }
@@ -65,15 +75,13 @@
     <div class="breadcrumb">
         <a href="../../learn.html">Learn</a>
         <span>›</span>
-        <a href="../../learn.html">Foundations</a>
-        <span>›</span>
-        Negation
+        Flaw
     </div>
 
     <div class="lesson-hero">
-        <div class="lesson-label">Foundations</div>
-        <h1 class="lesson-title">Negation</h1>
-        <p class="lesson-subtitle">Learn how to negate statements and quantifiers — a foundational skill for Necessary Assumption, Must Be False, and conditional logic.</p>
+        <div class="lesson-label">Flaw</div>
+        <h1 class="lesson-title">Step by Step Approach</h1>
+        <p class="lesson-subtitle">Identify what went wrong in the argument's reasoning.</p>
         <div class="tab-nav">
             <a href="lesson.html" class="tab-link">Video</a>
         </div>
@@ -81,26 +89,59 @@
 
     <div class="lesson-content">
         <div class="video-container">
-            <iframe src="https://player.mediadelivery.net/embed/600986/2f14363b-10ea-4125-aa7f-b5211116d464?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
+            <iframe src="https://player.mediadelivery.net/embed/600986/7859fdfd-9f0c-4541-a3a4-64d9f468082a?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
         </div>
 
-        <div class="learn-section">
+        <div class="summary-section">
             <h2>Summary</h2>
-            <p style="font-size:15px; color:#0A0A0A; font-weight:600; margin-bottom:8px;">The Rule</p>
-            <p>Add "not" or "it is not the case that." Negation is not the opposite — it's everything that isn't the original.</p>
 
-            <p style="font-size:15px; color:#0A0A0A; font-weight:600; margin-bottom:8px; margin-top:20px;">Quantifier Pairs</p>
-            <ul>
-                <li><strong>All</strong> negates to <strong style="color:#C65D3B;">At least one is not</strong></li>
-                <li><strong>Most</strong> negates to <strong style="color:#C65D3B;">Most are not</strong></li>
-                <li><strong>Some</strong> negates to <strong style="color:#C65D3B;">None</strong></li>
-            </ul>
+            <div class="summary-block">
+                <p class="summary-block-title">Step 1 — Identify the Question Stem</p>
+                <p>Look for language asking you to find a problem in the reasoning:</p>
+                <ul>
+                    <li>"the argument is flawed because"</li>
+                    <li>"the reasoning is vulnerable to which criticism"</li>
+                    <li>"a flaw in the argument's reasoning" / "error in reasoning"</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="summary-block">
+                <p class="summary-block-title">Step 2 — Analyze the Stimulus</p>
+                <ul>
+                    <li>Identify the premise(s) and conclusion</li>
+                    <li>Simplify to the core argument: Premise → Conclusion</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="summary-block">
+                <p class="summary-block-title">Step 3 — Prediction</p>
+                <p>Ask: what's the gap? Why doesn't the premise support the conclusion?</p>
+                <p>Flaw questions are prediction-friendly. If you can name the flaw before looking at the answers, you're very likely to find it.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="summary-block">
+                <p class="summary-block-title">Step 4 — Answer Choice Strategy</p>
+                <ul>
+                    <li><strong>1. Is the answer choice descriptively accurate?</strong> Does every word match what the argument actually does? Check the noun, verb, and predicate.</li>
+                    <li><strong>2. If accurate, is it actually a flaw?</strong> Just because it describes the argument correctly doesn't mean it's identifying a problem.</li>
+                </ul>
+            </div>
+
+            <div class="takeaway-box">
+                <p><strong>Correct answer:</strong> Descriptively accurate <strong>AND</strong> identifies a real flaw in the argument's reasoning.</p>
+            </div>
         </div>
     </div>
 
     <section class="cta-section">
         <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
-        <p class="cta-tagline">Talk to me about anything LSAT. No strings attached.</p>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
         <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
     </section>
 

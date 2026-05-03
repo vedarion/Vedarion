@@ -5,162 +5,428 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flaw - VEDARION</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
-        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
-        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
-        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
-        .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
-        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
-        .breadcrumb a { color: #888; text-decoration: none; }
-        .breadcrumb a:hover { color: #C65D3B; }
-        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
-        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
-        .flowchart-container { max-width: 550px; width: 100%; }
-        .flowchart { display: flex; flex-direction: column; gap: 0; }
-        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .step.highlight { border-color: #C65D3B; border-width: 2px; }
-        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
-        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
-        .step-content ul { list-style: none; margin-top: 8px; }
-        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
-        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
-        .branch-container { display: flex; gap: 10px; }
-        .branch { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 15px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .branch .step-title { font-size: 11px; margin-bottom: 8px; line-height: 1.4; }
-        .branch .step-content { font-size: 11px; }
-        .branch .step-content li { margin-bottom: 3px; }
-        .final-step { background: #0A0A0A; border: none; text-align: center; }
-        .final-step .step-title { margin-bottom: 5px; color: white; }
-        .final-step .step-content { color: #888; }
-        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
-        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
-        .cta-button:hover { background: #A04D2E; }
-        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
-        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
-        .footer a { color: #C65D3B; text-decoration: none; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .branch-container { flex-direction: column; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #0A0A0A;
+            margin-bottom: 20px;
+        }
+        
+        .v-accent {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+        
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .step {
+            background: white;
+            border: 1px solid #E0E0E0;
+            padding: 24px 28px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #C65D3B;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            letter-spacing: 1px;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0A0A0A;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .step-content {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .step-content ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+        
+        .step-content li {
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 6px;
+        }
+        
+        .step-content li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #C65D3B;
+            font-weight: 700;
+        }
+        
+        .arrow {
+            text-align: center;
+            padding: 10px 0;
+            color: #CCC;
+            font-size: 18px;
+        }
+        
+        /* Stem cards */
+        .stem-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .stem-list li {
+            font-size: 12.5px;
+            color: #555;
+            font-style: italic;
+            padding: 7px 10px;
+            background: #F8F8F8;
+            border-left: 3px solid #C65D3B;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .stem-list li:before {
+            display: none;
+        }
+        
+        /* Core argument formula */
+        .core-formula {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 14px 0 8px;
+        }
+        
+        .formula-box {
+            background: #F8F8F8;
+            border: 1px solid #E0E0E0;
+            border-left: 3px solid #C65D3B;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            min-width: 140px;
+        }
+        
+        .formula-arrow {
+            color: #C65D3B;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        /* Sub-steps */
+        .sub-step {
+            margin-bottom: 16px;
+        }
+        
+        .sub-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sub-label {
+            display: inline-block;
+            background: #C65D3B;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .sub-title {
+            display: inline;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0A0A0A;
+            vertical-align: middle;
+        }
+        
+        .sub-desc {
+            font-size: 12.5px;
+            color: #666;
+            margin-top: 4px;
+            padding-left: 28px;
+            line-height: 1.5;
+        }
+
+        /* Prediction callout */
+        .prediction-callout {
+            background: #FDF5F1;
+            border: 1px solid #E8D5CC;
+            padding: 14px 16px;
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .prediction-callout strong {
+            color: #C65D3B;
+            font-weight: 700;
+        }
+
+        .prediction-callout .highlight {
+            color: #C65D3B;
+            font-weight: 600;
+        }
+
+        /* Answer choice steps */
+        .ac-step {
+            background: #F8F8F8;
+            border: 1px solid #E0E0E0;
+            border-left: 3px solid #C65D3B;
+            padding: 16px 20px;
+            margin-top: 14px;
+        }
+        
+        .ac-step-num {
+            display: inline-block;
+            background: #C65D3B;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .ac-step-title {
+            display: inline;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0A0A0A;
+            vertical-align: middle;
+        }
+        
+        .ac-step-desc {
+            font-size: 12.5px;
+            color: #666;
+            margin-top: 8px;
+            padding-left: 30px;
+            line-height: 1.6;
+        }
+        
+        .ac-arrow {
+            text-align: center;
+            padding: 8px 0;
+            color: #C65D3B;
+            font-size: 16px;
+        }
+
+        /* Correct answer check */
+        .check-box {
+            background: #FDF5F1;
+            border: 2px solid #C65D3B;
+            padding: 12px 14px;
+            margin-top: 16px;
+            font-size: 12px;
+            line-height: 1.4;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .check-box .check-label {
+            font-weight: 700;
+            color: #C65D3B;
+        }
+
+        .check-box .check-highlight {
+            font-weight: 700;
+            color: #C65D3B;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .footer a {
+            display: inline-block;
+            padding: 10px 28px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin: 0 6px;
+        }
+        
+        .footer .btn-primary {
+            background: #C65D3B;
+            color: white;
+        }
+        
+        .footer .btn-secondary {
+            background: white;
+            color: #0A0A0A;
+            border: 1px solid #DDD;
+        }
+
+        @media (max-width: 500px) {
+            .core-formula {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
-        <div class="nav-links">
-            <a href="../../About.html">About</a>
-            <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+    <div class="container">
+        <div class="header">
+            <div class="logo"><span class="v-accent">V</span>EDARION</div>
+            <h1 class="title">Flaw</h1>
         </div>
-    </nav>
+        
+        <div class="flowchart">
 
-    <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Flaw</div>
-        <h1 class="page-title">Flaw</h1>
-    </section>
+            <!-- STEP 1: Identify the Question Stem -->
+            <div class="step">
+                <div class="step-number">STEP 1</div>
+                <div class="step-title">Identify the Question Stem</div>
+                <div class="step-content">
+                    Look for language that asks you to find a problem in the reasoning:
+                    <ul class="stem-list">
+                        <li>"the argument is flawed because"</li>
+                        <li>"the reasoning is vulnerable to which criticism"</li>
+                        <li>"a flaw in the argument's reasoning"</li>
+                        <li>"error in reasoning"</li>
+                    </ul>
+                </div>
+            </div>
 
-    <section class="flowchart-section">
-        <div class="flowchart-container">
-            <div class="flowchart">
-                <div class="step">
-                    <div class="step-number">STEP 1</div>
-                    <div class="step-title">Analyze the Stimulus</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Combine premises</li>
-                            <li>Ask: What would I conclude?</li>
-                            <li>Compare to author's conclusion</li>
-                            <li>Try to state exact flaw</li>
-                        </ul>
+            <div class="arrow">↓</div>
+
+            <!-- STEP 2: Analyze the Stimulus -->
+            <div class="step">
+                <div class="step-number">STEP 2</div>
+                <div class="step-title">Analyze the Stimulus</div>
+                <div class="step-content">
+                    <div class="sub-step">
+                        <span class="sub-label">a</span>
+                        <span class="sub-title">Identify Premise(s) & Conclusion</span>
+                        <div class="sub-desc">What's the evidence and what's the author arguing?</div>
                     </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step highlight">
-                    <div class="step-number">STEP 2</div>
-                    <div class="step-title">Prediction Check</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Predict: What is the flaw?</li>
-                            <li>If you have a prediction → Hunt Mode (scan for it)</li>
-                            <li>If no prediction or scan doesn't land → Start with A</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 3</div>
-                    <div class="step-title">Recognize Answer Choice Type</div>
-                    <div class="step-content">
-                        Three common forms:
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="branch-container">
-                    <div class="branch">
-                        <div class="step-title">Descriptive Answers</div>
-                        <div class="step-content">
-                            Often starts "the argument concludes..."
-                            <ul>
-                                <li>Check descriptive accuracy</li>
-                                <li>If accurate, ask: Is this a flaw?</li>
-                                <li>Yes = Correct</li>
-                            </ul>
+                    <div class="sub-step">
+                        <span class="sub-label">b</span>
+                        <span class="sub-title">Core Argument</span>
+                        <div class="core-formula">
+                            <div class="formula-box">Simplified Premise</div>
+                            <span class="formula-arrow">→</span>
+                            <div class="formula-box">Conclusion</div>
                         </div>
-                    </div>
-                    <div class="branch">
-                        <div class="step-title">Assumption-Based Answers</div>
-                        <div class="step-content">
-                            Often starts "the argument presumes..."
-                            <ul>
-                                <li>Apply NA Test</li>
-                                <li>MBT: Would this need to be true?</li>
-                                <li>Negation: If false, does argument collapse?</li>
-                                <li>Yes = Correct</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="branch">
-                        <div class="step-title">Fails to Consider / Ignores</div>
-                        <div class="step-content">
-                            Often 5-star Flaw questions
-                            <ul>
-                                <li>Apply Weaken Test</li>
-                                <li>Take answer as true (new premise)</li>
-                                <li>Does it weaken the argument?</li>
-                                <li>Yes = Correct</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step final-step">
-                    <div class="step-title">Correct Answer Check</div>
-                    <div class="step-content">
-                        Accurately describes a real weakness in the argument's reasoning
                     </div>
                 </div>
             </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 3: Prediction -->
+            <div class="step">
+                <div class="step-number">STEP 3</div>
+                <div class="step-title">Prediction</div>
+                <div class="step-content">
+                    <ul>
+                        <li>What's the gap? Why doesn't the premise support the conclusion?</li>
+                    </ul>
+                    <div class="prediction-callout">
+                        <strong>Flaw questions are prediction-friendly.</strong> Unlike Strengthen & Weaken, prediction here helps a lot. If you can name the flaw before looking at the answers, you're very likely to find it.
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 4: Answer Choice Strategy -->
+            <div class="step">
+                <div class="step-number">STEP 4</div>
+                <div class="step-title">Answer Choice Strategy</div>
+                <div class="step-content">
+                    <div class="ac-step">
+                        <span class="ac-step-num">1</span>
+                        <span class="ac-step-title">Is the answer choice descriptively accurate?</span>
+                        <div class="ac-step-desc">
+                            Does every word in this answer choice match what the argument actually does? Check the noun, verb, and predicate.
+                        </div>
+                    </div>
+                    <div class="ac-arrow">↓</div>
+                    <div class="ac-step">
+                        <span class="ac-step-num">2</span>
+                        <span class="ac-step-title">If accurate, is it actually a flaw?</span>
+                        <div class="ac-step-desc">
+                            Just because it describes the argument correctly doesn't mean it's identifying a problem. Is it pointing out a weakness?
+                        </div>
+                    </div>
+                    <div class="check-box">
+                        <span class="check-label">✓ Correct answer:</span> Descriptively accurate <span class="check-highlight">AND</span> identifies a real flaw.
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
 
-    <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
-    </section>
-
-    <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#0771626366756e68692973727368756e696047606a666e6b2964686a"><span class="__c
+        <div class="footer">
+            <a href="https://vedarion.com/pricing" class="btn-primary">Book a Session</a>
+            <a href="https://vedarion.com/learn" class="btn-secondary">← Back to Learn</a>
+        </div>
+    </div>
+</body>
+</html>

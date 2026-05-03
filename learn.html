@@ -85,6 +85,11 @@
         .footer a { color: #C65D3B; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
 
+        .sub-group-label { max-width: 700px; margin: 0 auto 15px; padding: 0 0 10px; border-bottom: 1px solid #E0E0E0; }
+        .sub-group-name { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #C65D3B; margin-bottom: 4px; }
+        .sub-group-desc { font-size: 12px; color: #999; }
+        .sub-group-spacer { max-width: 700px; margin: 25px auto 0; }
+
         @media (max-width: 650px) {
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
@@ -179,6 +184,22 @@
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
                 <p class="section-description">Master the question types you'll see most often.</p>
+                <div class="sub-group-label">
+                    <div class="sub-group-name">Connect the Dots</div>
+                    <div class="sub-group-desc">Read the facts and find what follows.</div>
+                </div>
+                <ul class="lessons-list">
+                    <li class="lesson-item available" data-slug="must-be-true"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Must Be True</span></div><div class="lesson-meta"><a href="question-types/must-be-true/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+
+                    <li class="lesson-item available" data-slug="most-strongly-supported"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Most Strongly Supported</span></div><div class="lesson-meta"><a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+                </ul>
+
+                <div class="sub-group-spacer"></div>
+
+                <div class="sub-group-label">
+                    <div class="sub-group-name">Evaluate the Argument</div>
+                    <div class="sub-group-desc">Find the premise, conclusion, and gap.</div>
+                </div>
                 <ul class="lessons-list">
 
                     <li class="lesson-item available has-accordion" data-slug="sufficient-assumption"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Sufficient Assumption</span></div><div class="lesson-meta"><a href="question-types/sufficient-assumption/flowchart.html">Flowchart</a><span class="separator">|</span><a href="question-types/sufficient-assumption/worksheet.html">Worksheet</a></div></div>
@@ -204,9 +225,12 @@
                         </ul>
                     </li>
 
-                    <li class="lesson-item available" data-slug="flaw"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Flaw</span></div><div class="lesson-meta"><a href="question-types/flaw/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
-
-                    <li class="lesson-item available" data-slug="must-be-true"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Must Be True</span></div><div class="lesson-meta"><a href="question-types/must-be-true/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
+                    <li class="lesson-item available has-accordion" data-slug="flaw"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Flaw</span></div><div class="lesson-meta"><a href="question-types/flaw/flowchart.html">Flowchart</a><span class="separator">|</span><a href="question-types/flaw/worksheet.html">Worksheet</a></div></div>
+                        <div class="preview-strip expandable" onclick="toggleAccordion(this)"><span class="preview-count"></span><span class="preview-dot">·</span><span class="preview-text">Lesson · Practice</span><svg class="preview-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#CCC;"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                        <ul class="sub-lessons">
+                            <li class="sub-lesson-item available" data-slug="flaw-lesson"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title"><a href="question-types/flaw/lesson.html">Lesson</a></span></div><div class="lesson-meta"><a href="question-types/flaw/lesson.html">Video</a></div></div></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -217,8 +241,6 @@
             <div class="lessons-container">
                 <p class="section-description">Round out your skills with the remaining question types.</p>
                 <ul class="lessons-list">
-                    <li class="lesson-item available" data-slug="most-strongly-supported"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Most Strongly Supported</span></div><div class="lesson-meta"><a href="question-types/most-strongly-supported/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
-
                     <li class="lesson-item available" data-slug="resolve-reconcile-explain"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Resolve / Reconcile / Explain</span></div><div class="lesson-meta"><a href="question-types/resolve-reconcile-explain/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>
 
                     <li class="lesson-item available" data-slug="evaluate"><div class="lesson-content"><div class="lesson-info"><div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lesson-title">Evaluate</span></div><div class="lesson-meta"><a href="question-types/evaluate/flowchart.html">Flowchart</a></div></div><div class="preview-strip"><span class="preview-text">Lesson · Practice</span></div></li>

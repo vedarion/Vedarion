@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flaw - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
+        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
+        .breadcrumb a { color: #888; text-decoration: none; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
+        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
+        .flowchart-container { max-width: 550px; width: 100%; }
+        .flowchart { display: flex; flex-direction: column; gap: 0; }
+        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .step.highlight { border-color: #C65D3B; border-width: 2px; }
+        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
+        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-content ul { list-style: none; margin-top: 8px; }
+        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
+        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
+        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
+        .branch-container { display: flex; gap: 10px; }
+        .branch { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 15px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .branch .step-title { font-size: 11px; margin-bottom: 8px; line-height: 1.4; }
+        .branch .step-content { font-size: 11px; }
+        .branch .step-content li { margin-bottom: 3px; }
+        .final-step { background: #0A0A0A; border: none; text-align: center; }
+        .final-step .step-title { margin-bottom: 5px; color: white; }
+        .final-step .step-content { color: #888; }
+        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
+        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
+        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .branch-container { flex-direction: column; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../About.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../Learn.html" class="active">Learn</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Flaw</div>
+        <h1 class="page-title">Flaw</h1>
+    </section>
+
+    <section class="flowchart-section">
+        <div class="flowchart-container">
+            <div class="flowchart">
+                <div class="step">
+                    <div class="step-number">STEP 1</div>
+                    <div class="step-title">Analyze the Stimulus</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Combine premises</li>
+                            <li>Ask: What would I conclude?</li>
+                            <li>Compare to author's conclusion</li>
+                            <li>Try to state exact flaw</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step highlight">
+                    <div class="step-number">STEP 2</div>
+                    <div class="step-title">Prediction Check</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Predict: What is the flaw?</li>
+                            <li>If you have a prediction → Hunt Mode (scan for it)</li>
+                            <li>If no prediction or scan doesn't land → Start with A</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step">
+                    <div class="step-number">STEP 3</div>
+                    <div class="step-title">Recognize Answer Choice Type</div>
+                    <div class="step-content">
+                        Three common forms:
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="branch-container">
+                    <div class="branch">
+                        <div class="step-title">Descriptive Answers</div>
+                        <div class="step-content">
+                            Often starts "the argument concludes..."
+                            <ul>
+                                <li>Check descriptive accuracy</li>
+                                <li>If accurate, ask: Is this a flaw?</li>
+                                <li>Yes = Correct</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="branch">
+                        <div class="step-title">Assumption-Based Answers</div>
+                        <div class="step-content">
+                            Often starts "the argument presumes..."
+                            <ul>
+                                <li>Apply NA Test</li>
+                                <li>MBT: Would this need to be true?</li>
+                                <li>Negation: If false, does argument collapse?</li>
+                                <li>Yes = Correct</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="branch">
+                        <div class="step-title">Fails to Consider / Ignores</div>
+                        <div class="step-content">
+                            Often 5-star Flaw questions
+                            <ul>
+                                <li>Apply Weaken Test</li>
+                                <li>Take answer as true (new premise)</li>
+                                <li>Does it weaken the argument?</li>
+                                <li>Yes = Correct</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="step final-step">
+                    <div class="step-title">Correct Answer Check</div>
+                    <div class="step-content">
+                        Accurately describes a real weakness in the argument's reasoning
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <p>Want to work through this together?</p>
+        <a href="../../pricing.html" class="cta-button">Book a Session</a>
+        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="/cdn-cgi/l/email-protection#0771626366756e68692973727368756e696047606a666e6b2964686a"><span class="__c
