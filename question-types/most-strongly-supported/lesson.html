@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Most Strongly Supported - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .lesson-hero { background: #FAFAFA; padding: 40px 50px 20px; max-width: 800px; margin: 0 auto; }
+        .lesson-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; margin-bottom: 12px; }
+        .lesson-title { font-size: 28px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; letter-spacing: 1px; }
+        .lesson-subtitle { font-size: 15px; color: #888; line-height: 1.6; margin-bottom: 25px; }
+        .tab-nav { display: flex; gap: 0; border-bottom: 1px solid #E0E0E0; margin-bottom: 30px; }
+        .tab-link { padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; border-bottom: 2px solid #C65D3B; text-decoration: none; }
+        .lesson-content { max-width: 800px; margin: 0 auto; padding: 0 50px 40px; }
+        .video-container { position: relative; padding-top: 56.25%; margin-bottom: 40px; background: #0A0A0A; border-radius: 4px; overflow: hidden; }
+        .video-container iframe { border: 0; position: absolute; top: 0; height: 100%; width: 100%; }
+        .prereq-toggle { background: white; border: 1px solid #E0E0E0; margin-bottom: 25px; transition: border-color 0.3s; }
+        .prereq-toggle:hover { border-color: #C65D3B; }
+        .prereq-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; }
+        .prereq-header-left { display: flex; align-items: center; gap: 10px; }
+        .prereq-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; }
+        .prereq-desc { font-size: 13px; color: #888; }
+        .prereq-chevron { transition: transform 0.3s; color: #CCC; }
+        .prereq-toggle.open .prereq-chevron { transform: rotate(180deg); }
+        .prereq-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .prereq-toggle.open .prereq-list { max-height: 300px; }
+        .prereq-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid #F0F0F0; text-decoration: none; transition: background 0.2s; }
+        .prereq-item:hover { background: #FAFAFA; }
+        .prereq-item-dot { width: 6px; height: 6px; border-radius: 50%; background: #C65D3B; flex-shrink: 0; }
+        .prereq-item-title { font-size: 13px; color: #0A0A0A; font-weight: 500; }
+        .summary-section h2 { font-size: 18px; font-weight: 600; color: #0A0A0A; margin-bottom: 20px; }
+        .summary-section p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+        .summary-section strong { color: #0A0A0A; }
+        .divider { height: 1px; background: #E0E0E0; margin: 25px 0; }
+        .takeaway-box { background: #FDF5F1; border: 2px solid #C65D3B; border-radius: 4px; padding: 18px 20px; margin-top: 25px; }
+        .takeaway-box p { font-size: 14px; color: #555; line-height: 1.6; margin: 0 0 8px; }
+        .takeaway-box p:last-child { margin: 0; }
+        .takeaway-box strong { color: #C65D3B; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+            .lesson-hero { padding: 30px 20px 15px; }
+            .lesson-content { padding: 0 20px 30px; }
+            .lesson-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>›</span>
+        Most Strongly Supported
+    </div>
+
+    <div class="lesson-hero">
+        <div class="prereq-toggle" onclick="this.classList.toggle('open')">
+            <div class="prereq-header">
+                <div class="prereq-header-left">
+                    <span class="prereq-label">Prerequisites</span>
+                    <span class="prereq-desc">Watch the Must Be True lesson first</span>
+                </div>
+                <svg class="prereq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="prereq-list">
+                <a href="../must-be-true/lesson.html" class="prereq-item">
+                    <div class="prereq-item-dot"></div>
+                    <span class="prereq-item-title">Must Be True — Step by Step Approach</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson-label" style="margin-top: 20px;">Most Strongly Supported</div>
+        <h1 class="lesson-title">Step by Step Approach</h1>
+        <p class="lesson-subtitle">Same reading approach as Must Be True — different standard for the right answer.</p>
+        <div class="tab-nav">
+            <a href="lesson.html" class="tab-link">Video</a>
+        </div>
+    </div>
+
+    <div class="lesson-content">
+        <div class="video-container">
+            <iframe src="https://player.mediadelivery.net/embed/600986/1123bd72-3a8a-4973-bdc8-0c09a7964b07?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>
+        </div>
+
+        <div class="summary-section">
+            <h2>Summary</h2>
+
+            <p><strong>How to read:</strong> Exactly like Must Be True. Treat everything as fact, simplify as you go, connect each sentence to prior sentences.</p>
+
+            <p><strong>What's different:</strong> The stem says "most supported" — not "must be true." The right answer can have a small gap between what the stimulus says and what the answer claims. It doesn't need to be 100% guaranteed.</p>
+
+            <div class="divider"></div>
+
+            <p><strong>The key question for each answer choice:</strong></p>
+            <p>Could I make a reasonable argument that this is supported by the stimulus?</p>
+
+            <p>If yes — keep it, even if you don't love it. Move on and compare. If you can't make a reasonable argument at all — eliminate.</p>
+
+            <div class="divider"></div>
+
+            <p><strong>How to pick:</strong> Process of elimination. Compare remaining answers and pick the one with the strongest support and the smallest assumption.</p>
+
+            <div class="takeaway-box">
+                <p><strong>MBT vs. MSS:</strong></p>
+                <p>MBT = answer must be 100% supported, no gap allowed.</p>
+                <p>MSS = answer is best supported, small gap is okay.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
