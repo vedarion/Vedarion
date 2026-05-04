@@ -6,146 +6,189 @@
     <title>Must Be True - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
-        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
-        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
-        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
-        .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
-        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
-        .breadcrumb a { color: #888; text-decoration: none; }
-        .breadcrumb a:hover { color: #C65D3B; }
-        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
-        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
-        .flowchart-container { max-width: 500px; width: 100%; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; padding: 40px 20px; min-height: 100vh; }
+        .container { max-width: 650px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 14px; font-weight: 300; letter-spacing: 4px; color: #0A0A0A; margin-bottom: 20px; }
+        .v-accent { color: #C65D3B; font-weight: 600; }
+        .title { font-size: 28px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #0A0A0A; margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #888; }
         .flowchart { display: flex; flex-direction: column; gap: 0; }
-        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .step.highlight { border-color: #C65D3B; border-width: 2px; }
+        .step { background: white; border: 1px solid #E0E0E0; padding: 24px 28px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
-        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .step-content { font-size: 13px; color: #555; line-height: 1.7; }
         .step-content ul { list-style: none; margin-top: 8px; }
-        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
-        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
-        .final-step { background: #0A0A0A; border: none; text-align: center; }
-        .final-step .step-title { margin-bottom: 5px; color: white; }
-        .final-step .step-content { color: #888; }
-        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
-        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
-        .cta-button:hover { background: #A04D2E; }
-        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
-        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
-        .footer a { color: #C65D3B; text-decoration: none; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 22px; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+        .step-content li { padding-left: 16px; position: relative; margin-bottom: 6px; }
+        .step-content li:before { content: "•"; position: absolute; left: 0; color: #C65D3B; font-weight: 700; }
+        .arrow { text-align: center; padding: 10px 0; color: #CCC; font-size: 18px; }
+        .stem-list { list-style: none; margin-top: 10px; }
+        .stem-list li { font-size: 12.5px; color: #555; font-style: italic; padding: 7px 10px; background: #F8F8F8; border-left: 3px solid #C65D3B; margin-bottom: 6px; line-height: 1.4; }
+        .stem-list li:before { display: none; }
+        .insight-box { background: #FDF5F1; border: 1px solid #E8D5CC; padding: 14px 16px; margin-top: 14px; font-size: 12.5px; color: #555; line-height: 1.6; }
+        .insight-box strong { color: #C65D3B; font-weight: 700; }
+        .sub-step { margin-bottom: 16px; }
+        .sub-step:last-child { margin-bottom: 0; }
+        .sub-label { display: inline-block; background: #C65D3B; color: white; font-size: 10px; font-weight: 600; width: 20px; height: 20px; line-height: 20px; text-align: center; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+        .sub-title { display: inline; font-size: 13px; font-weight: 600; color: #0A0A0A; vertical-align: middle; }
+        .sub-desc { font-size: 12.5px; color: #666; margin-top: 4px; padding-left: 28px; line-height: 1.5; }
+        .inference-example { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 16px 0 12px; }
+        .inference-box { background: #F8F8F8; border: 1px solid #E0E0E0; border-left: 3px solid #C65D3B; padding: 10px 22px; font-size: 20px; font-weight: 600; color: #333; text-align: center; }
+        .inference-arrow { color: #C65D3B; font-size: 18px; font-weight: 700; }
+        .inference-result { background: #FDF5F1; border: 1px solid #E8D5CC; padding: 10px 16px; margin-bottom: 12px; font-size: 13px; color: #555; }
+        .inference-result strong { color: #C65D3B; }
+        .note-card { background: #F8F8F8; border: 1px solid #E0E0E0; border-left: 3px solid #C65D3B; padding: 10px 14px; margin-top: 10px; font-size: 12.5px; color: #666; line-height: 1.5; }
+        .ac-card { background: #F8F8F8; border: 1px solid #E0E0E0; border-left: 3px solid #C65D3B; padding: 14px 18px; margin-top: 12px; }
+        .ac-title { font-size: 13px; font-weight: 600; color: #0A0A0A; margin-bottom: 4px; }
+        .ac-desc { font-size: 12.5px; color: #666; line-height: 1.5; }
+        .check-box { background: #FDF5F1; border: 2px solid #C65D3B; padding: 12px 14px; margin-top: 16px; font-size: 12.5px; line-height: 1.5; color: #555; }
+        .check-box strong { color: #C65D3B; }
+        .trap-box { background: #FFF0F0; border: 1px solid #E0C0C0; padding: 14px 18px; margin-top: 12px; }
+        .trap-title { font-size: 13px; font-weight: 600; color: #0A0A0A; margin-bottom: 4px; }
+        .trap-title .x { color: #8F4A4A; font-weight: 700; margin-right: 6px; }
+        .trap-desc { font-size: 12.5px; color: #666; line-height: 1.5; }
+        .footer { text-align: center; margin-top: 40px; }
+        .footer a { display: inline-block; padding: 10px 28px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; margin: 0 6px; }
+        .footer .btn-primary { background: #C65D3B; color: white; }
+        .footer .btn-secondary { background: white; color: #0A0A0A; border: 1px solid #DDD; }
+        @media (max-width: 500px) { .inference-example { flex-direction: column; gap: 6px; } }
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
-        <div class="nav-links">
-            <a href="../../About.html">About</a>
-            <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+    <div class="container">
+        <div class="header">
+            <div class="logo"><span class="v-accent">V</span>EDARION</div>
+            <h1 class="title">Must Be True</h1>
+            <p class="subtitle">Connect the dots — read the facts and find what follows.</p>
         </div>
-    </nav>
 
-    <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Must Be True</div>
-        <h1 class="page-title">Must Be True</h1>
-    </section>
+        <div class="flowchart">
 
-    <section class="flowchart-section">
-        <div class="flowchart-container">
-            <div class="flowchart">
-                <div class="step">
-                    <div class="step-number">STEP 1</div>
-                    <div class="step-title">Identify the Question Type</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Look for "inference" / "must be true"</li>
-                            <li>Answer must be 100% supported</li>
-                        </ul>
+            <!-- STEP 1 -->
+            <div class="step">
+                <div class="step-number">STEP 1</div>
+                <div class="step-title">Identify the Question Stem</div>
+                <div class="step-content">
+                    <ul class="stem-list">
+                        <li>"if the statements above are true, which must also be true"</li>
+                        <li>"properly inferred"</li>
+                        <li>"must be true"</li>
+                    </ul>
+                    <div class="insight-box">
+                        <strong>Key Insight:</strong> Even if the stimulus looks like an argument, treat everything as fact. Don't look for gaps — just <strong>connect the dots.</strong>
                     </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 2</div>
-                    <div class="step-title">Read & Simplify the Stimulus</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Simplify each sentence</li>
-                            <li>Combine with prior sentences</li>
-                            <li>Build clear, simplified version</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step highlight">
-                    <div class="step-number">STEP 3</div>
-                    <div class="step-title">If You Have an Inference</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Predict: What must follow from this?</li>
-                            <li>Go into Hunt Mode</li>
-                            <li>Scan answer choices for that inference</li>
-                            <li>Eliminate only if unsupported</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 4</div>
-                    <div class="step-title">Verify the Candidate</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Check every word of the choice</li>
-                            <li>If 100% supported → Pick & Move On</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 5</div>
-                    <div class="step-title">If No Inference Emerges</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Start at A, go sequentially</li>
-                            <li>Analyze each word for 100% support</li>
-                            <li>Stop where it falls apart</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step final-step">
-                    <div class="step-title">Correct Answer Check</div>
-                    <div class="step-content">
-                        Entirely supported by stimulus · No outside information needed
+                    <div class="insight-box">
+                        <strong>Key Insight:</strong> The stem doesn't say "most supported." It says <strong>must be true</strong> — meaning the answer is 100% supported.
                     </div>
                 </div>
             </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 2 -->
+            <div class="step">
+                <div class="step-number">STEP 2</div>
+                <div class="step-title">Read & Connect the Dots</div>
+                <div class="step-content">
+                    As you read each sentence:
+                    <div class="sub-step" style="margin-top: 12px;">
+                        <span class="sub-label">1</span>
+                        <span class="sub-title">Simplify as you read</span>
+                        <div class="sub-desc">Put each sentence in your own words. What is it really saying?</div>
+                    </div>
+                    <div class="sub-step">
+                        <span class="sub-label">2</span>
+                        <span class="sub-title">Connect each sentence to prior sentences</span>
+                        <div class="sub-desc">Do any ideas overlap? Can you combine facts to reach something new?</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 3 -->
+            <div class="step">
+                <div class="step-number">STEP 3</div>
+                <div class="step-title">Is There an Overall Inference?</div>
+                <div class="step-content">
+                    After connecting, ask: do the facts combine into a bigger conclusion?
+                    <div class="inference-example">
+                        <div class="inference-box">A</div>
+                        <span class="inference-arrow">→</span>
+                        <div class="inference-box">B</div>
+                        <span class="inference-arrow">→</span>
+                        <div class="inference-box">C</div>
+                    </div>
+                    <div class="inference-result">
+                        <strong>Inference:</strong> A → C
+                    </div>
+                    <div class="note-card">While conditionals make connecting easier, you can also infer things based on overlapping facts.</div>
+                    <div class="note-card">If no inference emerges, the right answer could just be a restatement of a single sentence.</div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 4 -->
+            <div class="step">
+                <div class="step-number">STEP 4</div>
+                <div class="step-title">Answer Choice Strategy</div>
+                <div class="step-content">
+                    The correct answer will be one of three things:
+                    <div class="ac-card">
+                        <div class="ac-title">An inference from connecting the dots</div>
+                        <div class="ac-desc">Two or more facts combine to produce something new.</div>
+                    </div>
+                    <div class="ac-card">
+                        <div class="ac-title">A summary of the stimulus</div>
+                        <div class="ac-desc">Captures the overall picture in fewer words.</div>
+                    </div>
+                    <div class="ac-card">
+                        <div class="ac-title">A restatement of a single sentence</div>
+                        <div class="ac-desc">Same idea, different words.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- STEP 5 -->
+            <div class="step">
+                <div class="step-number">STEP 5</div>
+                <div class="step-title">Answer Choice Check</div>
+                <div class="step-content">
+                    <div class="check-box">
+                        <strong>Every word must be 100% supported by information in the stimulus.</strong>
+                    </div>
+                    <div class="note-card"><strong style="color:#C65D3B;">Don't forget:</strong> The contrapositive is always valid. If A → B, then not B → not A must also be true.</div>
+                    <div class="note-card"><strong style="color:#C65D3B;">Keep in mind:</strong> It could be a restatement of a single sentence — same idea, different words. Verify every word.</div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- WRONG ANSWER PATTERNS -->
+            <div class="step">
+                <div class="step-number">WATCH OUT</div>
+                <div class="step-title">Wrong Answer Patterns</div>
+                <div class="step-content">
+                    <div class="trap-box">
+                        <div class="trap-title"><span class="x">✗</span> Flipping the conditional or negating the sufficient</div>
+                        <div class="trap-desc">If the stimulus says A → B, a wrong answer might say B → A or not A → not B.</div>
+                    </div>
+                    <div class="trap-box">
+                        <div class="trap-title"><span class="x">✗</span> Strong answer for a weak inference</div>
+                        <div class="trap-desc">If the stimulus says "some" or "might," an answer with "all" or "always" goes too far.</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
 
-    <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
-    </section>
-
-    <footer class="footer">
-        <p>Questions? <a href="/cdn-cgi/l/email-protection#2e584b4a4f5c474140005a5b5a415c4740496e49434f4742004d4143"><span class="__c
+        <div class="footer">
+            <a href="../../pricing.html" class="btn-primary">Book a Session</a>
+            <a href="../../learn.html" class="btn-secondary">← Back to Learn</a>
+        </div>
+    </div>
+</body>
+</html>

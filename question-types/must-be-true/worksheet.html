@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Must Be True Worksheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #0A0A0A; color: #E0E0E0; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .hero { background: #0A0A0A; padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #222; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; margin-bottom: 10px; color: white; }
+        .page-subtitle { color: #666; font-size: 14px; }
+        .main-content { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 20px 60px; min-height: calc(100vh - 200px); }
+        .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; opacity: 0.03; pointer-events: none; z-index: 0; }
+        .worksheet { position: relative; z-index: 1; }
+        .section { margin-bottom: 30px; }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .section-title { font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; }
+        .section-line { flex: 1; height: 1px; background: #333; }
+        .section-break { background: #FAFAFA; height: 30px; margin: 30px -20px; width: calc(100% + 40px); }
+        .core-instructions { background: #0d0d0d; border: 1px solid #222; border-left: 3px solid #C65D3B; border-radius: 4px; padding: 15px 18px; margin-bottom: 20px; }
+        .instruction-main { font-size: 13px; color: #B0B0B0; margin-bottom: 10px; line-height: 1.5; }
+        .instruction-detail { font-size: 12px; color: #888; }
+        .instruction-detail .highlight { color: #E0E0E0; font-weight: 600; }
+        .input-group { margin-bottom: 15px; }
+        .input-label { display: block; font-size: 13px; font-weight: 600; color: #888; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .input-field { width: 100%; background: #111; border: 1px solid #333; border-radius: 4px; padding: 12px 15px; color: #E0E0E0; font-size: 14px; font-family: inherit; resize: vertical; transition: border-color 0.3s ease; }
+        .input-field:focus { outline: none; border-color: #C65D3B; }
+        .input-field::placeholder { color: #444; }
+        .input-field.input-short { font-size: 15px; padding: 14px 15px; }
+        textarea.input-field { min-height: 70px; }
+        .sentence-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+        .sentence-num { background: #C65D3B; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 12px; }
+        .sentence-fields { flex: 1; }
+        .sentence-fields .input-field { margin-bottom: 6px; }
+        .add-sentence-btn { background: transparent; border: 1px dashed #333; color: #666; padding: 10px; width: 100%; font-size: 12px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: all 0.3s ease; margin-top: 5px; border-radius: 4px; }
+        .add-sentence-btn:hover { border-color: #C65D3B; color: #C65D3B; }
+        .prediction-callout { background: #0d0d0d; border: 1px solid #222; border-left: 3px solid #C65D3B; border-radius: 4px; padding: 12px 16px; margin-top: 15px; font-size: 12px; color: #666; line-height: 1.5; font-style: italic; }
+        .prediction-callout strong { color: #C65D3B; font-style: normal; }
+        .answer-choice { background: #111; border: 1px solid #333; border-radius: 4px; margin-bottom: 15px; overflow: hidden; transition: opacity 0.3s ease; }
+        .answer-choice.eliminated { opacity: 0.3; }
+        .answer-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #0d0d0d; border-bottom: 1px solid #333; }
+        .answer-letter { font-size: 14px; font-weight: 600; color: #E0E0E0; }
+        .answer-status { display: flex; gap: 10px; }
+        .status-btn { padding: 5px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; border: 1px solid #333; border-radius: 3px; background: transparent; color: #666; cursor: pointer; transition: all 0.3s ease; }
+        .status-btn:hover { border-color: #555; color: #888; }
+        .status-btn.keep.active { background: #1a2e1a; border-color: #2d5a2d; color: #5a9a5a; }
+        .status-btn.eliminate.active { background: #2e1a1a; border-color: #5a2d2d; color: #9a5a5a; }
+        .answer-body { padding: 15px; }
+        .test-step { margin-bottom: 10px; }
+        .test-step:last-child { margin-bottom: 0; }
+        .test-label { font-size: 12px; font-weight: 600; color: #888; margin-bottom: 6px; }
+        .test-label span { color: #E0E0E0; }
+        .test-description { font-size: 11px; color: #555; margin-bottom: 8px; }
+        .final-selection { background: #111; border: 1px solid #C65D3B; border-radius: 4px; padding: 20px; }
+        .final-instruction { font-size: 13px; color: #888; margin-bottom: 15px; line-height: 1.6; }
+        .final-answer { display: flex; align-items: center; gap: 15px; }
+        .final-label { font-size: 14px; font-weight: 600; color: #E0E0E0; }
+        .final-input { width: 60px; background: #0A0A0A; border: 2px solid #C65D3B; border-radius: 4px; padding: 10px; color: #C65D3B; font-size: 18px; font-weight: 600; text-align: center; text-transform: uppercase; }
+        .final-input:focus { outline: none; }
+        .actions { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .btn { padding: 12px 30px; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background: #C65D3B; border: none; color: white; }
+        .btn-primary:hover { background: #A04D2E; }
+        .cta-section { background: #0A0A0A; border-top: 1px solid #222; padding: 40px 20px; text-align: center; margin-top: 40px; }
+        .cta-section p { color: #888; font-size: 15px; margin-bottom: 20px; }
+        .cta-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-button-secondary { background: transparent; border: 1px solid #C65D3B; color: #C65D3B; }
+        .cta-button-secondary:hover { background: #C65D3B; color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .watermark { width: 280px; height: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../About.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="page-title">MUST BE TRUE</h1>
+        <p class="page-subtitle">Interactive Practice Worksheet</p>
+    </section>
+
+    <div class="main-content">
+        <svg class="watermark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+            <defs><linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF8C5A"/><stop offset="45%" stop-color="#C65D3B"/><stop offset="100%" stop-color="#8B3A1D"/></linearGradient></defs>
+            <circle cx="200" cy="200" r="185" fill="none" stroke="#C65D3B" stroke-width="2.5"/>
+            <circle cx="200" cy="200" r="160" fill="none" stroke="#333" stroke-width="1.5"/>
+            <polygon points="200,305 80,95 130,95 200,235 270,95 320,95" fill="url(#vGradient)"/>
+            <rect x="182" y="320" width="36" height="4" fill="#C65D3B" rx="2"/>
+        </svg>
+
+        <div class="worksheet">
+            <!-- Connect the Dots -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Connect the Dots</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="core-instructions">
+                    <p class="instruction-main">Simplify each sentence in your own words, then connect it to prior sentences. Look for overlapping ideas.</p>
+                    <p class="instruction-detail">Remember: treat <span class="highlight">everything</span> in the stimulus as fact — even if it looks like an argument.</p>
+                </div>
+
+                <div class="sentence-row">
+                    <div class="sentence-num">1</div>
+                    <div class="sentence-fields">
+                        <input type="text" class="input-field input-short" placeholder="Simplify sentence 1">
+                    </div>
+                </div>
+                <div class="sentence-row">
+                    <div class="sentence-num">2</div>
+                    <div class="sentence-fields">
+                        <input type="text" class="input-field input-short" placeholder="Simplify sentence 2">
+                        <input type="text" class="input-field" placeholder="How does it connect to sentence 1?" style="font-size:13px;">
+                    </div>
+                </div>
+                <div class="sentence-row">
+                    <div class="sentence-num">3</div>
+                    <div class="sentence-fields">
+                        <input type="text" class="input-field input-short" placeholder="Simplify sentence 3">
+                        <input type="text" class="input-field" placeholder="How does it connect to prior sentences?" style="font-size:13px;">
+                    </div>
+                </div>
+                <div class="sentence-row">
+                    <div class="sentence-num">4</div>
+                    <div class="sentence-fields">
+                        <input type="text" class="input-field input-short" placeholder="Simplify sentence 4 (if applicable)">
+                        <input type="text" class="input-field" placeholder="How does it connect to prior sentences?" style="font-size:13px;">
+                    </div>
+                </div>
+                <div id="extra-sentences"></div>
+                <button class="add-sentence-btn" onclick="addSentence()">+ Add Sentence</button>
+            </div>
+
+            <div class="section-break"></div>
+
+            <!-- Overall Inference -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Overall Inference</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Do the facts combine into a bigger conclusion?</label>
+                    <textarea class="input-field" id="inference" placeholder="What follows from connecting these facts? (If no inference, write 'none — look for restatement')"></textarea>
+                </div>
+                <div class="prediction-callout">
+                    <strong>Remember:</strong> The answer must be 100% supported. It could be an inference, a summary, or a restatement of a single sentence.
+                </div>
+            </div>
+
+            <div class="section-break"></div>
+
+            <!-- Answer Choices -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Answer Choices</span>
+                    <div class="section-line"></div>
+                </div>
+                <p style="font-size: 12px; color: #555; margin-bottom: 15px;">For each answer: is every word 100% supported by the stimulus?</p>
+
+                <div class="answer-choice">
+                    <div class="answer-header"><span class="answer-letter">Answer Choice A</span><div class="answer-status"><button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button><button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button></div></div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Is every word 100% supported by the stimulus?</div>
+                            <input type="text" class="input-field" placeholder="Supported / Not supported — why?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> What type is it?</div>
+                            <input type="text" class="input-field" placeholder="Inference / Summary / Restatement / Not supported">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="answer-choice">
+                    <div class="answer-header"><span class="answer-letter">Answer Choice B</span><div class="answer-status"><button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button><button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button></div></div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Is every word 100% supported by the stimulus?</div>
+                            <input type="text" class="input-field" placeholder="Supported / Not supported — why?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> What type is it?</div>
+                            <input type="text" class="input-field" placeholder="Inference / Summary / Restatement / Not supported">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="answer-choice">
+                    <div class="answer-header"><span class="answer-letter">Answer Choice C</span><div class="answer-status"><button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button><button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button></div></div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Is every word 100% supported by the stimulus?</div>
+                            <input type="text" class="input-field" placeholder="Supported / Not supported — why?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> What type is it?</div>
+                            <input type="text" class="input-field" placeholder="Inference / Summary / Restatement / Not supported">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="answer-choice">
+                    <div class="answer-header"><span class="answer-letter">Answer Choice D</span><div class="answer-status"><button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button><button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button></div></div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Is every word 100% supported by the stimulus?</div>
+                            <input type="text" class="input-field" placeholder="Supported / Not supported — why?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> What type is it?</div>
+                            <input type="text" class="input-field" placeholder="Inference / Summary / Restatement / Not supported">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="answer-choice">
+                    <div class="answer-header"><span class="answer-letter">Answer Choice E</span><div class="answer-status"><button class="status-btn keep" onclick="toggleStatus(this, 'keep')">Keep</button><button class="status-btn eliminate" onclick="toggleStatus(this, 'eliminate')">Eliminate</button></div></div>
+                    <div class="answer-body">
+                        <div class="test-step">
+                            <div class="test-label"><span>1.</span> Is every word 100% supported by the stimulus?</div>
+                            <input type="text" class="input-field" placeholder="Supported / Not supported — why?">
+                        </div>
+                        <div class="test-step">
+                            <div class="test-label"><span>2.</span> What type is it?</div>
+                            <input type="text" class="input-field" placeholder="Inference / Summary / Restatement / Not supported">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-break"></div>
+
+            <!-- Final Selection -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Final Selection</span>
+                    <div class="section-line"></div>
+                </div>
+                <div class="final-selection">
+                    <p class="final-instruction">Select the answer where every word is 100% supported by the stimulus.</p>
+                    <div class="final-answer">
+                        <span class="final-label">Final Answer:</span>
+                        <input type="text" class="final-input" id="finalAnswer" maxlength="1" placeholder="?">
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="clearWorksheet()">Clear & Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <p>Want feedback on your approach?</p>
+        <div class="cta-buttons">
+            <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Free 30-Min Consultation</a>
+            <a href="../../pricing.html" class="cta-button cta-button-secondary">Book a Session</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function toggleStatus(button, type) {
+            const parent = button.closest('.answer-status');
+            const answerChoice = button.closest('.answer-choice');
+            const keepBtn = parent.querySelector('.keep');
+            const elimBtn = parent.querySelector('.eliminate');
+            if (type === 'keep') {
+                keepBtn.classList.toggle('active');
+                elimBtn.classList.remove('active');
+                answerChoice.classList.remove('eliminated');
+            } else {
+                elimBtn.classList.toggle('active');
+                keepBtn.classList.remove('active');
+                if (elimBtn.classList.contains('active')) {
+                    answerChoice.classList.add('eliminated');
+                } else {
+                    answerChoice.classList.remove('eliminated');
+                }
+            }
+        }
+
+        var sentenceCount = 4;
+        function addSentence() {
+            sentenceCount++;
+            var container = document.getElementById('extra-sentences');
+            var row = document.createElement('div');
+            row.className = 'sentence-row';
+            row.innerHTML = '<div class="sentence-num">' + sentenceCount + '</div>' +
+                '<div class="sentence-fields">' +
+                '<input type="text" class="input-field input-short" placeholder="Simplify sentence ' + sentenceCount + '">' +
+                '<input type="text" class="input-field" placeholder="How does it connect to prior sentences?" style="font-size:13px;">' +
+                '</div>';
+            container.appendChild(row);
+        }
+
+        function clearWorksheet() {
+            document.querySelectorAll('.input-field, .final-input').forEach(input => { input.value = ''; });
+            document.querySelectorAll('.status-btn').forEach(btn => { btn.classList.remove('active'); });
+            document.querySelectorAll('.answer-choice').forEach(choice => { choice.classList.remove('eliminated'); });
+            document.getElementById('extra-sentences').innerHTML = '';
+            sentenceCount = 4;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.getElementById('finalAnswer').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
+    </script>
+</body>
+</html>
