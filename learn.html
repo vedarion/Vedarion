@@ -82,8 +82,7 @@
 
         /* SINGLE-ROW LESSON */
         .lesson-item.single-row .lesson-content { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: #0A0A0A; }
-        .lesson-item.single-row .lesson-check { width: 18px; height: 18px; border-radius: 3px; border: 1.5px solid #CCC; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: white; }
-        .lesson-item.single-row .lesson-check:hover { border-color: #C65D3B; }
+        .lesson-item.single-row .lesson-check { width: 18px; height: 18px; border-radius: 3px; border: 1.5px solid #CCC; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: white; }
         .lesson-item.single-row .lesson-check.completed { background: #C65D3B; border-color: #C65D3B; }
         .lesson-item.single-row .lesson-check .check-svg { display: none; }
         .lesson-item.single-row .lesson-check.completed .check-svg { display: block; }
@@ -131,8 +130,7 @@
         .video-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-top: 1px solid #EDEBE7; text-decoration: none; color: inherit; transition: background 0.2s ease; }
         .video-row:first-child { border-top: none; }
         .video-row:hover { background: #F4EFE6; }
-        .video-row .lesson-check { width: 18px; height: 18px; border-radius: 3px; border: 1.5px solid #CCC; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: white; z-index: 2; }
-        .video-row .lesson-check:hover { border-color: #C65D3B; }
+        .video-row .lesson-check { width: 18px; height: 18px; border-radius: 3px; border: 1.5px solid #CCC; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; background: white; z-index: 2; }
         .video-row .lesson-check.completed { background: #C65D3B; border-color: #C65D3B; }
         .video-row .lesson-check .check-svg { display: none; }
         .video-row .lesson-check.completed .check-svg { display: block; }
@@ -164,8 +162,9 @@
 
         /* VEDAMARK STEP ROW */
         .vedamark-glyph { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700; font-size: 18px; line-height: 1; color: #C65D3B; }
-        .vedamark-row .lesson-check { pointer-events: none; cursor: default; }
-        .vedamark-row .lesson-check:hover { border-color: #CCC; }
+        /* Checkboxes are display-only — completion comes from clicking the lesson link.
+           VedaMark + future micro-quiz slugs are marked by their respective drill/quiz pages. */
+        .lesson-check { pointer-events: none; }
         .lesson-item[data-tier="mastered"] .vedamark-glyph { color: #0A0A0A; }
         .stamp-mastered.landing { animation: stampLandMastered 0.55s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes stampLandMastered {
@@ -284,7 +283,7 @@
                     <li class="lesson-item single-row" data-slug="premises-conclusions" data-card-key="premises-conclusions">
                         <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="lesson-content">
-                            <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <a href="foundations/identifying-conclusions/lesson.html" class="lesson-link-wrapper">
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="lesson-body">
@@ -301,7 +300,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="foundations/conditional-logic/lesson.html" class="video-row" data-slug="conditional-logic">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -316,18 +315,13 @@
                                 </div>
                                 <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
-                        </div>
-                    </li>
-
-                    <li class="lesson-item single-row" data-slug="chained-conditionals" data-card-key="chained-conditionals">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
-                        <div class="lesson-content">
-                            <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                            <a href="foundations/chained-conditionals/lesson.html" class="lesson-link-wrapper">
+                            <a href="foundations/chained-conditionals/lesson.html" class="video-row" data-slug="chained-conditionals">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                                <div class="lesson-body">
-                                    <div class="lesson-title">Chained Conditionals</div>
+                                <div class="video-body">
+                                    <div class="video-title">Chained Conditionals</div>
                                 </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
                         </div>
                     </li>
@@ -339,7 +333,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="foundations/translating-words-on-the-test/lesson.html" class="video-row" data-slug="translating-words">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -360,7 +354,7 @@
                     <li class="lesson-item single-row" data-slug="negation" data-card-key="negation">
                         <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="lesson-content">
-                            <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <a href="foundations/negation/lesson.html" class="lesson-link-wrapper">
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="lesson-body">
@@ -392,7 +386,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/main-point/lesson.html" class="video-row" data-slug="main-point-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -414,7 +408,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/argument-part/lesson.html" class="video-row" data-slug="argument-part-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -436,7 +430,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/method-of-reasoning/lesson.html" class="video-row" data-slug="method-of-reasoning-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -473,7 +467,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/must-be-true/lesson.html" class="video-row" data-slug="must-be-true-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -495,7 +489,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/most-strongly-supported/lesson.html" class="video-row" data-slug="most-strongly-supported-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -527,7 +521,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/sufficient-assumption/theory.html" class="video-row" data-slug="sufficient-assumption-theory">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Theory</div>
@@ -535,7 +529,7 @@
                                 <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
                             <a href="question-types/sufficient-assumption/lesson.html" class="video-row" data-slug="sufficient-assumption-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -557,7 +551,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/necessary-assumption/theory.html" class="video-row" data-slug="necessary-assumption-theory">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Theory</div>
@@ -565,7 +559,7 @@
                                 <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
                             <a href="question-types/necessary-assumption/lesson.html" class="video-row" data-slug="necessary-assumption-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -587,7 +581,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/strengthen-weaken/lesson.html" class="video-row" data-slug="strengthen-weaken-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -609,7 +603,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="question-types/flaw/lesson.html" class="video-row" data-slug="flaw-lesson">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -700,7 +694,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="advanced/complex-conditionals/lesson.html" class="video-row" data-slug="complex-conditionals">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -733,7 +727,7 @@
                         </div>
                         <div class="qt-card-body">
                             <a href="advanced/advanced-translations/lesson.html" class="video-row" data-slug="advanced-translations">
-                                <div class="lesson-check" onclick="event.stopPropagation()"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
                                     <div class="video-title">Lesson</div>
@@ -795,8 +789,7 @@
             sections: [
                 { label: 'FOUNDATIONS', items: [
                     { key: 'premises-conclusions', name: 'Premises', slugs: ['premises-conclusions'] },
-                    { key: 'conditional-logic', name: 'Conditional Logic', slugs: ['conditional-logic', 'conditional-logic-vedamark'] },
-                    { key: 'chained-conditionals', name: 'Chained Cond.', slugs: ['chained-conditionals'] },
+                    { key: 'conditional-logic', name: 'Conditional Logic', slugs: ['conditional-logic', 'conditional-logic-vedamark', 'chained-conditionals'] },
                     { key: 'translating-words', name: 'Translating', slugs: ['translating-words', 'translating-words-vedamark'] },
                     { key: 'negation', name: 'Negation', slugs: ['negation'] }
                 ]},
@@ -1018,28 +1011,6 @@
             updateChecksFromCompletions();
             updateAllCardTiers(false);
             renderMasteryWall();
-
-            document.querySelectorAll('.lesson-check').forEach(function(check) {
-                check.addEventListener('click', async function(e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var item = check.closest('[data-slug]');
-                    if (!item) return;
-                    var slug = item.getAttribute('data-slug');
-                    if (!slug) return;
-                    if (check.classList.contains('completed')) {
-                        check.classList.remove('completed');
-                        stateRef.completedSet.delete(slug);
-                        await vedarionAuth.from('lesson_completions').delete().eq('user_id', userId).eq('lesson_slug', slug);
-                    } else {
-                        check.classList.add('completed');
-                        stateRef.completedSet.add(slug);
-                        await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
-                    }
-                    updateAllCardTiers(true);
-                    renderMasteryWall();
-                });
-            });
 
             document.querySelectorAll('a.lesson-link-wrapper[href], a.video-row[href]').forEach(function(link) {
                 link.addEventListener('click', async function(e) {
