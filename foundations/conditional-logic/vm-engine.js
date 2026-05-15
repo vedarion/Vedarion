@@ -30,17 +30,24 @@ fetch('vedamark-contrapositive-bank.json')
 })
 .catch(function(err) { console.error('Failed to load contrapositive bank:', err) });
 
-// Read ?tier=N from URL and pre-select that tier on page load
+// Read ?tier=N from URL and pre-select that tier on page load.
+// In focused-tier mode (param present), also hide the unselected tier card so the
+// student isn't presented with a choice they already made on the learn page.
 (function readTierFromUrl() {
     try {
         var params = new URLSearchParams(window.location.search);
         var t = parseInt(params.get('tier'), 10);
         if (t === 0 || t === 1) {
-            // DOM may not be ready yet; defer to next tick
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() { selectTier(t); });
-            } else {
+            var applyTier = function() {
                 selectTier(t);
+                var otherTier = t === 0 ? 1 : 0;
+                var otherCard = document.getElementById('tier-' + otherTier);
+                if (otherCard) otherCard.style.display = 'none';
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyTier);
+            } else {
+                applyTier();
             }
         }
     } catch(e) { /* no-op */ }
@@ -174,6 +181,18 @@ function retryTier() {
 }
 
 function backToLevels() {
+    // In focused-tier mode (?tier=N), "Change level" navigates to the other tier directly
+    // — there's no hub to fall back to since the unselected card is hidden.
+    try {
+        var params = new URLSearchParams(window.location.search);
+        var paramTier = parseInt(params.get('tier'), 10);
+        if (paramTier === 0 || paramTier === 1) {
+            var otherTier = paramTier === 0 ? 1 : 0;
+            window.location.href = window.location.pathname + '?tier=' + otherTier;
+            return;
+        }
+    } catch(e) { /* fall through to default hub behavior */ }
+
     document.getElementById('vm-quiz').classList.remove('visible');
     document.getElementById('vm-results').classList.remove('visible');
     document.getElementById('vm-levels').style.display = 'block';
