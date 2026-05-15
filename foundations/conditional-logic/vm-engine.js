@@ -2,6 +2,13 @@ var BANK_SN = null;
 var BANK_CP = null;
 var currentTier = 0, quizQs = [], userAns = {};
 
+// Per-tier configuration. Slug is what gets written to lesson_completions on pass.
+var TIER_CONFIG = [
+    { name: 'I: Sufficient & Necessary', slug: 'conditional-logic-vedamark-sn' },
+    { name: 'II: Contrapositive', slug: 'conditional-logic-vedamark-cp' }
+];
+var PASS_THRESHOLD = 100; // percentage required to pass (100 = perfect)
+
 var SUFFICIENT_CATS = ['if', 'all', 'every', 'whenever', 'when', 'people_who', 'each', 'any', 'the_only'];
 var NECESSARY_CATS = ['then', 'must', 'only_if', 'only_when', 'requires', 'depends_on'];
 
@@ -22,6 +29,22 @@ fetch('vedamark-contrapositive-bank.json')
     });
 })
 .catch(function(err) { console.error('Failed to load contrapositive bank:', err) });
+
+// Read ?tier=N from URL and pre-select that tier on page load
+(function readTierFromUrl() {
+    try {
+        var params = new URLSearchParams(window.location.search);
+        var t = parseInt(params.get('tier'), 10);
+        if (t === 0 || t === 1) {
+            // DOM may not be ready yet; defer to next tick
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() { selectTier(t); });
+            } else {
+                selectTier(t);
+            }
+        }
+    } catch(e) { /* no-op */ }
+})();
 
 function shuffle(a) {
     a = a.slice();
@@ -85,8 +108,7 @@ function startQuiz() {
     document.getElementById('vm-results').classList.remove('visible');
     var el = document.getElementById('vm-quiz');
     el.classList.add('visible');
-    var tierNames = ['I: Sufficient & Necessary', 'II: Contrapositive'];
-    var h = '<div class="quiz-progress"><span class="quiz-progress-text"><strong>VedaMark ' + tierNames[currentTier] + '</strong> · 5 questions</span><span class="quiz-score-label"><a onclick="backToLevels()">← Change level</a> · 80% to pass</span></div>';
+    var h = '<div class="quiz-progress"><span class="quiz-progress-text"><strong>VedaMark ' + TIER_CONFIG[currentTier].name + '</strong> · 5 questions</span><span class="quiz-score-label"><a onclick="backToLevels()">← Change level</a> · ' + PASS_THRESHOLD + '% to pass</span></div>';
     quizQs.forEach(function(q, qi) {
         h += '<div class="q-block"><div class="q-block-header"><div class="q-num">Question ' + (qi + 1) + '</div><div class="q-sentence">"' + q.sentence + '"</div><div class="q-ask">' + q.question + '</div></div><div class="q-options">';
         ['A', 'B'].forEach(function(l, oi) {
@@ -105,7 +127,7 @@ function pickOpt(qi, oi) {
     userAns[qi] = oi;
 }
 
-function submitQuiz() {
+async function submitQuiz() {
     if (Object.keys(userAns).length < quizQs.length) { alert('Please answer all questions before submitting.'); return; }
     var correct = 0;
     quizQs.forEach(function(q, qi) {
@@ -118,12 +140,28 @@ function submitQuiz() {
         if (q.options[picked].isCorrect) correct++;
         document.getElementById('exp-' + qi).classList.add('show');
     });
-    var pct = Math.round((correct / quizQs.length) * 100), passed = pct >= 80;
+    var pct = Math.round((correct / quizQs.length) * 100);
+    var passed = correct === quizQs.length; // perfect score required (PASS_THRESHOLD = 100)
+
+    // On pass: write the tier-specific slug to lesson_completions so the learn page can update.
+    // If user isn't logged in or auth.js failed to load, just skip the write — the UI still shows the pass.
+    if (passed && typeof vedarionAuth !== 'undefined') {
+        try {
+            var sessionRes = await vedarionAuth.auth.getSession();
+            var session = sessionRes && sessionRes.data ? sessionRes.data.session : null;
+            if (session && session.user) {
+                await vedarionAuth.from('lesson_completions').upsert({
+                    user_id: session.user.id,
+                    lesson_slug: TIER_CONFIG[currentTier].slug
+                });
+            }
+        } catch(e) { console.error('Failed to save VedaMark completion:', e); }
+    }
+
     var el = document.getElementById('vm-results');
-    var tierNames = ['I: Sufficient & Necessary', 'II: Contrapositive'];
-    var h = '<div class="results-card"><div class="results-score">' + correct + '/' + quizQs.length + '</div><div class="results-label">VedaMark ' + tierNames[currentTier] + '</div>';
+    var h = '<div class="results-card"><div class="results-score">' + correct + '/' + quizQs.length + '</div><div class="results-label">VedaMark ' + TIER_CONFIG[currentTier].name + '</div>';
     if (passed) { h += '<div class="results-pass">✓ You hit the Mark!</div><div class="results-msg">Great work. Try another level or retry for fresh questions.</div>' }
-    else { h += '<div class="results-fail">✗ Not quite — you need 80%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>' }
+    else { h += '<div class="results-fail">✗ Not quite — you need ' + PASS_THRESHOLD + '%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>' }
     h += '<div class="results-actions"><button class="results-btn primary" onclick="retryTier()">TRY AGAIN</button><button class="results-btn secondary" onclick="backToLevels()">CHANGE LEVEL</button></div></div>';
     el.innerHTML = h; el.classList.add('visible');
     window.scrollTo({ top: el.offsetTop - 20, behavior: 'smooth' });

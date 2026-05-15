@@ -87,11 +87,13 @@
         <div class="tier-card selected" id="tier-0" onclick="selectTier(0)"><div class="tier-num">VedaMark I</div><div class="tier-name">Sufficient & Necessary</div><div class="tier-desc">Identify the sufficient and necessary conditions from common indicator words.</div><div class="tier-meta"><strong>5 questions</strong> · ~2 min</div></div>
         <div class="tier-card" id="tier-1" onclick="selectTier(1)"><div class="tier-num">VedaMark II</div><div class="tier-name">Contrapositive</div><div class="tier-desc">Flip and negate. Given a conditional, identify the correct contrapositive.</div><div class="tier-meta"><strong>5 questions</strong> · ~3 min</div></div>
     </div>
-    <div class="vm-start-wrap"><button class="vm-btn" onclick="startQuiz()">START VEDAMARK</button><p class="vm-pass-note">Score 80% to hit the Mark.</p></div>
+    <div class="vm-start-wrap"><button class="vm-btn" onclick="startQuiz()">START VEDAMARK</button><p class="vm-pass-note">Score 100% to hit the Mark.</p></div>
 </div>
 <div class="vm-quiz" id="vm-quiz"></div>
 <div class="vm-results" id="vm-results"></div>
 <footer class="footer"><p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/auth.js"></script>
 <script src="vm-engine.js"></script>
 </body>
 </html>
