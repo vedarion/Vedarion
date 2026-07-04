@@ -59,8 +59,8 @@
         .mastery-slot[data-tier="empty"] .mastery-slot-icon { display: none; }
         .mastery-slot[data-tier="started"] { border: 1.5px solid #5A3A20; background: transparent; }
         .mastery-slot[data-tier="started"] .mastery-slot-name { color: #8A6A4A; }
-        .mastery-slot[data-tier="mastered"] { background: #E8C76F; border: 1px solid #E8C76F; padding: 5px 11px; box-shadow: 0 0 0 1px #E8C76F, 0 0 12px rgba(232, 199, 111, 0.3); gap: 7px; }
-        .mastery-slot[data-tier="mastered"] .mastery-slot-name { color: #0A0A0A; font-weight: 600; font-size: 11px; }
+        .mastery-slot[data-tier="mastered"] { background: transparent; border: 2px double #E8C76F; padding: 5px 11px; gap: 7px; }
+        .mastery-slot[data-tier="mastered"] .mastery-slot-name { color: #E8C76F; font-weight: 600; font-size: 11px; }
         .veda-badge { width: 14px; height: 14px; border-radius: 50%; background: #C65D3B; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .veda-badge-letter { font-family: Georgia, 'Times New Roman', serif; font-size: 10px; font-style: italic; color: #FAF8F5; font-weight: 700; line-height: 1; margin-top: -1px; }
         .mastery-cta-link { color: #C65D3B; text-decoration: none; font-weight: 600; font-size: 11px; letter-spacing: 0.04em; transition: color 0.2s ease; white-space: nowrap; }
@@ -77,7 +77,7 @@
         .legend-swatch { width: 10px; height: 10px; flex-shrink: 0; }
         .legend-empty { border: 1.5px dashed #333; }
         .legend-started { border: 1.5px solid #5A3A20; }
-        .legend-mastered { background: #E8C76F; }
+        .legend-mastered { background: transparent; border: 2px double #E8C76F; }
         .legend-hint { color: #666; font-style: italic; font-family: Georgia, 'Times New Roman', serif; }
 
         /* ===== UP NEXT BAR ===== */
@@ -101,7 +101,7 @@
         /* ===== LESSON ITEM (CARD) ===== */
         .lesson-item { background: white; border: 1px solid #E0E0E0; margin-bottom: 12px; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: relative; overflow: hidden; }
         .lesson-item:hover { border-color: #C65D3B; }
-        .lesson-item[data-tier="mastered"] { background: #0A0A0A; border-color: #E8C76F; box-shadow: 0 2px 16px rgba(232, 199, 111, 0.15); }
+        .lesson-item[data-tier="mastered"] { background: #0A0A0A; border-color: #E8C76F; }
 
         /* SINGLE-ROW LESSON */
         .lesson-item.single-row .lesson-content { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: #0A0A0A; }
