@@ -651,7 +651,7 @@ async function applyTemplate(studentId,tplKey){
       await db.from('session_goals').insert({session_id:sess.id,goal_text:s.goals[gi],sort_order:gi});
     }
     for(let hi=0;hi<s.homework.length;hi++){
-      await db.from('homework').insert({session_id:sess.id,label:s.homework[hi].label,hw_type:'drill',description:s.homework[hi].desc||null,sort_order:hi});
+      await db.from('homework').insert({session_id:sess.id,label:s.homework[hi].label,hw_type:hwTypeCode(s.homework[hi].label),description:s.homework[hi].desc||null,sort_order:hi});
     }
   }
 }
@@ -796,6 +796,34 @@ function wsType(label){
   return null;
 }
 
+/* Rename-proof worksheet attachment.
+   hwTypeCode(label): computed ONCE when a card is inserted — stores the worksheet
+   identity in homework.hw_type ('blind_review', 'qt:flaw', ...) so the label
+   becomes purely cosmetic afterward.
+   hwWs(h): render-time resolver — reads hw_type first; legacy rows that just say
+   'drill' fall back to the old label matching, so Enci's existing cards behave
+   exactly as before. No data migration needed. */
+function hwTypeCode(label){
+  const t=wsType(label);
+  if(!t)return'drill';
+  if(t==='question_type_drill'){
+    const q=qtFromLabel(label);
+    if(q){for(const k of Object.keys(QT_DRILLS)){if(QT_DRILLS[k]===q)return'qt:'+k;}}
+    return'drill';
+  }
+  return t;
+}
+
+function hwWs(h){
+  const ht=(h&&h.hw_type)||'';
+  if(ht&&ht!=='drill'){
+    if(ht.indexOf('qt:')===0)return QT_DRILLS[ht.substring(3)]?'question_type_drill':wsType(h.label);
+    if(ht==='blind_review'||ht==='confidence_log'||ht==='rc_claim_tracking'||ht==='insight_to_action')return ht;
+    return wsType(h.label);
+  }
+  return wsType(h.label);
+}
+
 function wsSummaryText(hwId,type){
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type===type);
   if(entries.length===0)return'No entries yet';
@@ -927,6 +955,7 @@ function sessHTML(ss,i){
       <div class="hw-list">
         ${(ss.homework||[]).map((h,hi)=>{
           const sl=lk&&!t;
+          const wsT=hwWs(h);
           const desc=h.description||'';
           const steps=desc.split('\n').filter(l=>l.trim());
           const sc=getStepCompletions(h);
@@ -949,7 +978,7 @@ function sessHTML(ss,i){
               ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}
             </div>
             ${!sl?(t?`${desc?`<div class="hw-desc">${descHtml}<button class="hw-add-step" data-addstep="${h.id}">+ add step</button><div class="hw-desc-edit-btn" data-adesc="${h.id}" title="Bulk edit" style="margin-top:6px;font-size:10px;color:var(--faint);cursor:pointer;font-family:var(--mono);transition:color .2s;letter-spacing:.3px">✎ bulk edit</div></div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
-            ${!sl&&wsType(h.label)?`<div class="ws-card-footer"><button class="ws-open-btn" data-wsopen="${h.id}" data-wstype="${wsType(h.label)}">Open Worksheet →</button><span class="ws-summary-line">${esc(wsSummaryText(h.id,wsType(h.label)))}</span></div>`:''}
+            ${!sl&&wsT?`<div class="ws-card-footer"><button class="ws-open-btn" data-wsopen="${h.id}" data-wstype="${wsT}">Open Worksheet →</button><span class="ws-summary-line">${esc(wsSummaryText(h.id,wsT))}</span></div>`:''}
           </div>`;
         }).join('')}
         ${t?`<button class="add-b" data-ah-open="${ss.id}" style="border-color:rgba(201,122,69,.3);color:var(--accent)">+ Add Homework</button><button class="add-b" data-hcopy="${ss.id}" style="margin-top:6px;opacity:.7">↑ Copy from previous session</button>${S.hwCopyMsg&&S.hwCopyMsgSess===ss.id?`<div class="hw-copy-msg">${esc(S.hwCopyMsg)}</div>`:''}`:''}
@@ -1040,7 +1069,7 @@ function wsDrop(hwId,entryNum,type,field,options){
 
 function wsQuestionTypeDrillHTML(v,name){
   const hwId=v.homework_id;
-  const qt=qtFromLabel(v.hw_label);
+  const qt=(v.hw_type&&v.hw_type.indexOf('qt:')===0&&QT_DRILLS[v.hw_type.substring(3)])?QT_DRILLS[v.hw_type.substring(3)]:qtFromLabel(v.hw_label);
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='question_type_drill');
   const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
   const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
@@ -1430,12 +1459,28 @@ function openPicker(sessId){
         const card=group.cards[parseInt(ci)];if(!card)continue;
         const lbl=card.label==='Blank (custom)'?'New assignment':card.label;
         const rawDesc=card.desc||null;const desc=rawDesc?applyTiming(rawDesc,tf):null;
-        await db.from('homework').insert({session_id:sessId,label:lbl,hw_type:'drill',description:desc,sort_order:sortOrder});sortOrder++;
+        await db.from('homework').insert({session_id:sessId,label:lbl,hw_type:hwTypeCode(lbl),description:desc,sort_order:sortOrder});sortOrder++;
       }
       closePicker();await loadStudent(S.selId);R();
     }
   });
   overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
+}
+
+/* Keep the package header in sync with the roadmap: sessions_bought and any
+   "N-session" label track the count of sessions (Session 0 intro excluded).
+   Runs after adding or deleting sessions. Custom package names are preserved.
+   Guard: never syncs to 0 (deleting the last session leaves the package as-is). */
+async function syncPackage(){
+  const{data:allSess}=await db.from('sessions').select('session_number').eq('student_id',S.selId);
+  const countable=(allSess||[]).filter(s=>s.session_number>0).length;
+  const bought=S.student?(S.student.sessions_bought||0):0;
+  if(countable>0&&countable!==bought){
+    const upd={sessions_bought:countable};
+    const pk=S.student?(S.student.package_type||''):'';
+    if(!pk||/^\d+-session$/.test(pk))upd.package_type=countable+'-session';
+    await db.from('students').update(upd).eq('id',S.selId);
+  }
 }
 
 function openSessPicker(){
@@ -1467,7 +1512,7 @@ function openSessPicker(){
         if(selected.length===0)return;
         const addBtn=overlay.querySelector('#sess-add-btn');addBtn.disabled=true;addBtn.textContent='Adding...';
         const tf=S.student?S.student.time_factor||'1x':'1x';
-        let base=S.sessions.length;
+        let base=S.sessions.length?Math.max(...S.sessions.map(s=>s.session_number)):0;
         for(const key of selected){
           const dash=key.indexOf('-');const gkey=key.substring(0,dash);const ci=parseInt(key.substring(dash+1));
           const group=SESSION_CARDS[gkey];if(!group)continue;
@@ -1482,9 +1527,10 @@ function openSessPicker(){
           for(const hwLabel of card.hw){
             const hc=hwCardByLabel(hwLabel);if(!hc)continue;
             const desc=hc.desc?applyTiming(hc.desc,tf):null;
-            await db.from('homework').insert({session_id:sess.id,label:hc.label,hw_type:'drill',description:desc,sort_order:so});so++;
+            await db.from('homework').insert({session_id:sess.id,label:hc.label,hw_type:hwTypeCode(hc.label),description:desc,sort_order:so});so++;
           }
         }
+        await syncPackage();
         closePicker();await loadStudent(S.selId);R();
       }
     });
@@ -1527,7 +1573,7 @@ function bind(){
   document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
   document.querySelectorAll('.tn-box').forEach(box=>{box.addEventListener('click',e=>{if(e.target.closest('.ed'))return;const edEl=box.querySelector('.ed');if(edEl)startEd(edEl);});});
   document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);S.exSess=-1;await loadStudent(S.selId);R();});});
+  document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);const remaining=S.sessions.filter(s=>s.id!==b.dataset.delsess);const rbase=remaining.length?Math.min(...remaining.map(s=>s.session_number)):1;for(let k=0;k<remaining.length;k++){if(remaining[k].session_number!==rbase+k)await db.from('sessions').update({session_number:rbase+k}).eq('id',remaining[k].id);}await syncPackage();S.exSess=-1;await loadStudent(S.selId);R();});});
   let _dragIdx=null;
   document.querySelectorAll('.sess[data-dsi]').forEach(card=>{
     card.addEventListener('dragstart',e=>{if(e.target.closest('.sess-body')||e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')){e.preventDefault();return;}_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
@@ -1540,7 +1586,8 @@ function bind(){
       const from=_dragIdx,to=ci;_dragIdx=null;
       const ordered=[...S.sessions];const[moved]=ordered.splice(from,1);ordered.splice(to,0,moved);
       let err=null;
-      for(let k=0;k<ordered.length;k++){const r=await db.from('sessions').update({session_number:k}).eq('id',ordered[k].id);if(r.error)err=r.error;}
+      const obase=ordered.length?Math.min(...ordered.map(s=>s.session_number)):1;
+      for(let k=0;k<ordered.length;k++){const r=await db.from('sessions').update({session_number:obase+k}).eq('id',ordered[k].id);if(r.error)err=r.error;}
       await loadStudent(S.selId);R();showSaved(!err);
     });
   });
@@ -1615,7 +1662,7 @@ function bind(){
     await db.from('homework').update({description:newDesc}).eq('id',hid);
     await loadStudent(S.selId);R();showSaved(true);
   });});
-  document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:''};R();});});
+  document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:'',hw_type:hw?(hw.hw_type||''):''};R();});});
   document.getElementById('ws-back-btn')?.addEventListener('click',async()=>{const hwId=S.wsView?.homework_id;S.wsView=null;if(hwId)await reloadWsEntries(hwId);R();});
   document.querySelectorAll('[data-wssave]').forEach(el=>{el.addEventListener('change',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);if(el.dataset.wstype==='blind_review'&&el.dataset.wsfield==='miss_type')R();if(el.dataset.wstype==='question_type_drill'&&(el.dataset.wsfield==='result'||el.dataset.wsfield==='breakdown_step'))R();});el.addEventListener('blur',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);});});
   document.querySelectorAll('[data-wstog]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveWsToggle(btn.dataset.wstog,parseInt(btn.dataset.wsentry),btn.dataset.wstype,btn.dataset.wsfield,btn.dataset.wsval);});});
