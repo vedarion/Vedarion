@@ -315,6 +315,15 @@
     .ita-decision-btn.active{background:rgba(201,122,69,.15);border-color:var(--accent);color:var(--accent);font-weight:700}
     @media(max-width:768px){.ws-stats{grid-template-columns:repeat(2,1fr)}.ws-entry-hd{gap:6px}}
 
+    .ws-ac-badge.keep{background:rgba(92,184,92,.15);border-color:rgba(92,184,92,.4);color:#5cb85c}
+    .ws-ac-badge.elim{background:rgba(217,83,79,.12);border-color:rgba(217,83,79,.3);color:#d9534f}
+    .ws-ac-badge.pick{background:rgba(201,122,69,.18);border-color:var(--accent);color:var(--accent)}
+    .ws-ac-badge.skip{background:#0e0e0e;border-color:var(--border);color:var(--muted)}
+    .qt-ac-block{border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;background:var(--input)}
+    .qt-ac-hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .qt-ac-state{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.5px;text-transform:uppercase}
+    .qt-ac-q{font-size:12px;color:var(--dim);margin:6px 0 4px;line-height:1.5}
+
     .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
     .hw-num{font-family:var(--mono);font-size:12px;color:var(--dim);flex-shrink:0;min-width:18px}
     .hw-copy-msg{font-size:11px;color:var(--dim);font-family:var(--mono);padding:4px 0;text-align:center}
@@ -353,6 +362,11 @@ const TEMPLATES={};
    'question_type_drill' — one entry per question, add more anytime.
    ============================================================ */
 const QT_BASE='https://vedarion.com/question-types/';
+/* Each entry: steps (cheat sheet lines for card + key box), links, and `form` —
+   the per-type worksheet structure mirroring the live vedarion.com worksheet pages.
+   Field types: ta (textarea), inp (small input), tags (single-select), ac (A-E grid).
+   ac modes: 'explain' (select + one explanation per letter) | 'twostep' (two sub-questions
+   per letter; states 'ke' = Keep/Eliminate, 'sep' = Skip/Eliminate/Pick & Go). */
 const QT_DRILLS={
 'main-point':{name:'Main Point',links:{flowchart:null,worksheet:QT_BASE+'main-point/worksheet',lesson:QT_BASE+'main-point/lesson'},steps:[
 'Read the stimulus and find the conclusion — use a conclusion indicator, process of elimination, or the Why Test',
@@ -360,6 +374,13 @@ const QT_DRILLS={
 'Go to the answer choices and hunt for your prediction',
 'For each answer choice, say why it is right or wrong',
 'Check the winner: descriptively accurate — every word reflects the stimulus'
+],form:[
+{sec:'Step 1 — Find the Main Point',note:'Read the stimulus and identify the conclusion.',fields:[
+{t:'tags',f:'method',lbl:'Which method did you use?',opts:['Conclusion Indicator','Process of Elimination','The Why Test']}]},
+{sec:'Step 2 — Note the Details',fields:[
+{t:'ta',f:'main_point',lbl:'Without looking back at the stimulus, restate the main point in your own words. Be specific — say the noun, verb, and predicate.',ph:'The main point is...',r:2}]},
+{sec:'Step 3 — Find the Best Match',note:'Select the answer you think is correct. For each choice, explain why it\'s right or wrong.',fields:[
+{t:'ac',mode:'explain'}]}
 ]},
 'argument-part':{name:'Argument Part',links:{flowchart:QT_BASE+'argument-part/flowchart',worksheet:QT_BASE+'argument-part/worksheet',lesson:QT_BASE+'argument-part/lesson'},steps:[
 'Read the question stem first — identify and highlight the referenced sentence',
@@ -367,6 +388,15 @@ const QT_DRILLS={
 'Describe the referenced sentence\'s job BEFORE looking at the answer choices',
 'Hunt for the answer that matches your prediction',
 'Check: does every word accurately capture the role of that sentence?'
+],form:[
+{sec:'Step 1 — Read the Question Stem',fields:[
+{t:'ta',f:'referenced',lbl:'Identify the referenced sentence.',ph:'The sentence the stem points to...',r:1}]},
+{sec:'Step 2 — Read the Stimulus',note:'Break down each sentence and label its role in the argument.',fields:[
+{t:'ta',f:'sentences',lbl:'One sentence per line — the sentence, then its role (conclusion, support, background).',ph:'1. ... — support\n2. ... — conclusion',r:3}]},
+{sec:'Step 3 — Describe the Referenced Sentence',fields:[
+{t:'ta',f:'function',lbl:'Predict: what is its function in the argument? Always describe it BEFORE looking at the answer choices.',ph:'This sentence is doing...',r:2}]},
+{sec:'Step 4 — Find the Best Match',note:'Hunt for the answer choice that matches your prediction. For each choice, explain why it\'s right or wrong.',fields:[
+{t:'ac',mode:'explain'}]}
 ]},
 'method-of-reasoning':{name:'Method of Reasoning',links:{flowchart:QT_BASE+'method-of-reasoning/flowchart',worksheet:null,lesson:QT_BASE+'method-of-reasoning/lesson'},steps:[
 'Identify the stem — "the argument proceeds by..." asks HOW the author argues',
@@ -374,6 +404,14 @@ const QT_DRILLS={
 'Describe how the premises support the conclusion — what is the author doing?',
 'Predict the move in your own words before the answer choices',
 'Check each answer word by word: does every word accurately describe the reasoning?'
+],form:[
+{sec:'Step 1 — Premises & Conclusion',fields:[
+{t:'ta',f:'premise',lbl:'Premise(s)',ph:'The author\'s evidence...',r:2},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'What the author concludes...',r:1}]},
+{sec:'Step 2 — What Is the Author Doing?',fields:[
+{t:'ta',f:'move',lbl:'Describe how the premises support the conclusion — the author\'s move, in your own words, BEFORE the answer choices.',ph:'The author argues by...',r:2}]},
+{sec:'Step 3 — Check Every Word',note:'For each answer: does every word accurately describe the reasoning?',fields:[
+{t:'ac',mode:'explain'}]}
 ]},
 'must-be-true':{name:'Must Be True',links:{flowchart:QT_BASE+'must-be-true/flowchart',worksheet:QT_BASE+'must-be-true/worksheet',lesson:QT_BASE+'must-be-true/lesson'},steps:[
 'Identify the stem — everything in the stimulus is fact; don\'t look for gaps',
@@ -381,6 +419,15 @@ const QT_DRILLS={
 'Connect each new sentence to what came before — do the facts combine?',
 'Ask: is there an overall inference? A → B and B → C gives A → C',
 'Check: every word of the correct answer must be 100% proven by the stimulus'
+],form:[
+{sec:'Step 1 — Connect the Dots',note:'Treat everything in the stimulus as fact — even if it looks like an argument.',fields:[
+{t:'ta',f:'sentences',lbl:'Simplify each sentence in your own words (one per line), then connect it to prior sentences. Look for overlapping ideas.',ph:'1. ...\n2. ...\n3. ...',r:3}]},
+{sec:'Step 2 — Overall Inference',fields:[
+{t:'ta',f:'inference',lbl:'Do the facts combine into a bigger conclusion? The answer could be an inference, a summary, or a restatement of a single sentence.',ph:'A → B and B → C gives A → C...',r:2}]},
+{sec:'Step 3 — Answer Choices',note:'For each answer: is every word 100% supported by the stimulus?',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Is every word 100% supported by the stimulus?',q2:'2. What type is it? (inference, summary, restatement)'}]},
+{sec:'Final Selection',fields:[
+{t:'inp',f:'final',lbl:'Final Answer — the one where every word is 100% supported'}]}
 ]},
 'most-strongly-supported':{name:'Most Strongly Supported',links:{flowchart:QT_BASE+'most-strongly-supported/flowchart',worksheet:QT_BASE+'most-strongly-supported/worksheet',lesson:QT_BASE+'most-strongly-supported/lesson'},steps:[
 'Identify the stem — the bar is lower than Must Be True: strongly supported, not proven',
@@ -388,6 +435,13 @@ const QT_DRILLS={
 'For each answer, ask: could I make a reasonable case this is supported?',
 'If you don\'t love an answer, don\'t eliminate it — keep it and compare',
 'Pick the answer with the strongest support and the smallest assumption'
+],form:[
+{sec:'Step 1 — Connect the Dots',note:'Same reading habits as Must Be True: simplify and connect as you go.',fields:[
+{t:'ta',f:'sentences',lbl:'Simplify each sentence in your own words (one per line) and connect the dots.',ph:'1. ...\n2. ...',r:3}]},
+{sec:'Step 2 — Answer Choices',note:'The bar is lower than Must Be True: strongly supported, not proven.',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Could you make a reasonable case this is supported?',q2:'2. If you don\'t love it, don\'t eliminate it — keep and compare. Notes:'}]},
+{sec:'Final Selection',fields:[
+{t:'inp',f:'final',lbl:'Final Answer — strongest support, smallest assumption'}]}
 ]},
 'sufficient-assumption':{name:'Sufficient Assumption',links:{flowchart:QT_BASE+'sufficient-assumption/flowchart',worksheet:QT_BASE+'sufficient-assumption/worksheet',lesson:QT_BASE+'sufficient-assumption/lesson'},steps:[
 'Identify the stem — you\'re looking for the answer that makes the conclusion 100% follow',
@@ -396,6 +450,14 @@ const QT_DRILLS={
 'Hunt Mode first: scan for your predicted bridge — P → C or /C → /P',
 'If hunting fails, Process of Elimination: Premise + Answer = Conclusion?',
 'Verify: Answer Choice + Premise = Conclusion, 100%'
+],form:[
+{sec:'Step 1 — Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
+{t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
+{sec:'Step 2 — Core Argument & Gap (Mandatory)',note:'Express in Premise → Conclusion form. What concept in the premise doesn\'t connect to the conclusion?',fields:[
+{t:'ta',f:'gap',lbl:'The Gap: Premise → Conclusion',ph:'P → C',r:2}]},
+{sec:'Step 3 — Answer Choices',note:'Hunt Mode first — scan for your prediction: P → C or /C → /P. If hunting fails, Process of Elimination: Premise + Answer Choice = Conclusion 100%?',fields:[
+{t:'ac',mode:'explain'}]}
 ]},
 'necessary-assumption':{name:'Necessary Assumption',links:{flowchart:QT_BASE+'necessary-assumption/flowchart',worksheet:QT_BASE+'necessary-assumption/worksheet',lesson:QT_BASE+'necessary-assumption/lesson'},steps:[
 'Identify the stem — "requires," "depends on," "assumes"',
@@ -404,6 +466,15 @@ const QT_DRILLS={
 'Identify the gap — what is the author taking for granted?',
 'Lead with the Must Be True test: if the argument works, this answer has to be true',
 'Fallback: Negation Test — if this answer were false, the argument falls apart'
+],form:[
+{sec:'Step 1 — Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
+{t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
+{sec:'Step 2 — Core Argument & Gap',note:'Simplify the argument down to its core. What concept is missing between premise and conclusion?',fields:[
+{t:'ta',f:'core',lbl:'Simplified Argument',ph:'Premise → Conclusion',r:1},
+{t:'ta',f:'gap',lbl:'Identify the Gap (Predict)',ph:'What is the author taking for granted?',r:1}]},
+{sec:'Step 3 — Answer Choices',note:'Must Be True test — start here. Embrace the conclusion: if the premises and conclusion are true, does this answer choice HAVE to be true? Or the Negation Test: if this answer were false, would the argument fall apart? See a negative word like "none"? Use this test to get rid of it.',fields:[
+{t:'ac',mode:'explain'}]}
 ]},
 'strengthen-weaken':{name:'Strengthen & Weaken',links:{flowchart:QT_BASE+'strengthen-weaken/flowchart',worksheet:QT_BASE+'strengthen-weaken/worksheet',lesson:QT_BASE+'strengthen-weaken/lesson'},steps:[
 'Read the stem — are you strengthening or weakening?',
@@ -413,6 +484,17 @@ const QT_DRILLS={
 'Relevance Test: does the answer connect to the argument? Low bar — keep it',
 'Impact Test: Premise + Answer = what happens to the conclusion?',
 'Pick the answer with the clearest impact and fewest language issues'
+],form:[
+{sec:'Core Argument — From Memory',note:'Cannot look back at the stimulus. Write in as few words as possible — this trains you to internalize the argument rather than copy words. Clearly note: noun, verb, predicate. No referential phrasing ("they," "it") — use the actual noun.',fields:[
+{t:'ta',f:'premise',lbl:'Premise',ph:'...',r:1},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
+{sec:'Prediction',note:'Keep in mind: these questions are not prediction-friendly. Spotting the gap is helpful, but don\'t get married to your phrasing.',fields:[
+{t:'ta',f:'gap',lbl:'What\'s the gap between Premise & Conclusion?',ph:'...',r:2},
+{t:'tags',f:'framework',lbl:'Framework (if recognizable) — Part to Whole: does the part represent the whole? · Cost vs. Benefit: hidden costs or overlooked benefits? · Correlation to Causation: reversed cause, third cause, coincidence? · Other: identify the specific assumption.',opts:['Part to Whole','Cost vs. Benefit','Correlation to Causation','Other']}]},
+{sec:'Answer Choices — Two-Step Test',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Is the answer choice relevant? Could this apply to the context or premise? (Low bar — if not, move on.)',q2:'2. Does AC + Premise strengthen or weaken the Conclusion? Combine them — more likely or less likely?'}]},
+{sec:'Final Selection',fields:[
+{t:'inp',f:'final',lbl:'Final Answer — AC + Premise with the strongest impact in the right direction'}]}
 ]},
 'flaw':{name:'Flaw',links:{flowchart:QT_BASE+'flaw/flowchart',worksheet:QT_BASE+'flaw/worksheet',lesson:QT_BASE+'flaw/lesson'},steps:[
 'Identify the stem — "the argument is vulnerable to criticism because..."',
@@ -420,6 +502,16 @@ const QT_DRILLS={
 'Predict the flaw and name it in your own words BEFORE the answer choices',
 'Check each answer: is it descriptively accurate? Noun, verb, predicate',
 'If it\'s accurate, ask: is it actually the flaw in THIS argument?'
+],form:[
+{sec:'Core Argument — From Memory',note:'Cannot look back at the stimulus. As few words as possible — noun, verb, predicate. No referential phrasing.',fields:[
+{t:'ta',f:'premise',lbl:'Premise',ph:'...',r:1},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
+{sec:'Prediction',note:'Prediction helps a lot here. Flaw questions are prediction-friendly — if you can name the flaw before looking at the answers, you\'re very likely to find it.',fields:[
+{t:'ta',f:'flaw',lbl:'State the flaw in your own words — what\'s the gap? Why doesn\'t the premise support the conclusion?',ph:'...',r:2}]},
+{sec:'Answer Choices — Two-Step Test',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Is it descriptively accurate? Does every word match what the argument actually does — noun, verb, predicate?',q2:'2. If accurate, is it actually a flaw? A real weakness in the reasoning?'}]},
+{sec:'Final Selection',fields:[
+{t:'inp',f:'final',lbl:'Final Answer — descriptively accurate AND a real flaw'}]}
 ]},
 'parallel-reasoning':{name:'Parallel Reasoning',links:{flowchart:QT_BASE+'parallel-reasoning/flowchart',worksheet:QT_BASE+'parallel-reasoning/worksheet',lesson:null},steps:[
 'Identify from the stem: Parallel Reasoning or Parallel Flaw',
@@ -430,6 +522,23 @@ const QT_DRILLS={
 'No markers in an answer? Move on — don\'t fully eliminate yet',
 'Read close matches in small pieces — predict what it needs to say next',
 'Pick and go — don\'t second-guess'
+],form:[
+{sec:'Question Type',fields:[
+{t:'tags',f:'pr_type',lbl:'From the stem',opts:['Parallel Reasoning','Parallel Flaw']}]},
+{sec:'Premise & Conclusion',fields:[
+{t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
+{t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
+{sec:'Evaluate the Argument',note:'Do the premises connect to each other? YES → what\'s the valid inference from the combination? Use that to evaluate the conclusion. NO → think about each premise separately. Note: no gaps in Parallel Reasoning — gaps = Parallel Flaw.',fields:[
+{t:'ta',f:'evaluate',lbl:'What would YOU conclude from these premises?',ph:'...',r:2},
+{t:'ta',f:'pflaw',lbl:'For Parallel Flaw: what is the flaw?',ph:'Skip if Parallel Reasoning...',r:1}]},
+{sec:'Abstract Structure',note:'DO NOT SKIP THIS. If you struggle here, it will be worse in the answer choices.',fields:[
+{t:'ta',f:'abstract',lbl:'Write the argument pattern in abstract terms — nothing to do with the actual content. Example: "All A are B. X is A. Therefore, X is B."',ph:'All A are B...',r:2}]},
+{sec:'Shallow Dip Strategy',note:'Shallow dip = quick scan before committing to a full read.',fields:[
+{t:'ta',f:'markers',lbl:'Based on your abstract structure, what markers will you look for?',ph:'...',r:1}]},
+{sec:'Answer Choices',note:'Shallow dip first. If markers exist, read piece by piece and predict what comes next — predicting helps you spot subtle trap answer choices.',fields:[
+{t:'ac',mode:'twostep',states:'sep',q1:'1. Shallow Dip — does this answer have your markers?',q2:'2. Piece-by-Piece — read the first part. What does it need to say NEXT to match your structure?'}]},
+{sec:'Final Answer',note:'If an answer matches your structure/flaw: select it and move on. Don\'t second-guess — saves significant time.',fields:[
+{t:'inp',f:'final',lbl:'Final Answer'}]}
 ]}
 };
 
@@ -905,13 +1014,41 @@ function wsQuestionTypeDrillHTML(v,name){
   const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='question_type_drill');
   const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
   const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
-  const clean='No breakdown — clean run';
-  const stuck=entries.filter(e=>e.data&&e.data.breakdown_step&&e.data.breakdown_step!=='—'&&e.data.breakdown_step!==clean).length;
+  const acc=(correct+missed)>0?Math.round(correct/(correct+missed)*100)+'%':'—';
   const steps=qt?qt.steps:[];
-  const breakdownOpts=['—',clean].concat(steps.map((_,i)=>'Step '+(i+1))).concat(['Not sure']);
+  const form=qt&&qt.form?qt.form:[];
   const list=entries.length>0?entries:[{entry_number:1,data:{}}];
+  const AC_LETTERS=['A','B','C','D','E'];
+  function acStates(fl){return fl.mode==='explain'?['','correct','wrong']:(fl.states==='sep'?['','skip','elim','pick']:['','keep','elim']);}
+  function acLegend(fl){return fl.mode==='explain'?'Tap the letter to mark: Correct → Wrong':(fl.states==='sep'?'Tap the letter to cycle: Skip → Eliminate → Pick & Go':'Tap the letter to cycle: Keep → Eliminate');}
+  function acGridHTML(fl,en,d){
+    const acs=d.answer_choices||{};
+    const states=acStates(fl);
+    return`<div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin:0 0 8px;letter-spacing:.3px">${esc(acLegend(fl))}</div>`+AC_LETTERS.map(l=>{
+      const acd=acs[l]||{};const st=acd.state||'';
+      const badge=`<div class="ws-ac-badge${st?' '+st:''}" data-qtacb="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacs="${states.join('|')}" data-qtcur="${st}">${l}</div>`;
+      const stateLbl=st==='correct'?'Selected':st==='wrong'?'Eliminated':st==='keep'?'Keep':st==='elim'?'Eliminate':st==='skip'?'Skip':st==='pick'?'Pick & Go':'';
+      if(fl.mode==='explain'){
+        return`<div class="ws-ac-row" style="margin-bottom:6px">${badge}<input class="ws-ac-inp" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a1" placeholder="Why ${l} is right or wrong..." value="${esc(acd.a1||'')}"></div>`;
+      }
+      return`<div class="qt-ac-block">
+        <div class="qt-ac-hd">${badge}<span class="qt-ac-state">${esc(stateLbl)}</span></div>
+        <div class="qt-ac-q">${esc(fl.q1)}</div>
+        <input class="ws-ac-inp" style="width:100%" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a1" placeholder="..." value="${esc(acd.a1||'')}">
+        <div class="qt-ac-q">${esc(fl.q2)}</div>
+        <input class="ws-ac-inp" style="width:100%" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a2" placeholder="..." value="${esc(acd.a2||'')}">
+      </div>`;
+    }).join('');
+  }
+  function fieldHTML(fl,en,d){
+    if(fl.t==='ta')return`<div style="margin:0 0 4px;font-size:13px;color:var(--text)">${esc(fl.lbl)}</div><div style="margin-bottom:10px">${wsField(hwId,en,'question_type_drill',fl.f,fl.ph||'',fl.r||1)}</div>`;
+    if(fl.t==='inp')return`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:13px;color:var(--text);flex:1">${esc(fl.lbl)}</span>${wsInp(hwId,en,'question_type_drill',fl.f,'...','ws-qnum')}</div>`;
+    if(fl.t==='tags')return`<div style="margin:0 0 6px;font-size:12px;color:var(--dim);line-height:1.6">${esc(fl.lbl)}</div><div class="ws-pass-tags">${fl.opts.map(o=>`<button class="ws-tag${(d[fl.f]===o)?' active':''}" data-qttag="${hwId}" data-qtentry="${en}" data-qtfield="${fl.f}" data-qtval="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+    if(fl.t==='ac')return acGridHTML(fl,en,d);
+    return'';
+  }
   function entryHTML(e,idx){
-    const en=e.entry_number;
+    const en=e.entry_number;const d=e.data||{};
     return`<div class="ws-entry">
       <div class="ws-entry-hd">
         <span class="ws-entry-lbl">Question ${idx+1}</span>
@@ -920,16 +1057,13 @@ function wsQuestionTypeDrillHTML(v,name){
         ${wsInp(hwId,en,'question_type_drill','source','Source — e.g. PT 101 · S2','ws-ac-inp')}
         ${wsDrop(hwId,en,'question_type_drill','result',['—','Correct','Missed'])}
       </div>
-      <div class="ws-sec-lbl" style="margin-top:0">Prediction</div>
-      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">What did you predict BEFORE looking at the answer choices?</div>
-      ${wsField(hwId,en,'question_type_drill','prediction','My prediction was...',1)}
-      <div class="ws-sec-lbl">Process Check</div>
-      <div class="ws-toggle-row">
-        <span class="ws-toggle-lbl">Where did the process break down? (Step numbers match the list above)</span>
-        ${wsDrop(hwId,en,'question_type_drill','breakdown_step',breakdownOpts)}
-      </div>
-      <div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What happened at that step — and what will you do differently?</div>
-      ${wsField(hwId,en,'question_type_drill','notes','Be specific. Which trap, which wording, which habit...',2)}
+      ${form.map(sec=>`
+        <div class="ws-sec-lbl">${esc(sec.sec)}</div>
+        ${sec.note?`<div style="font-size:12px;color:var(--dim);margin:-2px 0 8px;line-height:1.6">${esc(sec.note)}</div>`:''}
+        ${sec.fields.map(fl=>fieldHTML(fl,en,d)).join('')}
+      `).join('')}
+      <div class="ws-sec-lbl">Notes for Your Tutor (optional)</div>
+      ${wsField(hwId,en,'question_type_drill','notes','Anything you want me to see — where you got stuck, how long it took...',1)}
     </div>`;
   }
   const resLinks=qt?[
@@ -940,7 +1074,7 @@ function wsQuestionTypeDrillHTML(v,name){
   return`<div class="ws-wrap">
     <div class="ws-title">${qt?esc(qt.name):'Question Type'} Drill</div>
     <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">One entry per question. Keep the steps below open while you work — the goal isn't just getting it right, it's running the same process every single time until it's automatic. Doing 4? Add a 5th with the button at the bottom.</div>
+    <div class="ws-desc">Work through each question using the strategy — same structure as the ${qt?esc(qt.name):''} worksheet on the site, saved here so we can review it together. One entry per question. Doing 4? Add a 5th with the button at the bottom.</div>
     ${steps.length>0?`<div class="ws-key-box">
       <div class="ws-key-title">The Steps — follow these on every question</div>
       ${steps.map((s,i)=>`<div class="ws-key-row"><span class="ws-key-arrow">${i+1}.</span><span>${esc(s)}</span></div>`).join('')}
@@ -950,11 +1084,24 @@ function wsQuestionTypeDrillHTML(v,name){
       <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${correct}</div><div class="ws-stat-lbl">Correct</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${missed}</div><div class="ws-stat-lbl">Missed</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${stuck}</div><div class="ws-stat-lbl">Step Breakdowns</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${acc}</div><div class="ws-stat-lbl">Accuracy</div></div>
     </div>
     ${list.map((e,i)=>entryHTML(e,i)).join('')}
     <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="question_type_drill" data-wsaddunflagged="false">+ Add Another Question</button>
   </div>`;
+}
+
+async function saveQtAc(hwId,entryNum,letter,fieldName,value){
+  const arr=S.wsEntries[hwId]||[];
+  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='question_type_drill');
+  const curData=existing?{...existing.data}:{};
+  if(!curData.answer_choices)curData.answer_choices={};
+  if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
+  curData.answer_choices[letter][fieldName]=value;
+  let err=null;
+  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
+  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'question_type_drill',data:curData});err=r.error;}
+  await reloadWsEntries(hwId);showSaved(!err);
 }
 
 function wsInsightToActionHTML(v,name){
@@ -1389,6 +1536,9 @@ function bind(){
   document.querySelectorAll('[data-wsadd]').forEach(btn=>{btn.addEventListener('click',async()=>{await addWsEntry(btn.dataset.wsadd,btn.dataset.wsaddtype,btn.dataset.wsaddunflagged);});});
   document.querySelectorAll('[data-acbadge]').forEach(b=>{b.addEventListener('click',async()=>{const states=['','correct','wrong'];const cur=b.classList.contains('correct')?'correct':b.classList.contains('wrong')?'wrong':'';const next=states[(states.indexOf(cur)+1)%3];await saveAcField(b.dataset.acbadge,parseInt(b.dataset.acentry),b.dataset.acletter,'state',next);});});
   document.querySelectorAll('[data-acfield]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveAcField(inp.dataset.acfield,parseInt(inp.dataset.acentry),inp.dataset.acletter,'text',inp.value);});});
+  document.querySelectorAll('[data-qttag]').forEach(btn=>{btn.addEventListener('click',async()=>{const hw=btn.dataset.qttag,en=parseInt(btn.dataset.qtentry),f=btn.dataset.qtfield,val=btn.dataset.qtval;const cur=wsEntryData(hw,en)[f];await saveWsField(hw,en,'question_type_drill',f,cur===val?null:val);R();});});
+  document.querySelectorAll('[data-qtacb]').forEach(b=>{b.addEventListener('click',async()=>{const states=b.dataset.qtacs.split('|');const cur=b.dataset.qtcur||'';const next=states[(states.indexOf(cur)+1)%states.length];await saveQtAc(b.dataset.qtacb,parseInt(b.dataset.qtacen),b.dataset.qtacl,'state',next);R();});});
+  document.querySelectorAll('[data-qtacf]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveQtAc(inp.dataset.qtacf,parseInt(inp.dataset.qtacen),inp.dataset.qtacl,inp.dataset.qtacff,inp.value);});});
   document.querySelectorAll('[data-claimsave]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveClaimField(inp.dataset.claimsave,parseInt(inp.dataset.claimentry),parseInt(inp.dataset.claimidx),inp.value);});});
   document.querySelectorAll('[data-addclaim]').forEach(btn=>{btn.addEventListener('click',async()=>{await addClaimToEntry(btn.dataset.addclaim,parseInt(btn.dataset.addclaimentry));});});
   document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
