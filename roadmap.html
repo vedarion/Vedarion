@@ -549,6 +549,9 @@ function qtCardDesc(q){
   lines.push('Do 4 fresh '+q.name+' questions — log each one in the worksheet below');
   lines.push('Follow the steps above on every single question. No skipping steps.');
   lines.push('Feeling good? Add a 5th question with + Add Another Question');
+  lines.push('--Pace:');
+  lines.push('Untimed while you learn the steps — accuracy first');
+  lines.push('Once the steps feel automatic, aim for about {per_q_time} per question');
   lines.push('--Resources:');
   if(q.links.flowchart)lines.push('[Flowchart]('+q.links.flowchart+')');
   if(q.links.worksheet)lines.push('[Practice Worksheet]('+q.links.worksheet+')');
@@ -589,6 +592,33 @@ const HW_CARDS={
 'other':{group:'Other',cards:[
 {label:'Book Your Next Session',desc:''},
 {label:'Blank (custom)',desc:''}
+]}
+};
+
+function hwCardByLabel(label){
+  for(const g of Object.values(HW_CARDS)){const c=g.cards.find(x=>x.label===label);if(c)return c;}
+  return null;
+}
+
+/* Session blueprints — pull a prefilled session (title, subtitle, description, goals)
+   with its matching drill homework auto-attached. Everything is editable after adding,
+   exactly like homework cards: one-shot copies, no live link back to the blueprint. */
+const SESSION_CARDS={
+'beginner':{group:'Beginner Roadmap — Combo Sessions',cards:[
+{title:'Argument Anatomy',subtitle:'Main Point + Argument Part',description:'Every LSAT argument has parts — a conclusion and the support for it. This session builds the habit of seeing that structure instantly, because every question type that follows depends on it.',goals:['Find the conclusion fast: indicators, process of elimination, and the Why Test','Label what every sentence is doing: conclusion, support, or background','Restate the main point in your own words — noun, verb, predicate'],hw:['Drill: Main Point','Drill: Argument Part','Book Your Next Session']},
+{title:'Reading for Structure',subtitle:'Method of Reasoning + Must Be True + MSS',description:'Two skills this session: describing HOW an author argues, and combining facts into what must follow. Both are pure reading discipline — simplify, connect, predict.',goals:['Describe the author\'s move in your own words before the answer choices','Connect the dots: simplify each sentence and combine the facts','Know the difference between proven (Must Be True) and strongly supported (MSS)'],hw:['Drill: Method of Reasoning','Drill: Must Be True','Drill: Most Strongly Supported']},
+{title:'The Gap',subtitle:'Necessary + Sufficient Assumption',description:'The most important idea in LR: the space between what the premises prove and what the conclusion claims. This session makes gaps visible — then teaches the two tests for closing them.',goals:['Write the core argument: simplified Premise → Conclusion','Spot the gap and say it out loud before the answer choices','Necessary: Must Be True test + Negation Test. Sufficient: hunt for the bridge'],hw:['Drill: Necessary Assumption','Drill: Sufficient Assumption']},
+{title:'Attack & Defend',subtitle:'Strengthen & Weaken + Flaw',description:'Now we use the gap. Strengthen it, attack it, or name it — three question types, one skill. Core arguments from memory, frameworks, and the two-step answer choice test.',goals:['Write the core argument from memory — noun, verb, predicate','Recognize the frameworks: Part to Whole, Cost vs. Benefit, Correlation to Causation','Run the two-step test on every answer choice: relevant? impact?'],hw:['Drill: Strengthen & Weaken','Drill: Flaw','Stimulus Breakdown Drill']},
+{title:'Putting It Together',subtitle:'Parallel Reasoning + First Timed Section',description:'Parallel Reasoning forces you to see arguments in the abstract — the ultimate test of everything so far. Then we take the training wheels off with your first timed section and full review cycle.',goals:['Abstract the structure — content out, pattern in','Shallow dip: scan for markers before committing to a full read','Complete the full review loop: timed section → Blind Review → Insight to Action'],hw:['Drill: Parallel Reasoning','Timed LR Section','Blind Review','Insight to Action: LR']}
+]},
+'qtsess':{group:'Single Question Type Sessions',cards:Object.keys(QT_DRILLS).map(k=>{const q=QT_DRILLS[k];return{
+title:q.name,
+subtitle:'Question Type Deep Dive',
+description:'What '+q.name+' questions are really testing, and the exact steps to run every single time — so the homework drills feel like repetition, not guesswork.',
+goals:['Learn the '+q.name+' steps and why each one matters','Walk through real questions together using the flowchart','Leave knowing exactly what to do before you drill on your own'],
+hw:['Drill: '+q.name]};})},
+'blanksess':{group:'Other',cards:[
+{title:'Blank Session',subtitle:'',description:'',goals:[],hw:[]}
 ]}
 };
 
@@ -843,7 +873,7 @@ function dashHTML(){
         </div>
         <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
         <div class="sess-list">
-          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><button class="add-b" id="add-first-s">+ Add Blank Session</button></div>`:''}
+          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><button class="add-b" id="add-first-s">+ Add Session</button></div>`:''}
           ${S.sessions.map((ss,i)=>sessHTML(ss,i)).join('')}
           ${S.sessions.length>0&&t?'<button class="add-b" id="add-s">+ Add Session</button>':''}
         </div>`}
@@ -1408,6 +1438,62 @@ function openPicker(sessId){
   overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
 }
 
+function openSessPicker(){
+  if(document.getElementById('sess-picker-overlay'))return;
+  const selected=[]; // array, not set — sessions are added in click order
+  function checkSVG(){return'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';}
+  function buildHTML(){
+    const groupsHTML=Object.entries(SESSION_CARDS).map(([gkey,group])=>{
+      const cardsHTML=group.cards.map((card,ci)=>{
+        const key=gkey+'-'+ci;const isSel=selected.includes(key);const ord=selected.indexOf(key);
+        const goalLine=card.goals.length?('Goals: '+card.goals.slice(0,2).join(' · ')).substring(0,130):'';
+        const hwLine=card.hw.length?('Homework: '+card.hw.join(' · ')).substring(0,130):'';
+        const desc=card.title==='Blank Session'?'Empty session — you fill everything':[card.subtitle,goalLine,hwLine].filter(Boolean).join('\n');
+        return`<div class="picker-card${isSel?' selected':''}" data-skey="${key}"><div class="picker-check">${isSel?checkSVG():''}</div><div class="picker-card-info"><div class="picker-card-name">${esc(card.title)}${isSel&&selected.length>1?` <span style="font-family:var(--mono);font-size:10px;color:var(--accent)">#${ord+1}</span>`:''}</div><div class="picker-card-desc">${esc(desc)}</div></div></div>`;
+      }).join('');
+      return`<div class="picker-group"><div class="picker-group-label">${esc(group.group)}</div><div class="picker-grid">${cardsHTML}</div></div>`;
+    }).join('');
+    const n=selected.length;
+    return`<div class="picker-overlay" id="sess-picker-overlay"><div class="picker-panel"><div class="picker-title">Add Sessions</div><div class="picker-sub">Select in the order you want them — title, goals, and drill homework come prefilled. Edit anything after.</div>${groupsHTML}<div class="picker-footer"><div class="picker-count" id="sess-count-lbl"><span>${n}</span> session${n===1?'':'s'} selected</div><div class="picker-actions"><button class="picker-cancel" id="sess-cancel-btn">Cancel</button><button class="picker-add" id="sess-add-btn" ${n===0?'disabled':''}>Add${n>0?' '+n:''} Session${n===1?'':'s'}</button></div></div></div></div>`;
+  }
+  function rebuild(){const o=document.getElementById('sess-picker-overlay');if(!o)return;const sc=o.scrollTop;o.outerHTML=buildHTML();const o2=document.getElementById('sess-picker-overlay');o2.scrollTop=sc;wire(o2);}
+  function closePicker(){const o=document.getElementById('sess-picker-overlay');if(o)o.remove();}
+  function wire(overlay){
+    overlay.addEventListener('click',async e=>{
+      const card=e.target.closest('[data-skey]');
+      if(card){const key=card.dataset.skey;const idx=selected.indexOf(key);if(idx>=0)selected.splice(idx,1);else selected.push(key);rebuild();return;}
+      if(e.target.closest('#sess-cancel-btn')){closePicker();return;}
+      if(e.target.closest('#sess-add-btn')){
+        if(selected.length===0)return;
+        const addBtn=overlay.querySelector('#sess-add-btn');addBtn.disabled=true;addBtn.textContent='Adding...';
+        const tf=S.student?S.student.time_factor||'1x':'1x';
+        let base=S.sessions.length;
+        for(const key of selected){
+          const dash=key.indexOf('-');const gkey=key.substring(0,dash);const ci=parseInt(key.substring(dash+1));
+          const group=SESSION_CARDS[gkey];if(!group)continue;
+          const card=group.cards[ci];if(!card)continue;
+          base++;
+          const{data:sess,error}=await db.from('sessions').insert({student_id:S.selId,session_number:base,title:card.title==='Blank Session'?('Session '+base):card.title,subtitle:card.subtitle||'',description:card.description||'',status:base===1?'upcoming':'locked'}).select().single();
+          if(error||!sess){base--;continue;}
+          for(let gi=0;gi<card.goals.length;gi++){
+            await db.from('session_goals').insert({session_id:sess.id,goal_text:card.goals[gi],sort_order:gi});
+          }
+          let so=0;
+          for(const hwLabel of card.hw){
+            const hc=hwCardByLabel(hwLabel);if(!hc)continue;
+            const desc=hc.desc?applyTiming(hc.desc,tf):null;
+            await db.from('homework').insert({session_id:sess.id,label:hc.label,hw_type:'drill',description:desc,sort_order:so});so++;
+          }
+        }
+        closePicker();await loadStudent(S.selId);R();
+      }
+    });
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
+  }
+  document.body.insertAdjacentHTML('beforeend',buildHTML());
+  wire(document.getElementById('sess-picker-overlay'));
+}
+
 function bind(){
   document.getElementById('lb')?.addEventListener('click',doLogin);
   document.getElementById('lp')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -1562,7 +1648,7 @@ function bind(){
     await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hcopy]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const sessId=b.dataset.hcopy;const sess=S.sessions.find(s=>s.id===sessId);if(!sess)return;const prevSess=S.sessions.find(s=>s.session_number===sess.session_number-1);if(!prevSess||!prevSess.homework||prevSess.homework.length===0){S.hwCopyMsg='No previous session homework to copy';S.hwCopyMsgSess=sessId;R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);return;}const base=(sess.homework?.length)||0;for(let ci=0;ci<prevSess.homework.length;ci++){const ph=prevSess.homework[ci];await db.from('homework').insert({session_id:sessId,label:ph.label,hw_type:ph.hw_type||'drill',description:ph.description||null,sort_order:base+ci});}S.hwCopyMsg=`Copied ${prevSess.homework.length} item${prevSess.homework.length===1?'':'s'}`;S.hwCopyMsgSess=sessId;await loadStudent(S.selId);R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);});});
   const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
-  if(ab)ab.addEventListener('click',async()=>{const n=S.sessions.length+1;await db.from('sessions').insert({student_id:S.selId,session_number:n,title:'Session '+n,subtitle:'',description:'',status:n===1?'upcoming':'locked'});await loadStudent(S.selId);R();});
+  if(ab)ab.addEventListener('click',()=>openSessPicker());
   document.querySelectorAll('.goals-ta').forEach(ta=>{
     function autoGrow(){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
     autoGrow();
