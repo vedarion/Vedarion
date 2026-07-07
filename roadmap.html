@@ -346,6 +346,114 @@ let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:nul
 
 const TEMPLATES={};
 
+/* ============================================================
+   QUESTION TYPE DRILLS (Beginner)
+   Steps pulled from the live VEDARION flowchart/worksheet pages.
+   Each card = one question type. Attached worksheet type:
+   'question_type_drill' — one entry per question, add more anytime.
+   ============================================================ */
+const QT_BASE='https://vedarion.com/question-types/';
+const QT_DRILLS={
+'main-point':{name:'Main Point',links:{flowchart:null,worksheet:QT_BASE+'main-point/worksheet',lesson:QT_BASE+'main-point/lesson'},steps:[
+'Read the stimulus and find the conclusion — use a conclusion indicator, process of elimination, or the Why Test',
+'Without looking back, restate the main point in your own words — noun, verb, predicate',
+'Go to the answer choices and hunt for your prediction',
+'For each answer choice, say why it is right or wrong',
+'Check the winner: descriptively accurate — every word reflects the stimulus'
+]},
+'argument-part':{name:'Argument Part',links:{flowchart:QT_BASE+'argument-part/flowchart',worksheet:QT_BASE+'argument-part/worksheet',lesson:QT_BASE+'argument-part/lesson'},steps:[
+'Read the question stem first — identify and highlight the referenced sentence',
+'Read the stimulus and label each sentence: conclusion, support, or background',
+'Describe the referenced sentence\'s job BEFORE looking at the answer choices',
+'Hunt for the answer that matches your prediction',
+'Check: does every word accurately capture the role of that sentence?'
+]},
+'method-of-reasoning':{name:'Method of Reasoning',links:{flowchart:QT_BASE+'method-of-reasoning/flowchart',worksheet:null,lesson:QT_BASE+'method-of-reasoning/lesson'},steps:[
+'Identify the stem — "the argument proceeds by..." asks HOW the author argues',
+'Read the stimulus and label the premises and the conclusion',
+'Describe how the premises support the conclusion — what is the author doing?',
+'Predict the move in your own words before the answer choices',
+'Check each answer word by word: does every word accurately describe the reasoning?'
+]},
+'must-be-true':{name:'Must Be True',links:{flowchart:QT_BASE+'must-be-true/flowchart',worksheet:QT_BASE+'must-be-true/worksheet',lesson:QT_BASE+'must-be-true/lesson'},steps:[
+'Identify the stem — everything in the stimulus is fact; don\'t look for gaps',
+'Simplify each sentence in your own words as you read',
+'Connect each new sentence to what came before — do the facts combine?',
+'Ask: is there an overall inference? A → B and B → C gives A → C',
+'Check: every word of the correct answer must be 100% proven by the stimulus'
+]},
+'most-strongly-supported':{name:'Most Strongly Supported',links:{flowchart:QT_BASE+'most-strongly-supported/flowchart',worksheet:QT_BASE+'most-strongly-supported/worksheet',lesson:QT_BASE+'most-strongly-supported/lesson'},steps:[
+'Identify the stem — the bar is lower than Must Be True: strongly supported, not proven',
+'Simplify each sentence and connect the dots as you read',
+'For each answer, ask: could I make a reasonable case this is supported?',
+'If you don\'t love an answer, don\'t eliminate it — keep it and compare',
+'Pick the answer with the strongest support and the smallest assumption'
+]},
+'sufficient-assumption':{name:'Sufficient Assumption',links:{flowchart:QT_BASE+'sufficient-assumption/flowchart',worksheet:QT_BASE+'sufficient-assumption/worksheet',lesson:QT_BASE+'sufficient-assumption/lesson'},steps:[
+'Identify the stem — you\'re looking for the answer that makes the conclusion 100% follow',
+'Identify the premise(s) and conclusion — write the core argument',
+'Identify the gap and express it as Premise → Conclusion',
+'Hunt Mode first: scan for your predicted bridge — P → C or /C → /P',
+'If hunting fails, Process of Elimination: Premise + Answer = Conclusion?',
+'Verify: Answer Choice + Premise = Conclusion, 100%'
+]},
+'necessary-assumption':{name:'Necessary Assumption',links:{flowchart:QT_BASE+'necessary-assumption/flowchart',worksheet:QT_BASE+'necessary-assumption/worksheet',lesson:QT_BASE+'necessary-assumption/lesson'},steps:[
+'Identify the stem — "requires," "depends on," "assumes"',
+'Read the stimulus — identify the premise(s) and conclusion',
+'Write the core argument: simplified Premise → Conclusion',
+'Identify the gap — what is the author taking for granted?',
+'Lead with the Must Be True test: if the argument works, this answer has to be true',
+'Fallback: Negation Test — if this answer were false, the argument falls apart'
+]},
+'strengthen-weaken':{name:'Strengthen & Weaken',links:{flowchart:QT_BASE+'strengthen-weaken/flowchart',worksheet:QT_BASE+'strengthen-weaken/worksheet',lesson:QT_BASE+'strengthen-weaken/lesson'},steps:[
+'Read the stem — are you strengthening or weakening?',
+'Break down the stimulus — find the conclusion and the support',
+'Write the core argument: Premise → Conclusion',
+'Predict: why does the support fall short of the conclusion?',
+'Relevance Test: does the answer connect to the argument? Low bar — keep it',
+'Impact Test: Premise + Answer = what happens to the conclusion?',
+'Pick the answer with the clearest impact and fewest language issues'
+]},
+'flaw':{name:'Flaw',links:{flowchart:QT_BASE+'flaw/flowchart',worksheet:QT_BASE+'flaw/worksheet',lesson:QT_BASE+'flaw/lesson'},steps:[
+'Identify the stem — "the argument is vulnerable to criticism because..."',
+'Identify the premise(s) and conclusion — write the core argument',
+'Predict the flaw and name it in your own words BEFORE the answer choices',
+'Check each answer: is it descriptively accurate? Noun, verb, predicate',
+'If it\'s accurate, ask: is it actually the flaw in THIS argument?'
+]},
+'parallel-reasoning':{name:'Parallel Reasoning',links:{flowchart:QT_BASE+'parallel-reasoning/flowchart',worksheet:QT_BASE+'parallel-reasoning/worksheet',lesson:null},steps:[
+'Identify from the stem: Parallel Reasoning or Parallel Flaw',
+'Find the conclusion first, then all the premises',
+'Ask: what would YOU conclude from these premises?',
+'Write the abstract structure — do not skip this step',
+'Pick markers from your structure and shallow dip each answer',
+'No markers in an answer? Move on — don\'t fully eliminate yet',
+'Read close matches in small pieces — predict what it needs to say next',
+'Pick and go — don\'t second-guess'
+]}
+};
+
+function qtCardDesc(q){
+  const lines=['--Steps:'];
+  q.steps.forEach(s=>lines.push(s));
+  lines.push('--Drill:');
+  lines.push('Do 4 fresh '+q.name+' questions — log each one in the worksheet below');
+  lines.push('Follow the steps above on every single question. No skipping steps.');
+  lines.push('Feeling good? Add a 5th question with + Add Another Question');
+  lines.push('--Resources:');
+  if(q.links.flowchart)lines.push('[Flowchart]('+q.links.flowchart+')');
+  if(q.links.worksheet)lines.push('[Practice Worksheet]('+q.links.worksheet+')');
+  if(q.links.lesson)lines.push('[Cheat Sheet / Lesson]('+q.links.lesson+')');
+  return lines.join('\n');
+}
+
+function qtFromLabel(label){
+  if(!label)return null;
+  const l=label.toLowerCase().replace(/^drill:\s*/,'').trim();
+  for(const k of Object.keys(QT_DRILLS)){if(QT_DRILLS[k].name.toLowerCase()===l)return QT_DRILLS[k];}
+  return null;
+}
+
 const HW_CARDS={
 'timing':{group:'Timing',cards:[
 {label:'Timed LR Section',desc:'Take a fresh timed LR section ({section_time})\n--Goals:\nFirst 10 in {first10_time}: spot the pattern, predict, pick, and go\nMost questions in {per_q_time}\nNo question approaching over {max_q_time}\nHard questions: pick at least two to let go on first round'},
@@ -364,6 +472,7 @@ const HW_CARDS={
 {label:'Pattern Recognition Drill',desc:'Select questions from these types only: Main Point, Argument Part, Flaw, Sufficient Assumption, Must Be True, Must Be False\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
 {label:'RC Passage Breakdown',desc:'Complete passage untimed — focus purely on accuracy\nFill out the Claim Tracking Worksheet as you read'}
 ]},
+'qtypes':{group:'Question Type Drills (Beginner)',cards:Object.keys(QT_DRILLS).map(k=>({label:'Drill: '+QT_DRILLS[k].name,desc:qtCardDesc(QT_DRILLS[k])}))},
 'advanced':{group:'Advanced',cards:[
 {label:'Confidence Log',desc:'--Key:\nRe-read one line from stimulus → not a good flag, 10-second fix\nRe-read 1-2 answer choices → not a good flag, do it right there\nRe-read 4-5 answer choices → good flag, need full second pass\nRe-start full process (stimulus + answer choices) → good flag\nDidn\'t understand stimulus (below 70% on first read) → skip it, re-read the one line giving you trouble, if whole stimulus unclear move on\n--For each flagged question:\nWhat caused you to flag this question?\nAfter coming back, did you change your answer?\nIf yes: were you right the first time?\nUnder timed conditions, what did you think you needed to do to improve your confidence to 90%?\nWas the decision to flag correct?'},
 {label:'Skip Strategy Drill',desc:'Take a full LR section ({section_time})\nYou MUST skip at least 3 questions on first pass\nCome back to them after finishing the rest\n--After the section:\nWhich questions did you skip?\nWere they the right ones to skip?\nDid finishing easier questions first change how you approached the hard ones?'}
@@ -544,6 +653,7 @@ function wsType(label){
   if(l==='confidence log')return'confidence_log';
   if(l==='rc blind review'||l==='rc passage breakdown')return'rc_claim_tracking';
   if(l==='insight to action: lr'||l==='insight to action: rc'||l==='insight to action: lr review'||l==='insight to action: rc review'||l==='final insight to action')return'insight_to_action';
+  if(l.startsWith('drill:')&&qtFromLabel(label))return'question_type_drill';
   return null;
 }
 
@@ -574,6 +684,11 @@ function wsSummaryText(hwId,type){
     if(d.pattern)parts.push('pattern identified');
     if(d.decision)parts.push(d.decision.toLowerCase());
     return parts.length>0?parts.join(' · '):'In progress';
+  }
+  if(type==='question_type_drill'){
+    const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
+    const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
+    return`${entries.length} logged · ${correct} correct · ${missed} missed`;
   }
   return'';
 }
@@ -729,6 +844,7 @@ function wsShellHTML(){
   else if(v.type==='confidence_log')inner=wsConfidenceLogHTML(v,name);
   else if(v.type==='rc_claim_tracking')inner=wsRCClaimHTML(v,name);
   else if(v.type==='insight_to_action')inner=wsInsightToActionHTML(v,name);
+  else if(v.type==='question_type_drill')inner=wsQuestionTypeDrillHTML(v,name);
   return`
     <div class="nav">
       <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${S.isTutor?'Tutor':'Student'}</span></div>
@@ -781,6 +897,64 @@ function wsDrop(hwId,entryNum,type,field,options){
   const d=wsEntryData(hwId,entryNum);
   const cur=d[field]||'';
   return`<select class="ws-sel" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}">${options.map(o=>`<option value="${esc(o)}"${cur===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+}
+
+function wsQuestionTypeDrillHTML(v,name){
+  const hwId=v.homework_id;
+  const qt=qtFromLabel(v.hw_label);
+  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='question_type_drill');
+  const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
+  const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
+  const clean='No breakdown — clean run';
+  const stuck=entries.filter(e=>e.data&&e.data.breakdown_step&&e.data.breakdown_step!=='—'&&e.data.breakdown_step!==clean).length;
+  const steps=qt?qt.steps:[];
+  const breakdownOpts=['—',clean].concat(steps.map((_,i)=>'Step '+(i+1))).concat(['Not sure']);
+  const list=entries.length>0?entries:[{entry_number:1,data:{}}];
+  function entryHTML(e,idx){
+    const en=e.entry_number;
+    return`<div class="ws-entry">
+      <div class="ws-entry-hd">
+        <span class="ws-entry-lbl">Question ${idx+1}</span>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
+        ${wsInp(hwId,en,'question_type_drill','question_num','12')}
+        ${wsInp(hwId,en,'question_type_drill','source','Source — e.g. PT 101 · S2','ws-ac-inp')}
+        ${wsDrop(hwId,en,'question_type_drill','result',['—','Correct','Missed'])}
+      </div>
+      <div class="ws-sec-lbl" style="margin-top:0">Prediction</div>
+      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">What did you predict BEFORE looking at the answer choices?</div>
+      ${wsField(hwId,en,'question_type_drill','prediction','My prediction was...',1)}
+      <div class="ws-sec-lbl">Process Check</div>
+      <div class="ws-toggle-row">
+        <span class="ws-toggle-lbl">Where did the process break down? (Step numbers match the list above)</span>
+        ${wsDrop(hwId,en,'question_type_drill','breakdown_step',breakdownOpts)}
+      </div>
+      <div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What happened at that step — and what will you do differently?</div>
+      ${wsField(hwId,en,'question_type_drill','notes','Be specific. Which trap, which wording, which habit...',2)}
+    </div>`;
+  }
+  const resLinks=qt?[
+    qt.links.flowchart?`<a href="${qt.links.flowchart}" target="_blank" rel="noopener" style="color:var(--accent)">Flowchart</a>`:'',
+    qt.links.worksheet?`<a href="${qt.links.worksheet}" target="_blank" rel="noopener" style="color:var(--accent)">Practice Worksheet</a>`:'',
+    qt.links.lesson?`<a href="${qt.links.lesson}" target="_blank" rel="noopener" style="color:var(--accent)">Cheat Sheet / Lesson</a>`:''
+  ].filter(Boolean).join(' · '):'';
+  return`<div class="ws-wrap">
+    <div class="ws-title">${qt?esc(qt.name):'Question Type'} Drill</div>
+    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
+    <div class="ws-desc">One entry per question. Keep the steps below open while you work — the goal isn't just getting it right, it's running the same process every single time until it's automatic. Doing 4? Add a 5th with the button at the bottom.</div>
+    ${steps.length>0?`<div class="ws-key-box">
+      <div class="ws-key-title">The Steps — follow these on every question</div>
+      ${steps.map((s,i)=>`<div class="ws-key-row"><span class="ws-key-arrow">${i+1}.</span><span>${esc(s)}</span></div>`).join('')}
+      ${resLinks?`<div class="ws-key-row" style="margin-top:8px"><span class="ws-key-arrow">→</span><span>${resLinks}</span></div>`:''}
+    </div>`:''}
+    <div class="ws-stats">
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${correct}</div><div class="ws-stat-lbl">Correct</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${missed}</div><div class="ws-stat-lbl">Missed</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${stuck}</div><div class="ws-stat-lbl">Step Breakdowns</div></div>
+    </div>
+    ${list.map((e,i)=>entryHTML(e,i)).join('')}
+    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="question_type_drill" data-wsaddunflagged="false">+ Add Another Question</button>
+  </div>`;
 }
 
 function wsInsightToActionHTML(v,name){
@@ -1108,7 +1282,7 @@ function bind(){
   document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
     await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
   });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]')||e.target.closest('.goals-ta')||e.target.closest('.hw-st')||e.target.closest('.hw-st-inp')||e.target.closest('.hw-add-step'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
+  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]')||e.target.closest('.goals-ta')||e.target.closest('.hw-st')||e.target.closest('.hw-st-inp')||e.target.closest('.hw-add-step')||e.target.closest('.ws-open-btn')||e.target.closest('.ws-card-footer'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
   document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
   document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
     const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
@@ -1210,7 +1384,7 @@ function bind(){
   });});
   document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:''};R();});});
   document.getElementById('ws-back-btn')?.addEventListener('click',async()=>{const hwId=S.wsView?.homework_id;S.wsView=null;if(hwId)await reloadWsEntries(hwId);R();});
-  document.querySelectorAll('[data-wssave]').forEach(el=>{el.addEventListener('change',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);if(el.dataset.wstype==='blind_review'&&el.dataset.wsfield==='miss_type')R();});el.addEventListener('blur',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);});});
+  document.querySelectorAll('[data-wssave]').forEach(el=>{el.addEventListener('change',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);if(el.dataset.wstype==='blind_review'&&el.dataset.wsfield==='miss_type')R();if(el.dataset.wstype==='question_type_drill'&&(el.dataset.wsfield==='result'||el.dataset.wsfield==='breakdown_step'))R();});el.addEventListener('blur',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);});});
   document.querySelectorAll('[data-wstog]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveWsToggle(btn.dataset.wstog,parseInt(btn.dataset.wsentry),btn.dataset.wstype,btn.dataset.wsfield,btn.dataset.wsval);});});
   document.querySelectorAll('[data-wsadd]').forEach(btn=>{btn.addEventListener('click',async()=>{await addWsEntry(btn.dataset.wsadd,btn.dataset.wsaddtype,btn.dataset.wsaddunflagged);});});
   document.querySelectorAll('[data-acbadge]').forEach(b=>{b.addEventListener('click',async()=>{const states=['','correct','wrong'];const cur=b.classList.contains('correct')?'correct':b.classList.contains('wrong')?'wrong':'';const next=states[(states.indexOf(cur)+1)%3];await saveAcField(b.dataset.acbadge,parseInt(b.dataset.acentry),b.dataset.acletter,'state',next);});});
