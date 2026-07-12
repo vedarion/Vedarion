@@ -329,6 +329,7 @@
     .qt-ac-q{font-size:12px;color:var(--dim);margin:6px 0 4px;line-height:1.5}
     .tl-over{background:rgba(216,90,48,.12);color:#f0997b;font-size:10px;padding:2px 8px;border-radius:10px;font-family:var(--mono);letter-spacing:.3px}
     .tl-time{font-family:var(--mono)!important}
+    .ws-src{width:110px;text-align:left}
 
     .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
     .hw-num{font-family:var(--mono);font-size:12px;color:var(--dim);flex-shrink:0;min-width:18px}
@@ -565,6 +566,23 @@ function qtCardDesc(q){
   return lines.join('\n');
 }
 
+function lessonCardDesc(q){
+  const lines=[];
+  if(q.links.lesson)lines.push('Read the '+q.name+' Cheat Sheet (linked below)');
+  else lines.push('Review the '+q.name+' steps using the flowchart (linked below)');
+  lines.push('Write the steps out from memory — then check yourself against the sheet');
+  lines.push('Re-do any step you missed until you can write all of them without looking');
+  lines.push('--Goal:');
+  lines.push('Know the steps cold — next up is the '+q.name+' drill');
+  lines.push('--Resources:');
+  if(q.links.lesson)lines.push('[Cheat Sheet]('+q.links.lesson+')');
+  if(q.links.flowchart)lines.push('[Flowchart]('+q.links.flowchart+')');
+  return lines.join('\n');
+}
+
+const LESSON_F=['main-point','argument-part','method-of-reasoning','must-be-true','most-strongly-supported'];
+const LESSON_M=['sufficient-assumption','necessary-assumption','strengthen-weaken','flaw','parallel-reasoning'];
+
 function qtFromLabel(label){
   if(!label)return null;
   const l=label.toLowerCase().replace(/^drill:\s*/,'').trim();
@@ -603,6 +621,8 @@ const HW_CARDS={
 {label:'Assumption Recognition Practice',tiers:['f','m'],desc:'Do 10 LR questions that ask you to find what the argument depends on\nFor each: before looking at answers, predict the assumption in your own words\nLog each one in the worksheet below\nTrack how often your prediction matched — aim for at least 6/10'},
 {label:'Conditional Translation Drill',tiers:['f','m'],desc:'Take the 20 translation sentences from our session handout\nTranslate each one into conditional notation — write it out fully\nFor every unless/without/except: identify the sufficient condition, negate it, and write the full arrow\nFor every no/none: identify the necessary condition and negate it\nCheck against the answer key — aim for 16/20 or better\nRe-do any you missed until you can get them right without looking'}
 ]},
+'lessonf':{group:'Lesson Review — Foundations',cards:LESSON_F.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
+'lessonm':{group:'Lesson Review — Mastery',cards:LESSON_M.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
 'qtypes':{group:'Question Type Drills',cards:Object.keys(QT_DRILLS).map(k=>({label:'Drill: '+QT_DRILLS[k].name,desc:qtCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
 'advanced':{group:'Advanced',cards:[
 {label:'Confidence Log',tiers:['a'],desc:'--Key:\nRe-read one line from stimulus → not a good flag, 10-second fix\nRe-read 1-2 answer choices → not a good flag, do it right there\nRe-read 4-5 answer choices → good flag, need full second pass\nRe-start full process (stimulus + answer choices) → good flag\nDidn\'t understand stimulus (below 70% on first read) → skip it, re-read the one line giving you trouble, if whole stimulus unclear move on\n--For each flagged question:\nWhat caused you to flag this question?\nAfter coming back, did you change your answer?\nIf yes: were you right the first time?\nUnder timed conditions, what did you think you needed to do to improve your confidence to 90%?\nWas the decision to flag correct?'},
@@ -993,9 +1013,9 @@ function dashHTML(){
         </div>
       </div>
       <div class="stats">
-        ${statBox('Current Avg','current_avg',t)}
-        ${statBox('LR','lr_score',t)}
-        ${statBox('RC','rc_score',t)}
+        ${statBox('Current Avg','current_average',t)}
+        ${statBox('LR','lr_average',t)}
+        ${statBox('RC','rc_average',t)}
         ${statBox('Test Date','test_date',t)}
         <div class="stat"><div class="stat-lbl">Time Factor</div><div class="stat-val">${t?`<select class="time-factor-sel" id="tf-sel">${Object.keys(TIMING).map(k=>`<option value="${k}" ${(st.time_factor||'1x')===k?'selected':''}>${k}</option>`).join('')}</select>`:esc(st.time_factor||'1x')}</div></div>
       </div>
@@ -1092,7 +1112,7 @@ function sessHTML(s,i){
 
 function hwHTML(h,hi,s,si,unlocked){
   const t=S.isTutor;
-  const done=!!h.completed;
+  const done=!!(h.completed||h.is_completed);
   const steps=(h.description||'').split('\n').filter(l=>l.trim());
   const comps=getStepCompletions(h);
   const ws=hwWs(h);
@@ -1254,7 +1274,9 @@ function wsQuestionTypeDrillHTML(v,name){
       }
       return`<div class="ws-entry">
         <div class="ws-entry-hd">
-          <span class="ws-entry-lbl">Question</span>
+          <span class="ws-entry-lbl">PT / Section</span>
+          ${wsInp(e.id,'source',d.source,'PT 101 · S2','ws-src')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Q</span>
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <span class="ws-entry-lbl" style="margin-left:12px">Result</span>
           ${wsDrop(e.id,'result',d.result,['Correct','Missed'])}
@@ -1308,7 +1330,9 @@ function wsTimingLogHTML(v,name){
       const isOver=sec!=null&&sec>maxSec;
       return`<div class="ws-entry">
         <div class="ws-entry-hd">
-          <span class="ws-entry-lbl">Q</span>
+          <span class="ws-entry-lbl">PT / Section</span>
+          ${wsInp(e.id,'source',d.source,'PT 101 · S2','ws-src')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Q</span>
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <span class="ws-entry-lbl" style="margin-left:10px">Time</span>
           ${wsInp(e.id,'time',d.time,'1:25','tl-time')}
@@ -1394,7 +1418,9 @@ function wsBlindReviewHTML(v,name){
       const d=wsEntryData(e);
       return`<div class="ws-entry">
         <div class="ws-entry-hd">
-          <span class="ws-entry-lbl">Question</span>
+          <span class="ws-entry-lbl">PT / Section</span>
+          ${wsInp(e.id,'source',d.source,'PT 101 · S2','ws-src')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Q</span>
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <span class="ws-entry-lbl" style="margin-left:10px">Category</span>
           ${wsDrop(e.id,'category',d.category,['timing','knowledge','sloppy'])}
@@ -1436,7 +1462,9 @@ function wsConfidenceLogHTML(v,name){
       const d=wsEntryData(e);
       return`<div class="ws-entry">
         <div class="ws-entry-hd">
-          <span class="ws-entry-lbl">Question</span>
+          <span class="ws-entry-lbl">PT / Section</span>
+          ${wsInp(e.id,'source',d.source,'PT 101 · S2','ws-src')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Q</span>
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
         </div>
@@ -1465,7 +1493,9 @@ function wsRCClaimHTML(v,name){
       const claims=Array.isArray(d.claims)?d.claims:[''];
       return`<div class="ws-entry">
         <div class="ws-entry-hd">
-          <span class="ws-entry-lbl">Paragraph</span>
+          <span class="ws-entry-lbl">PT / Section</span>
+          ${wsInp(e.id,'source',d.source,'PT 101 · S4','ws-src')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Paragraph</span>
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <span class="ws-entry-lbl" style="margin-left:10px">Passage</span>
           <div class="ws-pass-tags" style="margin:0">${['1','2','3','4'].map(p=>`<button class="ws-tag ${d.passage===p?'active':''}" data-wsmeta="${e.id}" data-wsf="passage" data-wsv="${p}">${p}</button>`).join('')}</div>
@@ -1679,6 +1709,23 @@ function openSessPicker(){
   wire();
 }
 
+/* Two-phase renumber: park every session at a temporary out-of-range number first,
+   then assign the real sequence — avoids unique-constraint collisions mid-update. */
+async function renumberSessions(ordered){
+  const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
+  let err=null;
+  for(let k=0;k<ordered.length;k++){
+    const r=await db.from('sessions').update({session_number:1000+k}).eq('id',ordered[k].id);
+    if(r.error)err=r.error;
+  }
+  if(err)return err;
+  for(let k=0;k<ordered.length;k++){
+    const r=await db.from('sessions').update({session_number:base+k}).eq('id',ordered[k].id);
+    if(r.error)err=r.error;
+  }
+  return err;
+}
+
 /* ===================== EVENT BINDING ===================== */
 function bind(){
   const so=document.getElementById('so');if(so)so.addEventListener('click',doLogout);
@@ -1734,13 +1781,9 @@ function bind(){
     if(j<0||j>=S.sessions.length)return;
     const ordered=[...S.sessions];
     const tmp=ordered[i];ordered[i]=ordered[j];ordered[j]=tmp;
-    const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
-    let err=null;
-    for(let k=0;k<ordered.length;k++){
-      const r=await db.from('sessions').update({session_number:base+k}).eq('id',ordered[k].id);
-      if(r.error)err=r.error;
-    }
+    const err=await renumberSessions(ordered);
     if(S.exSess===i)S.exSess=j;else if(S.exSess===j)S.exSess=i;
+    if(err)alert('Could not reorder: '+(err.message||JSON.stringify(err)));
     await loadStudent(S.selId);R();showSaved(!err);
   }));
 
@@ -1765,13 +1808,9 @@ function bind(){
         const ordered=[...S.sessions];
         const[m]=ordered.splice(dragIdx,1);
         ordered.splice(ti,0,m);
-        const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
-        let err=null;
-        for(let k=0;k<ordered.length;k++){
-          const r=await db.from('sessions').update({session_number:base+k}).eq('id',ordered[k].id);
-          if(r.error)err=r.error;
-        }
+        const err=await renumberSessions(ordered);
         dragIdx=null;
+        if(err)alert('Could not reorder: '+(err.message||JSON.stringify(err)));
         await loadStudent(S.selId);R();showSaved(!err);
       });
     });
@@ -1846,8 +1885,9 @@ function bind(){
     const id=cb.dataset.hwcb;
     let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
     if(!hw)return;
-    const{error}=await db.from('homework').update({completed:!hw.completed}).eq('id',id);
-    hw.completed=!hw.completed;R();showSaved(!error);
+    const cur=!!(hw.completed||hw.is_completed);
+    const{error}=await db.from('homework').update({completed:!cur,is_completed:!cur}).eq('id',id);
+    hw.completed=!cur;hw.is_completed=!cur;R();showSaved(!error);
   }));
   document.querySelectorAll('[data-stepcb]').forEach(cb=>cb.addEventListener('click',async e=>{
     e.stopPropagation();
@@ -2011,6 +2051,7 @@ async function saveEd(eid,val){
     ({error}=await db.from('session_goals').update({goal_text:val}).eq('id',id));
     for(const s of S.sessions){const g=(s.goals||[]).find(x=>x.id===id);if(g)g.goal_text=val;}
   }
+  if(error)alert('Could not save: '+(error.message||JSON.stringify(error)));
   R();showSaved(!error);
 }
 
