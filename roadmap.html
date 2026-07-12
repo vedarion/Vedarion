@@ -1561,6 +1561,7 @@ function openPicker(sessId){
         if(error)err=error;
       }
       overlay.remove();
+      if(err)alert('Could not add homework: '+(err.message||JSON.stringify(err)));
       await loadStudent(S.selId);R();showSaved(!err);
     });
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
@@ -1670,6 +1671,7 @@ function openSessPicker(){
       }
       await syncPackage();
       overlay.remove();
+      if(err)alert('Could not add session(s): '+(err.message||JSON.stringify(err)));
       await loadStudent(S.selId);R();showSaved(!err);
     });
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
