@@ -200,7 +200,11 @@
     .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:32px 20px;overflow-y:auto}
     .picker-panel{background:var(--surface);border:1px solid var(--border-hi);border-radius:18px;width:100%;max-width:660px;padding:28px;box-shadow:0 32px 64px rgba(0,0,0,.6);animation:fadeUp .2s ease}
     .picker-title{font-family:var(--serif);font-size:18px;color:var(--bright);margin-bottom:4px}
-    .picker-sub{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.3px;margin-bottom:24px}
+    .picker-sub{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.3px;margin-bottom:18px}
+    .picker-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;flex-wrap:wrap}
+    .picker-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);font-family:var(--mono);font-size:10px;letter-spacing:.5px;padding:8px 12px;cursor:pointer;transition:all .15s;margin-bottom:-1px}
+    .picker-tab:hover{color:var(--text)}
+    .picker-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
     .picker-group{margin-bottom:20px}
     .picker-group-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
     .picker-grid{display:flex;flex-direction:column;gap:4px}
@@ -323,6 +327,8 @@
     .qt-ac-hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
     .qt-ac-state{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.5px;text-transform:uppercase}
     .qt-ac-q{font-size:12px;color:var(--dim);margin:6px 0 4px;line-height:1.5}
+    .tl-over{background:rgba(216,90,48,.12);color:#f0997b;font-size:10px;padding:2px 8px;border-radius:10px;font-family:var(--mono);letter-spacing:.3px}
+    .tl-time{font-family:var(--mono)!important}
 
     .hw-reorder{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
     .hw-num{font-family:var(--mono);font-size:12px;color:var(--dim);flex-shrink:0;min-width:18px}
@@ -562,32 +568,45 @@ function qtCardDesc(q){
 function qtFromLabel(label){
   if(!label)return null;
   const l=label.toLowerCase().replace(/^drill:\s*/,'').trim();
+  if(l==='assumption recognition practice')return QT_DRILLS['necessary-assumption'];
   for(const k of Object.keys(QT_DRILLS)){if(QT_DRILLS[k].name.toLowerCase()===l)return QT_DRILLS[k];}
   return null;
 }
 
+/* Homework card bank. Cards without a `tiers` array show on every tier tab.
+   tiers: 'f' Foundation · 'm' Mid-Range · 'a' Advanced. The All tab always shows everything. */
 const HW_CARDS={
 'timing':{group:'Timing',cards:[
-{label:'Timed LR Section',desc:'Take a fresh timed LR section ({section_time})\n--Goals:\nFirst 10 in {first10_time}: spot the pattern, predict, pick, and go\nMost questions in {per_q_time}\nNo question approaching over {max_q_time}\nHard questions: pick at least two to let go on first round'},
+{label:'Timed LR Section',desc:'Take a fresh timed LR section ({section_time})\nLog your time on every question in the worksheet below\n--Goals:\nFirst 10 in {first10_time}: spot the pattern, predict, pick, and go\nMost questions in {per_q_time}\nNo question approaching over {max_q_time}\nHard questions: pick at least two to let go on first round'},
 {label:'Timed RC Section',desc:'Take a fresh timed RC section ({section_time})\n--Reading habits:\nAfter paragraph 1: predict the main point of the passage\nAfter paragraph 1: predict the structure\nAfter paragraph 1: sneak peek — skim the opening words of remaining paragraphs\n{per_rc_q_time} per question\n--Tracking:\nFlag any question where you were between two answers\nNo passage over {passage_time} total'},
-{label:'Practice Test',desc:'Take a full PT under test conditions\nComplete Blind Review after\nComplete Insight to Action after'}
+{label:'Practice Test',desc:'Take a full PT under test conditions\nComplete Blind Review after\nComplete Insight to Action after'},
+{label:'Timing Log + LR Section',tiers:['m','a'],desc:'Take a fresh timed LR section ({section_time})\nLog your time on every question in the worksheet below\n--Goals:\nFirst 10 questions done in {first10_time}\nNo single question over {max_q_time} on first pass\nMark any question you let go and came back to\n--After:\nIf you went over time, which questions caused it?\nBring your timing log to our next session'},
+{label:'1 LR Section (timed)',tiers:['m','a'],desc:'Take a full timed LR section ({section_time})\nFlag every question you weren\'t 100% sure about\nLog flagged questions in the worksheet below\nSame Insight to Action process for any misses: strategy or knowledge?'},
+{label:'1 RC Section (timed)',tiers:['m','a'],desc:'Full RC section under the clock ({section_time})\nTrack which passage took the most time and which questions you flagged\nFill out the Claim Tracking worksheet for any passage where you flagged a question'},
+{label:'2 Hard RC Passages (untimed)',tiers:['m','a'],desc:'Pick 2 passages rated difficult from any PT\nUntimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nFill out the Claim Tracking worksheet as you go\nReview every miss'},
+{label:'Pacing Drill: LR Sections',tiers:['m','a'],desc:'Do 2 full LR sections, each timed at {section_time}\nOn the first: use your normal approach — note where you feel rushed\nOn the second: apply the pacing strategy from our session (flag and move, return later)\nLog your times in the worksheet below\nCompare accuracy and how you felt — which approach left fewer questions unanswered?\nBring both results to our next session'}
 ]},
 'review':{group:'Review',cards:[
 {label:'Blind Review',desc:'Complete your Strategic Review for flagged questions\nComplete your Knowledge Review for flagged questions\nGrade and review missed unflagged questions\nCreate parallel arguments for any questions missed\nTake your findings to Insight to Action'},
 {label:'RC Blind Review',desc:'Complete your Strategic Review for flagged questions\nFor each passage where you flagged a question: fill out a Claim Tracking Worksheet\nGrade and review missed unflagged questions\nTake your findings to Insight to Action'},
 {label:'Insight to Action: LR',desc:'Open the worksheet below\nLog every missed question and tag each as Strategy or Knowledge\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Not the question — the trap or concept behind it.\nWhat will you do differently next time?\nDrill 3 similar questions. Note your result.\nDecide: move on, repeat drills, or email tutor'},
-{label:'Insight to Action: RC',desc:'Open the worksheet below\nLog every missed question and tag each as Reading or Question Strategy\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Passage type, question type, or a comprehension issue\nWhat will you do differently next time?\nDo 2 similar passage types. Note your result.\nDecide: move on, repeat drills, or email tutor'}
+{label:'Insight to Action: RC',desc:'Open the worksheet below\nLog every missed question and tag each as Reading or Question Strategy\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Passage type, question type, or a comprehension issue\nWhat will you do differently next time?\nDo 2 similar passage types. Note your result.\nDecide: move on, repeat drills, or email tutor'},
+{label:'LR Section Reset',tiers:['m','a'],desc:'Take a fresh LR section when ready\nReview every miss: strategy or knowledge?\nSame reason as last session\'s misses, or different?\nComplete Insight to Action in the worksheet below\nDrill similar questions\nClean section → you\'re ready for a PT. If not → keep doing sections'},
+{label:'Insight to Action: Timing Leak Audit',tiers:['m','a'],desc:'Open the worksheet below\nReview your last 2 PTs and look at your timing patterns\nWhich sections did you run out of time on? Which passages or question sets ate the most time?\nFor each time crunch: was it one hard question that ate 4 minutes, or gradual slowness across many questions?\nWrite down 2-3 specific timing rules for yourself (e.g. "if I\'m not making progress after 90 seconds, flag and move")'},
+{label:'Final Insight to Action Review',tiers:['m','a'],desc:'Go through all your Insight to Action notes from previous sessions\nWhat patterns have you fixed? What\'s still showing up?\nComplete the worksheet below with your remaining patterns\nBuild your plan: what gets drilled between now and test day?'}
 ]},
 'drills':{group:'Drills',cards:[
 {label:'Stimulus Breakdown Drill',desc:'Take every question you missed OR spent over 3 minutes on\nFor each one: write down the premise, the conclusion, and the gap\nFor every answer choice: write why it\'s right or wrong\nIf you can\'t identify the gap, mark it — that\'s what we fix together'},
-{label:'First 10 in 10 Drill',desc:'Take the first 10 questions of a fresh LR section\nTimed: {first10_time}\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
+{label:'First 10 in 10 Drill',desc:'Take the first 10 questions of a fresh LR section\nTimed: {first10_time}\nLog your time on each question in the worksheet below\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
 {label:'Pattern Recognition Drill',desc:'Select questions from these types only: Main Point, Argument Part, Flaw, Sufficient Assumption, Must Be True, Must Be False\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
-{label:'RC Passage Breakdown',desc:'Complete passage untimed — focus purely on accuracy\nFill out the Claim Tracking Worksheet as you read'}
+{label:'RC Passage Breakdown',desc:'Complete passage untimed — focus purely on accuracy\nFill out the Claim Tracking Worksheet as you read'},
+{label:'Assumption Recognition Practice',tiers:['f','m'],desc:'Do 10 LR questions that ask you to find what the argument depends on\nFor each: before looking at answers, predict the assumption in your own words\nLog each one in the worksheet below\nTrack how often your prediction matched — aim for at least 6/10'},
+{label:'Conditional Translation Drill',tiers:['f','m'],desc:'Take the 20 translation sentences from our session handout\nTranslate each one into conditional notation — write it out fully\nFor every unless/without/except: identify the sufficient condition, negate it, and write the full arrow\nFor every no/none: identify the necessary condition and negate it\nCheck against the answer key — aim for 16/20 or better\nRe-do any you missed until you can get them right without looking'}
 ]},
-'qtypes':{group:'Question Type Drills (Beginner)',cards:Object.keys(QT_DRILLS).map(k=>({label:'Drill: '+QT_DRILLS[k].name,desc:qtCardDesc(QT_DRILLS[k])}))},
+'qtypes':{group:'Question Type Drills',cards:Object.keys(QT_DRILLS).map(k=>({label:'Drill: '+QT_DRILLS[k].name,desc:qtCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
 'advanced':{group:'Advanced',cards:[
-{label:'Confidence Log',desc:'--Key:\nRe-read one line from stimulus → not a good flag, 10-second fix\nRe-read 1-2 answer choices → not a good flag, do it right there\nRe-read 4-5 answer choices → good flag, need full second pass\nRe-start full process (stimulus + answer choices) → good flag\nDidn\'t understand stimulus (below 70% on first read) → skip it, re-read the one line giving you trouble, if whole stimulus unclear move on\n--For each flagged question:\nWhat caused you to flag this question?\nAfter coming back, did you change your answer?\nIf yes: were you right the first time?\nUnder timed conditions, what did you think you needed to do to improve your confidence to 90%?\nWas the decision to flag correct?'},
-{label:'Skip Strategy Drill',desc:'Take a full LR section ({section_time})\nYou MUST skip at least 3 questions on first pass\nCome back to them after finishing the rest\n--After the section:\nWhich questions did you skip?\nWere they the right ones to skip?\nDid finishing easier questions first change how you approached the hard ones?'}
+{label:'Confidence Log',tiers:['a'],desc:'--Key:\nRe-read one line from stimulus → not a good flag, 10-second fix\nRe-read 1-2 answer choices → not a good flag, do it right there\nRe-read 4-5 answer choices → good flag, need full second pass\nRe-start full process (stimulus + answer choices) → good flag\nDidn\'t understand stimulus (below 70% on first read) → skip it, re-read the one line giving you trouble, if whole stimulus unclear move on\n--For each flagged question:\nWhat caused you to flag this question?\nAfter coming back, did you change your answer?\nIf yes: were you right the first time?\nUnder timed conditions, what did you think you needed to do to improve your confidence to 90%?\nWas the decision to flag correct?'},
+{label:'Skip Strategy Drill',tiers:['a'],desc:'Take a full LR section ({section_time})\nYou MUST skip at least 3 questions on first pass\nCome back to them after finishing the rest\n--After the section:\nWhich questions did you skip?\nWere they the right ones to skip?\nDid finishing easier questions first change how you approached the hard ones?'}
 ]},
 'other':{group:'Other',cards:[
 {label:'Book Your Next Session',desc:''},
@@ -602,14 +621,20 @@ function hwCardByLabel(label){
 
 /* Session blueprints — pull a prefilled session (title, subtitle, description, goals)
    with its matching drill homework auto-attached. Everything is editable after adding,
-   exactly like homework cards: one-shot copies, no live link back to the blueprint. */
+   exactly like homework cards: one-shot copies, no live link back to the blueprint.
+   SESS_TABS maps picker tabs to groups. Tab names are tutor-only — students never
+   see the picker, and no session title or subtitle ever labels a student's level. */
 const SESSION_CARDS={
-'beginner':{group:'Beginner Roadmap — Combo Sessions',cards:[
+'beginner':{group:'Foundation Roadmap — Combo Sessions',cards:[
 {title:'Argument Anatomy',subtitle:'Main Point + Argument Part',description:'Every LSAT argument has parts — a conclusion and the support for it. This session builds the habit of seeing that structure instantly, because every question type that follows depends on it.',goals:['Find the conclusion fast: indicators, process of elimination, and the Why Test','Label what every sentence is doing: conclusion, support, or background','Restate the main point in your own words — noun, verb, predicate'],hw:['Drill: Main Point','Drill: Argument Part','Book Your Next Session']},
 {title:'Reading for Structure',subtitle:'Method of Reasoning + Must Be True + MSS',description:'Two skills this session: describing HOW an author argues, and combining facts into what must follow. Both are pure reading discipline — simplify, connect, predict.',goals:['Describe the author\'s move in your own words before the answer choices','Connect the dots: simplify each sentence and combine the facts','Know the difference between proven (Must Be True) and strongly supported (MSS)'],hw:['Drill: Method of Reasoning','Drill: Must Be True','Drill: Most Strongly Supported']},
 {title:'The Gap',subtitle:'Necessary + Sufficient Assumption',description:'The most important idea in LR: the space between what the premises prove and what the conclusion claims. This session makes gaps visible — then teaches the two tests for closing them.',goals:['Write the core argument: simplified Premise → Conclusion','Spot the gap and say it out loud before the answer choices','Necessary: Must Be True test + Negation Test. Sufficient: hunt for the bridge'],hw:['Drill: Necessary Assumption','Drill: Sufficient Assumption']},
 {title:'Attack & Defend',subtitle:'Strengthen & Weaken + Flaw',description:'Now we use the gap. Strengthen it, attack it, or name it — three question types, one skill. Core arguments from memory, frameworks, and the two-step answer choice test.',goals:['Write the core argument from memory — noun, verb, predicate','Recognize the frameworks: Part to Whole, Cost vs. Benefit, Correlation to Causation','Run the two-step test on every answer choice: relevant? impact?'],hw:['Drill: Strengthen & Weaken','Drill: Flaw','Stimulus Breakdown Drill']},
 {title:'Putting It Together',subtitle:'Parallel Reasoning + First Timed Section',description:'Parallel Reasoning forces you to see arguments in the abstract — the ultimate test of everything so far. Then we take the training wheels off with your first timed section and full review cycle.',goals:['Abstract the structure — content out, pattern in','Shallow dip: scan for markers before committing to a full read','Complete the full review loop: timed section → Blind Review → Insight to Action'],hw:['Drill: Parallel Reasoning','Timed LR Section','Blind Review','Insight to Action: LR']}
+]},
+'rcfoundation':{group:'Foundation Roadmap — Reading Comprehension',cards:[
+{title:'Passage Structure',subtitle:'Reading Comprehension',description:'Reading Comprehension is won before the questions start. This session builds the active reading habits that make every passage predictable: track the claims, predict the structure, and know the main point before you\'re asked for it.',goals:['Predict the passage\'s main point and structure after paragraph 1','Sneak peek: skim the opening words of the remaining paragraphs to confirm or adjust','Track the author\'s claims paragraph by paragraph and name each paragraph\'s job'],hw:['RC Passage Breakdown','Timed RC Section','RC Blind Review']},
+{title:'RC Question Types',subtitle:'Reading Comprehension',description:'Every RC question type points back to the passage differently. This session maps each type to where its answer lives — main point, structure, inference, author\'s attitude — so you stop rereading and start retrieving.',goals:['Know what each RC question type is really asking and where the answer lives','Predict before reading the answer choices — same discipline as LR','Use your claim tracking to answer from the passage map, not from rereading'],hw:['RC Passage Breakdown','Insight to Action: RC','Timed RC Section']}
 ]},
 'qtsess':{group:'Single Question Type Sessions',cards:Object.keys(QT_DRILLS).map(k=>{const q=QT_DRILLS[k];return{
 title:q.name,
@@ -617,10 +642,34 @@ subtitle:'Question Type Deep Dive',
 description:'What '+q.name+' questions are really testing, and the exact steps to run every single time — so the homework drills feel like repetition, not guesswork.',
 goals:['Learn the '+q.name+' steps and why each one matters','Walk through real questions together using the flowchart','Leave knowing exactly what to do before you drill on your own'],
 hw:['Drill: '+q.name]};})},
+'midrange':{group:'Mid-Range Roadmap',cards:[
+{title:'Diagnostic Deep Dive',subtitle:'Diagnostic',description:'Work through the last 10 questions of an LR section together in real time — where the hardest material lives. The goal is to see exactly where breakdowns happen: reasoning gaps, reading issues, or timing pressure.',goals:['Pinpoint the root cause of errors on hard questions','Assess timing patterns under pressure','Build a targeted plan for the remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','Practice Test']},
+{title:'Conditional Logic & Translations',subtitle:'Building the Foundation',description:'Conditional reasoning shows up everywhere on the LSAT. This session teaches you how to translate conditional statements into a consistent notation, how to find the contrapositive, and how to avoid the traps the test sets. We use real language patterns, not jargon.',goals:['Translate if/then, only if, unless, without, except, and no/none into conditional notation','For unless/without/except: identify the sufficient condition, negate it, show the full translation','For no/none: identify the necessary condition and negate it','Apply translations to at least 15 LR problems with 75%+ accuracy'],hw:['Conditional Translation Drill','Insight to Action: LR']},
+{title:'Passage Pattern Recognition',subtitle:'Reading Comprehension',description:'Passages repeat themselves — the same structures, the same argument moves, the same trap answers. This session trains you to recognize the pattern of a passage early and use it to predict where the questions will go.',goals:['Recognize recurring passage structures and argument patterns across topics','Predict question targets from the passage\'s structure before you see them','Compare timed vs. untimed accuracy to isolate reading vs. pacing issues'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
+{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy — know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol" — what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']}
+]},
+'advanced':{group:'Advanced Roadmap — 168+',cards:[
+{title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','2 Hard RC Passages (untimed)','Practice Test']},
+{title:'The Passage That Breaks You',subtitle:'Diagnostic',description:'Work through a hard Reading Comprehension passage together in real time. We\'ll slow down and examine how you read, what you notice, what you miss, and where time disappears.',goals:['Identify RC reading habits that cost time or accuracy','Test passage structure recognition on a difficult passage','Determine whether issues are comprehension, question strategy, or pacing'],hw:['Insight to Action: RC','2 Hard RC Passages (untimed)','1 RC Section (timed)','1 LR Section (timed)','Practice Test']},
+{title:'LR Under the Clock',subtitle:'Timed Review',description:'Take a full timed LR section that day, then review it together question by question. Every miss and every hesitation gets examined.',goals:['Complete a timed LR section to simulate real test pressure','Review every flagged and missed question together','Identify patterns in errors — are they the same types from your diagnostic?'],hw:['Insight to Action: LR','LR Section Reset','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
+{title:'RC Under the Clock',subtitle:'Timed Review',description:'Same approach as LR Under the Clock but for Reading Comprehension. Full timed RC section followed by a detailed walkthrough of every passage and question.',goals:['Complete a timed RC section under test conditions','Review passage approach and question strategy for each passage','Compare weaknesses to earlier findings — what\'s improved, what hasn\'t'],hw:['Insight to Action: RC','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
+{title:'Advanced RC Reading',subtitle:'Reading Comprehension',description:'Precision work for strong readers. Low-res summaries while you read (not after), a highlighting discipline for the answer choices, and knowing when to pick and go — capitalize on your reading instead of second-guessing it.',goals:['Build low-res paragraph summaries while reading, not after','Be surgical in the answer choices — trust your reading, verify the words','Know when to pick and go: no spiraling on close calls'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
+{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy — know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol" — what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']},
+{title:'Test Day Strategy & Review',subtitle:'Final Calibration',description:'Last session: we look at your full arc of improvement, lock in your test-day plan, and address anything that\'s still shaky. If you\'re continuing with more sessions, this becomes the pivot point. If this is it, you leave with a clear self-study roadmap and the confidence that you know exactly what to do on test day.',goals:['Review progress from diagnostic to now — quantify improvement and remaining gaps','Finalize a test-day plan: section order preferences, pacing rules, skip strategy, and mental reset routine','Build a self-study or next-phase plan targeting the remaining point gaps'],hw:['Final Insight to Action Review','Practice Test']}
+]},
 'blanksess':{group:'Other',cards:[
 {title:'Blank Session',subtitle:'',description:'',goals:[],hw:[]}
 ]}
 };
+
+const SESS_TABS={
+'f':{name:'Foundation',groups:['beginner','rcfoundation']},
+'qt':{name:'Question Types',groups:['qtsess']},
+'m':{name:'Mid-Range',groups:['midrange']},
+'a':{name:'Advanced',groups:['advanced']}
+};
+
+const HW_TABS={'all':'All','f':'Foundation','m':'Mid-Range','a':'Advanced'};
 
 const TIMING={
 '1x':{section_time:'35 minutes',first10_time:'10 minutes',per_q_time:'1:25',max_q_time:'2:00',per_rc_q_time:'40 seconds',passage_time:'8.5 minutes'},
@@ -633,6 +682,18 @@ function applyTiming(desc,tf){
   if(!desc)return desc;
   const t=TIMING[tf]||TIMING['1x'];
   return desc.replace(/\{([^}]+)\}/g,(_,k)=>t[k]||_);
+}
+
+function parseClock(s){
+  if(s==null)return null;s=String(s).trim();
+  if(/^\d+:\d{1,2}$/.test(s)){const p=s.split(':');return parseInt(p[0])*60+parseInt(p[1]);}
+  if(/^\d+(\.\d+)?$/.test(s))return Math.round(parseFloat(s)*60);
+  return null;
+}
+function fmtClock(sec){
+  if(sec==null||isNaN(sec))return'—';
+  const m=Math.floor(sec/60),s=Math.round(sec%60);
+  return m+':'+String(s).padStart(2,'0');
 }
 
 function linkify(text){
@@ -791,17 +852,22 @@ function wsType(label){
   if(l==='blind review')return'blind_review';
   if(l==='confidence log')return'confidence_log';
   if(l==='rc blind review'||l==='rc passage breakdown')return'rc_claim_tracking';
-  if(l==='insight to action: lr'||l==='insight to action: rc'||l==='insight to action: lr review'||l==='insight to action: rc review'||l==='final insight to action')return'insight_to_action';
+  if(l==='2 hard rc passages (untimed)'||l==='1 rc section (timed)')return'rc_claim_tracking';
+  if(l==='lr section reset')return'insight_to_action';
+  if(l.indexOf('insight to action')===0||l==='final insight to action review'||l==='final insight to action')return'insight_to_action';
+  if(l==='timing log + lr section'||l==='pacing drill: lr sections'||l==='first 10 in 10 drill'||l==='timed lr section')return'timing_log';
+  if(l==='1 lr section (timed)'||l==='practice test + blind review'||l==='practice test')return'blind_review';
+  if(l==='assumption recognition practice')return'question_type_drill';
   if(l.startsWith('drill:')&&qtFromLabel(label))return'question_type_drill';
   return null;
 }
 
 /* Rename-proof worksheet attachment.
    hwTypeCode(label): computed ONCE when a card is inserted — stores the worksheet
-   identity in homework.hw_type ('blind_review', 'qt:flaw', ...) so the label
-   becomes purely cosmetic afterward.
+   identity in homework.hw_type ('blind_review', 'qt:flaw', 'timing_log', ...) so the
+   label becomes purely cosmetic afterward.
    hwWs(h): render-time resolver — reads hw_type first; legacy rows that just say
-   'drill' fall back to the old label matching, so Enci's existing cards behave
+   'drill' fall back to the old label matching, so existing cards behave
    exactly as before. No data migration needed. */
 function hwTypeCode(label){
   const t=wsType(label);
@@ -818,7 +884,7 @@ function hwWs(h){
   const ht=(h&&h.hw_type)||'';
   if(ht&&ht!=='drill'){
     if(ht.indexOf('qt:')===0)return QT_DRILLS[ht.substring(3)]?'question_type_drill':wsType(h.label);
-    if(ht==='blind_review'||ht==='confidence_log'||ht==='rc_claim_tracking'||ht==='insight_to_action')return ht;
+    if(ht==='blind_review'||ht==='confidence_log'||ht==='rc_claim_tracking'||ht==='insight_to_action'||ht==='timing_log')return ht;
     return wsType(h.label);
   }
   return wsType(h.label);
@@ -857,971 +923,1182 @@ function wsSummaryText(hwId,type){
     const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
     return`${entries.length} logged · ${correct} correct · ${missed} missed`;
   }
+  if(type==='timing_log'){
+    const tf=S.student?S.student.time_factor||'1x':'1x';
+    const maxSec=parseClock((TIMING[tf]||TIMING['1x']).max_q_time);
+    const valid=entries.filter(e=>e.data&&parseClock(e.data.time)!=null);
+    const over=valid.filter(e=>parseClock(e.data.time)>maxSec).length;
+    const letgo=entries.filter(e=>e.data&&e.data.let_go===true).length;
+    return`${entries.length} logged · ${over} over pace · ${letgo} let go`;
+  }
   return'';
 }
 
 function dashHTML(){
-  const t=S.isTutor,s=S.student;
-  const cc=S.sessions.filter(x=>x.status==='completed'&&x.session_number>0).length;
-  const total=s?s.sessions_bought:0;
-  const pct=total>0?Math.max((cc/total)*100,3):3;
-  let name='';if(s&&s.profiles)name=s.profiles.first_name||s.profiles.email||'';
-  const tf=s?s.time_factor||'1x':'1x';
-  return`
-    <div class="nav">
-      <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">Dashboard</a></div>
-      <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
-    </div>
-    <div class="layout">
-      <div class="main">
-        ${!s?`<div class="empty"><h3>${t?'Select or add a student':'No roadmap assigned yet'}</h3><p>${t?'Add a student by email in the panel.':'Your tutor will set up your dashboard soon.'}</p></div>`:
-        `<div class="profile">
-          <div class="profile-top">
-            <div><div class="p-name">${t?ed(name,'student-name',false):esc(name)}</div><div class="p-pkg">${t?ed(s.package_type||'5-session','student-package_type',false):esc(s.package_type||'5-session')} Package</div></div>
-            <div style="text-align:right"><div class="p-goal-lbl">Goal</div><div class="p-goal">${t?ed(s.goal_score||'','student-goal_score',false):esc(s.goal_score||'—')}</div></div>
-          </div>
-          <div class="stats">
-            ${statBox('Current Avg',s.current_average,'student-current_average',t)}
-            ${statBox('LR',s.lr_average,'student-lr_average',t)}
-            ${statBox('RC',s.rc_average,'student-rc_average',t)}
-            ${statBox('Test Date',s.test_date,'student-test_date',t,true)}
-            <div class="stat">
-              <div class="stat-lbl">Time</div>
-              <div class="stat-val">
-                ${t?`<select class="time-factor-sel" id="time-factor-sel">${['1x','1.25x','1.5x','2x'].map(v=>`<option${tf===v?' selected':''}>${v}</option>`).join('')}</select>`:esc(tf)}
-              </div>
-            </div>
-          </div>
-          <div class="prog-wrap"><div class="prog-top"><span class="prog-lbl">Progress</span><span class="prog-ct">${cc} / ${t?ed(String(total||0),'student-sessions_bought',false):total}</span></div><div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div></div>
-          <div class="info-grid">
-            <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val">${t?ed(s.notes||'','student-notes',true):esc(s.notes||'—')}</div></div>
-          </div>
-          ${t?`<div style="text-align:right;margin-top:14px"><button id="archive-student-btn" style="background:none;border:none;color:var(--dim);font-family:var(--mono);font-size:10px;cursor:pointer;padding:4px 0;transition:color .2s;letter-spacing:.3px">Archive Student</button></div>`:''}
-        </div>
-        <div class="rm-header"><div class="rm-title">${t?'Session Roadmap':'Your Roadmap'}</div><div class="rm-sub">Homework unlocks after each session</div></div>
-        <div class="sess-list">
-          ${S.sessions.length===0&&t?`<div style="display:flex;flex-direction:column;gap:8px"><button class="add-b" id="add-first-s">+ Add Session</button></div>`:''}
-          ${S.sessions.map((ss,i)=>sessHTML(ss,i)).join('')}
-          ${S.sessions.length>0&&t?'<button class="add-b" id="add-s">+ Add Session</button>':''}
-        </div>`}
-        <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>
+  const t=S.isTutor;
+  const active=S.students.filter(st=>st.status!=='inactive');
+  const archived=S.students.filter(st=>st.status==='inactive');
+  let sidebar='';
+  if(t){
+    sidebar=`<div class="sb-card">
+      <div class="sb-title">Students</div>
+      <div class="sb-list">
+        ${active.length===0?'<div class="sb-empty">No students yet</div>':active.map(st=>{
+          const nm=(st.profiles&&st.profiles.first_name)||'Student';
+          return`<div class="sb-item ${st.id===S.selId?'active':''}" data-sid="${st.id}">
+            <div class="sb-avatar">${esc(nm.charAt(0).toUpperCase())}</div>
+            <div><div class="sb-sname">${esc(nm)}</div><div class="sb-spack">${esc(st.package_type||'')}</div></div>
+          </div>`;}).join('')}
       </div>
-      ${t?`<div class="sidebar"><div class="sb-card">
-        <div class="sb-title">My Students</div>
-        <div class="sb-list">${(()=>{
-          const actv=S.students.filter(st=>st.status!=='inactive');
-          const arch=S.students.filter(st=>st.status==='inactive');
-          if(actv.length===0&&arch.length===0)return'<div class="sb-empty">No students yet</div>';
-          let html=actv.map(st=>{
-            const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';const init=n.charAt(0).toUpperCase();const active=st.id===S.selId;
-            return`<div class="sb-item ${active?'active':''}" data-pick="${st.id}"><div class="sb-avatar">${init}</div><div><div class="sb-sname">${esc(n)}</div><div class="sb-spack">${st.package_type||'5-session'}</div></div></div>`;
-          }).join('');
-          if(arch.length>0){
-            html+=`<div class="sb-archive-toggle ${S.archiveOpen?'open':''}" id="archive-toggle"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 6 15 12 9 18"/></svg>Archived <span class="sb-archive-count">${arch.length}</span></div>`;
-            if(S.archiveOpen){
-              html+=`<div class="sb-archived-list">${arch.map(st=>{
-                const n=st.profiles?.first_name||st.profiles?.email||'Unnamed';
-                return`<div class="sb-archived-item"><span class="sb-archived-name">${esc(n)}</span><button class="sb-restore-btn" data-restore="${st.id}">Restore</button></div>`;
-              }).join('')}</div>`;
-            }
-          }
-          return html;
-        })()}</div>
-        <div class="sb-divider"></div>
-        <div class="sb-add-title">Add Student</div>
-        <input class="sb-add-input" id="add-em" type="email" placeholder="student@email.com" value="${esc(S.addEmail)}">
-        <button class="sb-add-btn" id="add-btn">Add by Email</button>
-        ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${S.addMsg}</div>`:''}
-      </div></div>`:''}
-    </div>`;
-}
-
-function statBox(lbl,val,eid,t,isDate){return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?(isDate?edDate(val||'',eid):ed(val||'',eid,false)):esc(isDate?fmtDate(val)||'—':val||'—')}</div></div>`;}
-
-function sessHTML(ss,i){
-  const t=S.isTutor,ex=S.exSess===i,lk=ss.status==='locked',up=ss.status==='upcoming',cp=ss.status==='completed';
-  const dt=ss.session_date?new Date(ss.session_date+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-  const lockIco='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
-  let body='';
-  if(ex){
-    body=`<div class="sess-body">
-      ${t?`<div class="tc"><span class="tc-lbl">TUTOR</span><button class="tc-btn" data-cyc="${ss.id}" data-st="${ss.status}">${ss.status.toUpperCase()}</button><button class="tc-btn" data-delsess="${ss.id}" style="color:var(--red);border-color:rgba(217,83,79,.2)">DELETE SESSION</button></div>`:''}
-      <div class="desc">${t?ed(ss.description||'','session-'+ss.id+'-description',true):esc(ss.description||'')}</div>
-      <div class="slbl">Session Goals</div>
-      ${t?`<textarea class="goals-ta" data-goals="${ss.id}" placeholder="One goal per line...">${esc((ss.goals||[]).map(g=>g.goal_text).join('\n'))}</textarea>`
-      :`<div class="g-list">${(ss.goals||[]).map(g=>`<div class="g-item"><span class="g-arrow">→</span><span>${esc(g.goal_text)}</span></div>`).join('')}</div>`}
-      <div class="slbl">Homework${lk&&!t?' <span class="lkn">— unlocks after session</span>':''}</div>
-      <div class="hw-list">
-        ${(ss.homework||[]).map((h,hi)=>{
-          const sl=lk&&!t;
-          const wsT=hwWs(h);
-          const desc=h.description||'';
-          const steps=desc.split('\n').filter(l=>l.trim());
-          const sc=getStepCompletions(h);
-          const checkableSteps=steps.filter(l=>!l.trim().startsWith('--'));
-          const allDone=checkableSteps.length>0&&checkableSteps.every(l=>sc[l.trim()]===true);
-          const hwDone=h.completed||(checkableSteps.length>0&&allDone);
-          const hwCount=ss.homework.length;
-          const descHtml=steps.map((l,si)=>{
-            const isLabel=l.trim().startsWith('--');
-            if(isLabel)return`<div class="hw-label"><span class="${t?'hw-st':''}" ${t?`data-stedit="${h.id}" data-stsi="${si}" data-stlabel="1"`:''}>${esc(l.trim().substring(2).trim())}</span></div>`;
-            const checked=sc[l.trim()]===true;
-            return`<div class="step ${checked?'step-done':''}"><div class="hw-step-cb ${checked?'checked':''}" data-hsc="${h.id}" data-si="${si}">${checked?'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div><span class="${t?'hw-st':''}" ${t?`data-stedit="${h.id}" data-stsi="${si}"`:''}>${linkify(esc(l.trim()))}</span></div>`;
-          }).join('');
-          return`<div class="hw ${sl?'lk':''} ${hwDone?'hw-done':''}">
-            <div class="hw-top">
-              ${sl?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>':`<div class="hw-cb ${hwDone?'checked':''}" data-hc="${h.id}" data-steps="${steps.length}">${hwDone?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>`}
-              <span class="hw-num">${hi+1}.</span>
-              ${sl?'<span class="hw-l lk">This homework unlocks after the session</span>':t?`<span class="hw-l" style="flex:1">${ed(h.label,'hw-'+h.id+'-label',false)}</span>`:`<span class="hw-l">${esc(h.label)}</span>`}
-              ${!sl&&t?`<div class="hw-reorder"><button class="reorder-btn" data-hmv="up" data-hid="${h.id}" data-hsi="${hi}"${hi===0?' disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button><button class="reorder-btn" data-hmv="down" data-hid="${h.id}" data-hsi="${hi}"${hi===hwCount-1?' disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button></div>`:''}
-              ${!sl?(t?`<button class="rm-btn" data-rh="${h.id}">×</button>`:''):''}
-            </div>
-            ${!sl?(t?`${desc?`<div class="hw-desc">${descHtml}<button class="hw-add-step" data-addstep="${h.id}">+ add step</button><div class="hw-desc-edit-btn" data-adesc="${h.id}" title="Bulk edit" style="margin-top:6px;font-size:10px;color:var(--faint);cursor:pointer;font-family:var(--mono);transition:color .2s;letter-spacing:.3px">✎ bulk edit</div></div>`:`<div class="hw-desc-ph" data-adesc="${h.id}">+ Add steps</div>`}`:desc?`<div class="hw-desc">${descHtml}</div>`:''):''}
-            ${!sl&&wsT?`<div class="ws-card-footer"><button class="ws-open-btn" data-wsopen="${h.id}" data-wstype="${wsT}">Open Worksheet →</button><span class="ws-summary-line">${esc(wsSummaryText(h.id,wsT))}</span></div>`:''}
-          </div>`;
-        }).join('')}
-        ${t?`<button class="add-b" data-ah-open="${ss.id}" style="border-color:rgba(201,122,69,.3);color:var(--accent)">+ Add Homework</button><button class="add-b" data-hcopy="${ss.id}" style="margin-top:6px;opacity:.7">↑ Copy from previous session</button>${S.hwCopyMsg&&S.hwCopyMsgSess===ss.id?`<div class="hw-copy-msg">${esc(S.hwCopyMsg)}</div>`:''}`:''}
+      ${archived.length>0?`
+      <div class="sb-archive-toggle ${S.archiveOpen?'open':''}" id="arch-tog">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        Archived <span class="sb-archive-count">${archived.length}</span>
       </div>
-      ${t||ss.tutor_notes?`<div class="slbl">Session Notes${!t?' from Your Tutor':''}</div><div class="tn-box">${t?ed(ss.tutor_notes||'','session-'+ss.id+'-tutor_notes',true):esc(ss.tutor_notes||'')}</div>`:''}
+      ${S.archiveOpen?`<div class="sb-archived-list">${archived.map(st=>{
+        const nm=(st.profiles&&st.profiles.first_name)||'Student';
+        return`<div class="sb-archived-item"><span class="sb-archived-name">${esc(nm)}</span><button class="sb-restore-btn" data-restore="${st.id}">Restore</button></div>`;}).join('')}</div>`:''}`:''}
+      <div class="sb-divider"></div>
+      <div class="sb-add-title">+ New Student</div>
+      <input class="sb-add-input" id="add-email" placeholder="student@email.com" value="${esc(S.addEmail)}">
+      ${Object.keys(TEMPLATES).length>0?`<select class="sb-tpl-sel" id="add-tpl" style="margin-bottom:8px">
+        <option value="">No template (blank)</option>
+        ${Object.entries(TEMPLATES).map(([k,tp])=>`<option value="${k}" ${S.addTpl===k?'selected':''}>${esc(tp.name)}</option>`).join('')}
+      </select>`:''}
+      <button class="sb-add-btn" id="add-btn">Add Student</button>
+      ${S.addMsg?`<div class="sb-msg ${S.addMsgType}">${esc(S.addMsg)}</div>`:''}
     </div>`;
   }
-  return`<div class="sess ${up?'up':''} ${lk&&!t?'lk-s':''}" ${t?'draggable="true" data-dsi="'+i+'"':''}>
-    <div class="sess-hd" data-tog="${i}">
-      <div class="sess-num ${ss.status}">${cp?'✓':ss.session_number}</div>
-      <div class="sess-info">
-        <div class="sess-tr">
-          ${t?`<span class="sess-t">${ed(ss.title,'session-'+ss.id+'-title',false)}</span>`:`<span class="sess-t ${lk?'lk':''}">${esc(ss.title)}</span>`}
-          <span class="badge ${ss.status}">${cp?'<span class="bdot completed"></span> Completed':''}${up?'<span class="bdot upcoming"></span> Up Next':''}${lk?lockIco+' Upcoming':''}</span>
+  let main='';
+  if(!S.student){
+    main=`<div class="empty"><h3>${t?'No student selected':'No roadmap yet'}</h3><p>${t?'Add a student to get started.':'Your tutor will set up your roadmap soon.'}</p></div>`;
+  }else{
+    const st=S.student;
+    const nm=(st.profiles&&st.profiles.first_name)||'Student';
+    const done=S.sessions.filter(s=>s.status==='completed').length;
+    const total=st.sessions_bought||S.sessions.length||0;
+    const pct=total>0?Math.round(done/total*100):0;
+    main=`
+    <div class="profile">
+      <div class="profile-top">
+        <div>
+          <div class="p-name">${esc(nm)}</div>
+          <div class="p-pkg">${t?ed(st.package_type,'st:package_type','false'):esc(st.package_type||'')}${t?` · <span class="ed" data-eid="st:sessions_bought" data-ml="false">${st.sessions_bought||0}</span> sessions`:` · ${st.sessions_bought||0} sessions`}</div>
         </div>
-        <div class="sess-meta">
-          ${t?`<span>${ed(ss.subtitle||'','session-'+ss.id+'-subtitle',false)}</span>`:`<span>${esc(ss.subtitle||'')}</span>`}
-          <span class="sep">·</span>
-          ${t?`<span>${edDate(ss.session_date||'','session-'+ss.id+'-session_date')}</span>`:`<span>${dt}</span>`}
+        <div style="text-align:right">
+          <div class="p-goal-lbl">Goal</div>
+          <div class="p-goal">${t?ed(st.goal_score,'st:goal_score','false'):esc(st.goal_score||'—')}</div>
         </div>
       </div>
-      <svg class="chev ${ex?'open':''}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>${body}</div>`;
+      <div class="stats">
+        ${statBox('Current Avg','current_avg',t)}
+        ${statBox('LR','lr_score',t)}
+        ${statBox('RC','rc_score',t)}
+        ${statBox('Test Date','test_date',t)}
+        <div class="stat"><div class="stat-lbl">Time Factor</div><div class="stat-val">${t?`<select class="time-factor-sel" id="tf-sel">${Object.keys(TIMING).map(k=>`<option value="${k}" ${(st.time_factor||'1x')===k?'selected':''}>${k}</option>`).join('')}</select>`:esc(st.time_factor||'1x')}</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-top"><div class="prog-lbl">Progress</div><div class="prog-ct">${done} / ${total} sessions</div></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="info-grid">
+        <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val tn-box" style="background:none;border:none;padding:0">${t?ed(st.notes,'st:notes','true'):esc(st.notes||'')}</div></div>
+      </div>
+    </div>
+    <div class="rm-header">
+      <div class="rm-title">Session Roadmap</div>
+      <div class="rm-sub">Homework unlocks after each session</div>
+    </div>
+    <div class="sess-list">
+      ${S.sessions.map((s,i)=>sessHTML(s,i)).join('')}
+      ${t?`<button class="add-b" id="add-sess">+ Add Session</button>`:''}
+    </div>`;
+  }
+  return`
+  <div class="nav">
+    <div class="nav-left"><div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div><span class="nav-sep">/</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
+    <div class="nav-right"><span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
+  </div>
+  <div class="layout">
+    <div class="main">${main}</div>
+    ${t?`<div class="sidebar">${sidebar}</div>`:''}
+  </div>
+  <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>`;
 }
 
+function statBox(lbl,field,t){
+  const v=S.student?S.student[field]:'';
+  return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(v,'st:'+field,'false'):esc(v||'—')}</div></div>`;
+}
+
+function sessHTML(s,i){
+  const t=S.isTutor;
+  const ex=S.exSess===i;
+  const stt=s.status||'locked';
+  const lk=stt==='locked';
+  const badgeTxt=stt==='upcoming'?'Up Next':stt==='completed'?'Completed':'Locked';
+  const hwUnlocked=stt==='completed'||t;
+  let body='';
+  if(ex){
+    const goals=s.goals||[];
+    const hws=s.homework||[];
+    body=`<div class="sess-body">
+      ${t?`<div class="tc">
+        <span class="tc-lbl">TUTOR</span>
+        <button class="tc-btn" data-cyc="${i}">Status: ${badgeTxt}</button>
+        ${i>0?`<button class="tc-btn" data-copyhw="${i}">↑ Copy homework from previous</button>`:''}
+        <button class="tc-btn" data-delsess="${i}" style="color:var(--red)">Delete</button>
+      </div>${S.hwCopyMsg&&S.hwCopyMsgSess===i?`<div class="hw-copy-msg">${esc(S.hwCopyMsg)}</div>`:''}`:''}
+      ${(s.description||t)?`<div class="slbl">Overview</div><div class="desc">${t?ed(s.description,'sess:'+s.id+':description','true'):esc(s.description||'')}</div>`:''}
+      <div class="slbl">Session Goals</div>
+      <div class="g-list">
+        ${goals.map(g=>`<div class="g-item"><span class="g-arrow">→</span><span style="flex:1">${t?ed(g.goal_text,'goal:'+g.id+':goal_text','false'):esc(g.goal_text)}</span>${t?`<button class="rm-btn" data-delgoal="${g.id}">×</button>`:''}</div>`).join('')}
+      </div>
+      ${t?`<button class="add-b" data-addgoal="${s.id}" style="margin-bottom:24px">+ Add Goal</button>`:''}
+      <div class="slbl">Homework ${!hwUnlocked?'<span class="lkn">· unlocks after this session</span>':''}</div>
+      <div class="hw-list">
+        ${hws.map((h,hi)=>hwHTML(h,hi,s,i,hwUnlocked)).join('')}
+      </div>
+      ${t?`<button class="add-b" data-addhw="${s.id}">+ Add Homework</button>`:''}
+      <div class="slbl" style="margin-top:22px">Session Notes</div>
+      <div class="tn-box">${t?ed(s.tutor_notes,'sess:'+s.id+':tutor_notes','true'):esc(s.tutor_notes||'')}</div>
+    </div>`;
+  }
+  return`<div class="sess ${stt==='upcoming'?'up':''} ${lk?'lk-s':''}" data-si="${i}" ${t?'draggable="true"':''}>
+    <div class="sess-hd" data-tog="${i}">
+      <div class="sess-num ${stt}">${s.session_number}</div>
+      <div class="sess-info">
+        <div class="sess-tr">
+          <span class="sess-t ${lk?'lk':''}">${t?ed(s.title,'sess:'+s.id+':title','false'):esc(s.title||'Untitled')}</span>
+          <span class="badge ${stt}"><span class="bdot ${stt}"></span> ${badgeTxt}</span>
+        </div>
+        <div class="sess-meta">
+          <span>Session ${s.session_number}${s.subtitle?' · ':''}</span>
+          ${s.subtitle||t?`<span>${t?ed(s.subtitle,'sess:'+s.id+':subtitle','false'):esc(s.subtitle||'')}</span><span class="sep">·</span>`:''}
+          <span>${t?edDate(s.session_date,'sess:'+s.id+':session_date'):(s.session_date?esc(fmtDate(s.session_date)):'')}</span>
+        </div>
+      </div>
+      ${t?`<div class="hw-reorder" style="margin-right:2px">
+        <button class="reorder-btn" data-smv="up" data-ssi="${i}" ${i===0?'disabled':''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+        <button class="reorder-btn" data-smv="down" data-ssi="${i}" ${i===S.sessions.length-1?'disabled':''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>`:''}
+      <svg class="chev ${ex?'open':''}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    ${body}
+  </div>`;
+}
+
+function hwHTML(h,hi,s,si,unlocked){
+  const t=S.isTutor;
+  const done=!!h.completed;
+  const steps=(h.description||'').split('\n').filter(l=>l.trim());
+  const comps=getStepCompletions(h);
+  const ws=hwWs(h);
+  let stepsHTML='';
+  if(steps.length>0&&unlocked){
+    stepsHTML=`<div class="hw-desc">${steps.map((line,li)=>{
+      const l=line.trim();
+      if(l.startsWith('--'))return`<div class="hw-label">${esc(l.replace(/^--/,'').replace(/:$/,''))}</div>`;
+      const ck=comps[l]===true;
+      return`<div class="step ${ck?'step-done':''}"><span class="hw-step-cb ${ck?'checked':''}" data-stepcb="${h.id}" data-stepline="${esc(l)}">${ck?'✓':''}</span><span style="flex:1">${linkify(esc(l))}</span></div>`;
+    }).join('')}</div>`;
+  }
+  let wsFooter='';
+  if(ws&&unlocked){
+    wsFooter=`<div class="ws-card-footer">
+      <button class="ws-open-btn" data-openws="${h.id}" data-wstype="${ws}" data-wssess="${s.id}">Open Worksheet →</button>
+      <span class="ws-summary-line">${wsSummaryText(h.id,ws)}</span>
+    </div>`;
+  }
+  return`<div class="hw ${!unlocked?'lk':''} ${done?'hw-done':''}">
+    <div class="hw-top">
+      ${unlocked?`<span class="hw-cb ${done?'checked':''}" data-hwcb="${h.id}">${done?'✓':''}</span>`:'<span class="hw-num">·</span>'}
+      <span class="hw-l ${!unlocked?'lk':''}">${unlocked?(t?`<span class="hw-st" data-hwlabel="${h.id}">${esc(h.label)}</span>`:esc(h.label)):esc(h.label)}</span>
+      ${t?`<div class="hw-reorder">
+        <button class="reorder-btn" data-hmv="up" data-hwi="${hi}" data-hsess="${s.id}" ${hi===0?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+        <button class="reorder-btn" data-hmv="down" data-hwi="${hi}" data-hsess="${s.id}" ${hi===(s.homework||[]).length-1?'disabled':''}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>
+      <button class="rm-btn" data-delhw="${h.id}">×</button>`:''}
+    </div>
+    ${stepsHTML}
+    ${t&&unlocked?(steps.length>0?`<button class="hw-add-step" data-edithw="${h.id}">Edit steps</button>`:`<div class="hw-desc-ph" data-edithw="${h.id}">+ Add step-by-step description</div>`):''}
+    ${S.hwEditing===h.id?`<div class="hw-edit-wrap">
+      <textarea class="hw-desc-edit" id="hw-edit-ta" data-hwid="${h.id}">${esc(h.description||'')}</textarea>
+      <div class="hw-edit-toolbar" style="margin-top:6px">
+        <button data-savehwdesc="${h.id}">Save</button>
+        <button data-cancelhwdesc="${h.id}">Cancel</button>
+      </div>
+    </div>`:''}
+    ${wsFooter}
+  </div>`;
+}
+
+/* ===================== WORKSHEET PAGE ===================== */
 function wsShellHTML(){
   const v=S.wsView;
-  const name=S.student&&S.student.profiles?S.student.profiles.first_name||S.student.profiles.email||'':'';
+  const sess=S.sessions.find(x=>x.id===v.sessId);
+  const hw=sess?(sess.homework||[]).find(h=>h.id===v.hwId):null;
+  const name=hw?hw.label:'Worksheet';
   let inner='';
   if(v.type==='blind_review')inner=wsBlindReviewHTML(v,name);
   else if(v.type==='confidence_log')inner=wsConfidenceLogHTML(v,name);
   else if(v.type==='rc_claim_tracking')inner=wsRCClaimHTML(v,name);
   else if(v.type==='insight_to_action')inner=wsInsightToActionHTML(v,name);
   else if(v.type==='question_type_drill')inner=wsQuestionTypeDrillHTML(v,name);
+  else if(v.type==='timing_log')inner=wsTimingLogHTML(v,name);
   return`
-    <div class="nav">
-      <div class="nav-left"><span class="logo"><span class="v">V</span><span class="rest">EDARION</span></span><span class="nav-sep">|</span><span class="nav-role">${S.isTutor?'Tutor':'Student'}</span></div>
-      <div class="nav-links"><a href="/Index.html" class="nav-link">Home</a><a href="/learn.html" class="nav-link">Learn</a><a href="/dashboard.html" class="nav-link">Dashboard</a></div>
-      <div class="nav-right"><span class="nav-user">${S.profile?.first_name||S.user?.email||''}</span><button class="sign-out" id="lo">Sign Out</button></div>
-    </div>
-    <div class="layout">
-      <div class="main">
-        <button class="ws-back" id="ws-back-btn">← Back to Roadmap</button>
-        ${inner}
-        <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>
-      </div>
-    </div>`;
+  <div class="nav">
+    <div class="nav-left"><div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div><span class="nav-sep">/</span><span class="nav-role">Worksheet</span></div>
+    <div class="nav-right"><button class="sign-out" id="so">Sign Out</button></div>
+  </div>
+  <div class="layout"><div class="main">
+    <button class="ws-back" id="ws-back">← Back to Roadmap</button>
+    ${inner}
+  </div></div>
+  <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>`;
 }
 
-function wsEntryData(hwId,entryNum){
-  const arr=S.wsEntries[hwId]||[];
-  const e=arr.find(x=>x.entry_number===entryNum);
-  return e?e.data:{};
-}
+function wsEntryData(e){return e.data||{};}
 
-function wsToggle(hwId,entryNum,type,field,label,opts=['Yes','No']){
-  const d=wsEntryData(hwId,entryNum);
-  const cur=d[field];
+function wsToggle(entryId,field,label,val){
   return`<div class="ws-toggle-row">
     <span class="ws-toggle-lbl">${label}</span>
-    <div class="ws-toggle-btns">
-      ${opts.map((o,i)=>{
-        const bval=i===0?true:false;
-        const active=cur===bval;
-        return`<button class="ws-toggle-btn${active?' active':''}" data-wstog="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" data-wsval="${bval}">${esc(o)}</button>`;
-      }).join('')}
-    </div>
+    <span class="ws-toggle-btns">
+      <button class="ws-toggle-btn ${val===true?'active':''}" data-wstog="${entryId}" data-wsf="${field}" data-wsv="true">Yes</button>
+      <button class="ws-toggle-btn ${val===false?'active':''}" data-wstog="${entryId}" data-wsf="${field}" data-wsv="false">No</button>
+    </span>
   </div>`;
 }
 
-function wsField(hwId,entryNum,type,field,placeholder,rows){
-  const d=wsEntryData(hwId,entryNum);
-  const val=d[field]||'';
-  return`<textarea class="ws-field" style="min-height:${rows===1?44:rows===2?64:80}px" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" placeholder="${esc(placeholder)}">${esc(val)}</textarea>`;
+function wsField(entryId,field,label,val,rows,ph){
+  return`<div class="ws-sec-lbl">${label}</div>
+  <textarea class="ws-field" rows="${rows||2}" data-wsfield="${entryId}" data-wsf="${field}" placeholder="${ph||''}">${esc(val||'')}</textarea>`;
 }
 
-function wsInp(hwId,entryNum,type,field,placeholder,cls){
-  const d=wsEntryData(hwId,entryNum);
-  const val=d[field]||'';
-  return`<input class="${cls||'ws-qnum'}" type="text" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}" placeholder="${esc(placeholder)}" value="${esc(val)}">`;
+function wsInp(entryId,field,val,ph,cls){
+  return`<input class="ws-qnum ${cls||''}" data-wsinp="${entryId}" data-wsf="${field}" value="${esc(val||'')}" placeholder="${ph||''}">`;
 }
 
-function wsDrop(hwId,entryNum,type,field,options){
-  const d=wsEntryData(hwId,entryNum);
-  const cur=d[field]||'';
-  return`<select class="ws-sel" data-wssave="${hwId}" data-wsentry="${entryNum}" data-wstype="${type}" data-wsfield="${field}">${options.map(o=>`<option value="${esc(o)}"${cur===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+function wsDrop(entryId,field,val,opts){
+  return`<select class="ws-sel" data-wsdrop="${entryId}" data-wsf="${field}">
+    <option value="">—</option>
+    ${opts.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}
+  </select>`;
 }
 
 function wsQuestionTypeDrillHTML(v,name){
-  const hwId=v.homework_id;
-  const qt=(v.hw_type&&v.hw_type.indexOf('qt:')===0&&QT_DRILLS[v.hw_type.substring(3)])?QT_DRILLS[v.hw_type.substring(3)]:qtFromLabel(v.hw_label);
-  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='question_type_drill');
+  const sess=S.sessions.find(x=>x.id===v.sessId);
+  const hw=sess?(sess.homework||[]).find(h=>h.id===v.hwId):null;
+  const ht=(hw&&hw.hw_type)||'';
+  let q=null;
+  if(ht.indexOf('qt:')===0)q=QT_DRILLS[ht.substring(3)];
+  if(!q&&hw)q=qtFromLabel(hw.label);
+  if(!q)return'<div class="empty"><h3>Worksheet unavailable</h3></div>';
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='question_type_drill');
+  const list=entries.length>0?entries:[];
   const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
   const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
-  const acc=(correct+missed)>0?Math.round(correct/(correct+missed)*100)+'%':'—';
-  const steps=qt?qt.steps:[];
-  const form=qt&&qt.form?qt.form:[];
-  const list=entries.length>0?entries:[{entry_number:1,data:{}}];
-  const AC_LETTERS=['A','B','C','D','E'];
-  function acStates(fl){return fl.mode==='explain'?['','correct','wrong']:(fl.states==='sep'?['','skip','elim','pick']:['','keep','elim']);}
-  function acLegend(fl){return fl.mode==='explain'?'Tap the letter to mark: Correct → Wrong':(fl.states==='sep'?'Tap the letter to cycle: Skip → Eliminate → Pick & Go':'Tap the letter to cycle: Keep → Eliminate');}
-  function acGridHTML(fl,en,d){
-    const acs=d.answer_choices||{};
-    const states=acStates(fl);
-    return`<div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin:0 0 8px;letter-spacing:.3px">${esc(acLegend(fl))}</div>`+AC_LETTERS.map(l=>{
-      const acd=acs[l]||{};const st=acd.state||'';
-      const badge=`<div class="ws-ac-badge${st?' '+st:''}" data-qtacb="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacs="${states.join('|')}" data-qtcur="${st}">${l}</div>`;
-      const stateLbl=st==='correct'?'Selected':st==='wrong'?'Eliminated':st==='keep'?'Keep':st==='elim'?'Eliminate':st==='skip'?'Skip':st==='pick'?'Pick & Go':'';
-      if(fl.mode==='explain'){
-        return`<div class="ws-ac-row" style="margin-bottom:6px">${badge}<input class="ws-ac-inp" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a1" placeholder="Why ${l} is right or wrong..." value="${esc(acd.a1||'')}"></div>`;
-      }
-      return`<div class="qt-ac-block">
-        <div class="qt-ac-hd">${badge}<span class="qt-ac-state">${esc(stateLbl)}</span></div>
-        <div class="qt-ac-q">${esc(fl.q1)}</div>
-        <input class="ws-ac-inp" style="width:100%" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a1" placeholder="..." value="${esc(acd.a1||'')}">
-        <div class="qt-ac-q">${esc(fl.q2)}</div>
-        <input class="ws-ac-inp" style="width:100%" type="text" data-qtacf="${hwId}" data-qtacen="${en}" data-qtacl="${l}" data-qtacff="a2" placeholder="..." value="${esc(acd.a2||'')}">
-      </div>`;
-    }).join('');
-  }
-  function fieldHTML(fl,en,d){
-    if(fl.t==='ta')return`<div style="margin:0 0 4px;font-size:13px;color:var(--text)">${esc(fl.lbl)}</div><div style="margin-bottom:10px">${wsField(hwId,en,'question_type_drill',fl.f,fl.ph||'',fl.r||1)}</div>`;
-    if(fl.t==='inp')return`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:13px;color:var(--text);flex:1">${esc(fl.lbl)}</span>${wsInp(hwId,en,'question_type_drill',fl.f,'...','ws-qnum')}</div>`;
-    if(fl.t==='tags')return`<div style="margin:0 0 6px;font-size:12px;color:var(--dim);line-height:1.6">${esc(fl.lbl)}</div><div class="ws-pass-tags">${fl.opts.map(o=>`<button class="ws-tag${(d[fl.f]===o)?' active':''}" data-qttag="${hwId}" data-qtentry="${en}" data-qtfield="${fl.f}" data-qtval="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
-    if(fl.t==='ac')return acGridHTML(fl,en,d);
-    return'';
-  }
-  function entryHTML(e,idx){
-    const en=e.entry_number;const d=e.data||{};
-    return`<div class="ws-entry">
-      <div class="ws-entry-hd">
-        <span class="ws-entry-lbl">Question ${idx+1}</span>
-        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
-        ${wsInp(hwId,en,'question_type_drill','question_num','12')}
-        ${wsInp(hwId,en,'question_type_drill','source','Source — e.g. PT 101 · S2','ws-ac-inp')}
-        ${wsDrop(hwId,en,'question_type_drill','result',['—','Correct','Missed'])}
-      </div>
-      ${form.map(sec=>`
-        <div class="ws-sec-lbl">${esc(sec.sec)}</div>
-        ${sec.note?`<div style="font-size:12px;color:var(--dim);margin:-2px 0 8px;line-height:1.6">${esc(sec.note)}</div>`:''}
-        ${sec.fields.map(fl=>fieldHTML(fl,en,d)).join('')}
-      `).join('')}
-      <div class="ws-sec-lbl">Notes for Your Tutor (optional)</div>
-      ${wsField(hwId,en,'question_type_drill','notes','Anything you want me to see — where you got stuck, how long it took...',1)}
-    </div>`;
-  }
-  const resLinks=qt?[
-    qt.links.flowchart?`<a href="${qt.links.flowchart}" target="_blank" rel="noopener" style="color:var(--accent)">Flowchart</a>`:'',
-    qt.links.worksheet?`<a href="${qt.links.worksheet}" target="_blank" rel="noopener" style="color:var(--accent)">Practice Worksheet</a>`:'',
-    qt.links.lesson?`<a href="${qt.links.lesson}" target="_blank" rel="noopener" style="color:var(--accent)">Cheat Sheet / Lesson</a>`:''
-  ].filter(Boolean).join(' · '):'';
   return`<div class="ws-wrap">
-    <div class="ws-title">${qt?esc(qt.name):'Question Type'} Drill</div>
-    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">Work through each question using the strategy — same structure as the ${qt?esc(qt.name):''} worksheet on the site, saved here so we can review it together. One entry per question. Doing 4? Add a 5th with the button at the bottom.</div>
-    ${steps.length>0?`<div class="ws-key-box">
-      <div class="ws-key-title">The Steps — follow these on every question</div>
-      ${steps.map((s,i)=>`<div class="ws-key-row"><span class="ws-key-arrow">${i+1}.</span><span>${esc(s)}</span></div>`).join('')}
-      ${resLinks?`<div class="ws-key-row" style="margin-top:8px"><span class="ws-key-arrow">→</span><span>${resLinks}</span></div>`:''}
-    </div>`:''}
+    <div class="ws-title">${esc(q.name)} — Drill Worksheet</div>
+    <div class="ws-subtitle">${esc(name)}</div>
+    <div class="ws-key-box">
+      <div class="ws-key-title">The Steps</div>
+      ${q.steps.map(s=>`<div class="ws-key-row"><span class="ws-key-arrow">→</span><span>${esc(s)}</span></div>`).join('')}
+      ${q.links.flowchart?`<div class="ws-key-row"><span class="ws-key-arrow">→</span><a href="${q.links.flowchart}" target="_blank" rel="noopener" style="color:var(--accent)">Flowchart</a></div>`:''}
+    </div>
     <div class="ws-stats">
       <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${correct}</div><div class="ws-stat-lbl">Correct</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${missed}</div><div class="ws-stat-lbl">Missed</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${acc}</div><div class="ws-stat-lbl">Accuracy</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length>0?Math.round(correct/entries.length*100)+'%':'—'}</div><div class="ws-stat-lbl">Accuracy</div></div>
     </div>
-    ${list.map((e,i)=>entryHTML(e,i)).join('')}
-    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="question_type_drill" data-wsaddunflagged="false">+ Add Another Question</button>
+    ${list.map(e=>{
+      const d=wsEntryData(e);
+      let formHTML='';
+      for(const sec of q.form){
+        formHTML+=`<div class="ws-sec-lbl">${esc(sec.sec)}</div>`;
+        if(sec.note)formHTML+=`<div class="qt-ac-q">${esc(sec.note)}</div>`;
+        for(const f of sec.fields){
+          if(f.t==='ta')formHTML+=`<div style="margin-bottom:10px"><div class="qt-ac-q">${esc(f.lbl)}</div><textarea class="ws-field" rows="${f.r||2}" data-wsfield="${e.id}" data-wsf="${f.f}" placeholder="${esc(f.ph||'')}">${esc(d[f.f]||'')}</textarea></div>`;
+          else if(f.t==='inp')formHTML+=`<div style="margin-bottom:10px;display:flex;align-items:center;gap:10px"><span class="qt-ac-q" style="margin:0">${esc(f.lbl)}</span>${wsInp(e.id,f.f,d[f.f],'')}</div>`;
+          else if(f.t==='tags')formHTML+=`<div style="margin-bottom:10px"><div class="qt-ac-q">${esc(f.lbl)}</div><div class="ws-pass-tags">${f.opts.map(o=>`<button class="ws-tag ${d[f.f]===o?'active':''}" data-wsmeta="${e.id}" data-wsf="${f.f}" data-wsv="${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`;
+          else if(f.t==='ac'){
+            const acData=d.ac||{};
+            formHTML+=`<div class="ws-ac-grid">${['A','B','C','D','E'].map(L=>{
+              const a=acData[L]||{};
+              if(f.mode==='explain'){
+                const st=a.state||'';
+                return`<div class="qt-ac-block"><div class="qt-ac-hd">
+                  <span class="ws-ac-badge ${st==='correct'?'correct':st==='wrong'?'wrong':''}" data-qtac="${e.id}" data-letter="${L}" data-acmode="explain">${L}</span>
+                  <span class="qt-ac-state">${st==='correct'?'My answer':st==='wrong'?'Eliminated':'Tap letter to mark'}</span>
+                </div>
+                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="why" value="${esc(a.why||'')}" placeholder="Why is this right or wrong?"></div>`;
+              }else{
+                const st=a.state||'';
+                const states=f.states==='sep'?['skip','elim','pick']:['keep','elim'];
+                const stLbl=st==='keep'?'Keep':st==='elim'?'Eliminate':st==='pick'?'Pick & Go':st==='skip'?'Skip':'Tap letter to cycle';
+                return`<div class="qt-ac-block"><div class="qt-ac-hd">
+                  <span class="ws-ac-badge ${st}" data-qtac="${e.id}" data-letter="${L}" data-acmode="${f.states}">${L}</span>
+                  <span class="qt-ac-state">${stLbl}</span>
+                </div>
+                <div class="qt-ac-q">${esc(f.q1)}</div>
+                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a1" value="${esc(a.a1||'')}" placeholder="...">
+                <div class="qt-ac-q">${esc(f.q2)}</div>
+                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a2" value="${esc(a.a2||'')}" placeholder="..." style="margin-top:4px"></div>`;
+              }
+            }).join('')}</div>`;
+          }
+        }
+      }
+      return`<div class="ws-entry">
+        <div class="ws-entry-hd">
+          <span class="ws-entry-lbl">Question</span>
+          ${wsInp(e.id,'question_num',d.question_num,'#')}
+          <span class="ws-entry-lbl" style="margin-left:12px">Result</span>
+          ${wsDrop(e.id,'result',d.result,['Correct','Missed'])}
+          <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
+        </div>
+        ${formHTML}
+      </div>`;
+    }).join('')}
+    <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="question_type_drill">+ Add Another Question</button>
   </div>`;
 }
 
-async function saveQtAc(hwId,entryNum,letter,fieldName,value){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='question_type_drill');
-  const curData=existing?{...existing.data}:{};
-  if(!curData.answer_choices)curData.answer_choices={};
-  if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
-  curData.answer_choices[letter][fieldName]=value;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'question_type_drill',data:curData});err=r.error;}
-  await reloadWsEntries(hwId);showSaved(!err);
+async function saveQtAc(entryId,letter,patch){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};
+  const ac=d.ac||{};
+  ac[letter]={...(ac[letter]||{}),...patch};
+  d.ac=ac;e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  showSaved(!error);
+}
+
+function wsTimingLogHTML(v,name){
+  const tf=S.student?(S.student.time_factor||'1x'):'1x';
+  const T=TIMING[tf]||TIMING['1x'];
+  const maxSec=parseClock(T.max_q_time);
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='timing_log');
+  const valid=entries.filter(e=>e.data&&parseClock(e.data.time)!=null);
+  const over=valid.filter(e=>parseClock(e.data.time)>maxSec).length;
+  const letgo=entries.filter(e=>e.data&&e.data.let_go===true).length;
+  let f10=0,f10n=0;
+  for(const e of valid){
+    const qn=parseInt((e.data.question_num||'').toString().replace(/\D/g,''));
+    if(qn>=1&&qn<=10){f10+=parseClock(e.data.time);f10n++;}
+  }
+  return`<div class="ws-wrap">
+    <div class="ws-title">Timing Log</div>
+    <div class="ws-subtitle">${esc(name)} · your pace: max ${esc(T.max_q_time)} per question, first 10 in ${esc(T.first10_time)}</div>
+    <div class="ws-desc">One row per question. Enter time as m:ss (like 1:25). Anything over ${esc(T.max_q_time)} gets flagged automatically. Mark "let go" on questions you skipped on first pass and came back to — that's the discipline we're building.</div>
+    <div class="ws-stats">
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${over}</div><div class="ws-stat-lbl">Over ${esc(T.max_q_time)}</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${f10n>0?fmtClock(f10):'—'}</div><div class="ws-stat-lbl">First 10 Total</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${letgo}</div><div class="ws-stat-lbl">Let Go</div></div>
+    </div>
+    ${entries.map(e=>{
+      const d=wsEntryData(e);
+      const sec=parseClock(d.time);
+      const isOver=sec!=null&&sec>maxSec;
+      return`<div class="ws-entry">
+        <div class="ws-entry-hd">
+          <span class="ws-entry-lbl">Q</span>
+          ${wsInp(e.id,'question_num',d.question_num,'#')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Time</span>
+          ${wsInp(e.id,'time',d.time,'1:25','tl-time')}
+          ${isOver?`<span class="tl-over">over ${esc(T.max_q_time)}</span>`:''}
+          <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
+        </div>
+        ${wsToggle(e.id,'let_go','Let go on first pass?',d.let_go)}
+        <textarea class="ws-field" rows="1" data-wsfield="${e.id}" data-wsf="notes" placeholder="Notes (question type, what slowed you down...)">${esc(d.notes||'')}</textarea>
+      </div>`;
+    }).join('')}
+    <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="timing_log">+ Add Question</button>
+  </div>`;
 }
 
 function wsInsightToActionHTML(v,name){
-  const hwId=v.homework_id;
-  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='insight_to_action');
-  const main=entries.find(e=>e.data&&e.data.is_main);
-  const entryNum=main?main.entry_number:1;
-  const d=main?main.data||{}:{};
-  const isRC=(v.hw_label||'').toLowerCase().includes('rc');
-
-  const steps=isRC?[
-    {field:'misses',title:'Log misses + tag each: reading or question strategy',caption:'Reading = missed something in the passage. Question Strategy = understood passage but picked wrong.',placeholder:'Q14 — Reading\nQ19 — Question Strategy\nQ22 — Reading',rows:3,type:'textarea'},
-    {field:'why_missed',title:'Why did I miss it?',caption:"Be specific. Not 'I ran out of time' — what went wrong on each one.",placeholder:'What actually went wrong...',rows:3,type:'textarea'},
-    {field:'pattern',title:"What's the pattern across these misses?",caption:'Passage type, question type, or a comprehension issue. Most students skip this step.',placeholder:'The pattern I keep hitting is...',rows:3,type:'textarea'},
-    {field:'what_different',title:'What will I do differently next time?',caption:'The concrete change to your approach.',placeholder:'Next time I will...',rows:2,type:'textarea'},
-    {field:'drill_result',title:'Do 2 similar passage types. Note the result.',caption:null,placeholder:'1',rows:0,type:'drill',max:2},
-    {field:'decision',title:'Decision',caption:null,placeholder:null,rows:0,type:'decision'}
-  ]:[
-    {field:'misses',title:'Log misses + tag each: strategy or knowledge',caption:"Strategy = knew the concept, wrong approach. Knowledge = didn't recognize the pattern.",placeholder:'Q14 — Knowledge\nQ19 — Strategy\nQ22 — Knowledge',rows:3,type:'textarea'},
-    {field:'why_missed',title:'Why did I miss it?',caption:"Be specific. Not 'I should've trusted myself.'",placeholder:"What actually went wrong — not 'I should've trusted myself'",rows:3,type:'textarea'},
-    {field:'pattern',title:"What's the pattern across these misses?",caption:'What concept or trap keeps catching you? The pattern — not the question. Most students skip this step.',placeholder:'The pattern I keep hitting is...',rows:3,type:'textarea'},
-    {field:'what_different',title:'What will I do differently next time?',caption:'The concrete change to your approach.',placeholder:'Next time I will...',rows:2,type:'textarea'},
-    {field:'drill_result',title:'Drill 3 similar questions. Note the result.',caption:null,placeholder:'2',rows:0,type:'drill',max:3},
-    {field:'decision',title:'Decision',caption:null,placeholder:null,rows:0,type:'decision'}
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='insight_to_action');
+  let main=entries.find(e=>e.data&&e.data.is_main);
+  const d=main?main.data:{};
+  const mid=main?main.id:'new:'+v.hwId;
+  const steps=[
+    {n:'Step 1',f:'misses',title:'Log every missed question',cap:'Question numbers plus a few words each — what happened?',ph:'Q7 — fell for the reversal. Q14 — didn\'t see the gap...'},
+    {n:'Step 2',f:'why',title:'Why did you miss each one? Be specific',cap:'Strategy (rushed, didn\'t predict, second-guessed) or Knowledge (didn\'t know the concept)?',ph:'...'},
+    {n:'Step 3',f:'pattern',title:'What\'s the pattern?',cap:'Not the question — the trap or concept behind it.',ph:'The pattern across my misses is...'},
+    {n:'Step 4',f:'differently',title:'What will you do differently next time?',cap:'A concrete rule you can actually follow under time pressure.',ph:'Next time I will...'},
+    {n:'Step 5',f:'drill_result',title:'Drill similar questions. Note your result.',cap:'Did the fix hold up?',ph:'Drilled 3 similar — got...'}
   ];
-
-  const completedSteps=d.completed_steps||{};
-  const decisionOpts=['Move on','Repeat drills','Email tutor'];
-  const curDecision=d.decision||'';
-
   return`<div class="ws-wrap">
-    <div class="ws-title">Insight to Action ${isRC?'(RC)':'(LR)'}</div>
-    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">This is the synthesis step. Blind review gave you the per-question diagnosis. Now zoom out: what's the pattern across all your misses, and what will you actually do differently? Stop studying the question. Start studying the pattern behind it.</div>
-
+    <div class="ws-title">Insight to Action</div>
+    <div class="ws-subtitle">${esc(name)}</div>
     <div class="ita-card">
       <div class="ita-source-row">
         <span class="ita-source-lbl">Source</span>
-        <input class="ita-source-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="source" placeholder="PT 92 · Section 2 · 4/23" value="${esc(d.source||'')}">
+        <input class="ita-source-inp" data-itafield="${mid}" data-wsf="source" value="${esc(d.source||'')}" placeholder="Which section / PT is this review from?">
       </div>
-
-      ${steps.map((s,i)=>{
-        const stepNum=i+1;
-        const isDone=completedSteps[s.field]===true;
-        let bodyHtml='';
-        if(s.type==='textarea'){
-          const val=d[s.field]||'';
-          const minH=s.rows===1?44:s.rows===2?64:s.rows===3?96:80;
-          bodyHtml=`<textarea class="ita-field" style="min-height:${minH}px" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="${s.field}" placeholder="${esc(s.placeholder)}">${esc(val)}</textarea>`;
-        }else if(s.type==='drill'){
-          bodyHtml=`<div class="ita-drill-row">
-            <span class="ita-drill-text">Result:</span>
-            <input class="ita-drill-inp" type="text" data-itasave="${hwId}" data-itaentry="${entryNum}" data-itafield="drill_result" placeholder="${esc(s.placeholder)}" value="${esc(d.drill_result||'')}">
-            <span class="ita-drill-text">/ ${s.max} correct</span>
-          </div>`;
-        }else if(s.type==='decision'){
-          bodyHtml=`<div class="ita-decision">
-            ${decisionOpts.map(o=>`<button class="ita-decision-btn${curDecision===o?' active':''}" data-itadecision="${hwId}" data-itaentry="${entryNum}" data-itaval="${esc(o)}">${esc(o)}</button>`).join('')}
-          </div>`;
-        }
-        const checkSvg=isDone?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':'';
-        return`<div class="ita-step${isDone?' ita-step-done':''}">
+      ${steps.map(st=>{
+        const doneKey='done_'+st.f;
+        const isDone=d[doneKey]===true;
+        return`<div class="ita-step ${isDone?'ita-step-done':''}">
           <div class="ita-step-hd">
-            <div class="ita-step-cb${isDone?' checked':''}" data-itastep="${s.field}" data-itaentry="${entryNum}" data-itahw="${hwId}">${checkSvg}</div>
+            <span class="ita-step-cb ${isDone?'checked':''}" data-itacb="${mid}" data-wsf="${doneKey}">${isDone?'✓':''}</span>
             <div class="ita-step-title-wrap">
-              <div class="ita-step-title-line">
-                <span class="ita-step-num">Step ${stepNum}</span>
-                <span class="ita-step-title">${esc(s.title)}</span>
-              </div>
-              ${s.caption?`<div class="ita-step-caption">${esc(s.caption)}</div>`:''}
+              <div class="ita-step-title-line"><span class="ita-step-num">${st.n}</span><span class="ita-step-title">${esc(st.title)}</span></div>
+              <div class="ita-step-caption">${esc(st.cap)}</div>
             </div>
           </div>
-          <div class="ita-step-body">${bodyHtml}</div>
+          <div class="ita-step-body">
+            <textarea class="ita-field" rows="2" data-itafield="${mid}" data-wsf="${st.f}" placeholder="${esc(st.ph)}">${esc(d[st.f]||'')}</textarea>
+          </div>
         </div>`;
       }).join('')}
+      <div class="ita-step">
+        <div class="ita-step-hd">
+          <span class="ita-step-cb ${d.done_decision===true?'checked':''}" data-itacb="${mid}" data-wsf="done_decision">${d.done_decision===true?'✓':''}</span>
+          <div class="ita-step-title-wrap">
+            <div class="ita-step-title-line"><span class="ita-step-num">Step 6</span><span class="ita-step-title">Decide</span></div>
+            <div class="ita-step-caption">Based on your drill result — what's the move?</div>
+          </div>
+        </div>
+        <div class="ita-step-body"><div class="ita-decision">
+          ${['Move On','Repeat Drills','Email Tutor'].map(o=>`<button class="ita-decision-btn ${d.decision===o?'active':''}" data-itadec="${mid}" data-wsv="${o}">${o}</button>`).join('')}
+        </div></div>
+      </div>
     </div>
   </div>`;
 }
 
 function wsBlindReviewHTML(v,name){
-  const hwId=v.homework_id;
-  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='blind_review');
-  const flaggedEntries=entries.filter(e=>!e.data?.is_unflagged);
-  const unflaggedEntries=entries.filter(e=>e.data?.is_unflagged);
-  const timing=flaggedEntries.filter(e=>e.data?.category==='timing').length;
-  const knowledge=flaggedEntries.filter(e=>e.data?.category==='knowledge').length;
-  const sloppy=flaggedEntries.filter(e=>e.data?.category==='sloppy').length;
-  function entryHTML(e,idx,isUnflagged){
-    const en=e.entry_number;const d=e.data||{};
-    const acLetters=['A','B','C','D','E'];
-    const acs=d.answer_choices||{};
-    return`<div class="ws-entry">
-      <div class="ws-entry-hd">
-        <span class="ws-entry-lbl">Question ${idx+1}</span>
-        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
-        ${wsInp(hwId,en,'blind_review','question_num','14')}
-        ${wsDrop(hwId,en,'blind_review','section',['LR','RC'])}
-        ${!isUnflagged?wsDrop(hwId,en,'blind_review','result',['Correct','Missed']):''}
-        ${!isUnflagged?wsDrop(hwId,en,'blind_review','category',['Timing','Knowledge','Sloppy']):''}
-        ${isUnflagged?wsDrop(hwId,en,'blind_review','miss_type',['Strategy','Knowledge']):''}
-      </div>
-      ${!isUnflagged?`
-      <div class="ws-sec-lbl">Strategic Review</div>
-      ${wsToggle(hwId,en,'blind_review','flag_justified','Flag justified?')}
-      ${wsToggle(hwId,en,'blind_review','ten_second_fix','10-second fix?')}
-      <div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What caused you to flag this question?</div>
-      ${wsField(hwId,en,'blind_review','flag_reason','Walk through what happened in your head...',2)}
-      <div class="ws-sec-lbl">Knowledge Review</div>
-      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">Core argument (don't look back at stimulus)</div>
-      ${wsField(hwId,en,'blind_review','core_argument','Premise: ...\nConclusion: ...',2)}
-      <div style="margin:10px 0 6px;font-size:13px;color:var(--text)">Answer choices — why each is right or wrong</div>
-      <div class="ws-ac-grid">
-        ${acLetters.map(l=>{
-          const acData=acs[l]||{};const state=acData.state||'';
-          return`<div class="ws-ac-row">
-            <div class="ws-ac-badge${state==='correct'?' correct':state==='wrong'?' wrong':''}" data-acbadge="${hwId}" data-acentry="${en}" data-acletter="${l}">${l}</div>
-            <input class="ws-ac-inp" type="text" data-acfield="${hwId}" data-acentry="${en}" data-acletter="${l}" placeholder="Why ${l} is right or wrong..." value="${esc(acData.text||'')}">
-          </div>`;
-        }).join('')}
-      </div>`
-      :`
-      ${d.miss_type==='Strategy'?`<div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What habit made you overconfident?</div>${wsField(hwId,en,'blind_review','miss_note','The habit that got me was...',2)}`
-      :`<div style="margin:8px 0 4px;font-size:13px;color:var(--text)">What topic do you need to review?</div>${wsField(hwId,en,'blind_review','miss_note','I need to review...',2)}`}
-      `}
-    </div>`;
-  }
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='blind_review');
+  const timing=entries.filter(e=>e.data&&e.data.category==='timing').length;
+  const knowledge=entries.filter(e=>e.data&&e.data.category==='knowledge').length;
+  const sloppy=entries.filter(e=>e.data&&e.data.category==='sloppy').length;
   return`<div class="ws-wrap">
-    <div class="ws-title">Blind Review Worksheet</div>
-    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">Review every question you flagged. The goal is to figure out if your flags were justified and whether your misses were timing, knowledge, or sloppy work.</div>
+    <div class="ws-title">Blind Review</div>
+    <div class="ws-subtitle">${esc(name)}</div>
+    <div class="ws-desc">One entry per flagged or missed question. Re-answer without time pressure first, then grade, then categorize what actually went wrong.</div>
     <div class="ws-stats">
-      <div class="ws-stat"><div class="ws-stat-num">${flaggedEntries.length}</div><div class="ws-stat-lbl">Reviewed</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Reviewed</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${timing}</div><div class="ws-stat-lbl">Timing</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${knowledge}</div><div class="ws-stat-lbl">Knowledge</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${sloppy}</div><div class="ws-stat-lbl">Sloppy</div></div>
     </div>
-    ${flaggedEntries.map((e,i)=>entryHTML(e,i,false)).join('')}
-    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="blind_review" data-wsaddunflagged="false">+ Add Another Question</button>
-    ${flaggedEntries.length>0?`<div class="ws-unflagged">
-      <div class="ws-sec-lbl" style="margin-top:0">Missed Questions You Didn't Flag</div>
-      <div style="font-size:12px;color:var(--dim);margin-bottom:14px;font-family:var(--mono)">Questions you got wrong but didn't flag — was it strategy or knowledge?</div>
-      ${unflaggedEntries.map((e,i)=>entryHTML(e,i,true)).join('')}
-      <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="blind_review" data-wsaddunflagged="true">+ Add Unflagged Miss</button>
-    </div>`:''}
+    ${entries.map(e=>{
+      const d=wsEntryData(e);
+      return`<div class="ws-entry">
+        <div class="ws-entry-hd">
+          <span class="ws-entry-lbl">Question</span>
+          ${wsInp(e.id,'question_num',d.question_num,'#')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Category</span>
+          ${wsDrop(e.id,'category',d.category,['timing','knowledge','sloppy'])}
+          <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
+        </div>
+        ${wsToggle(e.id,'changed_answer','Did you change your answer in review?',d.changed_answer)}
+        ${wsToggle(e.id,'got_it_right','Did you get it right in blind review?',d.got_it_right)}
+        ${wsField(e.id,'why','Why did you miss it (or flag it)?',d.why,2,'Be specific — the trap, the gap, the misread...')}
+        ${wsField(e.id,'takeaway','Takeaway',d.takeaway,1,'One rule to carry forward')}
+      </div>`;
+    }).join('')}
+    <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="blind_review">+ Add Question</button>
   </div>`;
 }
 
 function wsConfidenceLogHTML(v,name){
-  const hwId=v.homework_id;
-  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='confidence_log');
-  const changed=entries.filter(e=>e.data?.changed_answer===true).length;
-  const right1st=entries.filter(e=>e.data?.right_first_time===true).length;
-  const bad=entries.filter(e=>e.data?.flag_correct===false).length;
-  const confidenceOpts=['Re-read one line from stimulus','Re-read 1-2 answer choices','Re-read 4-5 answer choices','Re-start full process (stimulus + answer choices)','Didn\'t understand stimulus (below 70%)'];
-  function entryHTML(e,idx){
-    const en=e.entry_number;const d=e.data||{};
-    return`<div class="ws-entry">
-      <div class="ws-entry-hd">
-        <span class="ws-entry-lbl">Question ${idx+1}</span>
-        <span style="font-family:var(--mono);font-size:10px;color:var(--dim)">Q#</span>
-        ${wsInp(hwId,en,'confidence_log','question_num','8')}
-        ${wsDrop(hwId,en,'confidence_log','section',['LR','RC'])}
-      </div>
-      <div style="margin:0 0 4px;font-size:13px;color:var(--text)">What caused you to flag this question?</div>
-      ${wsField(hwId,en,'confidence_log','flag_cause','Walk through what happened...',2)}
-      ${wsToggle(hwId,en,'confidence_log','changed_answer','After coming back, did you change your answer?')}
-      ${d.changed_answer===true?wsToggle(hwId,en,'confidence_log','right_first_time','Were you right the first time?'):''}
-      <div style="margin:10px 0 4px;font-size:13px;color:var(--text)">Under timed conditions, what did you think you needed to improve your confidence to 90%?</div>
-      ${wsDrop(hwId,en,'confidence_log','confidence_fix',confidenceOpts)}
-      ${wsToggle(hwId,en,'confidence_log','flag_correct','Was the decision to flag correct?')}
-    </div>`;
-  }
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='confidence_log');
+  const changed=entries.filter(e=>e.data&&e.data.changed_answer===true).length;
+  const right1st=entries.filter(e=>e.data&&e.data.right_first_time===true).length;
+  const bad=entries.filter(e=>e.data&&e.data.flag_correct===false).length;
   return`<div class="ws-wrap">
     <div class="ws-title">Confidence Log</div>
-    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">Every time you go back to a question, you're spending time. This log helps you figure out if that time was justified — and what you could have done on the first pass to avoid going back.</div>
+    <div class="ws-subtitle">${esc(name)}</div>
     <div class="ws-key-box">
-      <div class="ws-key-title">Key</div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read one line</strong> — Not a good flag. 10-second fix, do it right there.</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read 1–2 answer choices</strong> — Not a good flag. Quick check, do it right there.</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-read 4–5 answer choices</strong> — Good flag. Lost in the answers, need full second pass.</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Re-start full process</strong> — Good flag. Genuinely needed more time.</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span><strong>Didn't understand stimulus (below 70%)</strong> — Skip it. Re-read the one line giving you trouble.</span></div>
+      <div class="ws-key-title">Flag Quality Key</div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read one line from stimulus — not a good flag, 10-second fix</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 1-2 answer choices — not a good flag, do it right there</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 4-5 answer choices — good flag, need full second pass</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-start full process — good flag</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Didn't understand stimulus (below 70% on first read) — skip it, re-read the one line giving you trouble</span></div>
     </div>
     <div class="ws-stats">
-      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Total Flagged</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${changed}</div><div class="ws-stat-lbl">Changed Answer</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${right1st}</div><div class="ws-stat-lbl">Right 1st Time</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Flagged</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${changed}</div><div class="ws-stat-lbl">Changed</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${right1st}</div><div class="ws-stat-lbl">Right 1st</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${bad}</div><div class="ws-stat-lbl">Bad Flags</div></div>
     </div>
-    ${entries.map((e,i)=>entryHTML(e,i)).join('')}
-    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="confidence_log" data-wsaddunflagged="false">+ Add Another Question</button>
+    ${entries.map(e=>{
+      const d=wsEntryData(e);
+      return`<div class="ws-entry">
+        <div class="ws-entry-hd">
+          <span class="ws-entry-lbl">Question</span>
+          ${wsInp(e.id,'question_num',d.question_num,'#')}
+          <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
+        </div>
+        ${wsField(e.id,'flag_reason','What caused you to flag this question?',d.flag_reason,2,'Concrete reason — if there isn\'t one, that\'s the answer')}
+        ${wsToggle(e.id,'changed_answer','After coming back, did you change your answer?',d.changed_answer)}
+        ${wsToggle(e.id,'right_first_time','If yes: were you right the first time?',d.right_first_time)}
+        ${wsField(e.id,'fix','Under timed conditions, what did you think you needed to do to get to 90% confidence?',d.fix,2,'')}
+        ${wsToggle(e.id,'flag_correct','Was the decision to flag correct?',d.flag_correct)}
+      </div>`;
+    }).join('')}
+    <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="confidence_log">+ Add Question</button>
   </div>`;
 }
 
 function wsRCClaimHTML(v,name){
-  const hwId=v.homework_id;
-  const entries=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type==='rc_claim_tracking');
-  const paragraphEntries=entries.filter(e=>!e.data?.is_synthesis);
-  const synthEntry=entries.find(e=>e.data?.is_synthesis);
-  const synthEntryNum=synthEntry?synthEntry.entry_number:null;
-  const difficultyOpts=['Easy','Medium','Hard','RC That Breaks You'];
-  const typeOpts=['Science','Art','Law','History','Philosophy','Social Science'];
-  const metaEntry=entries.find(e=>e.data?.is_meta);
-  const metaNum=metaEntry?metaEntry.entry_number:0;
-  const metaD=metaEntry?metaEntry.data:{};
-  function paragraphHTML(e,idx){
-    const en=e.entry_number;const d=e.data||{};
-    const claims=d.claims||[''];
-    const isFirst=idx===0;
-    return`<div class="ws-entry">
-      <div class="ws-entry-hd"><span class="ws-entry-lbl">Paragraph ${idx+1}</span></div>
-      <div class="ws-sec-lbl" style="margin-top:0">Claim Tracking</div>
-      ${claims.map((c,ci)=>`<div class="ws-claim-row">
-        <div class="ws-claim-num">${ci+1}</div>
-        <input class="ws-claim-inp" type="text" data-claimsave="${hwId}" data-claimentry="${en}" data-claimidx="${ci}" placeholder="One distinct claim..." value="${esc(c)}">
-      </div>`).join('')}
-      <button class="ws-add-claim" data-addclaim="${hwId}" data-addclaimentry="${en}">+ Add claim</button>
-      <div class="ws-sec-lbl">Paragraph Main Point</div>
-      ${wsField(hwId,en,'rc_claim_tracking','main_point','What is this paragraph mainly saying?',1)}
-      ${isFirst?`
-      <div class="ws-sec-lbl">Structure Prediction</div>
-      ${wsField(hwId,en,'rc_claim_tracking','structure_prediction','How will the passage unfold?',1)}
-      <div class="ws-sec-lbl">Sneak Peek</div>
-      ${wsField(hwId,en,'rc_claim_tracking','sneak_peek','Do the opening words confirm or change your prediction?',1)}
-      `:`
-      <div class="ws-sec-lbl">Structural Role</div>
-      ${wsField(hwId,en,'rc_claim_tracking','structural_role','e.g., background, development, contrast...',1)}
-      `}
-    </div>`;
-  }
-  const nextSynthNum=synthEntryNum||(entries.length>0?Math.max(...entries.map(e=>e.entry_number))+1:1);
+  const entries=(S.wsEntries[v.hwId]||[]).filter(e=>e.entry_type==='rc_claim_tracking');
   return`<div class="ws-wrap">
     <div class="ws-title">RC Claim Tracking</div>
-    <div class="ws-subtitle">${esc(v.session_title)}${name?' · '+esc(name):''}</div>
-    <div class="ws-desc">Track the author's claims paragraph by paragraph. The goal is to build active reading habits — predict, check, and map the passage structure before answering questions.</div>
-    <div class="ws-sec-lbl" style="margin-top:0">Passage Tags</div>
-    <div class="ws-pass-tags" style="margin-bottom:8px">
-      ${difficultyOpts.map(d=>`<button class="ws-tag${metaD.difficulty===d?' active':''}" data-metatag="${hwId}" data-metafield="difficulty" data-metaval="${esc(d)}" data-metaentry="${metaNum}">${d}</button>`).join('')}
+    <div class="ws-subtitle">${esc(name)}</div>
+    <div class="ws-desc">One entry per paragraph. Track the author's claims as you read, name each paragraph's job, and predict before the questions ask.</div>
+    <div class="ws-stats" style="grid-template-columns:1fr">
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Paragraphs Tracked</div></div>
     </div>
-    <div class="ws-pass-tags">
-      ${typeOpts.map(d=>`<button class="ws-tag${metaD.type===d?' active':''}" data-metatag="${hwId}" data-metafield="type" data-metaval="${esc(d)}" data-metaentry="${metaNum}">${d}</button>`).join('')}
-    </div>
-    <div style="margin-bottom:20px">${wsField(hwId,metaNum,'rc_claim_tracking','passage_desc','Optional: brief description of the passage...',1)}</div>
-    <div class="ws-stats" style="grid-template-columns:repeat(1,1fr);max-width:160px">
-      <div class="ws-stat"><div class="ws-stat-num">${paragraphEntries.length}</div><div class="ws-stat-lbl">Paragraphs</div></div>
-    </div>
-    ${paragraphEntries.map((e,i)=>paragraphHTML(e,i)).join('')}
-    <button class="ws-add-btn" data-wsadd="${hwId}" data-wsaddtype="rc_claim_tracking" data-wsaddunflagged="false">+ Add Paragraph</button>
-    <div class="ws-synthesis">
-      <div class="ws-synth-title">Final Synthesis</div>
-      <div style="margin-bottom:4px;font-size:13px;color:var(--text)">Overall Passage Main Point (one sentence)</div>
-      ${wsField(hwId,nextSynthNum,'rc_claim_tracking','overall_main_point','The main point of this passage is...',1)}
-      <div style="margin:10px 0 4px;font-size:13px;color:var(--text)">Structural Summary</div>
-      ${wsField(hwId,nextSynthNum,'rc_claim_tracking','structural_summary','How do the paragraphs work together?',2)}
-    </div>
+    ${entries.map(e=>{
+      const d=wsEntryData(e);
+      const claims=Array.isArray(d.claims)?d.claims:[''];
+      return`<div class="ws-entry">
+        <div class="ws-entry-hd">
+          <span class="ws-entry-lbl">Paragraph</span>
+          ${wsInp(e.id,'question_num',d.question_num,'#')}
+          <span class="ws-entry-lbl" style="margin-left:10px">Passage</span>
+          <div class="ws-pass-tags" style="margin:0">${['1','2','3','4'].map(p=>`<button class="ws-tag ${d.passage===p?'active':''}" data-wsmeta="${e.id}" data-wsf="passage" data-wsv="${p}">${p}</button>`).join('')}</div>
+          <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
+        </div>
+        <div class="ws-sec-lbl">Claims in this paragraph</div>
+        ${claims.map((c,ci)=>`<div class="ws-claim-row"><span class="ws-claim-num">${ci+1}</span><input class="ws-claim-inp" data-claiminp="${e.id}" data-ci="${ci}" value="${esc(c||'')}" placeholder="The author claims..."></div>`).join('')}
+        <button class="ws-add-claim" data-addclaim="${e.id}">+ Add claim</button>
+        ${wsField(e.id,'job','This paragraph\'s job in the passage',d.job,1,'Introduces the phenomenon / presents the counter / ...')}
+        ${wsField(e.id,'prediction','Prediction — where is this passage going?',d.prediction,1,'')}
+      </div>`;
+    }).join('')}
+    <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="rc_claim_tracking">+ Add Paragraph</button>
   </div>`;
 }
 
+/* ===================== PICKERS ===================== */
 function openPicker(sessId){
   if(document.getElementById('hw-picker-overlay'))return;
   const selected=new Set();
-  function checkSVG(){return'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';}
-  function buildPickerHTML(){
-    const groupsHTML=Object.entries(HW_CARDS).map(([gkey,group])=>{
-      const cardsHTML=group.cards.map((card,ci)=>{
-        const key=gkey+'-'+ci;const isSel=selected.has(key);
-        const shortDesc=card.desc?card.desc.replace(/--[^\n]*/g,'').split('\n').filter(l=>l.trim()).slice(0,2).join(' · ').substring(0,120):'Custom card — you fill everything';
-        return`<div class="picker-card${isSel?' selected':''}" data-pkey="${key}"><div class="picker-check">${isSel?checkSVG():''}</div><div class="picker-card-info"><div class="picker-card-name">${esc(card.label)}</div><div class="picker-card-desc">${esc(shortDesc||'Empty card')}</div></div></div>`;
+  let curTab='all';
+  function cardMatches(card,tab){
+    if(tab==='all')return true;
+    if(!card.tiers)return true;
+    return card.tiers.indexOf(tab)>=0;
+  }
+  function buildHTML(){
+    const tabsHTML=`<div class="picker-tabs">${Object.entries(HW_TABS).map(([k,n])=>`<button class="picker-tab ${curTab===k?'active':''}" data-hwtab="${k}">${n}</button>`).join('')}</div>`;
+    const groupsHTML=Object.entries(HW_CARDS).map(([gkey,g])=>{
+      const cardsHTML=g.cards.map((card,ci)=>{
+        if(!cardMatches(card,curTab))return'';
+        const key=gkey+'-'+ci;
+        const sel=selected.has(key);
+        return`<div class="picker-card ${sel?'selected':''}" data-pkey="${key}">
+          <span class="picker-check">${sel?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</span>
+          <div class="picker-card-info">
+            <div class="picker-card-name">${esc(card.label)}</div>
+            ${card.desc?`<div class="picker-card-desc">${esc(card.desc.split('\n').slice(0,2).join('\n'))}${card.desc.split('\n').length>2?'…':''}</div>`:''}
+          </div>
+        </div>`;
       }).join('');
-      return`<div class="picker-group"><div class="picker-group-label">${esc(group.group)}</div><div class="picker-grid">${cardsHTML}</div></div>`;
+      if(!cardsHTML.trim())return'';
+      return`<div class="picker-group"><div class="picker-group-label">${esc(g.group)}</div><div class="picker-grid">${cardsHTML}</div></div>`;
     }).join('');
-    const n=selected.size;
-    return`<div class="picker-overlay" id="hw-picker-overlay"><div class="picker-panel"><div class="picker-title">Add Homework</div><div class="picker-sub">Select cards, then click Add. You can edit or delete after.</div>${groupsHTML}<div class="picker-footer"><div class="picker-count" id="picker-count-lbl"><span>${n}</span> card${n===1?'':'s'} selected</div><div class="picker-actions"><button class="picker-cancel" id="picker-cancel-btn">Cancel</button><button class="picker-add" id="picker-add-btn" ${n===0?'disabled':''}>Add${n>0?' '+n:''} Card${n===1?'':'s'}</button></div></div></div></div>`;
+    return`<div class="picker-panel">
+      <div class="picker-title">Add Homework</div>
+      <div class="picker-sub">Pick one or more cards — everything is editable after adding</div>
+      ${tabsHTML}
+      <div id="hw-picker-groups">${groupsHTML}</div>
+      <div class="picker-footer">
+        <div class="picker-count"><span>${selected.size}</span> selected</div>
+        <div class="picker-actions">
+          <button class="picker-cancel" id="hw-picker-cancel">Cancel</button>
+          <button class="picker-add" id="hw-picker-add" ${selected.size===0?'disabled':''}>Add Selected</button>
+        </div>
+      </div>
+    </div>`;
   }
-  function updateOverlay(){
-    const overlay=document.getElementById('hw-picker-overlay');if(!overlay)return;
-    overlay.querySelectorAll('[data-pkey]').forEach(el=>{const key=el.dataset.pkey;const isSel=selected.has(key);el.classList.toggle('selected',isSel);const chk=el.querySelector('.picker-check');if(chk)chk.innerHTML=isSel?checkSVG():'';});
-    const n=selected.size;const lbl=overlay.querySelector('#picker-count-lbl');if(lbl)lbl.innerHTML=`<span>${n}</span> card${n===1?'':'s'} selected`;
-    const addBtn=overlay.querySelector('#picker-add-btn');if(addBtn){addBtn.textContent=`Add${n>0?' '+n:''} Card${n===1?'':'s'}`;addBtn.disabled=n===0;}
+  const overlay=document.createElement('div');
+  overlay.className='picker-overlay';overlay.id='hw-picker-overlay';
+  overlay.innerHTML=buildHTML();
+  document.body.appendChild(overlay);
+  function rebuild(){
+    const sc=overlay.querySelector('.picker-panel')?overlay.scrollTop:0;
+    overlay.innerHTML=buildHTML();
+    overlay.scrollTop=sc;
+    wire();
   }
-  function closePicker(){const o=document.getElementById('hw-picker-overlay');if(o)o.remove();}
-  document.body.insertAdjacentHTML('beforeend',buildPickerHTML());
-  const overlay=document.getElementById('hw-picker-overlay');
-  overlay.addEventListener('click',async e=>{
-    const card=e.target.closest('[data-pkey]');
-    if(card){const key=card.dataset.pkey;if(selected.has(key))selected.delete(key);else selected.add(key);updateOverlay();return;}
-    if(e.target.closest('#picker-cancel-btn')){closePicker();return;}
-    if(e.target.closest('#picker-add-btn')){
-      if(selected.size===0)return;
-      const addBtn=overlay.querySelector('#picker-add-btn');addBtn.disabled=true;addBtn.textContent='Adding...';
-      const sess=S.sessions.find(s=>s.id===sessId);let sortOrder=(sess?.homework?.length)||0;
-      const tf=S.student?S.student.time_factor||'1x':'1x';
-      for(const key of selected){
-        const[gkey,ci]=key.split('-');const group=HW_CARDS[gkey];if(!group)continue;
-        const card=group.cards[parseInt(ci)];if(!card)continue;
-        const lbl=card.label==='Blank (custom)'?'New assignment':card.label;
-        const rawDesc=card.desc||null;const desc=rawDesc?applyTiming(rawDesc,tf):null;
-        await db.from('homework').insert({session_id:sessId,label:lbl,hw_type:hwTypeCode(lbl),description:desc,sort_order:sortOrder});sortOrder++;
+  function wire(){
+    overlay.querySelectorAll('[data-hwtab]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();curTab=b.dataset.hwtab;rebuild();}));
+    overlay.querySelectorAll('[data-pkey]').forEach(c=>c.addEventListener('click',e=>{
+      e.stopPropagation();
+      const k=c.dataset.pkey;
+      if(selected.has(k))selected.delete(k);else selected.add(k);
+      rebuild();
+    }));
+    const cancel=overlay.querySelector('#hw-picker-cancel');
+    if(cancel)cancel.addEventListener('click',()=>overlay.remove());
+    const add=overlay.querySelector('#hw-picker-add');
+    if(add)add.addEventListener('click',async()=>{
+      add.disabled=true;add.textContent='Adding...';
+      const sess=S.sessions.find(x=>x.id===sessId);
+      const hws=(sess&&sess.homework)||[];
+      let sortBase=hws.length>0?Math.max(...hws.map(h=>h.sort_order||0))+1:0;
+      const tf=S.student?(S.student.time_factor||'1x'):'1x';
+      let err=null;
+      for(const k of selected){
+        const dash=k.lastIndexOf('-');
+        const gkey=k.substring(0,dash),ci=parseInt(k.substring(dash+1));
+        const card=HW_CARDS[gkey]&&HW_CARDS[gkey].cards[ci];
+        if(!card)continue;
+        const{error}=await db.from('homework').insert({session_id:sessId,label:card.label,hw_type:hwTypeCode(card.label),description:card.desc?applyTiming(card.desc,tf):null,sort_order:sortBase++});
+        if(error)err=error;
       }
-      closePicker();await loadStudent(S.selId);R();
-    }
-  });
-  overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
+      overlay.remove();
+      await loadStudent(S.selId);R();showSaved(!err);
+    });
+    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
+  }
+  wire();
 }
 
-/* Keep the package header in sync with the roadmap: sessions_bought and any
-   "N-session" label track the count of sessions (Session 0 intro excluded).
-   Runs after adding or deleting sessions. Custom package names are preserved.
-   Guard: never syncs to 0 (deleting the last session leaves the package as-is). */
 async function syncPackage(){
-  const{data:allSess}=await db.from('sessions').select('session_number').eq('student_id',S.selId);
-  const countable=(allSess||[]).filter(s=>s.session_number>0).length;
-  const bought=S.student?(S.student.sessions_bought||0):0;
-  if(countable>0&&countable!==bought){
-    const upd={sessions_bought:countable};
-    const pk=S.student?(S.student.package_type||''):'';
-    if(!pk||/^\d+-session$/.test(pk))upd.package_type=countable+'-session';
-    await db.from('students').update(upd).eq('id',S.selId);
+  if(!S.student)return;
+  const n=S.sessions.filter(s=>s.session_number>0).length;
+  if(S.student.sessions_bought!==n&&n>0){
+    await db.from('students').update({sessions_bought:n}).eq('id',S.student.id);
   }
 }
 
 function openSessPicker(){
   if(document.getElementById('sess-picker-overlay'))return;
-  const selected=[]; // array, not set — sessions are added in click order
-  function checkSVG(){return'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';}
+  const selected=[];
+  let curTab='f';
+  function checkSVG(){return'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';}
   function buildHTML(){
-    const groupsHTML=Object.entries(SESSION_CARDS).map(([gkey,group])=>{
-      const cardsHTML=group.cards.map((card,ci)=>{
-        const key=gkey+'-'+ci;const isSel=selected.includes(key);const ord=selected.indexOf(key);
-        const goalLine=card.goals.length?('Goals: '+card.goals.slice(0,2).join(' · ')).substring(0,130):'';
-        const hwLine=card.hw.length?('Homework: '+card.hw.join(' · ')).substring(0,130):'';
-        const desc=card.title==='Blank Session'?'Empty session — you fill everything':[card.subtitle,goalLine,hwLine].filter(Boolean).join('\n');
-        return`<div class="picker-card${isSel?' selected':''}" data-skey="${key}"><div class="picker-check">${isSel?checkSVG():''}</div><div class="picker-card-info"><div class="picker-card-name">${esc(card.title)}${isSel&&selected.length>1?` <span style="font-family:var(--mono);font-size:10px;color:var(--accent)">#${ord+1}</span>`:''}</div><div class="picker-card-desc">${esc(desc)}</div></div></div>`;
-      }).join('');
-      return`<div class="picker-group"><div class="picker-group-label">${esc(group.group)}</div><div class="picker-grid">${cardsHTML}</div></div>`;
+    const tabsHTML=`<div class="picker-tabs">${Object.entries(SESS_TABS).map(([k,t])=>`<button class="picker-tab ${curTab===k?'active':''}" data-stab="${k}">${t.name}</button>`).join('')}</div>`;
+    const groups=SESS_TABS[curTab].groups.concat(['blanksess']);
+    const groupsHTML=groups.map(gkey=>{
+      const g=SESSION_CARDS[gkey];
+      if(!g)return'';
+      return`<div class="picker-group"><div class="picker-group-label">${esc(g.group)}</div><div class="picker-grid">
+        ${g.cards.map((card,ci)=>{
+          const key=gkey+'-'+ci;
+          const pos=selected.indexOf(key);
+          const sel=pos>=0;
+          return`<div class="picker-card ${sel?'selected':''}" data-skey="${key}">
+            <span class="picker-check" ${sel?'style="background:var(--accent);border-color:var(--accent);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700"':''}>${sel?(pos+1):''}</span>
+            <div class="picker-card-info">
+              <div class="picker-card-name">${esc(card.title)}${card.subtitle?` <span style="color:var(--dim);font-weight:400;font-size:12px">· ${esc(card.subtitle)}</span>`:''}</div>
+              ${card.description?`<div class="picker-card-desc">${esc(card.description)}</div>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div></div>`;
     }).join('');
-    const n=selected.length;
-    return`<div class="picker-overlay" id="sess-picker-overlay"><div class="picker-panel"><div class="picker-title">Add Sessions</div><div class="picker-sub">Select in the order you want them — title, goals, and drill homework come prefilled. Edit anything after.</div>${groupsHTML}<div class="picker-footer"><div class="picker-count" id="sess-count-lbl"><span>${n}</span> session${n===1?'':'s'} selected</div><div class="picker-actions"><button class="picker-cancel" id="sess-cancel-btn">Cancel</button><button class="picker-add" id="sess-add-btn" ${n===0?'disabled':''}>Add${n>0?' '+n:''} Session${n===1?'':'s'}</button></div></div></div></div>`;
+    return`<div class="picker-panel">
+      <div class="picker-title">Add Sessions</div>
+      <div class="picker-sub">Selection order sets session order — numbered chips show the sequence</div>
+      ${tabsHTML}
+      <div id="sess-picker-groups">${groupsHTML}</div>
+      <div class="picker-footer">
+        <div class="picker-count"><span>${selected.length}</span> selected</div>
+        <div class="picker-actions">
+          <button class="picker-cancel" id="sess-picker-cancel">Cancel</button>
+          <button class="picker-add" id="sess-picker-add" ${selected.length===0?'disabled':''}>Add Selected</button>
+        </div>
+      </div>
+    </div>`;
   }
-  function rebuild(){const o=document.getElementById('sess-picker-overlay');if(!o)return;const sc=o.scrollTop;o.outerHTML=buildHTML();const o2=document.getElementById('sess-picker-overlay');o2.scrollTop=sc;wire(o2);}
-  function closePicker(){const o=document.getElementById('sess-picker-overlay');if(o)o.remove();}
-  function wire(overlay){
-    overlay.addEventListener('click',async e=>{
-      const card=e.target.closest('[data-skey]');
-      if(card){const key=card.dataset.skey;const idx=selected.indexOf(key);if(idx>=0)selected.splice(idx,1);else selected.push(key);rebuild();return;}
-      if(e.target.closest('#sess-cancel-btn')){closePicker();return;}
-      if(e.target.closest('#sess-add-btn')){
-        if(selected.length===0)return;
-        const addBtn=overlay.querySelector('#sess-add-btn');addBtn.disabled=true;addBtn.textContent='Adding...';
-        const tf=S.student?S.student.time_factor||'1x':'1x';
-        let base=S.sessions.length?Math.max(...S.sessions.map(s=>s.session_number)):0;
-        for(const key of selected){
-          const dash=key.indexOf('-');const gkey=key.substring(0,dash);const ci=parseInt(key.substring(dash+1));
-          const group=SESSION_CARDS[gkey];if(!group)continue;
-          const card=group.cards[ci];if(!card)continue;
-          base++;
-          const{data:sess,error}=await db.from('sessions').insert({student_id:S.selId,session_number:base,title:card.title==='Blank Session'?('Session '+base):card.title,subtitle:card.subtitle||'',description:card.description||'',status:base===1?'upcoming':'locked'}).select().single();
-          if(error||!sess){base--;continue;}
-          for(let gi=0;gi<card.goals.length;gi++){
-            await db.from('session_goals').insert({session_id:sess.id,goal_text:card.goals[gi],sort_order:gi});
-          }
-          let so=0;
-          for(const hwLabel of card.hw){
-            const hc=hwCardByLabel(hwLabel);if(!hc)continue;
-            const desc=hc.desc?applyTiming(hc.desc,tf):null;
-            await db.from('homework').insert({session_id:sess.id,label:hc.label,hw_type:hwTypeCode(hc.label),description:desc,sort_order:so});so++;
-          }
-        }
-        await syncPackage();
-        closePicker();await loadStudent(S.selId);R();
-      }
-    });
-    overlay.addEventListener('click',e=>{if(e.target===overlay)closePicker();});
+  const overlay=document.createElement('div');
+  overlay.className='picker-overlay';overlay.id='sess-picker-overlay';
+  overlay.innerHTML=buildHTML();
+  document.body.appendChild(overlay);
+  function rebuild(){
+    const sc=overlay.scrollTop;
+    overlay.innerHTML=buildHTML();
+    overlay.scrollTop=sc;
+    wire();
   }
-  document.body.insertAdjacentHTML('beforeend',buildHTML());
-  wire(document.getElementById('sess-picker-overlay'));
-}
-
-function bind(){
-  document.getElementById('lb')?.addEventListener('click',doLogin);
-  document.getElementById('lp')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-  document.getElementById('le')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp')?.focus();});
-  document.getElementById('fp')?.addEventListener('click',async e=>{
-    e.preventDefault();const em=document.getElementById('le')?.value.trim();
-    if(!em){S.loginErr='Enter your email first';R();return;}
-    await db.auth.resetPasswordForEmail(em,{redirectTo:location.origin+'/dashboard.html'});
-    alert('Password reset link sent to '+em);
-  });
-  document.getElementById('lo')?.addEventListener('click',doLogout);
-  document.getElementById('archive-student-btn')?.addEventListener('click',async()=>{if(!S.selId||!S.student)return;const name=S.student.profiles?.first_name||'this student';if(!confirm('Archive '+name+'? They\'ll move to the archived section.'))return;await db.from('students').update({status:'inactive'}).eq('id',S.selId);const actv=S.students.filter(st=>st.id!==S.selId&&st.status!=='inactive');if(actv.length>0){S.selId=actv[0].id;await loadStudent(actv[0].id);}else{S.selId=null;S.student=null;S.sessions=[];S.exSess=-1;}await loadUser();});
-  document.getElementById('archive-toggle')?.addEventListener('click',()=>{S.archiveOpen=!S.archiveOpen;R();});
-  document.querySelectorAll('[data-restore]').forEach(btn=>{btn.addEventListener('click',async()=>{await db.from('students').update({status:'active'}).eq('id',btn.dataset.restore);await loadUser();});});
-  document.querySelectorAll('[data-pick]').forEach(el=>{el.addEventListener('click',async()=>{S.selId=el.dataset.pick;S.exSess=-1;S.addMsg='';await loadStudent(el.dataset.pick);R();});});
-  document.getElementById('add-em')?.addEventListener('input',function(){S.addEmail=this.value;});
-  document.getElementById('add-em')?.addEventListener('keydown',e=>{if(e.key==='Enter')addStudent();});
-  document.getElementById('add-btn')?.addEventListener('click',addStudent);
-  document.getElementById('time-factor-sel')?.addEventListener('change',async function(){
-    await db.from('students').update({time_factor:this.value}).eq('id',S.selId);await loadStudent(S.selId);R();
-  });
-  document.querySelectorAll('[data-tog]').forEach(el=>{el.addEventListener('click',e=>{if(e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')||e.target.closest('.hw-desc-edit')||e.target.closest('.hw-desc-ph')||e.target.closest('.hw-cb')||e.target.closest('.hw-step-cb')||e.target.closest('.reorder-btn')||e.target.closest('.hw-reorder')||e.target.closest('.hw-edit-wrap')||e.target.closest('.hw-desc-edit-btn')||e.target.closest('[data-ah-open]')||e.target.closest('[data-hcopy]')||e.target.closest('[data-hmv]')||e.target.closest('.goals-ta')||e.target.closest('.hw-st')||e.target.closest('.hw-st-inp')||e.target.closest('.hw-add-step')||e.target.closest('.ws-open-btn')||e.target.closest('.ws-card-footer'))return;const i=parseInt(el.dataset.tog);S.exSess=S.exSess===i?-1:i;R();});});
-  document.querySelectorAll('[data-hc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const id=cb.dataset.hc;const wasChecked=cb.classList.contains('checked');await db.from('homework').update({completed:!wasChecked}).eq('id',id);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-hsc]').forEach(cb=>{cb.addEventListener('click',async e=>{e.stopPropagation();const hid=cb.dataset.hsc;const si=parseInt(cb.dataset.si);const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
-    const sc=getStepCompletions(hw);const steps=(hw.description||'').split('\n').filter(l=>l.trim());
-    const stepText=steps[si]?.trim();if(!stepText)return;sc[stepText]=!sc[stepText];
-    const checkableSteps=steps.filter(l=>!l.trim().startsWith('--'));
-    const allDone=checkableSteps.length>0&&checkableSteps.every(l=>sc[l.trim()]===true);
-    await db.from('homework').update({step_completions:JSON.stringify(sc),completed:allDone}).eq('id',hid);await loadStudent(S.selId);R();
-  });});
-  document.querySelectorAll('.ed').forEach(el=>{el.addEventListener('click',e=>{e.stopPropagation();startEd(el);});});
-  document.querySelectorAll('.tn-box').forEach(box=>{box.addEventListener('click',e=>{if(e.target.closest('.ed'))return;const edEl=box.querySelector('.ed');if(edEl)startEd(edEl);});});
-  document.querySelectorAll('[data-cyc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const order=['locked','upcoming','completed'];const next=order[(order.indexOf(b.dataset.st)+1)%3];await db.from('sessions').update({status:next}).eq('id',b.dataset.cyc);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-delsess]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();if(!confirm('Delete this entire session? This will also delete all its goals and homework.'))return;await db.from('sessions').delete().eq('id',b.dataset.delsess);const remaining=S.sessions.filter(s=>s.id!==b.dataset.delsess);const rbase=remaining.length?Math.min(...remaining.map(s=>s.session_number)):1;for(let k=0;k<remaining.length;k++){if(remaining[k].session_number!==rbase+k)await db.from('sessions').update({session_number:rbase+k}).eq('id',remaining[k].id);}await syncPackage();S.exSess=-1;await loadStudent(S.selId);R();});});
-  let _dragIdx=null;
-  document.querySelectorAll('.sess[data-dsi]').forEach(card=>{
-    card.addEventListener('dragstart',e=>{if(e.target.closest('.sess-body')||e.target.closest('.ed')||e.target.closest('.ed-inp')||e.target.closest('.ed-ta')){e.preventDefault();return;}_dragIdx=parseInt(card.dataset.dsi);e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
-    card.addEventListener('dragend',()=>{document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('dragging','drag-over-above','drag-over-below');});_dragIdx=null;});
-  });
-  document.querySelectorAll('.sess').forEach((card,ci)=>{
-    card.addEventListener('dragover',e=>{e.preventDefault();if(_dragIdx===null||_dragIdx===ci)return;e.dataTransfer.dropEffect='move';const rect=card.getBoundingClientRect();const mid=rect.top+rect.height/2;document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('drag-over-above','drag-over-below');});card.classList.add(e.clientY<mid?'drag-over-above':'drag-over-below');});
-    card.addEventListener('dragleave',()=>{card.classList.remove('drag-over-above','drag-over-below');});
-    card.addEventListener('drop',async e=>{e.preventDefault();if(_dragIdx===null||_dragIdx===ci)return;document.querySelectorAll('.sess').forEach(s=>{s.classList.remove('drag-over-above','drag-over-below','dragging');});
-      const from=_dragIdx,to=ci;_dragIdx=null;
-      const ordered=[...S.sessions];const[moved]=ordered.splice(from,1);ordered.splice(to,0,moved);
+  function wire(){
+    overlay.querySelectorAll('[data-stab]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();curTab=b.dataset.stab;rebuild();}));
+    overlay.querySelectorAll('[data-skey]').forEach(c=>c.addEventListener('click',e=>{
+      e.stopPropagation();
+      const k=c.dataset.skey;
+      const pos=selected.indexOf(k);
+      if(pos>=0)selected.splice(pos,1);else selected.push(k);
+      rebuild();
+    }));
+    const cancel=overlay.querySelector('#sess-picker-cancel');
+    if(cancel)cancel.addEventListener('click',()=>overlay.remove());
+    const add=overlay.querySelector('#sess-picker-add');
+    if(add)add.addEventListener('click',async()=>{
+      add.disabled=true;add.textContent='Adding...';
+      const tf=S.student?(S.student.time_factor||'1x'):'1x';
+      let nextNum=S.sessions.length>0?Math.max(...S.sessions.map(x=>x.session_number))+1:1;
+      const firstEver=S.sessions.length===0;
       let err=null;
-      const obase=ordered.length?Math.min(...ordered.map(s=>s.session_number)):1;
-      for(let k=0;k<ordered.length;k++){const r=await db.from('sessions').update({session_number:obase+k}).eq('id',ordered[k].id);if(r.error)err=r.error;}
+      for(let si=0;si<selected.length;si++){
+        const k=selected[si];
+        const dash=k.lastIndexOf('-');
+        const gkey=k.substring(0,dash),ci=parseInt(k.substring(dash+1));
+        const card=SESSION_CARDS[gkey]&&SESSION_CARDS[gkey].cards[ci];
+        if(!card)continue;
+        const status=(firstEver&&si===0)?'upcoming':'locked';
+        const{data:sess,error}=await db.from('sessions').insert({student_id:S.selId,session_number:nextNum++,title:card.title||'New Session',subtitle:card.subtitle||null,description:card.description||null,status:status}).select().single();
+        if(error){err=error;continue;}
+        if(!sess)continue;
+        for(let gi=0;gi<(card.goals||[]).length;gi++){
+          const r=await db.from('session_goals').insert({session_id:sess.id,goal_text:card.goals[gi],sort_order:gi});
+          if(r.error)err=r.error;
+        }
+        for(let hi=0;hi<(card.hw||[]).length;hi++){
+          const hc=hwCardByLabel(card.hw[hi]);
+          if(!hc)continue;
+          const r=await db.from('homework').insert({session_id:sess.id,label:hc.label,hw_type:hwTypeCode(hc.label),description:hc.desc?applyTiming(hc.desc,tf):null,sort_order:hi});
+          if(r.error)err=r.error;
+        }
+      }
+      await syncPackage();
+      overlay.remove();
       await loadStudent(S.selId);R();showSaved(!err);
     });
-  });
-  document.querySelectorAll('[data-ag]').forEach(b=>{b.addEventListener('click',async()=>{const sid=b.dataset.ag;const ms=S.sessions.find(s=>s.id===sid)?.goals?.length||0;await db.from('session_goals').insert({session_id:sid,goal_text:'New goal',sort_order:ms});await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-rg]').forEach(b=>{b.addEventListener('click',async()=>{if(!confirm('Delete this goal?'))return;await db.from('session_goals').delete().eq('id',b.dataset.rg);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-ah-open]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();openPicker(btn.dataset.ahOpen);});});
-  document.querySelectorAll('[data-rh]').forEach(b=>{b.addEventListener('click',async()=>{if(!confirm('Delete this homework item?'))return;await db.from('homework').delete().eq('id',b.dataset.rh);await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-adesc]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const id=b.dataset.adesc;
-    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===id);const curDesc=hw?hw.description||'':'';
-    const parent=b.closest('.hw-desc')||b;
-    parent.outerHTML=`<div class="hw-edit-wrap"><div class="hw-edit-toolbar"><button class="hw-link-btn" data-linkfor="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link</button></div><textarea class="hw-desc-edit" data-eid="hw-${id}-description" placeholder="One step per line...&#10;Start a line with -- for a section label">${esc(curDesc)}</textarea></div>`;
-    const ta=document.querySelector(`[data-eid="hw-${id}-description"]`);
-    function autoGrow(){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
-    autoGrow();ta.focus();
-    ta.addEventListener('input',autoGrow);
-    ta.addEventListener('blur',e=>{if(e.relatedTarget&&e.relatedTarget.classList.contains('hw-link-btn'))return;saveEd(`hw-${id}-description`,ta.value);});
-    ta.addEventListener('keydown',e=>{if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
-    document.querySelector(`.hw-link-btn[data-linkfor="${id}"]`).addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
-      const start=ta.selectionStart,end=ta.selectionEnd;const sel=ta.value.substring(start,end);
-      if(!sel){alert('Highlight a word first, then click Link');ta.focus();return;}
-      const url=prompt('Enter URL for "'+sel+'":');if(!url){ta.focus();return;}
-      const before=ta.value.substring(0,start);const after=ta.value.substring(end);
-      ta.value=before+'['+sel+']('+url+')'+after;ta.focus();
-    });
-  });});
-  document.querySelectorAll('.hw-st[data-stedit]').forEach(sp=>{sp.addEventListener('click',e=>{
-    e.stopPropagation();if(document.querySelector('.hw-st-inp'))return;
-    const hid=sp.dataset.stedit,si=parseInt(sp.dataset.stsi),isLabel=sp.dataset.stlabel==='1';
-    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
-    const steps=(hw.description||'').split('\n').filter(l=>l.trim());
-    const raw=steps[si]||'';const val=isLabel?raw.replace(/^--\s*/,''):raw;
-    const inp=document.createElement('input');inp.className='hw-st-inp';inp.value=val;
-    sp.replaceWith(inp);inp.focus();inp.select();
-    async function save(){
-      const nv=inp.value.trim();
-      steps[si]=isLabel?'--'+nv:nv;
-      if(!nv)steps.splice(si,1);
-      const newDesc=steps.join('\n');
-      await db.from('homework').update({description:newDesc}).eq('id',hid);
-      await loadStudent(S.selId);R();showSaved(true);
-    }
-    inp.addEventListener('blur',save);
-    inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();save();}if(ev.key==='Escape'){loadStudent(S.selId).then(R);}});
-  });});
-  document.querySelectorAll('.hw-st[data-stedit]').forEach(sp=>{sp.addEventListener('contextmenu',e=>{
-    e.preventDefault();e.stopPropagation();
-    document.querySelector('.hw-ctx')?.remove();
-    const hid=sp.dataset.stedit,si=parseInt(sp.dataset.stsi);
-    const menu=document.createElement('div');menu.className='hw-ctx';
-    menu.innerHTML=`<div class="hw-ctx-item" data-ctx="above">+ Add step above</div><div class="hw-ctx-item" data-ctx="below">+ Add step below</div><div class="hw-ctx-item" data-ctx="label">+ Add label above</div><div class="hw-ctx-sep"></div><div class="hw-ctx-item danger" data-ctx="delete">Delete this step</div>`;
-    menu.style.left=Math.min(e.clientX,window.innerWidth-180)+'px';menu.style.top=e.clientY+'px';
-    document.body.appendChild(menu);
-    async function handleCtx(action){
-      menu.remove();
-      const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
-      const steps=(hw.description||'').split('\n').filter(l=>l.trim());
-      if(action==='delete'){steps.splice(si,1);}
-      else if(action==='above'){steps.splice(si,0,'New step');}
-      else if(action==='below'){steps.splice(si+1,0,'New step');}
-      else if(action==='label'){steps.splice(si,0,'--Section');}
-      await db.from('homework').update({description:steps.join('\n')}).eq('id',hid);
-      await loadStudent(S.selId);R();showSaved(true);
-    }
-    menu.querySelectorAll('[data-ctx]').forEach(item=>{item.addEventListener('click',()=>handleCtx(item.dataset.ctx));});
-    setTimeout(()=>{function dismiss(ev){if(!menu.contains(ev.target)){menu.remove();document.removeEventListener('click',dismiss);}}document.addEventListener('click',dismiss);},10);
-  });});
-  document.querySelectorAll('[data-addstep]').forEach(btn=>{btn.addEventListener('click',async e=>{
-    e.stopPropagation();const hid=btn.dataset.addstep;
-    const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hid);if(!hw)return;
-    const desc=(hw.description||'').trimEnd();
-    const newDesc=desc?(desc+'\nNew step'):'New step';
-    await db.from('homework').update({description:newDesc}).eq('id',hid);
-    await loadStudent(S.selId);R();showSaved(true);
-  });});
-  document.querySelectorAll('[data-wsopen]').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const hwId=btn.dataset.wsopen;const type=btn.dataset.wstype;const hw=S.sessions.flatMap(s=>s.homework).find(h=>h.id===hwId);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hwId));S.wsView={homework_id:hwId,type,session_title:sess?sess.title:'',hw_label:hw?hw.label:'',hw_type:hw?(hw.hw_type||''):''};R();});});
-  document.getElementById('ws-back-btn')?.addEventListener('click',async()=>{const hwId=S.wsView?.homework_id;S.wsView=null;if(hwId)await reloadWsEntries(hwId);R();});
-  document.querySelectorAll('[data-wssave]').forEach(el=>{el.addEventListener('change',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);if(el.dataset.wstype==='blind_review'&&el.dataset.wsfield==='miss_type')R();if(el.dataset.wstype==='question_type_drill'&&(el.dataset.wsfield==='result'||el.dataset.wsfield==='breakdown_step'))R();});el.addEventListener('blur',async()=>{await saveWsField(el.dataset.wssave,parseInt(el.dataset.wsentry),el.dataset.wstype,el.dataset.wsfield,el.value);});});
-  document.querySelectorAll('[data-wstog]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveWsToggle(btn.dataset.wstog,parseInt(btn.dataset.wsentry),btn.dataset.wstype,btn.dataset.wsfield,btn.dataset.wsval);});});
-  document.querySelectorAll('[data-wsadd]').forEach(btn=>{btn.addEventListener('click',async()=>{await addWsEntry(btn.dataset.wsadd,btn.dataset.wsaddtype,btn.dataset.wsaddunflagged);});});
-  document.querySelectorAll('[data-acbadge]').forEach(b=>{b.addEventListener('click',async()=>{const states=['','correct','wrong'];const cur=b.classList.contains('correct')?'correct':b.classList.contains('wrong')?'wrong':'';const next=states[(states.indexOf(cur)+1)%3];await saveAcField(b.dataset.acbadge,parseInt(b.dataset.acentry),b.dataset.acletter,'state',next);});});
-  document.querySelectorAll('[data-acfield]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveAcField(inp.dataset.acfield,parseInt(inp.dataset.acentry),inp.dataset.acletter,'text',inp.value);});});
-  document.querySelectorAll('[data-qttag]').forEach(btn=>{btn.addEventListener('click',async()=>{const hw=btn.dataset.qttag,en=parseInt(btn.dataset.qtentry),f=btn.dataset.qtfield,val=btn.dataset.qtval;const cur=wsEntryData(hw,en)[f];await saveWsField(hw,en,'question_type_drill',f,cur===val?null:val);R();});});
-  document.querySelectorAll('[data-qtacb]').forEach(b=>{b.addEventListener('click',async()=>{const states=b.dataset.qtacs.split('|');const cur=b.dataset.qtcur||'';const next=states[(states.indexOf(cur)+1)%states.length];await saveQtAc(b.dataset.qtacb,parseInt(b.dataset.qtacen),b.dataset.qtacl,'state',next);R();});});
-  document.querySelectorAll('[data-qtacf]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveQtAc(inp.dataset.qtacf,parseInt(inp.dataset.qtacen),inp.dataset.qtacl,inp.dataset.qtacff,inp.value);});});
-  document.querySelectorAll('[data-claimsave]').forEach(inp=>{inp.addEventListener('blur',async()=>{await saveClaimField(inp.dataset.claimsave,parseInt(inp.dataset.claimentry),parseInt(inp.dataset.claimidx),inp.value);});});
-  document.querySelectorAll('[data-addclaim]').forEach(btn=>{btn.addEventListener('click',async()=>{await addClaimToEntry(btn.dataset.addclaim,parseInt(btn.dataset.addclaimentry));});});
-  document.querySelectorAll('[data-metatag]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveMetaTag(btn.dataset.metatag,parseInt(btn.dataset.metaentry),btn.dataset.metafield,btn.dataset.metaval);});});
-  document.querySelectorAll('[data-itasave]').forEach(el=>{el.addEventListener('blur',async()=>{await saveItaField(el.dataset.itasave,parseInt(el.dataset.itaentry),el.dataset.itafield,el.value);});});
-  document.querySelectorAll('[data-itadecision]').forEach(btn=>{btn.addEventListener('click',async()=>{await saveItaField(btn.dataset.itadecision,parseInt(btn.dataset.itaentry),'decision',btn.dataset.itaval);R();});});
-  document.querySelectorAll('[data-itastep]').forEach(cb=>{cb.addEventListener('click',async()=>{
-    const hwId=cb.dataset.itahw;const entryNum=parseInt(cb.dataset.itaentry);const field=cb.dataset.itastep;
-    const arr=S.wsEntries[hwId]||[];
-    const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='insight_to_action');
-    const curData=existing?{...existing.data}:{is_main:true};
-    const completed=curData.completed_steps||{};
-    completed[field]=!completed[field];
-    curData.completed_steps=completed;curData.is_main=true;
-    if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-    else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'insight_to_action',data:curData});}
-    await reloadWsEntries(hwId);R();
-  });});
-  document.querySelectorAll('[data-hmv]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const dir=b.dataset.hmv;const hid=b.dataset.hid;const hi=parseInt(b.dataset.hsi);const sess=S.sessions.find(s=>s.homework.some(h=>h.id===hid));if(!sess)return;const hw=[...sess.homework];const j=dir==='up'?hi-1:hi+1;if(j<0||j>=hw.length)return;
-    const tmp=hw[hi];hw[hi]=hw[j];hw[j]=tmp;
-    for(let k=0;k<hw.length;k++){await db.from('homework').update({sort_order:k}).eq('id',hw[k].id);}
-    await loadStudent(S.selId);R();});});
-  document.querySelectorAll('[data-hcopy]').forEach(b=>{b.addEventListener('click',async e=>{e.stopPropagation();const sessId=b.dataset.hcopy;const sess=S.sessions.find(s=>s.id===sessId);if(!sess)return;const prevSess=S.sessions.find(s=>s.session_number===sess.session_number-1);if(!prevSess||!prevSess.homework||prevSess.homework.length===0){S.hwCopyMsg='No previous session homework to copy';S.hwCopyMsgSess=sessId;R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);return;}const base=(sess.homework?.length)||0;for(let ci=0;ci<prevSess.homework.length;ci++){const ph=prevSess.homework[ci];await db.from('homework').insert({session_id:sessId,label:ph.label,hw_type:ph.hw_type||'drill',description:ph.description||null,sort_order:base+ci});}S.hwCopyMsg=`Copied ${prevSess.homework.length} item${prevSess.homework.length===1?'':'s'}`;S.hwCopyMsgSess=sessId;await loadStudent(S.selId);R();setTimeout(()=>{S.hwCopyMsg='';S.hwCopyMsgSess=null;R();},3000);});});
-  const ab=document.getElementById('add-s')||document.getElementById('add-first-s');
-  if(ab)ab.addEventListener('click',()=>openSessPicker());
-  document.querySelectorAll('.goals-ta').forEach(ta=>{
-    function autoGrow(){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';}
-    autoGrow();
-    ta.addEventListener('input',autoGrow);
-    ta.addEventListener('blur',async()=>{
-      const lines=ta.value.split('\n').map(l=>l.trim()).filter(l=>l);
-      const sessId=ta.dataset.goals;
-      await db.from('session_goals').delete().eq('session_id',sessId);
-      for(let i=0;i<lines.length;i++){
-        await db.from('session_goals').insert({session_id:sessId,goal_text:lines[i],sort_order:i});
-      }
-      await loadStudent(S.selId);showSaved(true);
-    });
-  });
+    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
+  }
+  wire();
 }
 
+/* ===================== EVENT BINDING ===================== */
+function bind(){
+  const so=document.getElementById('so');if(so)so.addEventListener('click',doLogout);
+  const lb=document.getElementById('lb');if(lb)lb.addEventListener('click',doLogin);
+  const lp=document.getElementById('lp');if(lp)lp.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  const fp=document.getElementById('fp');if(fp)fp.addEventListener('click',async e=>{
+    e.preventDefault();
+    const em=document.getElementById('le').value.trim();
+    if(!em){S.loginErr='Enter your email first, then click Forgot password';R();return;}
+    await db.auth.resetPasswordForEmail(em,{redirectTo:window.location.origin+'/roadmap.html'});
+    S.loginErr='Password reset link sent. Check your inbox.';R();
+  });
+
+  const wsBack=document.getElementById('ws-back');
+  if(wsBack)wsBack.addEventListener('click',()=>{S.wsView=null;R();});
+
+  document.querySelectorAll('.sb-item').forEach(el=>el.addEventListener('click',async()=>{
+    S.selId=el.dataset.sid;S.exSess=-1;S.wsView=null;
+    await loadStudent(S.selId);R();
+  }));
+  const at=document.getElementById('arch-tog');
+  if(at)at.addEventListener('click',()=>{S.archiveOpen=!S.archiveOpen;R();});
+  document.querySelectorAll('[data-restore]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    await db.from('students').update({status:'active'}).eq('id',b.dataset.restore);
+    await loadUser();
+  }));
+  const ae=document.getElementById('add-email');
+  if(ae)ae.addEventListener('input',()=>{S.addEmail=ae.value;});
+  const atl=document.getElementById('add-tpl');
+  if(atl)atl.addEventListener('change',()=>{S.addTpl=atl.value;});
+  const ab=document.getElementById('add-btn');
+  if(ab)ab.addEventListener('click',addStudent);
+  const tfs=document.getElementById('tf-sel');
+  if(tfs)tfs.addEventListener('change',async()=>{
+    const{error}=await db.from('students').update({time_factor:tfs.value}).eq('id',S.student.id);
+    S.student.time_factor=tfs.value;showSaved(!error);
+  });
+
+  /* expand/collapse sessions — ignore clicks on interactive elements */
+  document.querySelectorAll('[data-tog]').forEach(el=>el.addEventListener('click',e=>{
+    if(e.target.closest('.ed,.ed-inp,.ed-ta,.reorder-btn,.hw-reorder,.tc-btn,.rm-btn,input,select,textarea,a,button'))return;
+    const i=parseInt(el.dataset.tog);
+    S.exSess=S.exSess===i?-1:i;R();
+  }));
+
+  /* session reorder arrows (tutor) */
+  document.querySelectorAll('[data-smv]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    if(b.disabled)return;
+    const i=parseInt(b.dataset.ssi);
+    const j=b.dataset.smv==='up'?i-1:i+1;
+    if(j<0||j>=S.sessions.length)return;
+    const ordered=[...S.sessions];
+    const tmp=ordered[i];ordered[i]=ordered[j];ordered[j]=tmp;
+    const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
+    let err=null;
+    for(let k=0;k<ordered.length;k++){
+      const r=await db.from('sessions').update({session_number:base+k}).eq('id',ordered[k].id);
+      if(r.error)err=r.error;
+    }
+    if(S.exSess===i)S.exSess=j;else if(S.exSess===j)S.exSess=i;
+    await loadStudent(S.selId);R();showSaved(!err);
+  }));
+
+  /* session drag & drop (desktop bonus) */
+  if(S.isTutor){
+    let dragIdx=null;
+    document.querySelectorAll('.sess[draggable="true"]').forEach(el=>{
+      el.addEventListener('dragstart',()=>{dragIdx=parseInt(el.dataset.si);el.classList.add('dragging');});
+      el.addEventListener('dragend',()=>{el.classList.remove('dragging');document.querySelectorAll('.sess').forEach(x=>x.classList.remove('drag-over-above','drag-over-below'));});
+      el.addEventListener('dragover',e=>{
+        e.preventDefault();
+        const ti=parseInt(el.dataset.si);
+        if(ti===dragIdx)return;
+        el.classList.toggle('drag-over-above',ti<dragIdx);
+        el.classList.toggle('drag-over-below',ti>dragIdx);
+      });
+      el.addEventListener('dragleave',()=>el.classList.remove('drag-over-above','drag-over-below'));
+      el.addEventListener('drop',async e=>{
+        e.preventDefault();
+        const ti=parseInt(el.dataset.si);
+        if(dragIdx===null||ti===dragIdx)return;
+        const ordered=[...S.sessions];
+        const[m]=ordered.splice(dragIdx,1);
+        ordered.splice(ti,0,m);
+        const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
+        let err=null;
+        for(let k=0;k<ordered.length;k++){
+          const r=await db.from('sessions').update({session_number:base+k}).eq('id',ordered[k].id);
+          if(r.error)err=r.error;
+        }
+        dragIdx=null;
+        await loadStudent(S.selId);R();showSaved(!err);
+      });
+    });
+  }
+
+  /* tutor controls */
+  document.querySelectorAll('[data-cyc]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const s=S.sessions[parseInt(b.dataset.cyc)];
+    const next=s.status==='upcoming'?'completed':s.status==='completed'?'locked':'upcoming';
+    const{error}=await db.from('sessions').update({status:next}).eq('id',s.id);
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-delsess]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    if(!confirm('Delete this session and all its goals/homework?'))return;
+    const s=S.sessions[parseInt(b.dataset.delsess)];
+    await db.from('session_goals').delete().eq('session_id',s.id);
+    await db.from('homework').delete().eq('session_id',s.id);
+    const{error}=await db.from('sessions').delete().eq('id',s.id);
+    S.exSess=-1;
+    await syncPackage();
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-copyhw]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const i=parseInt(b.dataset.copyhw);
+    const s=S.sessions[i],prev=S.sessions[i-1];
+    if(!prev)return;
+    const hws=(prev.homework||[]);
+    if(hws.length===0){S.hwCopyMsg='Previous session has no homework';S.hwCopyMsgSess=i;R();return;}
+    const cur=(s.homework||[]);
+    let sortBase=cur.length>0?Math.max(...cur.map(h=>h.sort_order||0))+1:0;
+    let err=null;
+    for(const h of hws){
+      const r=await db.from('homework').insert({session_id:s.id,label:h.label,hw_type:h.hw_type||'drill',description:h.description||null,sort_order:sortBase++});
+      if(r.error)err=r.error;
+    }
+    S.hwCopyMsg='';S.hwCopyMsgSess=null;
+    await loadStudent(S.selId);R();showSaved(!err);
+  }));
+
+  /* goals */
+  document.querySelectorAll('[data-addgoal]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const sid=b.dataset.addgoal;
+    const sess=S.sessions.find(x=>x.id===sid);
+    const so2=(sess&&sess.goals&&sess.goals.length>0)?Math.max(...sess.goals.map(g=>g.sort_order||0))+1:0;
+    const{error}=await db.from('session_goals').insert({session_id:sid,goal_text:'New goal — click to edit',sort_order:so2});
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-delgoal]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const{error}=await db.from('session_goals').delete().eq('id',b.dataset.delgoal);
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+
+  /* homework */
+  document.querySelectorAll('[data-addhw]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();openPicker(b.dataset.addhw);
+  }));
+  const addSess=document.getElementById('add-sess');
+  if(addSess)addSess.addEventListener('click',openSessPicker);
+  document.querySelectorAll('[data-delhw]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    if(!confirm('Delete this homework item?'))return;
+    const{error}=await db.from('homework').delete().eq('id',b.dataset.delhw);
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-hwcb]').forEach(cb=>cb.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const id=cb.dataset.hwcb;
+    let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
+    if(!hw)return;
+    const{error}=await db.from('homework').update({completed:!hw.completed}).eq('id',id);
+    hw.completed=!hw.completed;R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-stepcb]').forEach(cb=>cb.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const id=cb.dataset.stepcb,line=cb.dataset.stepline;
+    let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
+    if(!hw)return;
+    const comps=getStepCompletions(hw);
+    comps[line]=!comps[line];
+    hw.step_completions=JSON.stringify(comps);
+    const{error}=await db.from('homework').update({step_completions:hw.step_completions}).eq('id',id);
+    R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-hmv]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    if(b.disabled)return;
+    const sess=S.sessions.find(x=>x.id===b.dataset.hsess);
+    if(!sess)return;
+    const hws=[...(sess.homework||[])];
+    const i=parseInt(b.dataset.hwi);
+    const j=b.dataset.hmv==='up'?i-1:i+1;
+    if(j<0||j>=hws.length)return;
+    const tmp=hws[i];hws[i]=hws[j];hws[j]=tmp;
+    let err=null;
+    for(let k=0;k<hws.length;k++){
+      const r=await db.from('homework').update({sort_order:k}).eq('id',hws[k].id);
+      if(r.error)err=r.error;
+    }
+    await loadStudent(S.selId);R();showSaved(!err);
+  }));
+
+  /* homework label + steps editing (tutor) */
+  document.querySelectorAll('[data-hwlabel]').forEach(el=>el.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(el.querySelector('input'))return;
+    const id=el.dataset.hwlabel;
+    let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
+    if(!hw)return;
+    const cur=hw.label;
+    el.innerHTML=`<input class="hw-st-inp" value="${esc(cur)}">`;
+    const inp=el.querySelector('input');inp.focus();inp.select();
+    const save=async()=>{
+      const nv=inp.value.trim()||cur;
+      const{error}=await db.from('homework').update({label:nv}).eq('id',id);
+      hw.label=nv;R();showSaved(!error);
+    };
+    inp.addEventListener('blur',save);
+    inp.addEventListener('keydown',ev=>{if(ev.key==='Enter')inp.blur();if(ev.key==='Escape'){inp.value=cur;inp.blur();}});
+  }));
+  document.querySelectorAll('[data-edithw]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();S.hwEditing=b.dataset.edithw;R();
+    const ta=document.getElementById('hw-edit-ta');
+    if(ta){ta.style.height='auto';ta.style.height=ta.scrollHeight+'px';ta.focus();}
+  }));
+  document.querySelectorAll('[data-savehwdesc]').forEach(b=>b.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const ta=document.getElementById('hw-edit-ta');
+    if(!ta)return;
+    const{error}=await db.from('homework').update({description:ta.value}).eq('id',b.dataset.savehwdesc);
+    S.hwEditing=null;
+    await loadStudent(S.selId);R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-cancelhwdesc]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();S.hwEditing=null;R();
+  }));
+
+  /* inline editable fields */
+  document.querySelectorAll('.ed').forEach(el=>el.addEventListener('click',e=>{
+    e.stopPropagation();startEd(el);
+  }));
+
+  /* worksheet open + entries */
+  document.querySelectorAll('[data-openws]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    S.wsView={hwId:b.dataset.openws,type:b.dataset.wstype,sessId:b.dataset.wssess};
+    R();window.scrollTo(0,0);
+  }));
+  document.querySelectorAll('[data-wsadd]').forEach(b=>b.addEventListener('click',()=>addWsEntry(b.dataset.wsadd,b.dataset.wsaddtype)));
+  document.querySelectorAll('[data-delentry]').forEach(b=>b.addEventListener('click',async()=>{
+    const{error}=await db.from('worksheet_entries').delete().eq('id',b.dataset.delentry);
+    await reloadWsEntries();R();showSaved(!error);
+  }));
+  document.querySelectorAll('[data-wsfield]').forEach(ta=>ta.addEventListener('blur',()=>saveWsField(ta.dataset.wsfield,ta.dataset.wsf,ta.value)));
+  document.querySelectorAll('[data-wsinp]').forEach(inp=>inp.addEventListener('blur',async()=>{
+    await saveWsField(inp.dataset.wsinp,inp.dataset.wsf,inp.value);
+    if(S.wsView&&(inp.dataset.wsf==='time'||inp.dataset.wsf==='question_num')){R();}
+  }));
+  document.querySelectorAll('[data-wsdrop]').forEach(sel=>sel.addEventListener('change',async()=>{
+    await saveWsField(sel.dataset.wsdrop,sel.dataset.wsf,sel.value);R();
+  }));
+  document.querySelectorAll('[data-wstog]').forEach(b=>b.addEventListener('click',()=>saveWsToggle(b.dataset.wstog,b.dataset.wsf,b.dataset.wsv==='true')));
+  document.querySelectorAll('[data-wsmeta]').forEach(b=>b.addEventListener('click',()=>saveMetaTag(b.dataset.wsmeta,b.dataset.wsf,b.dataset.wsv)));
+  document.querySelectorAll('[data-qtac]').forEach(b=>b.addEventListener('click',async()=>{
+    const mode=b.dataset.acmode;
+    const all=Object.values(S.wsEntries).flat();
+    const e=all.find(x=>x.id===b.dataset.qtac);
+    const cur=e&&e.data&&e.data.ac&&e.data.ac[b.dataset.letter]?e.data.ac[b.dataset.letter].state:'';
+    let next;
+    if(mode==='explain')next=cur===''?'correct':cur==='correct'?'wrong':'';
+    else if(mode==='sep')next=cur===''?'skip':cur==='skip'?'elim':cur==='elim'?'pick':'';
+    else next=cur===''?'keep':cur==='keep'?'elim':'';
+    await saveQtAc(b.dataset.qtac,b.dataset.letter,{state:next});R();
+  }));
+  document.querySelectorAll('[data-qtacinp]').forEach(inp=>inp.addEventListener('blur',()=>{
+    const patch={};patch[inp.dataset.acf]=inp.value;
+    saveQtAc(inp.dataset.qtacinp,inp.dataset.letter,patch);
+  }));
+  document.querySelectorAll('[data-claiminp]').forEach(inp=>inp.addEventListener('blur',()=>saveClaimField(inp.dataset.claiminp,parseInt(inp.dataset.ci),inp.value)));
+  document.querySelectorAll('[data-addclaim]').forEach(b=>b.addEventListener('click',()=>addClaimToEntry(b.dataset.addclaim)));
+  document.querySelectorAll('[data-itafield]').forEach(el=>el.addEventListener('blur',()=>saveItaField(el.dataset.itafield,el.dataset.wsf,el.value)));
+  document.querySelectorAll('[data-itacb]').forEach(b=>b.addEventListener('click',async()=>{
+    const id=b.dataset.itacb;
+    const all=Object.values(S.wsEntries).flat();
+    const e=all.find(x=>x.id===id);
+    const cur=e&&e.data?e.data[b.dataset.wsf]===true:false;
+    await saveItaField(id,b.dataset.wsf,!cur);R();
+  }));
+  document.querySelectorAll('[data-itadec]').forEach(b=>b.addEventListener('click',async()=>{
+    await saveItaField(b.dataset.itadec,'decision',b.dataset.wsv);R();
+  }));
+}
+
+/* ===================== INLINE EDITING ===================== */
 function startEd(el){
-  const eid=el.dataset.eid,ml=el.dataset.ml==='true';
-  const isHwDesc=el.classList.contains('hw-desc');
-  const isDate=eid.endsWith('-session_date')||eid.endsWith('-test_date');
-  const cur=el.textContent==='Click to add...'?'':el.textContent;
-  if(ml){const cls=isHwDesc?'hw-desc-edit':'ed-ta';el.outerHTML=`<textarea class="${cls}" data-eid="${eid}">${esc(cur)}</textarea>`;}
-  else if(isDate){const today=new Date().toISOString().split('T')[0];const raw=el.dataset.raw||'';const dateVal=raw&&raw.match(/\d{4}-\d{2}-\d{2}/)?raw:today;el.outerHTML=`<input class="ed-inp" type="date" data-eid="${eid}" value="${dateVal}">`;}
-  else el.outerHTML=`<input class="ed-inp" data-eid="${eid}" value="${esc(cur).replace(/"/g,'&quot;')}">`;
-  const inp=document.querySelector(`[data-eid="${eid}"]`);inp.focus();if(isDate)try{inp.showPicker();}catch(e){}
-  inp.addEventListener('blur',()=>saveEd(eid,inp.value));
-  inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!ml)saveEd(eid,inp.value);if(e.key==='Escape'){loadStudent(S.selId).then(R);}});
-  if(isDate)inp.addEventListener('change',()=>saveEd(eid,inp.value));
+  if(el.querySelector('.ed-inp,.ed-ta'))return;
+  const eid=el.dataset.eid;
+  const ml=el.dataset.ml==='true';
+  const isDate=eid.endsWith(':session_date');
+  const raw=el.dataset.raw;
+  const ph=el.querySelector('.ph');
+  const cur=ph?'':(raw!==undefined?raw:el.textContent);
+  let inp;
+  if(ml){inp=document.createElement('textarea');inp.className='ed-ta';inp.value=cur;}
+  else{inp=document.createElement('input');inp.className='ed-inp';if(isDate)inp.type='date';inp.value=cur;}
+  el.innerHTML='';el.appendChild(inp);inp.focus();
+  if(inp.select&&!isDate)inp.select();
+  if(ml){inp.style.height='auto';inp.style.height=Math.max(60,inp.scrollHeight)+'px';}
+  let saved=false;
+  const save=()=>{if(saved)return;saved=true;saveEd(eid,inp.value.trim());};
+  inp.addEventListener('blur',save);
+  inp.addEventListener('keydown',ev=>{
+    if(ev.key==='Enter'&&!ml){ev.preventDefault();inp.blur();}
+    if(ev.key==='Escape'){saved=true;R();}
+  });
 }
 
 async function saveEd(eid,val){
-  const first=eid.indexOf('-');const last=eid.lastIndexOf('-');
-  const type=eid.substring(0,first);const field=eid.substring(last+1);const mid=eid.substring(first+1,last);
-  let err=null;
-  if(type==='student'){if(field==='name'){const r=await db.from('profiles').update({first_name:val}).eq('id',S.student.profile_id);err=r.error;}else{const v=field==='sessions_bought'?parseInt(val)||0:val;const r=await db.from('students').update({[field]:v}).eq('id',S.selId);err=r.error;}}
-  else if(type==='session'){const r=await db.from('sessions').update({[field]:val}).eq('id',mid);err=r.error;}
-  else if(type==='goal'){const r=await db.from('session_goals').update({[field]:val}).eq('id',mid);err=r.error;}
-  else if(type==='hw'){const r=await db.from('homework').update({[field]:val}).eq('id',mid);err=r.error;}
-  await loadStudent(S.selId);R();showSaved(!err);
+  const parts=eid.split(':');
+  let error=null;
+  if(parts[0]==='st'){
+    const field=parts[1];
+    const upd={};upd[field]=field==='sessions_bought'?(parseInt(val)||0):(val||null);
+    ({error}=await db.from('students').update(upd).eq('id',S.student.id));
+    S.student[field]=upd[field];
+  }else if(parts[0]==='sess'){
+    const id=parts[1],field=parts[2];
+    const upd={};upd[field]=val||null;
+    ({error}=await db.from('sessions').update(upd).eq('id',id));
+    const s=S.sessions.find(x=>x.id===id);if(s)s[field]=val||null;
+  }else if(parts[0]==='goal'){
+    const id=parts[1];
+    ({error}=await db.from('session_goals').update({goal_text:val}).eq('id',id));
+    for(const s of S.sessions){const g=(s.goals||[]).find(x=>x.id===id);if(g)g.goal_text=val;}
+  }
+  R();showSaved(!error);
 }
 
-async function saveWsField(hwId,entryNum,type,field,value){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type===type);
-  const curData=existing?{...existing.data}:{};curData[field]=value;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:type,data:curData});err=r.error;}
-  await reloadWsEntries(hwId);showSaved(!err);
+/* ===================== WORKSHEET DATA ===================== */
+async function saveWsField(entryId,field,val){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};d[field]=val;e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  showSaved(!error);
 }
 
-async function saveWsToggle(hwId,entryNum,type,field,val){
-  const bval=val==='true'?true:false;await saveWsField(hwId,entryNum,type,field,bval);if(S.wsView)R();
+async function saveWsToggle(entryId,field,val){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};
+  d[field]=d[field]===val?null:val;
+  e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  R();showSaved(!error);
 }
 
-async function saveAcField(hwId,entryNum,letter,fieldName,value){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='blind_review');
-  const curData=existing?{...existing.data}:{};
-  if(!curData.answer_choices)curData.answer_choices={};
-  if(!curData.answer_choices[letter])curData.answer_choices[letter]={};
-  curData.answer_choices[letter][fieldName]=value;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'blind_review',data:curData});err=r.error;}
-  await reloadWsEntries(hwId);R();showSaved(!err);
+async function saveMetaTag(entryId,field,val){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};
+  d[field]=d[field]===val?null:val;
+  e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  R();showSaved(!error);
 }
 
-async function saveClaimField(hwId,entryNum,claimIdx,value){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
-  const curData=existing?{...existing.data}:{};
-  const claims=[...(curData.claims||[])];while(claims.length<=claimIdx)claims.push('');claims[claimIdx]=value;curData.claims=claims;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});err=r.error;}
-  await reloadWsEntries(hwId);showSaved(!err);
+async function saveClaimField(entryId,ci,val){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};
+  const claims=Array.isArray(d.claims)?d.claims:[''];
+  claims[ci]=val;d.claims=claims;e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  showSaved(!error);
 }
 
-async function addClaimToEntry(hwId,entryNum){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
-  const curData=existing?{...existing.data}:{};const claims=[...(curData.claims||[]),''];curData.claims=claims;
-  if(existing){await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);}
-  else{await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});}
-  await reloadWsEntries(hwId);R();
+async function addClaimToEntry(entryId){
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};
+  const claims=Array.isArray(d.claims)?d.claims:[''];
+  claims.push('');d.claims=claims;e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  R();showSaved(!error);
 }
 
-async function reloadWsEntries(hwId){
-  const{data:wse}=await db.from('worksheet_entries').select('*').eq('homework_id',hwId).order('entry_number');
-  S.wsEntries[hwId]=wse||[];
+async function reloadWsEntries(){
+  if(!S.wsView)return;
+  const{data:wse}=await db.from('worksheet_entries').select('*').eq('homework_id',S.wsView.hwId).order('entry_number');
+  S.wsEntries[S.wsView.hwId]=wse||[];
 }
 
-async function addWsEntry(hwId,type,isUnflagged){
-  const arr=S.wsEntries[hwId]||[];const relevant=arr.filter(e=>e.entry_type===type);
-  const nextNum=relevant.length>0?Math.max(...relevant.map(e=>e.entry_number))+1:1;
-  const initData={};
-  if(isUnflagged==='true'||isUnflagged===true)initData.is_unflagged=true;
-  if(type==='rc_claim_tracking')initData.claims=[''];
-  await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:nextNum,entry_type:type,data:initData});
-  await reloadWsEntries(hwId);R();
+async function addWsEntry(hwId,type){
+  const cur=(S.wsEntries[hwId]||[]).filter(e=>e.entry_type===type);
+  const n=cur.length>0?Math.max(...cur.map(e=>e.entry_number||0))+1:1;
+  const data=type==='rc_claim_tracking'?{claims:['']}:{};
+  const{error}=await db.from('worksheet_entries').insert({homework_id:hwId,entry_type:type,entry_number:n,data:data});
+  await reloadWsEntries();R();showSaved(!error);
 }
 
-async function saveMetaTag(hwId,entryNum,field,val){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='rc_claim_tracking');
-  const curData=existing?{...existing.data}:{};
-  curData[field]=curData[field]===val?null:val;curData.is_meta=true;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'rc_claim_tracking',data:curData});err=r.error;}
-  await reloadWsEntries(hwId);R();showSaved(!err);
+async function saveItaField(entryId,field,val){
+  if(String(entryId).indexOf('new:')===0){
+    const hwId=String(entryId).substring(4);
+    const data={is_main:true};data[field]=val;
+    const{error}=await db.from('worksheet_entries').insert({homework_id:hwId,entry_type:'insight_to_action',entry_number:1,data:data});
+    if(S.wsView)await reloadWsEntries();
+    showSaved(!error);
+    return;
+  }
+  const all=Object.values(S.wsEntries).flat();
+  const e=all.find(x=>x.id===entryId);
+  if(!e)return;
+  const d=e.data||{};d[field]=val;d.is_main=true;e.data=d;
+  const{error}=await db.from('worksheet_entries').update({data:d}).eq('id',entryId);
+  showSaved(!error);
 }
 
-async function saveItaField(hwId,entryNum,field,value){
-  const arr=S.wsEntries[hwId]||[];
-  const existing=arr.find(e=>e.entry_number===entryNum&&e.entry_type==='insight_to_action');
-  const curData=existing?{...existing.data}:{is_main:true};
-  curData[field]=value;curData.is_main=true;
-  let err=null;
-  if(existing){const r=await db.from('worksheet_entries').update({data:curData,updated_at:new Date().toISOString()}).eq('id',existing.id);err=r.error;}
-  else{const r=await db.from('worksheet_entries').insert({homework_id:hwId,entry_number:entryNum,entry_type:'insight_to_action',data:curData});err=r.error;}
-  await reloadWsEntries(hwId);showSaved(!err);
+/* ===================== INIT ===================== */
+async function init(){
+  R();
+  const{data:{session}}=await db.auth.getSession();
+  if(session){await loadUser();}
+  else{S.view='login';R();}
 }
-
-async function init(){const{data:{session}}=await db.auth.getSession();if(session)await loadUser();else{S.view='login';R();}}
 init();
 </script>
 </body>
