@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEDARION · Admin · Drills</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --cream: #FAF8F5; --cream-warm: #FDF5F1;
+    --orange: #C65D3B; --orange-dark: #A34A2D;
+    --ink: #2B2B2B; --ink-soft: #6B6560; --line: #E8E2DB;
+    --green: #3E7A52; --red: #A33B3B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--line); background: #fff; }
+  .logo { font-family: Georgia, serif; font-size: 18px; letter-spacing: 1px; }
+  .logo .v { color: var(--orange); }
+  .logo .crumb { color: var(--ink-soft); font-family: -apple-system, sans-serif; font-size: 13px; letter-spacing: 0; margin-left: 10px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 20px 90px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
+  h1 { font-family: Georgia, serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 6px; }
+  input[type=email], input[type=password], input[type=text], input[type=number] {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; background: var(--cream);
+  }
+  select { padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: #fff; width: 100%; }
+  input:focus, select:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--orange); background: var(--orange); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn:hover { background: var(--orange-dark); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+  .matchbar { display: flex; align-items: center; gap: 10px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 16px 0; font-size: 14px; }
+  .matchbar .n { font-weight: 700; color: var(--orange-dark); }
+  .checkrow { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-top: 14px; }
+  .hidden { display: none; }
+  #authError, #buildError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .ok { color: var(--green); font-size: 14px; margin-top: 10px; }
+  .drillrow { display: flex; justify-content: space-between; align-items: center; padding: 10px 4px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .drillrow .meta { font-size: 12px; color: var(--ink-soft); }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); }
+  .pill.completed { border-color: var(--green); color: var(--green); }
+  .pill.in_progress { border-color: var(--orange); color: var(--orange-dark); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><span class="v">V</span>EDARION<span class="crumb">/ admin / drills</span></div>
+</div>
+
+<div class="wrap">
+
+  <div id="authView" class="card" style="max-width: 440px; margin: 50px auto;">
+    <h1>Sign in</h1>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username">
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password">
+    <div id="authError"></div>
+    <button class="btn" id="signInBtn" style="margin-top:14px;">Sign in</button>
+  </div>
+
+  <div id="builderView" class="hidden">
+
+    <div class="card">
+      <h1>New drill</h1>
+      <div class="grid">
+        <div>
+          <label for="qtypeSelect">Question type</label>
+          <select id="qtypeSelect"></select>
+        </div>
+        <div>
+          <label for="diffSelect">Difficulty</label>
+          <select id="diffSelect"><option value="">Any</option></select>
+        </div>
+        <div>
+          <label for="patternSelect">Pattern</label>
+          <select id="patternSelect"><option value="">Any</option></select>
+        </div>
+      </div>
+
+      <div class="matchbar" id="matchBar">
+        <span>Matching tagged items:</span><span class="n" id="matchCount">—</span>
+        <span id="matchNote" class="sub"></span>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label for="countInput">Questions</label>
+          <input type="number" id="countInput" value="10" min="1" max="50">
+        </div>
+        <div>
+          <label for="studentSelect">Assign to</label>
+          <select id="studentSelect"></select>
+        </div>
+        <div>
+          <label for="timedSelect">Timing</label>
+          <select id="timedSelect">
+            <option value="untimed">Untimed</option>
+            <option value="timed">Timed (1:25 per question)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="checkrow">
+        <input type="checkbox" id="revealCheck">
+        <label for="revealCheck" style="margin:0; font-weight:400;">Reveal correct answers to student after each question (off = review in session)</label>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; margin-top:18px;">
+        <button class="btn" id="createBtn">Create and assign</button>
+      </div>
+      <div id="buildError"></div>
+      <div id="buildOk" class="ok"></div>
+    </div>
+
+    <div class="card">
+      <h2>Existing drills</h2>
+      <div id="drillList"><p class="sub">Loading…</p></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fqshijwiushtrncinjif.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+
+let dims = [];        // dimensions with values
+let students = [];    // {id, name}
+let matchedItems = []; // [{item_id, module_id}]
+
+$('signInBtn').addEventListener('click', signIn);
+$('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+
+async function signIn() {
+  $('authError').textContent = '';
+  const { error } = await db.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+  if (error) { $('authError').textContent = error.message; return; }
+  await verifyAdmin();
+}
+
+async function checkSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) await verifyAdmin();
+}
+
+async function verifyAdmin() {
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return;
+  const { data: p } = await db.from('profiles').select('role').eq('id', user.id).single();
+  if (!p || !['owner','admin'].includes(p.role)) {
+    $('authError').textContent = 'Admin access required.';
+    await db.auth.signOut(); return;
+  }
+  $('authView').classList.add('hidden');
+  $('builderView').classList.remove('hidden');
+  await Promise.all([loadDims(), loadStudents()]);
+  await refreshMatch();
+  loadDrills();
+}
+
+async function loadDims() {
+  const { data: d } = await db.from('tag_dimensions').select('id, name, allows_multiple').order('display_order');
+  const { data: v } = await db.from('tag_values').select('id, dimension_id, value').order('display_order');
+  dims = (d || []).map(x => ({ ...x, values: (v || []).filter(y => y.dimension_id === x.id) }));
+
+  fillSelect('qtypeSelect', dimByName('question_type'), false);
+  fillSelect('diffSelect', dimByName('difficulty'), true);
+  fillSelect('patternSelect', dimByName('pattern'), true);
+}
+
+function dimByName(n) { return dims.find(d => d.name === n); }
+
+function fillSelect(id, dim, withAny) {
+  const sel = $(id);
+  sel.innerHTML = withAny ? '<option value="">Any</option>' : '';
+  (dim?.values || []).forEach(v => {
+    const o = document.createElement('option');
+    o.value = v.id; o.textContent = v.value;
+    sel.appendChild(o);
+  });
+}
+
+async function loadStudents() {
+  const { data } = await db.from('students')
+    .select('id, status, profiles:profile_id ( first_name, email )')
+    .order('created_at');
+  students = (data || []).map(s => ({
+    id: s.id,
+    name: s.profiles?.first_name || s.profiles?.email || s.id.slice(0, 8)
+  }));
+  const sel = $('studentSelect');
+  sel.innerHTML = '';
+  students.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s.id; o.textContent = s.name;
+    sel.appendChild(o);
+  });
+}
+
+// ---------- MATCH COUNT ----------
+
+['qtypeSelect','diffSelect','patternSelect','studentSelect'].forEach(id =>
+  $(id).addEventListener('change', refreshMatch));
+
+async function tagItemIds(valueId) {
+  const out = new Set();
+  let from = 0;
+  while (true) {
+    const { data } = await db.from('item_tags')
+      .select('item_id').eq('tag_value_id', valueId).range(from, from + 999);
+    (data || []).forEach(r => out.add(r.item_id));
+    if (!data || data.length < 1000) break;
+    from += 1000;
+  }
+  return out;
+}
+
+async function refreshMatch() {
+  const qt = $('qtypeSelect').value;
+  $('matchCount').textContent = '…';
+  $('matchNote').textContent = '';
+  matchedItems = [];
+  if (!qt) { $('matchCount').textContent = '0'; return; }
+
+  let ids = await tagItemIds(qt);
+  const diff = $('diffSelect').value;
+  const pat = $('patternSelect').value;
+  if (diff) { const d = await tagItemIds(diff); ids = new Set([...ids].filter(x => d.has(x))); }
+  if (pat)  { const p = await tagItemIds(pat);  ids = new Set([...ids].filter(x => p.has(x))); }
+
+  // exclude items already assigned to the selected student
+  const studentId = $('studentSelect').value;
+  let excluded = new Set();
+  if (studentId && ids.size) {
+    const { data: prior } = await db.from('drill_items')
+      .select('item_id, drills!inner(student_id)')
+      .eq('drills.student_id', studentId);
+    (prior || []).forEach(r => excluded.add(r.item_id));
+  }
+  const usable = [...ids].filter(x => !excluded.has(x));
+
+  if (usable.length) {
+    const { data: rows } = await db.from('lsac_items')
+      .select('item_id, module_id').in('item_id', usable.slice(0, 1000));
+    matchedItems = rows || [];
+  }
+  $('matchCount').textContent = String(matchedItems.length);
+  if (excluded.size) $('matchNote').textContent = `(${excluded.size} excluded — already assigned to this student)`;
+}
+
+// ---------- CREATE ----------
+
+$('createBtn').addEventListener('click', createDrill);
+
+async function createDrill() {
+  $('buildError').textContent = ''; $('buildOk').textContent = '';
+  const qtSel = $('qtypeSelect');
+  const qtName = qtSel.options[qtSel.selectedIndex]?.textContent || 'Drill';
+  const count = Math.max(1, Math.min(50, parseInt($('countInput').value) || 10));
+  const studentId = $('studentSelect').value;
+  const timed = $('timedSelect').value === 'timed';
+
+  if (!studentId) { $('buildError').textContent = 'Pick a student.'; return; }
+  if (matchedItems.length < count) {
+    $('buildError').textContent = `Only ${matchedItems.length} matching items available — lower the question count or tag more items.`;
+    return;
+  }
+
+  const pool = matchedItems.slice().sort((a, b) => b.module_id.localeCompare(a.module_id));
+  const chosen = pool.slice(0, count);
+
+  const { data: drill, error: dErr } = await db.from('drills').insert({
+    student_id: studentId,
+    created_by: 'tutor',
+    title: `${qtName} drill`,
+    filters: {
+      question_type: qtName,
+      difficulty: $('diffSelect').options[$('diffSelect').selectedIndex]?.textContent || 'Any',
+      pattern: $('patternSelect').options[$('patternSelect').selectedIndex]?.textContent || 'Any'
+    },
+    question_count: count,
+    is_timed: timed,
+    time_limit_seconds: timed ? count * 85 : null,
+    reveal_answers: $('revealCheck').checked
+  }).select().single();
+  if (dErr) { $('buildError').textContent = dErr.message; return; }
+
+  const rows = chosen.map((it, i) => ({
+    drill_id: drill.id, module_id: it.module_id, item_id: it.item_id, position: i + 1
+  }));
+  const { error: iErr } = await db.from('drill_items').insert(rows);
+  if (iErr) { $('buildError').textContent = iErr.message; return; }
+
+  const sName = students.find(s => s.id === studentId)?.name || 'student';
+  $('buildOk').textContent = `Created "${qtName} drill" (${count} questions) for ${sName}.`;
+  refreshMatch();
+  loadDrills();
+}
+
+// ---------- LIST ----------
+
+async function loadDrills() {
+  const { data } = await db.from('drills')
+    .select('id, title, question_count, status, created_by, created_at, students ( id, profiles:profile_id ( first_name ) )')
+    .order('created_at', { ascending: false }).limit(30);
+  const list = $('drillList');
+  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet.</p>'; return; }
+  list.innerHTML = '';
+  data.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'drillrow';
+    const who = d.students?.profiles?.first_name || '—';
+    const when = new Date(d.created_at).toLocaleDateString();
+    row.innerHTML = `
+      <div>
+        <div>${escapeHtml(d.title)} · ${d.question_count} questions</div>
+        <div class="meta">${escapeHtml(who)} · ${d.created_by === 'student' ? 'self-created' : 'assigned'} · ${when}</div>
+      </div>
+      <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+checkSession();
+</script>
+</body>
+</html>

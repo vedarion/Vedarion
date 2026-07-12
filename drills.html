@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEDARION · Drills</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --cream: #FAF8F5; --cream-warm: #FDF5F1;
+    --orange: #C65D3B; --orange-dark: #A34A2D;
+    --ink: #2B2B2B; --ink-soft: #6B6560; --line: #E8E2DB;
+    --green: #3E7A52; --red: #A33B3B;
+    --hl-yellow: #FCE9A8; --hl-orange: #F8D3BC; --hl-blue: #CFE3F5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 5; }
+  .logo { font-family: Georgia, serif; font-size: 18px; letter-spacing: 1px; }
+  .logo .v { color: var(--orange); }
+  .topmeta { font-size: 13px; color: var(--ink-soft); display: flex; gap: 14px; align-items: center; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 18px 90px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-bottom: 16px; }
+  h1 { font-family: Georgia, serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+  .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 6px; }
+  input[type=email], input[type=password] { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; background: var(--cream); }
+  select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: #fff; }
+  input:focus, select:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--orange); background: var(--orange); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn:hover { background: var(--orange-dark); }
+  .btn.secondary { background: #fff; color: var(--orange-dark); }
+  .btn.secondary:hover { background: var(--cream-warm); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .hidden { display: none; }
+  #authError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .drillrow { display: flex; justify-content: space-between; align-items: center; padding: 12px 4px; border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer; }
+  .drillrow:hover { background: var(--cream-warm); }
+  .drillrow .meta { font-size: 12px; color: var(--ink-soft); }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); }
+  .pill.completed { border-color: var(--green); color: var(--green); }
+  .pill.in_progress { border-color: var(--orange); color: var(--orange-dark); }
+  .progress { height: 5px; background: var(--cream); border-radius: 3px; margin: 12px 0 16px; overflow: hidden; }
+  .progress > div { height: 100%; width: 0%; background: var(--orange); transition: width 0.2s; }
+  .toolbar { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  .tool { padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-size: 13px; cursor: pointer; }
+  .tool.on { border-color: var(--orange); background: var(--cream-warm); }
+  .swatch { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer; }
+  .swatch.on { outline: 2px solid var(--orange); }
+  .sw-y { background: var(--hl-yellow); } .sw-o { background: var(--hl-orange); } .sw-b { background: var(--hl-blue); }
+  .stimbox { position: relative; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 18px; font-size: 15px; line-height: 1.8; margin-bottom: 16px; overflow: hidden; }
+  .stimbox .wm { position: absolute; left: 0; right: 0; top: 42%; text-align: center; font-size: 13px; color: var(--ink-soft); opacity: 0.28; transform: rotate(-16deg); pointer-events: none; user-select: none; }
+  .stimbox .vmark { position: absolute; right: -24px; bottom: -34px; opacity: 0.05; pointer-events: none; }
+  .stim { margin-bottom: 14px; position: relative; }
+  .stem { font-weight: 600; position: relative; }
+  mark { border-radius: 2px; padding: 0 1px; cursor: pointer; }
+  mark.hl-y { background: var(--hl-yellow); } mark.hl-o { background: var(--hl-orange); } mark.hl-b { background: var(--hl-blue); }
+  .optrow { display: flex; gap: 8px; align-items: stretch; margin-bottom: 8px; }
+  .optbtn { flex: 1; text-align: left; font-size: 14px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; display: flex; gap: 10px; line-height: 1.5; }
+  .optbtn .letter { font-weight: 700; color: var(--orange-dark); }
+  .optbtn:hover { border-color: var(--orange); }
+  .optbtn.picked { border-color: var(--orange); background: var(--cream-warm); }
+  .optbtn.elim { opacity: 0.38; text-decoration: line-through; }
+  .optbtn.correct { border-color: var(--green); background: #EDF5EF; }
+  .optbtn.wrong { border-color: var(--red); background: #FAEDED; }
+  .elimbtn { border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; padding: 0 12px; font-size: 13px; color: var(--ink-soft); }
+  .elimbtn:hover { border-color: var(--orange); }
+  .playbar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .hint { font-size: 12px; color: var(--ink-soft); }
+  .timer { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .timer.low { color: var(--red); }
+  .feedback { font-size: 14px; margin-top: 12px; min-height: 20px; }
+  .feedback.good { color: var(--green); } .feedback.bad { color: var(--red); }
+  .resultrow { display: flex; justify-content: space-between; padding: 8px 4px; border-bottom: 1px solid var(--line); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><span class="v">V</span>EDARION</div>
+  <div class="topmeta">
+    <span id="whoami"></span>
+    <span id="drillTimer" class="timer hidden"></span>
+    <span id="qCounter"></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- AUTH -->
+  <div id="authView" class="card" style="max-width: 440px; margin: 50px auto;">
+    <h1>Sign in</h1>
+    <p class="sub">Sign in with your VEDARION account to see your drills.</p>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username">
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password">
+    <div id="authError"></div>
+    <button class="btn" id="signInBtn" style="margin-top:14px;">Sign in</button>
+  </div>
+
+  <!-- DRILL LIST -->
+  <div id="listView" class="hidden">
+    <div class="card">
+      <h1>Your drills</h1>
+      <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
+        <label for="previewStudent" style="display:inline; margin-right:8px;">Previewing as:</label>
+        <select id="previewStudent"></select>
+      </div>
+      <div id="drillList" style="margin-top:8px;"><p class="sub">Loading…</p></div>
+    </div>
+  </div>
+
+  <!-- PLAYER -->
+  <div id="playView" class="hidden">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 id="drillTitle"></h1>
+        <button class="btn secondary" id="exitBtn">Exit</button>
+      </div>
+      <div class="progress"><div id="progFill"></div></div>
+
+      <div class="toolbar">
+        <span class="hint">Highlight:</span>
+        <button class="swatch sw-y" data-hl="hl-y" aria-label="Yellow highlighter"></button>
+        <button class="swatch sw-o" data-hl="hl-o" aria-label="Orange highlighter"></button>
+        <button class="swatch sw-b" data-hl="hl-b" aria-label="Blue highlighter"></button>
+        <span class="hint" style="margin-left:6px;">click a highlight to remove it</span>
+        <span style="flex:1;"></span>
+        <button class="tool" id="flagBtn">⚑ Flag for session</button>
+      </div>
+
+      <div class="stimbox" id="stimBox">
+        <span class="wm" id="wmText"></span>
+        <svg class="vmark" viewBox="0 0 24 24" width="150" height="150" aria-hidden="true"><path d="M4 4 L9 4 L12 15 L15 4 L20 4 L14 20 L10 20 Z" fill="#C65D3B"/></svg>
+        <div class="stim" id="stimEl"></div>
+        <div class="stem" id="stemEl"></div>
+      </div>
+
+      <div id="optsEl"></div>
+      <div class="feedback" id="feedback"></div>
+
+      <div class="playbar">
+        <span class="hint" id="posHint"></span>
+        <div style="display:flex; gap:8px;">
+          <button class="btn secondary" id="backBtn">← Back</button>
+          <button class="btn" id="nextBtn">Submit and next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultView" class="hidden">
+    <div class="card">
+      <h1 id="resultTitle">Drill complete</h1>
+      <p class="sub" id="resultSummary"></p>
+      <div id="resultRows" style="margin-top:14px;"></div>
+      <div style="margin-top:18px;">
+        <button class="btn secondary" id="resultBackBtn">Back to drills</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fqshijwiushtrncinjif.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+
+let isAdmin = false;
+let myStudentIds = [];
+let viewingStudentId = null;
+let currentDrill = null;
+let drillItems = [];      // [{module_id, item_id, position, content}]
+let responses = {};       // item_id -> response row
+let qi = 0;
+let picked = null;
+let eliminated = new Set();
+let flagged = false;
+let activeHl = null;
+let itemShownAt = null;
+let drillTimerHandle = null;
+
+// ---------- COPY PROTECTION ----------
+['copy','cut'].forEach(ev => document.addEventListener(ev, e => {
+  if (!$('playView').classList.contains('hidden')) { e.preventDefault(); }
+}));
+document.addEventListener('contextmenu', e => {
+  if (!$('playView').classList.contains('hidden')) e.preventDefault();
+});
+window.addEventListener('beforeprint', () => {
+  if (!$('playView').classList.contains('hidden')) document.body.style.visibility = 'hidden';
+});
+window.addEventListener('afterprint', () => { document.body.style.visibility = ''; });
+
+// ---------- AUTH ----------
+$('signInBtn').addEventListener('click', signIn);
+$('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+
+async function signIn() {
+  $('authError').textContent = '';
+  const { error } = await db.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+  if (error) { $('authError').textContent = error.message; return; }
+  await boot();
+}
+
+async function checkSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) await boot();
+}
+
+async function boot() {
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return;
+  const { data: p } = await db.from('profiles').select('first_name, role').eq('id', user.id).single();
+  isAdmin = p && ['owner','admin'].includes(p.role);
+  $('whoami').textContent = p?.first_name || '';
+
+  const { data: mine } = await db.from('students').select('id').eq('profile_id', user.id);
+  myStudentIds = (mine || []).map(s => s.id);
+
+  $('authView').classList.add('hidden');
+  $('listView').classList.remove('hidden');
+
+  if (isAdmin) {
+    $('adminPickRow').classList.remove('hidden');
+    const { data: all } = await db.from('students')
+      .select('id, profiles:profile_id ( first_name, email )').order('created_at');
+    const sel = $('previewStudent');
+    sel.innerHTML = '';
+    (all || []).forEach(s => {
+      const o = document.createElement('option');
+      o.value = s.id;
+      o.textContent = s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8);
+      sel.appendChild(o);
+    });
+    sel.addEventListener('change', () => { viewingStudentId = sel.value; loadDrillList(); });
+    viewingStudentId = sel.value || null;
+  } else {
+    viewingStudentId = myStudentIds[0] || null;
+  }
+  loadDrillList();
+}
+
+// ---------- DRILL LIST ----------
+async function loadDrillList() {
+  const list = $('drillList');
+  if (!viewingStudentId) { list.innerHTML = '<p class="sub">No student record found for this account.</p>'; return; }
+  const { data, error } = await db.from('drills')
+    .select('id, title, question_count, status, is_timed, reveal_answers, created_by, created_at')
+    .eq('student_id', viewingStudentId)
+    .order('created_at', { ascending: false });
+  if (error) { list.innerHTML = `<p class="sub">${escapeHtml(error.message)}</p>`; return; }
+  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet — your tutor will assign one soon.</p>'; return; }
+  list.innerHTML = '';
+  data.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'drillrow';
+    const when = new Date(d.created_at).toLocaleDateString();
+    row.innerHTML = `
+      <div>
+        <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''}</div>
+        <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by Rahela'} · ${when}</div>
+      </div>
+      <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>`;
+    row.addEventListener('click', () => openDrill(d));
+    list.appendChild(row);
+  });
+}
+
+// ---------- OPEN DRILL ----------
+async function openDrill(drill) {
+  currentDrill = drill;
+  const { data: dis, error } = await db.from('drill_items')
+    .select('module_id, item_id, position')
+    .eq('drill_id', drill.id).order('position');
+  if (error || !dis || !dis.length) { alert('Could not load drill.'); return; }
+
+  const keys = dis.map(d => d.item_id);
+  const { data: contents } = await db.from('lsac_items')
+    .select('module_id, item_id, content').in('item_id', keys);
+  const byKey = {};
+  (contents || []).forEach(c => { byKey[c.module_id + '|' + c.item_id] = c.content; });
+  drillItems = dis.map(d => ({ ...d, content: byKey[d.module_id + '|' + d.item_id] || {} }));
+
+  responses = {};
+  const { data: resp } = await db.from('drill_responses')
+    .select('item_id, module_id, selected_answer, is_correct, flagged, annotations')
+    .eq('drill_id', drill.id);
+  (resp || []).forEach(r => { responses[r.item_id] = r; });
+
+  if (drill.status === 'completed') { showResults(); return; }
+
+  qi = drillItems.findIndex(d => !responses[d.item_id]);
+  if (qi === -1) qi = 0;
+
+  if (drill.status === 'assigned') {
+    await db.from('drills').update({ status: 'in_progress' }).eq('id', drill.id);
+    currentDrill.status = 'in_progress';
+  }
+
+  $('listView').classList.add('hidden');
+  $('resultView').classList.add('hidden');
+  $('playView').classList.remove('hidden');
+  $('drillTitle').textContent = drill.title;
+  $('wmText').textContent = `licensed to ${$('whoami').textContent || 'student'} · VEDARION`;
+
+  startDrillTimer();
+  renderQuestion();
+}
+
+function startDrillTimer() {
+  clearInterval(drillTimerHandle);
+  const t = $('drillTimer');
+  if (!currentDrill.is_timed || !currentDrill.time_limit_seconds) { t.classList.add('hidden'); return; }
+  t.classList.remove('hidden');
+  let remain = currentDrill.time_limit_seconds;
+  const tick = () => {
+    const m = Math.floor(remain / 60), s = remain % 60;
+    t.textContent = `${m}:${String(s).padStart(2,'0')}`;
+    t.classList.toggle('low', remain <= 60);
+    if (remain <= 0) { clearInterval(drillTimerHandle); finishDrill(); return; }
+    remain--;
+  };
+  tick();
+  drillTimerHandle = setInterval(tick, 1000);
+}
+
+// ---------- RENDER QUESTION ----------
+function extractOptions(content) {
+  const raw = content.options;
+  if (!raw) return [];
+  const letters = ['A','B','C','D','E','F'];
+  if (Array.isArray(raw)) {
+    return raw.map((o, i) => {
+      if (typeof o === 'string') return { letter: letters[i], text: o };
+      const text = o.optionContent ?? o.text ?? o.optionText ?? o.value ?? o.content ?? '';
+      const letter = o.optionLetter ?? o.letter ?? o.label ?? letters[i];
+      return { letter, text: String(text) };
+    });
+  }
+  return Object.entries(raw).map(([k, v]) => ({ letter: k, text: String(v) }));
+}
+
+function renderQuestion() {
+  const it = drillItems[qi];
+  const c = it.content || {};
+  picked = null; eliminated = new Set(); flagged = false;
+  $('feedback').textContent = ''; $('feedback').className = 'feedback';
+
+  const prior = responses[it.item_id];
+  $('stimEl').innerHTML = prior?.annotations?.highlightedStim ?? (c.stimulusText ?? '');
+  $('stemEl').innerHTML = prior?.annotations?.highlightedStem ?? (c.stemText ?? '');
+
+  const opts = extractOptions(c);
+  const box = $('optsEl');
+  box.innerHTML = '';
+  opts.forEach(o => {
+    const row = document.createElement('div');
+    row.className = 'optrow';
+    const btn = document.createElement('button');
+    btn.className = 'optbtn';
+    btn.dataset.letter = o.letter;
+    btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span>${o.text}</span>`;
+    btn.addEventListener('click', () => {
+      if (eliminated.has(o.letter)) return;
+      picked = o.letter;
+      [...box.querySelectorAll('.optbtn')].forEach(b => b.classList.remove('picked'));
+      btn.classList.add('picked');
+    });
+    const el = document.createElement('button');
+    el.className = 'elimbtn';
+    el.textContent = '✕';
+    el.setAttribute('aria-label', `Eliminate ${o.letter}`);
+    el.addEventListener('click', () => {
+      if (eliminated.has(o.letter)) { eliminated.delete(o.letter); btn.classList.remove('elim'); }
+      else {
+        eliminated.add(o.letter); btn.classList.add('elim');
+        if (picked === o.letter) { picked = null; btn.classList.remove('picked'); }
+      }
+    });
+    row.appendChild(btn); row.appendChild(el);
+    box.appendChild(row);
+  });
+
+  if (prior) {
+    picked = prior.selected_answer;
+    (prior.annotations?.eliminated || []).forEach(l => {
+      eliminated.add(l);
+      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(l)}"]`);
+      if (b) b.classList.add('elim');
+    });
+    if (picked) {
+      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(picked)}"]`);
+      if (b) b.classList.add('picked');
+    }
+    flagged = !!prior.flagged;
+  }
+  $('flagBtn').classList.toggle('on', flagged);
+
+  $('qCounter').textContent = `Question ${qi + 1} of ${drillItems.length}`;
+  $('posHint').textContent = currentDrill.reveal_answers ? '' : 'Answers reviewed in session with Rahela';
+  $('progFill').style.width = `${(Object.keys(responses).length / drillItems.length) * 100}%`;
+  $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
+
+  itemShownAt = Date.now();
+  logAccess(it, 'item_viewed');
+}
+
+async function logAccess(it, type) {
+  try {
+    await db.from('content_access_log').insert({
+      student_id: currentDrill.student_id ?? viewingStudentId,
+      drill_id: currentDrill.id,
+      module_id: it.module_id, item_id: it.item_id, event_type: type
+    });
+  } catch (e) {}
+}
+
+// ---------- HIGHLIGHTING ----------
+[...document.querySelectorAll('.swatch')].forEach(sw =>
+  sw.addEventListener('click', () => {
+    activeHl = activeHl === sw.dataset.hl ? null : sw.dataset.hl;
+    [...document.querySelectorAll('.swatch')].forEach(s => s.classList.toggle('on', s.dataset.hl === activeHl));
+  }));
+
+$('stimBox').addEventListener('mouseup', () => {
+  if (!activeHl) return;
+  const sel = window.getSelection();
+  if (!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  if (!$('stimBox').contains(range.commonAncestorContainer)) return;
+  const mark = document.createElement('mark');
+  mark.className = activeHl;
+  try { range.surroundContents(mark); }
+  catch { try { mark.appendChild(range.extractContents()); range.insertNode(mark); } catch (e) {} }
+  sel.removeAllRanges();
+});
+
+$('stimBox').addEventListener('click', e => {
+  if (e.target.tagName === 'MARK') {
+    const m = e.target;
+    while (m.firstChild) m.parentNode.insertBefore(m.firstChild, m);
+    m.remove();
+  }
+});
+
+$('flagBtn').addEventListener('click', () => {
+  flagged = !flagged;
+  $('flagBtn').classList.toggle('on', flagged);
+});
+
+// ---------- SUBMIT / NAVIGATE ----------
+$('nextBtn').addEventListener('click', submitCurrent);
+$('backBtn').addEventListener('click', () => { if (qi > 0) { qi--; renderQuestion(); } });
+$('exitBtn').addEventListener('click', exitToList);
+$('resultBackBtn').addEventListener('click', exitToList);
+
+function exitToList() {
+  clearInterval(drillTimerHandle);
+  $('playView').classList.add('hidden');
+  $('resultView').classList.add('hidden');
+  $('listView').classList.remove('hidden');
+  $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+  loadDrillList();
+}
+
+async function submitCurrent() {
+  const it = drillItems[qi];
+  if (!picked) { $('feedback').textContent = 'Pick an answer first.'; $('feedback').className = 'feedback bad'; return; }
+  $('nextBtn').disabled = true;
+
+  const annotations = {
+    eliminated: [...eliminated],
+    highlightedStim: $('stimEl').innerHTML,
+    highlightedStem: $('stemEl').innerHTML
+  };
+  const timeSpent = Math.round((Date.now() - itemShownAt) / 1000);
+
+  const { data, error } = await db.rpc('vd_submit_response', {
+    p_drill_id: currentDrill.id,
+    p_module_id: it.module_id,
+    p_item_id: it.item_id,
+    p_selected_answer: picked,
+    p_time_spent_seconds: timeSpent,
+    p_flagged: flagged,
+    p_annotations: annotations
+  });
+  $('nextBtn').disabled = false;
+  if (error) { $('feedback').textContent = error.message; $('feedback').className = 'feedback bad'; return; }
+
+  responses[it.item_id] = {
+    item_id: it.item_id, module_id: it.module_id,
+    selected_answer: picked, is_correct: data?.is_correct ?? null,
+    flagged, annotations
+  };
+
+  if (currentDrill.reveal_answers && data && 'is_correct' in data) {
+    const box = $('optsEl');
+    const pickedBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(picked)}"]`);
+    if (data.is_correct) {
+      pickedBtn?.classList.add('correct');
+      $('feedback').textContent = 'Correct.'; $('feedback').className = 'feedback good';
+    } else {
+      pickedBtn?.classList.add('wrong');
+      const corr = box.querySelector(`.optbtn[data-letter="${CSS.escape(data.correct_answer)}"]`);
+      corr?.classList.add('correct');
+      $('feedback').textContent = `The credited response is ${data.correct_answer}.`;
+      $('feedback').className = 'feedback bad';
+    }
+    setTimeout(advance, 1400);
+  } else {
+    advance();
+  }
+}
+
+function advance() {
+  if (qi < drillItems.length - 1) { qi++; renderQuestion(); }
+  else finishDrill();
+}
+
+async function finishDrill() {
+  clearInterval(drillTimerHandle);
+  await db.from('drills').update({ status: 'completed', completed_at: new Date().toISOString() })
+    .eq('id', currentDrill.id);
+  currentDrill.status = 'completed';
+  showResults();
+}
+
+function showResults() {
+  $('playView').classList.add('hidden');
+  $('listView').classList.add('hidden');
+  $('resultView').classList.remove('hidden');
+  $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+
+  const answered = drillItems.filter(d => responses[d.item_id]);
+  const flaggedCount = answered.filter(d => responses[d.item_id].flagged).length;
+  const rows = $('resultRows');
+  rows.innerHTML = '';
+
+  if (currentDrill.reveal_answers) {
+    const correct = answered.filter(d => responses[d.item_id].is_correct === true).length;
+    $('resultSummary').textContent = `${correct} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
+    drillItems.forEach((d, i) => {
+      const r = responses[d.item_id];
+      const row = document.createElement('div');
+      row.className = 'resultrow';
+      row.innerHTML = `<span>Question ${i + 1}${r?.flagged ? ' ⚑' : ''}</span>
+        <span>${r ? (r.is_correct ? '✓ correct' : '✕ incorrect') : '—'}</span>`;
+      rows.appendChild(row);
+    });
+  } else {
+    $('resultSummary').textContent =
+      `All ${answered.length} answers recorded · ${flaggedCount} flagged. You will review results with Rahela in your next session.`;
+    drillItems.forEach((d, i) => {
+      const r = responses[d.item_id];
+      const row = document.createElement('div');
+      row.className = 'resultrow';
+      row.innerHTML = `<span>Question ${i + 1}${r?.flagged ? ' ⚑' : ''}</span><span>${r ? 'answered' : '—'}</span>`;
+      rows.appendChild(row);
+    });
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+checkSession();
+</script>
+</body>
+</html>
