@@ -298,7 +298,7 @@ function extractOptions(content) {
     return raw.map((o, i) => {
       if (typeof o === 'string') return { letter: letters[i], text: o };
       if (o && typeof o === 'object') {
-        const text = o.text ?? o.optionText ?? o.value ?? o.content ?? o.html ?? null;
+        const text = o.text ?? o.optionText ?? o.optionContent ?? o.value ?? o.content ?? o.html ?? null;
         const letter = o.letter ?? o.optionLetter ?? o.label ?? letters[i];
         if (text !== null) return { letter, text: String(text) };
         return { letter: letters[i], text: JSON.stringify(o) };
