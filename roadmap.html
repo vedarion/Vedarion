@@ -659,6 +659,7 @@ hw:['Drill: '+q.name]};})},
 {title:'Test Day Strategy & Review',subtitle:'Final Calibration',description:'Last session: we look at your full arc of improvement, lock in your test-day plan, and address anything that\'s still shaky. If you\'re continuing with more sessions, this becomes the pivot point. If this is it, you leave with a clear self-study roadmap and the confidence that you know exactly what to do on test day.',goals:['Review progress from diagnostic to now — quantify improvement and remaining gaps','Finalize a test-day plan: section order preferences, pacing rules, skip strategy, and mental reset routine','Build a self-study or next-phase plan targeting the remaining point gaps'],hw:['Final Insight to Action Review','Practice Test']}
 ]},
 'blanksess':{group:'Other',cards:[
+{title:'Introduction',subtitle:'Session 0',n0:true,description:'Get to know your tutor, talk through where you are, and walk through your roadmap together so you know exactly what\'s coming.',goals:['Get to know your tutor','Walk through your roadmap and what each session covers','Set expectations and next steps'],hw:['Book Your Next Session']},
 {title:'Blank Session',subtitle:'',description:'',goals:[],hw:[]}
 ]}
 };
@@ -1641,6 +1642,7 @@ function openSessPicker(){
       add.disabled=true;add.textContent='Adding...';
       const tf=S.student?(S.student.time_factor||'1x'):'1x';
       let nextNum=S.sessions.length>0?Math.max(...S.sessions.map(x=>x.session_number))+1:1;
+      let zeroUsed=S.sessions.some(x=>x.session_number===0);
       const firstEver=S.sessions.length===0;
       let err=null;
       for(let si=0;si<selected.length;si++){
@@ -1649,8 +1651,10 @@ function openSessPicker(){
         const gkey=k.substring(0,dash),ci=parseInt(k.substring(dash+1));
         const card=SESSION_CARDS[gkey]&&SESSION_CARDS[gkey].cards[ci];
         if(!card)continue;
+        let num;
+        if(card.n0&&!zeroUsed){num=0;zeroUsed=true;}else{num=nextNum++;}
         const status=(firstEver&&si===0)?'upcoming':'locked';
-        const{data:sess,error}=await db.from('sessions').insert({student_id:S.selId,session_number:nextNum++,title:card.title||'New Session',subtitle:card.subtitle||null,description:card.description||null,status:status}).select().single();
+        const{data:sess,error}=await db.from('sessions').insert({student_id:S.selId,session_number:num,title:card.title||'New Session',subtitle:card.subtitle||null,description:card.description||null,status:status}).select().single();
         if(error){err=error;continue;}
         if(!sess)continue;
         for(let gi=0;gi<(card.goals||[]).length;gi++){
