@@ -118,6 +118,7 @@
 
     <div class="toolrow">
       <select id="moduleSelect"><option>Loading modules…</option></select>
+      <select id="sectionSelect"><option value="">All sections</option></select>
       <select id="filterSelect">
         <option value="untagged">Untagged only</option>
         <option value="all">All items</option>
@@ -230,6 +231,7 @@ $('moduleSelect').addEventListener('change', e => {
   if (e.target.value) { localStorage.setItem('vd_tag_module', e.target.value); loadModule(e.target.value); }
 });
 $('filterSelect').addEventListener('change', () => applyFilter());
+$('sectionSelect').addEventListener('change', () => applyFilter());
 
 async function loadModule(moduleId) {
   $('itemBox').innerHTML = '<p class="sub">Loading items…</p>';
@@ -249,7 +251,38 @@ async function loadModule(moduleId) {
       tagsByItem[t.item_id].add(t.tag_value_id);
     });
   }
+
+  allModuleItems.sort((a, b) =>
+    (sectionOf(a) - sectionOf(b)) || ((a.item_position ?? 0) - (b.item_position ?? 0)));
+
+  buildSectionOptions();
   applyFilter();
+}
+
+function sectionOf(item) {
+  return Number(item.content?._vd?.sectionOrder ?? 1);
+}
+
+function buildSectionOptions() {
+  const sel = $('sectionSelect');
+  const counts = {};
+  allModuleItems.forEach(i => {
+    const s = sectionOf(i);
+    counts[s] = (counts[s] || 0) + 1;
+  });
+  const sections = Object.keys(counts).map(Number).sort((a, b) => a - b);
+  sel.innerHTML = '<option value="">All sections</option>';
+  if (sections.length > 1) {
+    sections.forEach(s => {
+      const o = document.createElement('option');
+      o.value = s;
+      o.textContent = `Section ${s} (${counts[s]} items)`;
+      sel.appendChild(o);
+    });
+    sel.style.display = '';
+  } else {
+    sel.style.display = 'none';
+  }
 }
 
 function questionTypeDim() { return dimensions.find(d => d.name === 'question_type'); }
@@ -263,14 +296,15 @@ function isTagged(itemId) {
 
 function applyFilter() {
   const mode = $('filterSelect').value;
-  items = mode === 'untagged'
-    ? allModuleItems.filter(i => !isTagged(i.item_id))
-    : allModuleItems.slice();
+  const sec = $('sectionSelect').value;
+  let pool = sec === '' ? allModuleItems.slice()
+    : allModuleItems.filter(i => sectionOf(i) === Number(sec));
+  items = mode === 'untagged' ? pool.filter(i => !isTagged(i.item_id)) : pool;
   idx = 0;
   if (!items.length) {
     $('itemBox').innerHTML = mode === 'untagged'
-      ? '<p class="sub">Every item in this module has a question type tag. Switch the filter to All items to review, or pick another module.</p>'
-      : '<p class="sub">No items found in this module.</p>';
+      ? '<p class="sub">Every item in this view has a question type tag. Switch the filter to All items, pick another section, or pick another module.</p>'
+      : '<p class="sub">No items found in this view.</p>';
     $('dimensionsArea').innerHTML = '';
     updateModuleCounter();
     return;
@@ -317,7 +351,7 @@ function renderItem() {
   const c = it.content || {};
   const opts = extractOptions(c);
 
-  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · position ${it.item_position ?? '—'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
+  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · section ${sectionOf(it)} · position ${it.item_position ?? '—'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
 
   const stim = renderContentValue(c.stimulusText);
   const stem = renderContentValue(c.stemText);
