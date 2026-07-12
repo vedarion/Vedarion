@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEDARION · Admin · Ingest</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --cream: #FAF8F5;
+    --cream-warm: #FDF5F1;
+    --orange: #C65D3B;
+    --orange-dark: #A34A2D;
+    --ink: #2B2B2B;
+    --ink-soft: #6B6560;
+    --line: #E8E2DB;
+    --green: #3E7A52;
+    --amber: #B07D2B;
+    --red: #A33B3B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px; border-bottom: 1px solid var(--line); background: #fff;
+  }
+  .logo { font-family: Georgia, "Times New Roman", serif; font-size: 18px; letter-spacing: 1px; }
+  .logo .v { color: var(--orange); }
+  .logo .crumb { color: var(--ink-soft); font-family: -apple-system, sans-serif; font-size: 13px; letter-spacing: 0; margin-left: 10px; }
+  .badge {
+    font-size: 12px; padding: 4px 12px; border-radius: 20px;
+    background: var(--cream-warm); color: var(--orange-dark); border: 1px solid var(--orange);
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+  .card {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 24px; margin-bottom: 20px;
+  }
+  h1 { font-family: Georgia, serif; font-size: 24px; font-weight: 500; margin-bottom: 6px; }
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 6px; }
+  input[type=email], input[type=password] {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
+    font-size: 15px; background: var(--cream);
+  }
+  input:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 8px; border: 1px solid var(--orange);
+    background: var(--orange); color: #fff; font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 16px;
+  }
+  .btn:hover { background: var(--orange-dark); }
+  .btn.secondary { background: #fff; color: var(--orange-dark); }
+  .btn.secondary:hover { background: var(--cream-warm); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .dropzone {
+    border: 2px dashed var(--orange); border-radius: 12px; background: var(--cream-warm);
+    padding: 48px 24px; text-align: center; cursor: pointer; transition: background 0.15s;
+  }
+  .dropzone.dragover { background: #F6E3D9; }
+  .dropzone p { margin-top: 8px; }
+  .dz-title { font-size: 16px; font-weight: 600; }
+  .dz-sub { font-size: 13px; color: var(--ink-soft); }
+  .hidden { display: none; }
+  .progressbar { height: 8px; background: var(--cream); border-radius: 4px; overflow: hidden; margin: 14px 0; }
+  .progressbar > div { height: 100%; width: 0%; background: var(--orange); transition: width 0.2s; }
+  .stats { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-soft); }
+  #log { margin-top: 14px; border-top: 1px solid var(--line); max-height: 420px; overflow-y: auto; }
+  .logrow {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 13px;
+  }
+  .logrow .name { font-weight: 500; }
+  .logrow .meta { color: var(--ink-soft); }
+  .ok { color: var(--green); }
+  .warn { color: var(--amber); }
+  .err { color: var(--red); }
+  .notice {
+    background: var(--cream-warm); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-size: 13px; color: var(--ink-soft); line-height: 1.6; margin-top: 16px;
+  }
+  .notice strong { color: var(--ink); }
+  #authError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><span class="v">V</span>EDARION<span class="crumb">/ admin / ingest</span></div>
+  <span class="badge">Admin only</span>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ AUTH GATE ============ -->
+  <div id="authView" class="card" style="max-width: 440px; margin: 60px auto;">
+    <h1>Sign in</h1>
+    <p class="sub">This page loads LSAC content into the VEDARION database. Owner access required.</p>
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username" placeholder="you@vedarion.com">
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password">
+    <div id="authError"></div>
+    <button class="btn" id="signInBtn">Sign in</button>
+  </div>
+
+  <!-- ============ INGEST VIEW ============ -->
+  <div id="ingestView" class="hidden">
+
+    <div class="card">
+      <h1>Content library ingest</h1>
+      <p class="sub">Drop the LSAC JSON files below. Each module is parsed in your browser and inserted directly into your encrypted database. Correct answers are separated into an admin-only table during parsing. Files already in the database are skipped automatically, so it is always safe to re-drop the whole folder.</p>
+
+      <div style="margin-top:20px;">
+        <div class="dropzone" id="dropzone">
+          <div class="dz-title">Drop LSAC JSON files here</div>
+          <p class="dz-sub">or click to choose files · select all 143 at once</p>
+        </div>
+        <input type="file" id="fileInput" class="hidden" multiple accept=".json,application/json">
+      </div>
+
+      <div id="progressArea" class="hidden">
+        <div class="progressbar"><div id="progressFill"></div></div>
+        <div class="stats">
+          <span id="statLeft">Processing…</span>
+          <span id="statRight"></span>
+        </div>
+        <div id="log"></div>
+      </div>
+
+      <div class="notice">
+        <strong>Compliance note.</strong> Content is transferred over TLS directly from this browser to your Supabase project and stored encrypted at rest. Nothing is sent to any third party. Row Level Security restricts item content to you and to students within their own assigned drills.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Backup your tagging work</h2>
+      <p class="sub">Downloads every tag you have applied (item IDs, dimensions, values) as a JSON file. The LSAC modules can always be re-downloaded from the portal; your tags are the irreplaceable part. Run this monthly.</p>
+      <button class="btn secondary" id="exportTagsBtn">Export tags</button>
+      <span id="exportStatus" class="sub" style="margin-left:12px;"></span>
+    </div>
+
+    <div class="card">
+      <h2>Library status</h2>
+      <p class="sub" id="libStatus">Loading…</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fqshijwiushtrncinjif.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = id => document.getElementById(id);
+const CHUNK = 400;
+
+// ---------- AUTH ----------
+
+async function checkSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) await verifyAdmin();
+}
+
+$('signInBtn').addEventListener('click', signIn);
+$('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+
+async function signIn() {
+  $('authError').textContent = '';
+  const { error } = await db.auth.signInWithPassword({
+    email: $('email').value.trim(),
+    password: $('password').value
+  });
+  if (error) { $('authError').textContent = error.message; return; }
+  await verifyAdmin();
+}
+
+async function verifyAdmin() {
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return;
+  const { data: profile, error } = await db.from('profiles')
+    .select('role').eq('id', user.id).single();
+  if (error || !profile || !['owner', 'admin'].includes(profile.role)) {
+    $('authError').textContent = 'This account does not have admin access.';
+    await db.auth.signOut();
+    return;
+  }
+  $('authView').classList.add('hidden');
+  $('ingestView').classList.remove('hidden');
+  refreshLibraryStatus();
+}
+
+// ---------- LIBRARY STATUS ----------
+
+async function refreshLibraryStatus() {
+  const { count: modCount } = await db.from('lsac_modules')
+    .select('*', { count: 'exact', head: true });
+  const { count: itemCount } = await db.from('lsac_items')
+    .select('*', { count: 'exact', head: true });
+  const { count: tagCount } = await db.from('item_tags')
+    .select('*', { count: 'exact', head: true });
+  $('libStatus').textContent =
+    `${modCount ?? 0} modules · ${itemCount ?? 0} items · ${tagCount ?? 0} tags applied`;
+}
+
+// ---------- DROP ZONE ----------
+
+const dz = $('dropzone');
+dz.addEventListener('click', () => $('fileInput').click());
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('dragover');
+  handleFiles([...e.dataTransfer.files]);
+});
+$('fileInput').addEventListener('change', e => handleFiles([...e.target.files]));
+
+// ---------- INGEST ----------
+
+let doneCount = 0, skipCount = 0, errCount = 0, totalFiles = 0;
+
+function logRow(name, meta, cls, icon) {
+  const row = document.createElement('div');
+  row.className = 'logrow';
+  row.innerHTML = `<span class="name ${cls}">${icon} ${escapeHtml(name)}</span><span class="meta">${escapeHtml(meta)}</span>`;
+  $('log').prepend(row);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function updateStats() {
+  const processed = doneCount + skipCount + errCount;
+  $('progressFill').style.width = totalFiles ? `${(processed / totalFiles) * 100}%` : '0%';
+  $('statLeft').textContent = processed < totalFiles
+    ? `Processing ${processed} of ${totalFiles}…`
+    : `Done — ${totalFiles} files processed`;
+  $('statRight').textContent =
+    `${doneCount} loaded · ${skipCount} skipped · ${errCount} errors`;
+}
+
+async function handleFiles(files) {
+  const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
+  if (!jsonFiles.length) return;
+
+  $('progressArea').classList.remove('hidden');
+  doneCount = 0; skipCount = 0; errCount = 0; totalFiles = jsonFiles.length;
+  updateStats();
+
+  const { data: existing, error: exErr } = await db.from('lsac_modules').select('module_id');
+  if (exErr) {
+    logRow('Could not read existing modules', exErr.message, 'err', '✕');
+    return;
+  }
+  const existingIds = new Set((existing || []).map(m => m.module_id));
+
+  for (const file of jsonFiles) {
+    try {
+      await ingestFile(file, existingIds);
+    } catch (err) {
+      errCount++;
+      logRow(file.name, err.message || 'unexpected error', 'err', '✕');
+    }
+    updateStats();
+  }
+  refreshLibraryStatus();
+}
+
+async function ingestFile(file, existingIds) {
+  const text = await file.text();
+  let data;
+  try { data = JSON.parse(text); }
+  catch { throw new Error('not valid JSON'); }
+
+  const moduleId = data.moduleId || file.name.replace(/\.json$/i, '');
+  const moduleName = data.moduleName || moduleId;
+  const moduleType = data.moduleType || null;
+
+  if (existingIds.has(moduleId)) {
+    skipCount++;
+    logRow(moduleName, 'already in database — skipped', 'warn', '⚠');
+    return;
+  }
+
+  const sections = Array.isArray(data.sections) ? data.sections : [];
+  if (!sections.length) throw new Error('no sections found in file');
+
+  const items = [];
+  const answers = [];
+  let running = 0;
+
+  sections.forEach((sec, si) => {
+    const secItems = Array.isArray(sec.items) ? sec.items : [];
+    secItems.forEach(raw => {
+      running++;
+      const itemId = raw.itemId;
+      if (!itemId) return;
+      const content = { ...raw };
+      const correct = content.correctAnswer;
+      delete content.correctAnswer;
+      content._vd = {
+        sectionId: sec.sectionId ?? null,
+        sectionOrder: sec.sectionOrder ?? si + 1,
+        sectionTime: sec.TotalSectionTime ?? null
+      };
+      items.push({
+        module_id: moduleId,
+        item_id: String(itemId),
+        item_position: raw.itemPosition ?? running,
+        group_id: raw.groupId ?? null,
+        content
+      });
+      if (correct !== undefined && correct !== null) {
+        answers.push({
+          module_id: moduleId,
+          item_id: String(itemId),
+          correct_answer: String(correct)
+        });
+      }
+    });
+  });
+
+  if (!items.length) throw new Error('no items found in file');
+
+  const { error: modErr } = await db.from('lsac_modules').insert({
+    module_id: moduleId,
+    module_name: moduleName,
+    module_type: moduleType,
+    item_count: items.length
+  });
+  if (modErr) throw new Error(`module insert failed: ${modErr.message}`);
+
+  for (let i = 0; i < items.length; i += CHUNK) {
+    const { error } = await db.from('lsac_items')
+      .upsert(items.slice(i, i + CHUNK), { ignoreDuplicates: true });
+    if (error) throw new Error(`items insert failed: ${error.message}`);
+  }
+
+  for (let i = 0; i < answers.length; i += CHUNK) {
+    const { error } = await db.from('lsac_item_answers')
+      .upsert(answers.slice(i, i + CHUNK), { ignoreDuplicates: true });
+    if (error) throw new Error(`answers insert failed: ${error.message}`);
+  }
+
+  existingIds.add(moduleId);
+  doneCount++;
+  const missing = items.length - answers.length;
+  const meta = missing > 0
+    ? `${items.length} items · ${missing} without answer key`
+    : `${items.length} items`;
+  logRow(moduleName, meta, 'ok', '✓');
+}
+
+// ---------- TAG EXPORT ----------
+
+$('exportTagsBtn').addEventListener('click', exportTags);
+
+async function exportTags() {
+  $('exportStatus').textContent = 'Exporting…';
+  const all = [];
+  let from = 0;
+  const PAGE = 1000;
+  while (true) {
+    const { data, error } = await db.from('item_tags')
+      .select('item_id, created_at, tag_values ( value, tag_dimensions ( name ) )')
+      .range(from, from + PAGE - 1);
+    if (error) { $('exportStatus').textContent = `Export failed: ${error.message}`; return; }
+    if (!data || !data.length) break;
+    all.push(...data.map(r => ({
+      item_id: r.item_id,
+      dimension: r.tag_values?.tag_dimensions?.name ?? null,
+      value: r.tag_values?.value ?? null,
+      tagged_at: r.created_at
+    })));
+    if (data.length < PAGE) break;
+    from += PAGE;
+  }
+  const blob = new Blob([JSON.stringify(all, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `vedarion-tags-backup-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  $('exportStatus').textContent = `Exported ${all.length} tags.`;
+}
+
+checkSession();
+</script>
+</body>
+</html>
