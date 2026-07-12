@@ -119,6 +119,12 @@
     <div class="toolrow">
       <select id="moduleSelect"><option>Loading modules…</option></select>
       <select id="sectionSelect"><option value="">All sections</option></select>
+      <span id="secTypeButtons" class="chips hidden" style="align-items:center;">
+        <span class="hint">This section is:</span>
+        <button type="button" class="chip" data-type="LR">LR</button>
+        <button type="button" class="chip" data-type="RC">RC</button>
+        <button type="button" class="chip" data-type="Other">Other</button>
+      </span>
       <select id="filterSelect">
         <option value="untagged">Untagged only</option>
         <option value="all">All items</option>
@@ -231,7 +237,9 @@ $('moduleSelect').addEventListener('change', e => {
   if (e.target.value) { localStorage.setItem('vd_tag_module', e.target.value); loadModule(e.target.value); }
 });
 $('filterSelect').addEventListener('change', () => applyFilter());
-$('sectionSelect').addEventListener('change', () => applyFilter());
+$('sectionSelect').addEventListener('change', () => { updateSecTypeButtons(); applyFilter(); });
+[...document.querySelectorAll('#secTypeButtons .chip')].forEach(b =>
+  b.addEventListener('click', () => setSectionType(b.dataset.type)));
 
 async function loadModule(moduleId) {
   $('itemBox').innerHTML = '<p class="sub">Loading items…</p>';
@@ -255,6 +263,7 @@ async function loadModule(moduleId) {
   allModuleItems.sort((a, b) =>
     (sectionOf(a) - sectionOf(b)) || ((a.item_position ?? 0) - (b.item_position ?? 0)));
 
+  await loadSectionLabels(moduleId);
   buildSectionOptions();
   applyFilter();
 }
@@ -263,26 +272,66 @@ function sectionOf(item) {
   return Number(item.content?._vd?.sectionOrder ?? 1);
 }
 
+let sectionLabels = {};   // section_order -> 'LR' | 'RC' | 'Other'
+let sectionCounts = {};
+
+async function loadSectionLabels(moduleId) {
+  sectionLabels = {};
+  const { data } = await db.from('module_sections')
+    .select('section_order, section_type').eq('module_id', moduleId);
+  (data || []).forEach(r => { sectionLabels[r.section_order] = r.section_type; });
+}
+
 function buildSectionOptions() {
   const sel = $('sectionSelect');
-  const counts = {};
+  sectionCounts = {};
   allModuleItems.forEach(i => {
     const s = sectionOf(i);
-    counts[s] = (counts[s] || 0) + 1;
+    sectionCounts[s] = (sectionCounts[s] || 0) + 1;
   });
-  const sections = Object.keys(counts).map(Number).sort((a, b) => a - b);
+  const sections = Object.keys(sectionCounts).map(Number).sort((a, b) => a - b);
+  const current = sel.value;
   sel.innerHTML = '<option value="">All sections</option>';
   if (sections.length > 1) {
     sections.forEach(s => {
       const o = document.createElement('option');
       o.value = s;
-      o.textContent = `Section ${s} (${counts[s]} items)`;
+      const label = sectionLabels[s] ? ` · ${sectionLabels[s]}` : '';
+      o.textContent = `Section ${s}${label} (${sectionCounts[s]} items)`;
       sel.appendChild(o);
     });
+    if ([...sel.options].some(o => o.value === current)) sel.value = current;
     sel.style.display = '';
   } else {
     sel.style.display = 'none';
   }
+  updateSecTypeButtons();
+}
+
+function updateSecTypeButtons() {
+  const bar = $('secTypeButtons');
+  const sec = $('sectionSelect').value;
+  if (sec === '' || $('sectionSelect').style.display === 'none') {
+    bar.classList.add('hidden');
+    return;
+  }
+  bar.classList.remove('hidden');
+  const currentType = sectionLabels[Number(sec)] ?? null;
+  [...bar.querySelectorAll('.chip')].forEach(ch => {
+    ch.classList.toggle('on', ch.dataset.type === currentType);
+  });
+}
+
+async function setSectionType(type) {
+  const moduleId = $('moduleSelect').value;
+  const sec = Number($('sectionSelect').value);
+  if (!moduleId || !sec) return;
+  const { error } = await db.from('module_sections').upsert({
+    module_id: moduleId, section_order: sec, section_type: type
+  });
+  if (error) { $('tagError').textContent = error.message; return; }
+  sectionLabels[sec] = type;
+  buildSectionOptions();
 }
 
 function questionTypeDim() { return dimensions.find(d => d.name === 'question_type'); }
@@ -351,7 +400,7 @@ function renderItem() {
   const c = it.content || {};
   const opts = extractOptions(c);
 
-  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · section ${sectionOf(it)} · position ${it.item_position ?? '—'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
+  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · section ${sectionOf(it)}${sectionLabels[sectionOf(it)] ? ' · ' + sectionLabels[sectionOf(it)] : ''} · position ${it.item_position ?? '—'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
 
   const stim = renderContentValue(c.stimulusText);
   const stem = renderContentValue(c.stemText);
