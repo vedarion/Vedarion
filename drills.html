@@ -109,6 +109,34 @@
       </div>
       <div id="drillList" style="margin-top:8px;"><p class="sub">Loading…</p></div>
     </div>
+
+    <div class="card" id="selfServeCard">
+      <h1 style="font-size:18px;">Create your own drill</h1>
+      <p class="sub">Pick a question type and go. Questions you have already seen are never repeated.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:flex-end;">
+        <div>
+          <label for="ssType">Question type</label>
+          <select id="ssType"></select>
+        </div>
+        <div>
+          <label for="ssCount">Questions</label>
+          <select id="ssCount">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+        <div>
+          <label for="ssTimed">Timing</label>
+          <select id="ssTimed">
+            <option value="untimed">Untimed</option>
+            <option value="timed">Timed</option>
+          </select>
+        </div>
+        <button class="btn" id="ssCreateBtn">Create drill</button>
+      </div>
+      <div id="ssMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
+    </div>
   </div>
 
   <!-- PLAYER -->
@@ -243,7 +271,37 @@ async function boot() {
     viewingStudentId = myStudentIds[0] || null;
   }
   loadDrillList();
+  loadSelfServeTypes();
 }
+
+// ---------- SELF-SERVE ----------
+async function loadSelfServeTypes() {
+  const { data: dims } = await db.from('tag_dimensions').select('id, name');
+  const qt = (dims || []).find(d => d.name === 'question_type');
+  if (!qt) return;
+  const { data: vals } = await db.from('tag_values')
+    .select('id, value').eq('dimension_id', qt.id).order('display_order');
+  const sel = $('ssType');
+  sel.innerHTML = '';
+  (vals || []).forEach(v => {
+    const o = document.createElement('option');
+    o.value = v.id; o.textContent = v.value;
+    sel.appendChild(o);
+  });
+}
+
+$('ssCreateBtn').addEventListener('click', async () => {
+  $('ssMsg').textContent = 'Creating…';
+  const { data, error } = await db.rpc('vd_create_self_drill', {
+    p_tag_value_ids: [$('ssType').value],
+    p_count: parseInt($('ssCount').value),
+    p_timed: $('ssTimed').value === 'timed'
+  });
+  if (error) { $('ssMsg').textContent = error.message; return; }
+  if (data?.error) { $('ssMsg').textContent = data.error; return; }
+  $('ssMsg').textContent = 'Drill created — it is at the top of your list.';
+  loadDrillList();
+});
 
 // ---------- DRILL LIST ----------
 async function loadDrillList() {
