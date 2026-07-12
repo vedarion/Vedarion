@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VEDARION — Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    /* A password-recovery link must never land on the dashboard. If we arrived
+       from one (legacy emails may still point here), hand off to the reset page
+       BEFORE the Supabase client loads and turns the recovery token into a
+       normal signed-in session. Markers are preserved so reset-password.html
+       can complete the recovery. */
+    (function(){
+      var h=new URLSearchParams(location.hash.slice(1));
+      var q=new URLSearchParams(location.search);
+      if(h.get('type')==='recovery'||q.get('type')==='recovery'||q.get('code')||q.get('token_hash')){
+        location.replace('/reset-password.html'+location.search+location.hash);
+      }
+    })();
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1735,7 +1749,7 @@ function bind(){
     e.preventDefault();
     const em=document.getElementById('le').value.trim();
     if(!em){S.loginErr='Enter your email first, then click Forgot password';R();return;}
-    await db.auth.resetPasswordForEmail(em,{redirectTo:window.location.origin+'/roadmap.html'});
+    await db.auth.resetPasswordForEmail(em,{redirectTo:window.location.origin+'/reset-password.html'});
     S.loginErr='Password reset link sent. Check your inbox.';R();
   });
 
