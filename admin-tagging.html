@@ -145,12 +145,11 @@
 
     <div class="toolrow">
       <select id="moduleSelect"><option>Loading modules…</option></select>
-      <select id="sectionSelect"><option value="">Label a section…</option></select>
       <span id="secTypeButtons" class="chips hidden" style="align-items:center;">
-        <span class="hint">This section is:</span>
+        <span class="hint" id="secTypeLabel">This section is:</span>
         <button type="button" class="chip" data-type="LR">LR</button>
         <button type="button" class="chip" data-type="RC">RC</button>
-        <button type="button" class="chip" data-type="Other">Other</button>
+        <span class="hint" id="secTypeStatus"></span>
       </span>
       <select id="advanceSelect">
         <option value="untagged">Save jumps to next untagged</option>
@@ -243,7 +242,9 @@ async function loadDimensions() {
   const { data: vals } = await db.from('tag_values')
     .select('id, dimension_id, value, display_order').order('display_order');
   dimensions = (dims || []).map(d => ({
-    ...d, values: (vals || []).filter(v => v.dimension_id === d.id)
+    ...d,
+    values: (vals || []).filter(v => v.dimension_id === d.id)
+      .sort((a, b) => String(a.value).localeCompare(String(b.value), undefined, { numeric: true }))
   }));
 }
 
@@ -269,7 +270,6 @@ $('moduleSelect').addEventListener('change', e => {
   e.target.blur();
   if (e.target.value) { localStorage.setItem('vd_tag_module', e.target.value); loadModule(e.target.value); }
 });
-$('sectionSelect').addEventListener('change', e => { e.target.blur(); updateSecTypeButtons(); });
 $('advanceSelect').addEventListener('change', e => e.target.blur());
 [...document.querySelectorAll('#secTypeButtons .chip')].forEach(b =>
   b.addEventListener('click', () => setSectionType(b.dataset.type)));
@@ -299,7 +299,6 @@ async function loadModule(moduleId) {
     (sectionOf(a) - sectionOf(b)) || ((a.item_position ?? 0) - (b.item_position ?? 0)));
 
   await loadSectionLabels(moduleId);
-  buildSectionOptions();
 
   if (!allModuleItems.length) {
     $('itemBox').innerHTML = '<p class="sub">No items found in this module.</p>';
@@ -326,41 +325,13 @@ async function loadSectionLabels(moduleId) {
   (data || []).forEach(r => { sectionLabels[r.section_order] = r.section_type; });
 }
 
-function buildSectionOptions() {
-  const sel = $('sectionSelect');
-  const counts = {};
-  allModuleItems.forEach(i => {
-    const s = sectionOf(i);
-    counts[s] = (counts[s] || 0) + 1;
-  });
-  const sections = Object.keys(counts).map(Number).sort((a, b) => a - b);
-  const current = sel.value;
-  sel.innerHTML = '<option value="">Label a section…</option>';
-  if (sections.length > 1) {
-    sections.forEach(s => {
-      const o = document.createElement('option');
-      o.value = s;
-      const label = sectionLabels[s] ? ` · ${sectionLabels[s]}` : '';
-      o.textContent = `Section ${s}${label} (${counts[s]} items)`;
-      sel.appendChild(o);
-    });
-    if ([...sel.options].some(o => o.value === current)) sel.value = current;
-    sel.style.display = '';
-  } else {
-    sel.style.display = 'none';
-  }
-  updateSecTypeButtons();
-}
-
 function updateSecTypeButtons() {
   const bar = $('secTypeButtons');
-  const sec = $('sectionSelect').value;
-  if (sec === '' || $('sectionSelect').style.display === 'none') {
-    bar.classList.add('hidden');
-    return;
-  }
+  if (!allModuleItems.length) { bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
-  const currentType = sectionLabels[Number(sec)] ?? null;
+  const sec = sectionOf(allModuleItems[idx]);
+  $('secTypeLabel').textContent = `Section ${sec} is:`;
+  const currentType = sectionLabels[sec] ?? null;
   [...bar.querySelectorAll('.chip')].forEach(ch => {
     ch.classList.toggle('on', ch.dataset.type === currentType);
   });
@@ -368,14 +339,26 @@ function updateSecTypeButtons() {
 
 async function setSectionType(type) {
   const moduleId = $('moduleSelect').value;
-  const sec = Number($('sectionSelect').value);
-  if (!moduleId || !sec) return;
-  const { error } = await db.from('module_sections').upsert({
-    module_id: moduleId, section_order: sec, section_type: type
-  });
-  if (error) { $('tagError').textContent = error.message; return; }
+  if (!moduleId || !allModuleItems.length) return;
+  const sec = sectionOf(allModuleItems[idx]);
+  const st = $('secTypeStatus');
+  st.style.color = 'var(--ink-soft)';
+  st.textContent = 'Saving…';
+  const { data, error } = await db.from('module_sections')
+    .upsert({ module_id: moduleId, section_order: sec, section_type: type },
+            { onConflict: 'module_id,section_order' })
+    .select();
+  if (error) { st.style.color = 'var(--red)'; st.textContent = error.message; return; }
+  if (!data || !data.length) {
+    st.style.color = 'var(--red)';
+    st.textContent = 'Write blocked — no row came back. This is almost always an RLS policy issue on module_sections.';
+    return;
+  }
+  st.style.color = 'var(--green)';
+  st.textContent = 'Saved';
+  setTimeout(() => { if (st.textContent === 'Saved') st.textContent = ''; }, 1500);
   sectionLabels[sec] = type;
-  buildSectionOptions();
+  updateSecTypeButtons();
   buildSidebar();
 }
 
@@ -495,6 +478,7 @@ function renderItem() {
   });
   buildSidebar();
   renderDimensions();
+  updateSecTypeButtons();
   updateModuleCounter();
 }
 
@@ -551,6 +535,7 @@ async function addValue(d) {
     .select().single();
   if (error) { $('tagError').textContent = error.message; return; }
   d.values.push(data);
+  d.values.sort((a, b) => String(a.value).localeCompare(String(b.value), undefined, { numeric: true }));
   renderDimensions();
 }
 
