@@ -73,6 +73,7 @@
             <th>Package</th>
             <th>Access</th>
             <th>Expires</th>
+            <th>LawHub until</th>
             <th>State</th>
             <th></th>
           </tr>
@@ -124,9 +125,18 @@ function stateOf(s) {
   return { cls: 'active', text: s.drill_access_until ? `Active until ${s.drill_access_until}` : 'Active · no expiry' };
 }
 
+function lawhubCell(dateStr) {
+  if (!dateStr) return { cls: '', text: 'not recorded' };
+  const today = new Date().toISOString().slice(0,10);
+  const soon = new Date(Date.now() + 30 * 86400000).toISOString().slice(0,10);
+  if (dateStr < today) return { cls: 'expired', text: 'LawHub expired' };
+  if (dateStr <= soon) return { cls: 'expired', text: 'renews within 30 days' };
+  return { cls: '', text: '' };
+}
+
 async function loadStudents() {
   const { data, error } = await db.from('students')
-    .select('id, package_type, status, drill_access_enabled, drill_access_until, profiles:profile_id ( first_name, email )')
+    .select('id, package_type, status, drill_access_enabled, drill_access_until, lawhub_expires_on, profiles:profile_id ( first_name, email )')
     .order('created_at');
   const tbody = $('rows');
   if (error) { tbody.innerHTML = `<tr><td colspan="6">${escapeHtml(error.message)}</td></tr>`; return; }
@@ -134,6 +144,7 @@ async function loadStudents() {
   (data || []).forEach(s => {
     const tr = document.createElement('tr');
     const st = stateOf(s);
+    const lw = lawhubCell(s.lawhub_expires_on);
     tr.innerHTML = `
       <td>
         <div class="name">${escapeHtml(s.profiles?.first_name || '—')}</div>
@@ -142,30 +153,39 @@ async function loadStudents() {
       <td class="meta">${escapeHtml(s.package_type || '—')}<br>${escapeHtml(s.status || '')}</td>
       <td><input type="checkbox" class="toggle" ${s.drill_access_enabled ? 'checked' : ''}></td>
       <td><input type="date" value="${s.drill_access_until || ''}"></td>
+      <td><input type="date" class="lawhub" value="${s.lawhub_expires_on || ''}"><div class="meta ${lw.cls}">${lw.text}</div></td>
       <td class="state ${st.cls}">${st.text}</td>
       <td><span class="saved">Saved</span></td>`;
 
     const chk = tr.querySelector('.toggle');
-    const date = tr.querySelector('input[type=date]');
+    const date = tr.querySelector('input[type=date]:not(.lawhub)');
+    const lwDate = tr.querySelector('input.lawhub');
     const savedTag = tr.querySelector('.saved');
 
     async function save() {
       const { error: upErr } = await db.from('students').update({
         drill_access_enabled: chk.checked,
-        drill_access_until: date.value || null
+        drill_access_until: date.value || null,
+        lawhub_expires_on: lwDate.value || null
       }).eq('id', s.id);
       if (upErr) { alert(upErr.message); return; }
       s.drill_access_enabled = chk.checked;
       s.drill_access_until = date.value || null;
+      s.lawhub_expires_on = lwDate.value || null;
       const ns = stateOf(s);
       const cell = tr.querySelector('.state');
       cell.className = `state ${ns.cls}`;
       cell.textContent = ns.text;
+      const nlw = lawhubCell(s.lawhub_expires_on);
+      const lwMeta = lwDate.nextElementSibling;
+      lwMeta.className = `meta ${nlw.cls}`;
+      lwMeta.textContent = nlw.text;
       savedTag.classList.add('show');
       setTimeout(() => savedTag.classList.remove('show'), 1200);
     }
     chk.addEventListener('change', save);
     date.addEventListener('change', save);
+    lwDate.addEventListener('change', save);
 
     tbody.appendChild(tr);
   });
