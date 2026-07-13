@@ -129,6 +129,14 @@
     .ed-ta{background:rgba(201,122,69,.06);border:1px solid rgba(201,122,69,.15);border-radius:6px;padding:8px 10px;outline:none;color:inherit;font:inherit;width:100%;min-height:60px;resize:vertical}
     .ph{color:var(--muted);font-style:italic}
 
+    .ad-strip{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:16px;padding:20px 24px;margin-bottom:12px}
+    .ad-head{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+    .ad-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+    .ad-row:last-child{border-bottom:none;padding-bottom:0}
+    .ad-title{font-family:var(--serif);font-size:15px;color:var(--bright);line-height:1.3}
+    .ad-meta{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.3px;margin-top:3px}
+    .ad-btn{padding:7px 16px;border-radius:8px;border:1px solid rgba(201,122,69,.3);background:rgba(201,122,69,.1);color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;text-decoration:none;letter-spacing:.3px;transition:all .15s;white-space:nowrap;flex-shrink:0}
+    .ad-btn:hover{background:rgba(201,122,69,.2);border-color:var(--accent)}
     .rm-header{display:flex;justify-content:space-between;align-items:baseline;margin:32px 0 16px}
     .rm-title{font-size:20px;font-family:var(--serif);font-weight:700;color:var(--text)}
     .rm-sub{font-size:11px;color:var(--dim);font-family:var(--mono);letter-spacing:.3px}
@@ -840,6 +848,11 @@ async function loadStudent(id){
       S.wsEntries[e.homework_id].push(e);
     }
   }else{S.wsEntries={};}
+  const{data:ad}=await db.from('drills')
+    .select('id, title, question_count, is_timed, time_limit_seconds, status, is_recipe, created_at')
+    .eq('student_id',id).eq('created_by','tutor').in('status',['assigned','in_progress'])
+    .order('created_at',{ascending:false});
+  S.assignedDrills=ad||[];
 }
 
 async function addStudent(){
@@ -1049,6 +1062,7 @@ function dashHTML(){
         <div class="info-box"><div class="info-lbl">Notes</div><div class="info-val tn-box" style="background:none;border:none;padding:0">${t?ed(st.notes,'st:notes','true'):esc(st.notes||'')}</div></div>
       </div>
     </div>
+    ${!t?assignedDrillsHTML():''}
     <div class="rm-header">
       <div class="rm-title">Session Roadmap</div>
       <div class="rm-sub">Homework unlocks after each session</div>
@@ -1068,6 +1082,25 @@ function dashHTML(){
     ${t?`<div class="sidebar">${sidebar}</div>`:''}
   </div>
   <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>`;
+}
+
+function assignedDrillsHTML(){
+  const ds=S.assignedDrills||[];
+  if(!ds.length)return'';
+  return`<div class="ad-strip">
+    <div class="ad-head">Assigned by your tutor · ${ds.length} waiting</div>
+    ${ds.map(d=>{
+      const timing=d.is_timed?('timed '+fmtClock(d.time_limit_seconds)+' total'):'untimed';
+      const btn=d.status==='in_progress'?'Resume':'Start';
+      return`<div class="ad-row">
+        <div>
+          <div class="ad-title">${esc(d.title||'Drill')}</div>
+          <div class="ad-meta">${d.question_count||0} questions · ${timing}</div>
+        </div>
+        <a class="ad-btn" href="/drills.html?drill=${esc(d.id)}">${btn}</a>
+      </div>`;
+    }).join('')}
+  </div>`;
 }
 
 function statBox(lbl,field,t){
