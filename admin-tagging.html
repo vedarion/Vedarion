@@ -32,7 +32,7 @@
   .logo .v { color: var(--orange); }
   .logo .crumb { color: var(--ink-soft); font-family: -apple-system, sans-serif; font-size: 13px; letter-spacing: 0; margin-left: 10px; }
   .counter { font-size: 13px; color: var(--ink-soft); }
-  .wrap { max-width: 820px; margin: 0 auto; padding: 24px 20px 100px; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 24px 20px 100px; }
   .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-bottom: 16px; }
   h1 { font-family: Georgia, serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
   .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
@@ -58,20 +58,33 @@
   .hidden { display: none; }
   .toolrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
   .toolrow .spacer { flex: 1; }
-  .gridnav { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
-  .gridnav:empty { display: none; }
-  .gsec {
-    width: 100%; font-size: 11px; font-weight: 600; color: var(--ink-soft);
-    text-transform: uppercase; letter-spacing: 0.5px; margin: 6px 0 2px;
+  .layout { display: flex; gap: 16px; align-items: flex-start; }
+  .sidebar {
+    width: 200px; flex-shrink: 0; background: #fff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 6px 0;
+    position: sticky; top: 76px; max-height: calc(100vh - 100px); overflow-y: auto;
   }
-  .gsec:first-child { margin-top: 0; }
-  .gcell {
-    width: 32px; height: 27px; border: 1px solid var(--line); border-radius: 5px;
-    background: #fff; color: var(--ink-soft); font-size: 11px; cursor: pointer; padding: 0;
+  .sidebar:empty { display: none; }
+  .sside-h {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--ink-soft); padding: 10px 12px 4px;
   }
-  .gcell:hover { border-color: var(--orange); }
-  .gcell.tagged { background: var(--orange); border-color: var(--orange); color: #fff; }
-  .gcell.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .sside-h + .sside-h, .srow + .sside-h { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px; }
+  .srow {
+    display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+    padding: 6px 12px 6px 9px; border: 0; background: none; font-size: 13px; cursor: pointer;
+    border-left: 3px solid transparent; color: var(--ink); font-family: inherit;
+  }
+  .srow:hover { background: var(--cream-warm); }
+  .srow.current { background: var(--cream-warm); border-left-color: var(--orange); }
+  .sdot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink-soft); flex-shrink: 0; }
+  .srow.tagged .sdot { background: var(--orange); border-color: var(--orange); }
+  .snum { font-weight: 600; min-width: 20px; }
+  .stags {
+    color: var(--ink-soft); font-size: 11.5px; flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .main { flex: 1; min-width: 0; }
   .itembox {
     background: var(--cream); border: 1px solid var(--line); border-radius: 10px;
     padding: 18px; font-size: 15px; line-height: 1.75; margin-bottom: 18px;
@@ -96,7 +109,7 @@
     margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line);
   }
   .hint { font-size: 12px; color: var(--ink-soft); }
-  .actions { display: flex; gap: 8px; }
+  .actions { display: flex; gap: 8px; align-items: center; }
   #authError, #tagError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
   .savedFlash { color: var(--green); font-size: 13px; }
   .rawfallback {
@@ -132,39 +145,42 @@
 
     <div class="toolrow">
       <select id="moduleSelect"><option>Loading modules…</option></select>
-      <select id="sectionSelect"><option value="">All sections</option></select>
+      <select id="sectionSelect"><option value="">Label a section…</option></select>
       <span id="secTypeButtons" class="chips hidden" style="align-items:center;">
         <span class="hint">This section is:</span>
         <button type="button" class="chip" data-type="LR">LR</button>
         <button type="button" class="chip" data-type="RC">RC</button>
         <button type="button" class="chip" data-type="Other">Other</button>
       </span>
-      <select id="filterSelect">
-        <option value="untagged">Untagged only</option>
-        <option value="tagged">Tagged only</option>
-        <option value="all">All items</option>
+      <select id="advanceSelect">
+        <option value="untagged">Save jumps to next untagged</option>
+        <option value="order">Save goes to next in order</option>
       </select>
       <div class="spacer"></div>
       <span class="counter" id="moduleCounter"></span>
     </div>
 
-    <div class="card" id="itemCard">
-      <div class="gridnav" id="gridNav"></div>
+    <div class="layout">
+      <div class="sidebar" id="sidebar"></div>
 
-      <div class="itembox" id="itemBox">
-        <p class="sub">Pick a module to begin.</p>
-      </div>
+      <div class="main">
+        <div class="card" id="itemCard">
+          <div class="itembox" id="itemBox">
+            <p class="sub">Pick a module to begin.</p>
+          </div>
 
-      <div id="dimensionsArea"></div>
-      <div id="tagError"></div>
+          <div id="dimensionsArea"></div>
+          <div id="tagError"></div>
 
-      <div class="actionbar">
-        <span class="hint">Enter = save and next · ← → = move without saving · 1–5 = difficulty · click a square to jump</span>
-        <div class="actions">
-          <span class="savedFlash hidden" id="savedFlash">Saved</span>
-          <button class="btn secondary" id="prevBtn">← Back</button>
-          <button class="btn secondary" id="skipBtn">Skip →</button>
-          <button class="btn" id="saveBtn">Save and next →</button>
+          <div class="actionbar">
+            <span class="hint">Enter = save · ← → = move without saving · 1–5 = difficulty · click any question on the left to jump to it</span>
+            <div class="actions">
+              <span class="savedFlash hidden" id="savedFlash">Saved</span>
+              <button class="btn secondary" id="prevBtn">← Back</button>
+              <button class="btn secondary" id="skipBtn">Skip →</button>
+              <button class="btn" id="saveBtn">Save →</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -180,10 +196,9 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 
 let dimensions = [];        // [{id, name, allows_multiple, values: [{id, value}]}]
-let items = [];             // items of current module (filtered)
-let allModuleItems = [];    // unfiltered items of module
+let allModuleItems = [];    // all items of the current module, in section/position order
 let tagsByItem = {};        // item_id -> Set(tag_value_id)
-let idx = 0;
+let idx = 0;                // index into allModuleItems — navigation is NEVER filtered
 let selected = {};          // dimension_id -> Set(tag_value_id)
 
 // ---------- AUTH ----------
@@ -254,14 +269,15 @@ $('moduleSelect').addEventListener('change', e => {
   e.target.blur();
   if (e.target.value) { localStorage.setItem('vd_tag_module', e.target.value); loadModule(e.target.value); }
 });
-$('filterSelect').addEventListener('change', e => { e.target.blur(); applyFilter(); });
-$('sectionSelect').addEventListener('change', e => { e.target.blur(); updateSecTypeButtons(); applyFilter(); });
+$('sectionSelect').addEventListener('change', e => { e.target.blur(); updateSecTypeButtons(); });
+$('advanceSelect').addEventListener('change', e => e.target.blur());
 [...document.querySelectorAll('#secTypeButtons .chip')].forEach(b =>
   b.addEventListener('click', () => setSectionType(b.dataset.type)));
 
 async function loadModule(moduleId) {
   $('itemBox').innerHTML = '<p class="sub">Loading items…</p>';
-  $('gridNav').innerHTML = '';
+  $('sidebar').innerHTML = '';
+  $('dimensionsArea').innerHTML = '';
   const { data: its, error } = await db.from('lsac_items')
     .select('module_id, item_id, item_position, content')
     .eq('module_id', moduleId).order('item_position');
@@ -284,8 +300,17 @@ async function loadModule(moduleId) {
 
   await loadSectionLabels(moduleId);
   buildSectionOptions();
-  items = [];       // fresh module: don't try to preserve position from the old one
-  applyFilter();
+
+  if (!allModuleItems.length) {
+    $('itemBox').innerHTML = '<p class="sub">No items found in this module.</p>';
+    updateModuleCounter();
+    return;
+  }
+
+  // start on the first untagged question if there is one, otherwise the first question
+  const firstUntagged = allModuleItems.findIndex(i => !isTagged(i.item_id));
+  idx = firstUntagged === -1 ? 0 : firstUntagged;
+  renderItem();
 }
 
 function sectionOf(item) {
@@ -293,7 +318,6 @@ function sectionOf(item) {
 }
 
 let sectionLabels = {};   // section_order -> 'LR' | 'RC' | 'Other'
-let sectionCounts = {};
 
 async function loadSectionLabels(moduleId) {
   sectionLabels = {};
@@ -304,20 +328,20 @@ async function loadSectionLabels(moduleId) {
 
 function buildSectionOptions() {
   const sel = $('sectionSelect');
-  sectionCounts = {};
+  const counts = {};
   allModuleItems.forEach(i => {
     const s = sectionOf(i);
-    sectionCounts[s] = (sectionCounts[s] || 0) + 1;
+    counts[s] = (counts[s] || 0) + 1;
   });
-  const sections = Object.keys(sectionCounts).map(Number).sort((a, b) => a - b);
+  const sections = Object.keys(counts).map(Number).sort((a, b) => a - b);
   const current = sel.value;
-  sel.innerHTML = '<option value="">All sections</option>';
+  sel.innerHTML = '<option value="">Label a section…</option>';
   if (sections.length > 1) {
     sections.forEach(s => {
       const o = document.createElement('option');
       o.value = s;
       const label = sectionLabels[s] ? ` · ${sectionLabels[s]}` : '';
-      o.textContent = `Section ${s}${label} (${sectionCounts[s]} items)`;
+      o.textContent = `Section ${s}${label} (${counts[s]} items)`;
       sel.appendChild(o);
     });
     if ([...sel.options].some(o => o.value === current)) sel.value = current;
@@ -352,6 +376,7 @@ async function setSectionType(type) {
   if (error) { $('tagError').textContent = error.message; return; }
   sectionLabels[sec] = type;
   buildSectionOptions();
+  buildSidebar();
 }
 
 function questionTypeDim() { return dimensions.find(d => d.name === 'question_type'); }
@@ -363,36 +388,47 @@ function isTagged(itemId) {
   return [...(tagsByItem[itemId] || [])].some(id => qtIds.has(id));
 }
 
-function matchesFilter(itemId) {
-  const mode = $('filterSelect').value;
-  if (mode === 'all') return true;
-  return mode === 'tagged' ? isTagged(itemId) : !isTagged(itemId);
+function tagNamesFor(itemId) {
+  const qt = questionTypeDim();
+  if (!qt) return '';
+  const set = tagsByItem[itemId] || new Set();
+  return qt.values.filter(v => set.has(v.id)).map(v => v.value).join(' · ');
 }
 
-function applyFilter() {
-  const prevId = items[idx]?.item_id ?? null;
-  const mode = $('filterSelect').value;
-  const sec = $('sectionSelect').value;
-  let pool = sec === '' ? allModuleItems.slice()
-    : allModuleItems.filter(i => sectionOf(i) === Number(sec));
-  items = pool.filter(i => matchesFilter(i.item_id));
+// ---------- SIDEBAR ----------
 
-  // stay on the same question when the view changes, if it's still in view
-  idx = Math.max(0, items.findIndex(i => i.item_id === prevId));
+function buildSidebar() {
+  const sb = $('sidebar');
+  sb.innerHTML = '';
+  if (!allModuleItems.length) return;
+  const multiSec = new Set(allModuleItems.map(sectionOf)).size > 1;
+  let lastSec = null;
+  allModuleItems.forEach((it, i) => {
+    const s = sectionOf(it);
+    if (multiSec && s !== lastSec) {
+      lastSec = s;
+      const h = document.createElement('div');
+      h.className = 'sside-h';
+      h.textContent = `Section ${s}${sectionLabels[s] ? ' · ' + sectionLabels[s] : ''}`;
+      sb.appendChild(h);
+    }
+    const tagged = isTagged(it.item_id);
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'srow' + (tagged ? ' tagged' : '') + (i === idx ? ' current' : '');
+    row.title = `Item ${it.item_id}`;
 
-  if (!items.length) {
-    const msgs = {
-      untagged: 'Every item in this view has a question type tag. Switch the filter, pick another section, or pick another module.',
-      tagged: 'No tagged items in this view yet.',
-      all: 'No items found in this view.'
-    };
-    $('itemBox').innerHTML = `<p class="sub">${msgs[mode]}</p>`;
-    $('dimensionsArea').innerHTML = '';
-    $('gridNav').innerHTML = '';
-    updateModuleCounter();
-    return;
-  }
-  renderItem();
+    const dot = document.createElement('span'); dot.className = 'sdot';
+    const num = document.createElement('span'); num.className = 'snum';
+    num.textContent = it.item_position ?? (i + 1);
+    const tags = document.createElement('span'); tags.className = 'stags';
+    tags.textContent = tagged ? (tagNamesFor(it.item_id) || 'tagged') : 'untagged';
+
+    row.append(dot, num, tags);
+    row.addEventListener('click', () => { idx = i; renderItem(); row.blur(); });
+    sb.appendChild(row);
+  });
+  sb.querySelector('.srow.current')?.scrollIntoView({ block: 'nearest' });
 }
 
 // ---------- RENDER ----------
@@ -429,33 +465,8 @@ function extractOptions(content) {
   return null;
 }
 
-function buildGrid() {
-  const g = $('gridNav');
-  g.innerHTML = '';
-  if (!items.length) return;
-  const multiSec = new Set(items.map(sectionOf)).size > 1;
-  let lastSec = null;
-  items.forEach((it, i) => {
-    const s = sectionOf(it);
-    if (multiSec && s !== lastSec) {
-      lastSec = s;
-      const lbl = document.createElement('div');
-      lbl.className = 'gsec';
-      lbl.textContent = `Section ${s}${sectionLabels[s] ? ' · ' + sectionLabels[s] : ''}`;
-      g.appendChild(lbl);
-    }
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'gcell' + (isTagged(it.item_id) ? ' tagged' : '') + (i === idx ? ' current' : '');
-    b.textContent = it.item_position ?? (i + 1);
-    b.title = `Item ${it.item_id}`;
-    b.addEventListener('click', () => { idx = i; renderItem(); b.blur(); });
-    g.appendChild(b);
-  });
-}
-
 function renderItem() {
-  const it = items[idx];
+  const it = allModuleItems[idx];
   const c = it.content || {};
   const opts = extractOptions(c);
 
@@ -482,7 +493,7 @@ function renderItem() {
   dimensions.forEach(d => {
     selected[d.id] = new Set(d.values.filter(v => existing.has(v.id)).map(v => v.id));
   });
-  buildGrid();
+  buildSidebar();
   renderDimensions();
   updateModuleCounter();
 }
@@ -546,19 +557,18 @@ async function addValue(d) {
 // ---------- SAVE / NAVIGATE ----------
 
 $('saveBtn').addEventListener('click', e => { e.currentTarget.blur(); saveAndNext(); });
-$('skipBtn').addEventListener('click', e => { e.currentTarget.blur(); move(1, false); });
-$('prevBtn').addEventListener('click', e => { e.currentTarget.blur(); move(-1, false); });
+$('skipBtn').addEventListener('click', e => { e.currentTarget.blur(); move(1); });
+$('prevBtn').addEventListener('click', e => { e.currentTarget.blur(); move(-1); });
 
 document.addEventListener('keydown', e => {
   if ($('tagView').classList.contains('hidden')) return;
   if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
   if (e.key === 'Enter') {
-    // if a button/chip is focused, let its own click fire instead of double-triggering
     if (document.activeElement.tagName === 'BUTTON') return;
     e.preventDefault(); saveAndNext();
   }
-  else if (e.key === 'ArrowRight') { e.preventDefault(); move(1, false); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1, false); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); move(1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1); }
   else if (/^[1-5]$/.test(e.key)) {
     const dif = dimensions.find(d => d.name === 'difficulty');
     if (!dif) return;
@@ -570,9 +580,9 @@ document.addEventListener('keydown', e => {
 });
 
 async function saveAndNext() {
-  if (!items.length) return;
+  if (!allModuleItems.length) return;
   $('tagError').textContent = '';
-  const it = items[idx];
+  const it = allModuleItems[idx];
   const chosen = dimensions.flatMap(d => [...selected[d.id]]);
 
   const { error: delErr } = await db.from('item_tags').delete().eq('item_id', it.item_id);
@@ -585,48 +595,54 @@ async function saveAndNext() {
   }
 
   tagsByItem[it.item_id] = new Set(chosen);
-  flashSaved();
+  flashSaved('Saved');
   updateGlobalCounter();
 
-  // if the item no longer matches the current filter (e.g. it just became tagged
-  // in "Untagged only" view), drop it from the list and stay in place
-  if (!matchesFilter(it.item_id)) {
-    items.splice(idx, 1);
-    if (!items.length) { applyFilter(); return; }
-    if (idx >= items.length) idx = items.length - 1;
+  if ($('advanceSelect').value === 'untagged') {
+    // next untagged after the current one, wrapping around to the start
+    let next = -1;
+    for (let i = idx + 1; i < allModuleItems.length; i++) {
+      if (!isTagged(allModuleItems[i].item_id)) { next = i; break; }
+    }
+    if (next === -1) {
+      for (let i = 0; i < idx; i++) {
+        if (!isTagged(allModuleItems[i].item_id)) { next = i; break; }
+      }
+    }
+    if (next === -1) {
+      flashSaved('Saved · all questions tagged');
+      renderItem();  // stay put, refresh sidebar and status line
+      return;
+    }
+    idx = next;
     renderItem();
   } else {
-    move(1, true);
+    if (idx + 1 < allModuleItems.length) { idx++; renderItem(); }
+    else { flashSaved('Saved · end of module'); renderItem(); }
   }
 }
 
-function move(step, fromSave) {
-  if (!items.length) return;
+function move(step) {
+  if (!allModuleItems.length) return;
   const next = idx + step;
-  if (next < 0) return;
-  if (next >= items.length) {
-    if (fromSave) {
-      buildGrid();  // refresh tag colors; grid stays clickable
-      $('itemBox').innerHTML = '<p class="sub">End of this set. Click any square above to revisit an item, or pick another module or filter.</p>';
-    }
-    return;
-  }
+  if (next < 0 || next >= allModuleItems.length) return;
   idx = next;
   renderItem();
 }
 
-function flashSaved() {
+function flashSaved(msg) {
   const f = $('savedFlash');
+  f.textContent = msg || 'Saved';
   f.classList.remove('hidden');
-  setTimeout(() => f.classList.add('hidden'), 900);
+  setTimeout(() => f.classList.add('hidden'), 1400);
 }
 
 // ---------- COUNTERS ----------
 
 function updateModuleCounter() {
-  const taggedInModule = allModuleItems.filter(i => isTagged(i.item_id)).length;
-  const pos = items.length ? `Item ${idx + 1} of ${items.length} shown · ` : '';
-  $('moduleCounter').textContent = `${pos}${taggedInModule}/${allModuleItems.length} tagged in module`;
+  const tagged = allModuleItems.filter(i => isTagged(i.item_id)).length;
+  const pos = allModuleItems.length ? `Item ${idx + 1} of ${allModuleItems.length} · ` : '';
+  $('moduleCounter').textContent = `${pos}${tagged}/${allModuleItems.length} tagged`;
 }
 
 async function updateGlobalCounter() {
