@@ -362,11 +362,18 @@ async function loadDrillList() {
   const list = $('drillList');
   if (!viewingStudentId) { list.innerHTML = '<p class="sub">No student record found for this account.</p>'; return; }
   const { data, error } = await db.from('drills')
-    .select('id, title, question_count, status, is_timed, reveal_answers, created_by, created_at')
+    .select('id, title, question_count, status, is_timed, reveal_answers, created_by, is_recipe, created_at')
     .eq('student_id', viewingStudentId)
     .order('created_at', { ascending: false });
   if (error) { list.innerHTML = `<p class="sub">${escapeHtml(error.message)}</p>`; return; }
-  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet — your tutor will assign one soon.</p>'; return; }
+  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet — create one above.</p>'; return; }
+
+  // deep link: /drills.html?drill=<id> opens that drill directly
+  const wanted = new URLSearchParams(location.search).get('drill');
+  if (wanted && !window.__deepLinked) {
+    const target = data.find(d => d.id === wanted);
+    if (target) { window.__deepLinked = true; list.innerHTML = ''; openDrill(target); return; }
+  }
   list.innerHTML = '';
   data.forEach(d => {
     const row = document.createElement('div');
@@ -386,10 +393,24 @@ async function loadDrillList() {
 // ---------- OPEN DRILL ----------
 async function openDrill(drill) {
   currentDrill = drill;
-  const { data: dis, error } = await db.from('drill_items')
+  let { data: dis } = await db.from('drill_items')
     .select('module_id, item_id, position')
     .eq('drill_id', drill.id).order('position');
-  if (error || !dis || !dis.length) { alert('Could not load drill.'); return; }
+
+  if ((!dis || !dis.length) && drill.is_recipe) {
+    const { data: started, error: rerr } = await db.rpc('vd_start_recipe_drill', { p_drill_id: drill.id });
+    if (rerr) { alert(rerr.message); return; }
+    if (started?.error) { alert(started.error); return; }
+    const refetch = await db.from('drill_items')
+      .select('module_id, item_id, position')
+      .eq('drill_id', drill.id).order('position');
+    dis = refetch.data;
+    const { data: fresh } = await db.from('drills')
+      .select('question_count, time_limit_seconds').eq('id', drill.id).single();
+    if (fresh) { currentDrill.question_count = fresh.question_count; currentDrill.time_limit_seconds = fresh.time_limit_seconds; }
+  }
+
+  if (!dis || !dis.length) { alert('Could not load drill.'); return; }
 
   const keys = dis.map(d => d.item_id);
   const { data: contents } = await db.from('lsac_items')
