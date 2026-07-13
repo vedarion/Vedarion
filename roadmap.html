@@ -1171,10 +1171,10 @@ function hwHTML(h,hi,s,si,unlocked){
   const steps=(h.description||'').split('\n').filter(l=>l.trim());
   const comps=getStepCompletions(h);
   const ws=hwWs(h);
-  const isLiveDrill=(h.hw_type||'').indexOf('live_drill:')===0;
-  const liveDrillId=isLiveDrill?h.hw_type.slice(11):null;
+  const liveDrillId=h.drill_id||null;
+  const hasLiveDrill=!!liveDrillId;
   let stepsHTML='';
-  if(steps.length>0&&unlocked&&!isLiveDrill){
+  if(steps.length>0&&unlocked){
     stepsHTML=`<div class="hw-desc">${steps.map((line,li)=>{
       const l=line.trim();
       if(l.startsWith('--'))return`<div class="hw-label">${esc(l.replace(/^--/,'').replace(/:$/,''))}</div>`;
@@ -1183,14 +1183,14 @@ function hwHTML(h,hi,s,si,unlocked){
     }).join('')}</div>`;
   }
   let wsFooter='';
-  if(ws&&unlocked&&!isLiveDrill){
+  if(ws&&unlocked){
     wsFooter=`<div class="ws-card-footer">
       <button class="ws-open-btn" data-openws="${h.id}" data-wstype="${ws}" data-wssess="${s.id}">Open Worksheet →</button>
       <span class="ws-summary-line">${wsSummaryText(h.id,ws)}</span>
     </div>`;
   }
   let liveFooter='';
-  if(isLiveDrill&&unlocked){
+  if(hasLiveDrill&&unlocked){
     const dr=(S.drillsById&&S.drillsById[liveDrillId])||{};
     const dst=dr.status||'assigned';
     const dstLabel=dst==='completed'?'completed ✓':dst==='in_progress'?'in progress':'assigned';
@@ -1210,7 +1210,7 @@ function hwHTML(h,hi,s,si,unlocked){
       <button class="rm-btn" data-delhw="${h.id}">×</button>`:''}
     </div>
     ${stepsHTML}
-    ${t&&unlocked&&!isLiveDrill?(steps.length>0?`<button class="hw-add-step" data-edithw="${h.id}">Edit steps</button>`:`<div class="hw-desc-ph" data-edithw="${h.id}">+ Add step-by-step description</div>`):''}
+    ${t&&unlocked?(steps.length>0?`<button class="hw-add-step" data-edithw="${h.id}">Edit steps</button>`:`<div class="hw-desc-ph" data-edithw="${h.id}">+ Add step-by-step description</div>`):''}
     ${S.hwEditing===h.id?`<div class="hw-edit-wrap">
       <textarea class="hw-desc-edit" id="hw-edit-ta" data-hwid="${h.id}">${esc(h.description||'')}</textarea>
       <div class="hw-edit-toolbar" style="margin-top:6px">
@@ -1678,7 +1678,8 @@ async function openDrillPicker(sessId){
     const{error:hErr}=await db.from('homework').insert({
       session_id:sessId,
       label:`Drill: ${typeName} · ${count} questions`,
-      hw_type:`live_drill:${drill.id}`,
+      hw_type:'drill',
+      drill_id:drill.id,
       description:null,
       sort_order:sortBase
     });
@@ -1739,6 +1740,120 @@ function openPicker(sessId){
     overlay.scrollTop=sc;
     wire();
   }
+  function cardOf(k){
+    const dash=k.lastIndexOf('-');
+    const gkey=k.substring(0,dash),ci=parseInt(k.substring(dash+1));
+    return HW_CARDS[gkey]&&HW_CARDS[gkey].cards[ci];
+  }
+  /* A QT drill card = label starts with 'Drill:' and resolves to a question type. */
+  function qtOf(card){return card&&(card.label||'').startsWith('Drill:')?qtFromLabel(card.label):null;}
+  function factorFor(timing,tf){
+    if(timing==='untimed')return null;
+    if(timing==='student'){const f=parseFloat((tf||'1x').replace('x',''));return isNaN(f)?1:f;}
+    return parseFloat(timing);
+  }
+  async function doInserts(optByKey){
+    const sess=S.sessions.find(x=>x.id===sessId);
+    const hws=(sess&&sess.homework)||[];
+    let sortBase=hws.length>0?Math.max(...hws.map(h=>h.sort_order||0))+1:0;
+    const tf=S.student?(S.student.time_factor||'1x'):'1x';
+    /* Resolve the question_type dimension once, only if something wants live questions. */
+    let dimId=null;
+    if(Object.values(optByKey||{}).some(o=>o.attach)){
+      const{data:dim}=await db.from('tag_dimensions').select('id').eq('name','question_type').single();
+      dimId=dim?dim.id:null;
+    }
+    let err=null;
+    for(const k of selected){
+      const card=cardOf(k);
+      if(!card)continue;
+      let drillId=null;
+      const q=qtOf(card);
+      const opt=optByKey&&optByKey[k];
+      if(q&&opt&&opt.attach&&dimId){
+        /* Exact-match the QT name to a single tag value; multi-tag types (e.g. Strengthen & Weaken) find none and just skip. */
+        const{data:tvs}=await db.from('tag_values').select('id').eq('dimension_id',dimId).eq('value',q.name);
+        if(tvs&&tvs.length===1){
+          const count=Math.max(1,Math.min(25,parseInt(opt.count)||4));
+          const f=factorFor(opt.timing,tf);
+          const timed=f!==null;
+          const total=timed?Math.round(count*85*f):null;
+          const{data:drill}=await db.from('drills').insert({
+            student_id:S.selId,
+            session_id:sessId,
+            created_by:'tutor',
+            title:`${q.name} drill`,
+            filters:{recipe:true,tag_value_ids:[tvs[0].id],question_type:q.name},
+            question_count:count,
+            is_timed:timed,
+            time_limit_seconds:total,
+            reveal_answers:false,
+            is_recipe:true,
+            status:'assigned'
+          }).select().single();
+          if(drill)drillId=drill.id;
+        }
+      }
+      const row={session_id:sessId,label:card.label,hw_type:hwTypeCode(card.label),description:card.desc?applyTiming(card.desc,tf):null,sort_order:sortBase++};
+      if(drillId)row.drill_id=drillId;
+      const{error}=await db.from('homework').insert(row);
+      if(error)err=error;
+    }
+    overlay.remove();
+    if(err)alert('Could not add homework: '+(err.message||JSON.stringify(err)));
+    await loadStudent(S.selId);R();showSaved(!err);
+  }
+  function showOptions(qtKeys){
+    const tf=S.student?(S.student.time_factor||'1x'):'1x';
+    const opt={};
+    qtKeys.forEach(k=>opt[k]={count:4,timing:'student',attach:true});
+    const TIMINGS=[['student','Student pace'],['untimed','Untimed'],['1','1x'],['1.25','1.25x'],['1.5','1.5x'],['2','2x']];
+    function note(k){
+      const f=factorFor(opt[k].timing,tf);
+      if(f===null)return'No clock for this drill.';
+      const sec=Math.floor(85*f);
+      const perQ=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+      const src=opt[k].timing==='student'?`from student's time factor (${tf})`:'tutor override';
+      return`${perQ} per question · ${src}`;
+    }
+    function build(){
+      const list=qtKeys.map(k=>{
+        const card=cardOf(k);
+        return`<div class="picker-group">
+          <div class="picker-group-label">${esc((card&&card.label)||'')}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;padding:2px 2px 4px">
+            <div><div class="ws-sec-lbl">Questions</div><input class="ws-qnum" type="number" min="1" max="25" value="${opt[k].count}" data-optq="${esc(k)}" style="width:70px"></div>
+            <div><div class="ws-sec-lbl">Timing</div><select class="ws-sel" data-optt="${esc(k)}">${TIMINGS.map(([v,n])=>`<option value="${v}" ${opt[k].timing===v?'selected':''}>${n}</option>`).join('')}</select></div>
+            <label class="ws-toggle-lbl" style="display:flex;align-items:center;gap:8px;cursor:pointer;padding-bottom:6px"><input type="checkbox" data-opta="${esc(k)}" ${opt[k].attach?'checked':''}> Attach live questions</label>
+          </div>
+          <div class="picker-sub" data-optnote style="margin:2px 0 0">${esc(note(k))}</div>
+        </div>`;
+      }).join('');
+      return`<div class="picker-panel">
+        <div class="picker-title">Drill Options</div>
+        <div class="picker-sub">Set questions and timing for each live drill</div>
+        <div id="hw-picker-groups">${list}</div>
+        <div class="picker-footer">
+          <div class="picker-count">${qtKeys.length} live drill${qtKeys.length>1?'s':''}</div>
+          <div class="picker-actions">
+            <button class="picker-cancel" id="opt-back">Back</button>
+            <button class="picker-add" id="opt-confirm">Add</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    overlay.innerHTML=build();
+    overlay.scrollTop=0;
+    overlay.querySelectorAll('[data-optq]').forEach(inp=>inp.addEventListener('input',()=>{opt[inp.dataset.optq].count=inp.value;}));
+    overlay.querySelectorAll('[data-optt]').forEach(sel=>sel.addEventListener('change',()=>{
+      const k=sel.dataset.optt;opt[k].timing=sel.value;
+      const grp=sel.closest('.picker-group');const n=grp&&grp.querySelector('[data-optnote]');if(n)n.textContent=note(k);
+    }));
+    overlay.querySelectorAll('[data-opta]').forEach(cb=>cb.addEventListener('change',()=>{opt[cb.dataset.opta].attach=cb.checked;}));
+    const back=overlay.querySelector('#opt-back');if(back)back.addEventListener('click',()=>rebuild());
+    const conf=overlay.querySelector('#opt-confirm');
+    if(conf)conf.addEventListener('click',()=>{conf.disabled=true;conf.textContent='Adding...';doInserts(opt);});
+  }
   function wire(){
     overlay.querySelectorAll('[data-hwtab]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();curTab=b.dataset.hwtab;rebuild();}));
     overlay.querySelectorAll('[data-pkey]').forEach(c=>c.addEventListener('click',e=>{
@@ -1750,24 +1865,12 @@ function openPicker(sessId){
     const cancel=overlay.querySelector('#hw-picker-cancel');
     if(cancel)cancel.addEventListener('click',()=>overlay.remove());
     const add=overlay.querySelector('#hw-picker-add');
-    if(add)add.addEventListener('click',async()=>{
+    if(add)add.addEventListener('click',e=>{
+      e.stopPropagation();
+      const qtKeys=[...selected].filter(k=>qtOf(cardOf(k)));
+      if(qtKeys.length>0){showOptions(qtKeys);return;}
       add.disabled=true;add.textContent='Adding...';
-      const sess=S.sessions.find(x=>x.id===sessId);
-      const hws=(sess&&sess.homework)||[];
-      let sortBase=hws.length>0?Math.max(...hws.map(h=>h.sort_order||0))+1:0;
-      const tf=S.student?(S.student.time_factor||'1x'):'1x';
-      let err=null;
-      for(const k of selected){
-        const dash=k.lastIndexOf('-');
-        const gkey=k.substring(0,dash),ci=parseInt(k.substring(dash+1));
-        const card=HW_CARDS[gkey]&&HW_CARDS[gkey].cards[ci];
-        if(!card)continue;
-        const{error}=await db.from('homework').insert({session_id:sessId,label:card.label,hw_type:hwTypeCode(card.label),description:card.desc?applyTiming(card.desc,tf):null,sort_order:sortBase++});
-        if(error)err=error;
-      }
-      overlay.remove();
-      if(err)alert('Could not add homework: '+(err.message||JSON.stringify(err)));
-      await loadStudent(S.selId);R();showSaved(!err);
+      doInserts({});
     });
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
   }
@@ -2060,10 +2163,9 @@ function bind(){
     if(!confirm('Delete this homework item?'))return;
     const id=b.dataset.delhw;
     let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
-    if(hw&&(hw.hw_type||'').indexOf('live_drill:')===0){
-      const drillId=hw.hw_type.slice(11);
-      const dr=S.drillsById&&S.drillsById[drillId];
-      if(dr&&dr.status==='assigned')await db.from('drills').delete().eq('id',drillId);
+    if(hw&&hw.drill_id){
+      const dr=S.drillsById&&S.drillsById[hw.drill_id];
+      if(dr&&dr.status==='assigned')await db.from('drills').delete().eq('id',hw.drill_id);
     }
     const{error}=await db.from('homework').delete().eq('id',id);
     await loadStudent(S.selId);R();showSaved(!error);
