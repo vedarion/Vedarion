@@ -24,7 +24,8 @@
   h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
   .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
   label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 6px; }
-  input[type=email], input[type=password], input[type=text], input[type=number] {
+  label .opt { color: var(--ink-soft); font-weight: 400; }
+  input[type=email], input[type=password], input[type=number] {
     width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; background: var(--cream);
   }
   select { padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: #fff; width: 100%; }
@@ -33,9 +34,9 @@
   .btn:hover { background: var(--orange-dark); }
   .btn:disabled { opacity: 0.45; cursor: not-allowed; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
-  .matchbar { display: flex; align-items: center; gap: 10px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 16px 0; font-size: 14px; }
+  .matchbar { display: flex; align-items: center; gap: 10px; background: var(--cream-warm); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin: 16px 0; font-size: 14px; flex-wrap: wrap; }
   .matchbar .n { font-weight: 700; color: var(--orange-dark); }
-  .checkrow { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-top: 14px; }
+  .paceNote { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
   .hidden { display: none; }
   #authError, #buildError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
   .ok { color: var(--green); font-size: 14px; margin-top: 10px; }
@@ -44,6 +45,8 @@
   .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); }
   .pill.completed { border-color: var(--green); color: var(--green); }
   .pill.in_progress { border-color: var(--orange); color: var(--orange-dark); }
+  .withdraw { font-size: 11px; border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 4px 10px; cursor: pointer; margin-left: 8px; color: var(--ink-soft); }
+  .withdraw:hover { border-color: var(--red); color: var(--red); }
 </style>
 </head>
 <body>
@@ -67,52 +70,58 @@
   <div id="builderView" class="hidden">
 
     <div class="card">
-      <h1>New drill</h1>
-      <div class="grid">
+      <h1>Assign a drill</h1>
+      <p class="sub">Pick a question type and how many. Questions are drawn fresh when the student presses Start, so they always get material they have never seen. Timing prefills from the student's time factor.</p>
+
+      <div class="grid" style="margin-top:14px;">
+        <div>
+          <label for="studentSelect">Student</label>
+          <select id="studentSelect"></select>
+        </div>
         <div>
           <label for="qtypeSelect">Question type</label>
           <select id="qtypeSelect"></select>
         </div>
         <div>
-          <label for="diffSelect">Difficulty</label>
+          <label for="countInput">Questions</label>
+          <input type="number" id="countInput" value="10" min="1" max="25">
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:14px;">
+        <div>
+          <label for="timedSelect">Timing</label>
+          <select id="timedSelect">
+            <option value="student">Student pace</option>
+            <option value="untimed">Untimed</option>
+            <option value="1">Standard (1x)</option>
+            <option value="1.25">1.25x</option>
+            <option value="1.5">1.5x</option>
+            <option value="2">2x</option>
+          </select>
+          <div class="paceNote" id="paceNote"></div>
+        </div>
+        <div>
+          <label for="diffSelect">Difficulty <span class="opt">· optional</span></label>
           <select id="diffSelect"><option value="">Any</option></select>
         </div>
         <div>
-          <label for="patternSelect">Pattern</label>
+          <label for="patternSelect">Pattern <span class="opt">· optional</span></label>
           <select id="patternSelect"><option value="">Any</option></select>
         </div>
       </div>
 
-      <div class="matchbar" id="matchBar">
-        <span>Matching tagged items:</span><span class="n" id="matchCount">—</span>
-        <span id="matchNote" class="sub"></span>
+      <div class="matchbar">
+        <span>Fresh questions available for this student right now:</span>
+        <span class="n" id="matchCount">—</span>
+        <span class="sub" id="matchNote"></span>
       </div>
 
-      <div class="grid">
-        <div>
-          <label for="countInput">Questions</label>
-          <input type="number" id="countInput" value="10" min="1" max="50">
-        </div>
-        <div>
-          <label for="studentSelect">Assign to</label>
-          <select id="studentSelect"></select>
-        </div>
-        <div>
-          <label for="timedSelect">Timing</label>
-          <select id="timedSelect">
-            <option value="untimed">Untimed</option>
-            <option value="timed">Timed (1:25 per question)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="checkrow">
-        <input type="checkbox" id="revealCheck">
-        <label for="revealCheck" style="margin:0; font-weight:400;">Reveal correct answers to student after each question (off = review in session)</label>
-      </div>
-
-      <div style="display:flex; justify-content:flex-end; margin-top:18px;">
-        <button class="btn" id="createBtn">Create and assign</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+        <label style="margin:0; font-weight:400; font-size:13px; display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="revealCheck"> Reveal answers to student (off = review in session)
+        </label>
+        <button class="btn" id="createBtn">Assign drill</button>
       </div>
       <div id="buildError"></div>
       <div id="buildOk" class="ok"></div>
@@ -132,9 +141,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 
-let dims = [];        // dimensions with values
-let students = [];    // {id, name}
-let matchedItems = []; // [{item_id, module_id}]
+const BASE_SECONDS_PER_Q = 85;
+let dims = [];
+let students = [];   // {id, name, time_factor}
+let matched = 0;
 
 $('signInBtn').addEventListener('click', signIn);
 $('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
@@ -162,23 +172,23 @@ async function verifyAdmin() {
   $('authView').classList.add('hidden');
   $('builderView').classList.remove('hidden');
   await Promise.all([loadDims(), loadStudents()]);
-  await refreshMatch();
+  updatePaceNote();
+  refreshMatch();
   loadDrills();
 }
 
 async function loadDims() {
-  const { data: d } = await db.from('tag_dimensions').select('id, name, allows_multiple').order('display_order');
+  const { data: d } = await db.from('tag_dimensions').select('id, name').order('display_order');
   const { data: v } = await db.from('tag_values').select('id, dimension_id, value').order('display_order');
   dims = (d || []).map(x => ({ ...x, values: (v || []).filter(y => y.dimension_id === x.id) }));
-
-  fillSelect('qtypeSelect', dimByName('question_type'), false);
-  fillSelect('diffSelect', dimByName('difficulty'), true);
-  fillSelect('patternSelect', dimByName('pattern'), true);
+  fill('qtypeSelect', byName('question_type'), false);
+  fill('diffSelect', byName('difficulty'), true);
+  fill('patternSelect', byName('pattern'), true);
 }
 
-function dimByName(n) { return dims.find(d => d.name === n); }
+function byName(n) { return dims.find(d => d.name === n); }
 
-function fillSelect(id, dim, withAny) {
+function fill(id, dim, withAny) {
   const sel = $(id);
   sel.innerHTML = withAny ? '<option value="">Any</option>' : '';
   (dim?.values || []).forEach(v => {
@@ -190,23 +200,52 @@ function fillSelect(id, dim, withAny) {
 
 async function loadStudents() {
   const { data } = await db.from('students')
-    .select('id, status, profiles:profile_id ( first_name, email )')
+    .select('id, time_factor, status, profiles:profile_id ( first_name, email )')
     .order('created_at');
   students = (data || []).map(s => ({
     id: s.id,
-    name: s.profiles?.first_name || s.profiles?.email || s.id.slice(0, 8)
+    name: s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8),
+    time_factor: s.time_factor || '1x'
   }));
   const sel = $('studentSelect');
   sel.innerHTML = '';
   students.forEach(s => {
     const o = document.createElement('option');
-    o.value = s.id; o.textContent = s.name;
+    o.value = s.id;
+    o.textContent = `${s.name} (${s.time_factor})`;
     sel.appendChild(o);
   });
 }
 
-// ---------- MATCH COUNT ----------
+function currentStudent() { return students.find(s => s.id === $('studentSelect').value); }
 
+function effectiveFactor() {
+  const mode = $('timedSelect').value;
+  if (mode === 'untimed') return null;
+  if (mode === 'student') {
+    const s = currentStudent();
+    const f = parseFloat((s?.time_factor || '1x').replace('x',''));
+    return isNaN(f) ? 1 : f;
+  }
+  return parseFloat(mode);
+}
+
+function fmtPerQ(f) {
+  const sec = Math.round(BASE_SECONDS_PER_Q * f);
+  return Math.floor(sec/60) + ':' + String(sec%60).padStart(2,'0');
+}
+
+function updatePaceNote() {
+  const f = effectiveFactor();
+  const s = currentStudent();
+  if (f === null) { $('paceNote').textContent = 'No clock for this drill.'; return; }
+  const src = $('timedSelect').value === 'student' ? `from ${s?.name || 'student'}'s time factor (${s?.time_factor || '1x'})` : 'tutor override';
+  $('paceNote').textContent = `${fmtPerQ(f)} per question · ${src}`;
+}
+
+['studentSelect','timedSelect'].forEach(id => $(id).addEventListener('change', updatePaceNote));
+
+// ---------- AVAILABILITY ----------
 ['qtypeSelect','diffSelect','patternSelect','studentSelect'].forEach(id =>
   $(id).addEventListener('change', refreshMatch));
 
@@ -225,18 +264,14 @@ async function tagItemIds(valueId) {
 
 async function refreshMatch() {
   const qt = $('qtypeSelect').value;
-  $('matchCount').textContent = '…';
-  $('matchNote').textContent = '';
-  matchedItems = [];
+  $('matchCount').textContent = '…'; $('matchNote').textContent = '';
+  matched = 0;
   if (!qt) { $('matchCount').textContent = '0'; return; }
-
   let ids = await tagItemIds(qt);
-  const diff = $('diffSelect').value;
-  const pat = $('patternSelect').value;
+  const diff = $('diffSelect').value, pat = $('patternSelect').value;
   if (diff) { const d = await tagItemIds(diff); ids = new Set([...ids].filter(x => d.has(x))); }
   if (pat)  { const p = await tagItemIds(pat);  ids = new Set([...ids].filter(x => p.has(x))); }
 
-  // exclude items already assigned to the selected student
   const studentId = $('studentSelect').value;
   let excluded = new Set();
   if (studentId && ids.size) {
@@ -245,71 +280,61 @@ async function refreshMatch() {
       .eq('drills.student_id', studentId);
     (prior || []).forEach(r => excluded.add(r.item_id));
   }
-  const usable = [...ids].filter(x => !excluded.has(x));
-
-  if (usable.length) {
-    const { data: rows } = await db.from('lsac_items')
-      .select('item_id, module_id').in('item_id', usable.slice(0, 1000));
-    matchedItems = rows || [];
-  }
-  $('matchCount').textContent = String(matchedItems.length);
-  if (excluded.size) $('matchNote').textContent = `(${excluded.size} excluded — already assigned to this student)`;
+  matched = [...ids].filter(x => !excluded.has(x)).length;
+  $('matchCount').textContent = String(matched);
+  if (excluded.size) $('matchNote').textContent = `(excludes questions this student has already seen)`;
+  $('matchNote').textContent += matched === 0 && ids.size === 0 ? ' — tag some questions of this type first' : '';
 }
 
-// ---------- CREATE ----------
-
-$('createBtn').addEventListener('click', createDrill);
-
-async function createDrill() {
+// ---------- CREATE (recipe) ----------
+$('createBtn').addEventListener('click', async () => {
   $('buildError').textContent = ''; $('buildOk').textContent = '';
-  const qtSel = $('qtypeSelect');
-  const qtName = qtSel.options[qtSel.selectedIndex]?.textContent || 'Drill';
-  const count = Math.max(1, Math.min(50, parseInt($('countInput').value) || 10));
   const studentId = $('studentSelect').value;
-  const timed = $('timedSelect').value === 'timed';
-
+  const qt = $('qtypeSelect');
+  const qtName = qt.options[qt.selectedIndex]?.textContent || 'Drill';
+  const count = Math.max(1, Math.min(25, parseInt($('countInput').value) || 10));
   if (!studentId) { $('buildError').textContent = 'Pick a student.'; return; }
-  if (matchedItems.length < count) {
-    $('buildError').textContent = `Only ${matchedItems.length} matching items available — lower the question count or tag more items.`;
+  if (!qt.value) { $('buildError').textContent = 'Pick a question type.'; return; }
+  if (matched === 0) {
+    $('buildError').textContent = 'No fresh questions exist for this combination yet — tag more first.';
     return;
   }
 
-  const pool = matchedItems.slice().sort((a, b) => b.module_id.localeCompare(a.module_id));
-  const chosen = pool.slice(0, count);
+  const tagIds = [qt.value];
+  if ($('diffSelect').value) tagIds.push($('diffSelect').value);
+  if ($('patternSelect').value) tagIds.push($('patternSelect').value);
 
-  const { data: drill, error: dErr } = await db.from('drills').insert({
+  const f = effectiveFactor();
+  const timed = f !== null;
+
+  const { error } = await db.from('drills').insert({
     student_id: studentId,
     created_by: 'tutor',
     title: `${qtName} drill`,
     filters: {
+      recipe: true,
+      tag_value_ids: tagIds,
       question_type: qtName,
       difficulty: $('diffSelect').options[$('diffSelect').selectedIndex]?.textContent || 'Any',
       pattern: $('patternSelect').options[$('patternSelect').selectedIndex]?.textContent || 'Any'
     },
     question_count: count,
     is_timed: timed,
-    time_limit_seconds: timed ? count * 85 : null,
-    reveal_answers: $('revealCheck').checked
-  }).select().single();
-  if (dErr) { $('buildError').textContent = dErr.message; return; }
+    time_limit_seconds: timed ? Math.round(count * BASE_SECONDS_PER_Q * f) : null,
+    reveal_answers: $('revealCheck').checked,
+    is_recipe: true
+  });
+  if (error) { $('buildError').textContent = error.message; return; }
 
-  const rows = chosen.map((it, i) => ({
-    drill_id: drill.id, module_id: it.module_id, item_id: it.item_id, position: i + 1
-  }));
-  const { error: iErr } = await db.from('drill_items').insert(rows);
-  if (iErr) { $('buildError').textContent = iErr.message; return; }
-
-  const sName = students.find(s => s.id === studentId)?.name || 'student';
-  $('buildOk').textContent = `Created "${qtName} drill" (${count} questions) for ${sName}.`;
-  refreshMatch();
+  const sName = currentStudent()?.name || 'student';
+  $('buildOk').textContent = `Assigned "${qtName} drill" (${count} questions${timed ? ', ' + fmtPerQ(f) + '/question' : ', untimed'}) to ${sName}. Questions draw fresh when they start.`;
   loadDrills();
-}
+});
 
 // ---------- LIST ----------
-
 async function loadDrills() {
   const { data } = await db.from('drills')
-    .select('id, title, question_count, status, created_by, created_at, students ( id, profiles:profile_id ( first_name ) )')
+    .select('id, title, question_count, status, created_by, is_recipe, created_at, students ( id, profiles:profile_id ( first_name ) )')
     .order('created_at', { ascending: false }).limit(30);
   const list = $('drillList');
   if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet.</p>'; return; }
@@ -319,12 +344,23 @@ async function loadDrills() {
     row.className = 'drillrow';
     const who = d.students?.profiles?.first_name || '—';
     const when = new Date(d.created_at).toLocaleDateString();
+    const canWithdraw = d.created_by === 'tutor' && d.status === 'assigned';
     row.innerHTML = `
       <div>
-        <div>${escapeHtml(d.title)} · ${d.question_count} questions</div>
+        <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_recipe ? ' · draws at start' : ''}</div>
         <div class="meta">${escapeHtml(who)} · ${d.created_by === 'student' ? 'self-created' : 'assigned'} · ${when}</div>
       </div>
-      <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>`;
+      <div>
+        <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>
+        ${canWithdraw ? `<button class="withdraw" data-id="${d.id}">Withdraw</button>` : ''}
+      </div>`;
+    const wd = row.querySelector('.withdraw');
+    if (wd) wd.addEventListener('click', async () => {
+      if (!confirm('Withdraw this assignment? The student will no longer see it.')) return;
+      await db.from('drill_items').delete().eq('drill_id', d.id);
+      const { error } = await db.from('drills').delete().eq('id', d.id);
+      if (error) alert(error.message); else loadDrills();
+    });
     list.appendChild(row);
   });
 }

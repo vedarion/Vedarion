@@ -58,6 +58,20 @@
   .hidden { display: none; }
   .toolrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
   .toolrow .spacer { flex: 1; }
+  .gridnav { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; }
+  .gridnav:empty { display: none; }
+  .gsec {
+    width: 100%; font-size: 11px; font-weight: 600; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.5px; margin: 6px 0 2px;
+  }
+  .gsec:first-child { margin-top: 0; }
+  .gcell {
+    width: 32px; height: 27px; border: 1px solid var(--line); border-radius: 5px;
+    background: #fff; color: var(--ink-soft); font-size: 11px; cursor: pointer; padding: 0;
+  }
+  .gcell:hover { border-color: var(--orange); }
+  .gcell.tagged { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .gcell.current { outline: 2px solid var(--ink); outline-offset: 1px; }
   .itembox {
     background: var(--cream); border: 1px solid var(--line); border-radius: 10px;
     padding: 18px; font-size: 15px; line-height: 1.75; margin-bottom: 18px;
@@ -127,6 +141,7 @@
       </span>
       <select id="filterSelect">
         <option value="untagged">Untagged only</option>
+        <option value="tagged">Tagged only</option>
         <option value="all">All items</option>
       </select>
       <div class="spacer"></div>
@@ -134,6 +149,8 @@
     </div>
 
     <div class="card" id="itemCard">
+      <div class="gridnav" id="gridNav"></div>
+
       <div class="itembox" id="itemBox">
         <p class="sub">Pick a module to begin.</p>
       </div>
@@ -142,7 +159,7 @@
       <div id="tagError"></div>
 
       <div class="actionbar">
-        <span class="hint">Enter = save and next · ← → = move without saving · 1–5 = difficulty</span>
+        <span class="hint">Enter = save and next · ← → = move without saving · 1–5 = difficulty · click a square to jump</span>
         <div class="actions">
           <span class="savedFlash hidden" id="savedFlash">Saved</span>
           <button class="btn secondary" id="prevBtn">← Back</button>
@@ -234,15 +251,17 @@ async function loadModules() {
 }
 
 $('moduleSelect').addEventListener('change', e => {
+  e.target.blur();
   if (e.target.value) { localStorage.setItem('vd_tag_module', e.target.value); loadModule(e.target.value); }
 });
-$('filterSelect').addEventListener('change', () => applyFilter());
-$('sectionSelect').addEventListener('change', () => { updateSecTypeButtons(); applyFilter(); });
+$('filterSelect').addEventListener('change', e => { e.target.blur(); applyFilter(); });
+$('sectionSelect').addEventListener('change', e => { e.target.blur(); updateSecTypeButtons(); applyFilter(); });
 [...document.querySelectorAll('#secTypeButtons .chip')].forEach(b =>
   b.addEventListener('click', () => setSectionType(b.dataset.type)));
 
 async function loadModule(moduleId) {
   $('itemBox').innerHTML = '<p class="sub">Loading items…</p>';
+  $('gridNav').innerHTML = '';
   const { data: its, error } = await db.from('lsac_items')
     .select('module_id, item_id, item_position, content')
     .eq('module_id', moduleId).order('item_position');
@@ -265,6 +284,7 @@ async function loadModule(moduleId) {
 
   await loadSectionLabels(moduleId);
   buildSectionOptions();
+  items = [];       // fresh module: don't try to preserve position from the old one
   applyFilter();
 }
 
@@ -343,18 +363,32 @@ function isTagged(itemId) {
   return [...(tagsByItem[itemId] || [])].some(id => qtIds.has(id));
 }
 
+function matchesFilter(itemId) {
+  const mode = $('filterSelect').value;
+  if (mode === 'all') return true;
+  return mode === 'tagged' ? isTagged(itemId) : !isTagged(itemId);
+}
+
 function applyFilter() {
+  const prevId = items[idx]?.item_id ?? null;
   const mode = $('filterSelect').value;
   const sec = $('sectionSelect').value;
   let pool = sec === '' ? allModuleItems.slice()
     : allModuleItems.filter(i => sectionOf(i) === Number(sec));
-  items = mode === 'untagged' ? pool.filter(i => !isTagged(i.item_id)) : pool;
-  idx = 0;
+  items = pool.filter(i => matchesFilter(i.item_id));
+
+  // stay on the same question when the view changes, if it's still in view
+  idx = Math.max(0, items.findIndex(i => i.item_id === prevId));
+
   if (!items.length) {
-    $('itemBox').innerHTML = mode === 'untagged'
-      ? '<p class="sub">Every item in this view has a question type tag. Switch the filter to All items, pick another section, or pick another module.</p>'
-      : '<p class="sub">No items found in this view.</p>';
+    const msgs = {
+      untagged: 'Every item in this view has a question type tag. Switch the filter, pick another section, or pick another module.',
+      tagged: 'No tagged items in this view yet.',
+      all: 'No items found in this view.'
+    };
+    $('itemBox').innerHTML = `<p class="sub">${msgs[mode]}</p>`;
     $('dimensionsArea').innerHTML = '';
+    $('gridNav').innerHTML = '';
     updateModuleCounter();
     return;
   }
@@ -395,6 +429,31 @@ function extractOptions(content) {
   return null;
 }
 
+function buildGrid() {
+  const g = $('gridNav');
+  g.innerHTML = '';
+  if (!items.length) return;
+  const multiSec = new Set(items.map(sectionOf)).size > 1;
+  let lastSec = null;
+  items.forEach((it, i) => {
+    const s = sectionOf(it);
+    if (multiSec && s !== lastSec) {
+      lastSec = s;
+      const lbl = document.createElement('div');
+      lbl.className = 'gsec';
+      lbl.textContent = `Section ${s}${sectionLabels[s] ? ' · ' + sectionLabels[s] : ''}`;
+      g.appendChild(lbl);
+    }
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'gcell' + (isTagged(it.item_id) ? ' tagged' : '') + (i === idx ? ' current' : '');
+    b.textContent = it.item_position ?? (i + 1);
+    b.title = `Item ${it.item_id}`;
+    b.addEventListener('click', () => { idx = i; renderItem(); b.blur(); });
+    g.appendChild(b);
+  });
+}
+
 function renderItem() {
   const it = items[idx];
   const c = it.content || {};
@@ -423,6 +482,7 @@ function renderItem() {
   dimensions.forEach(d => {
     selected[d.id] = new Set(d.values.filter(v => existing.has(v.id)).map(v => v.id));
   });
+  buildGrid();
   renderDimensions();
   updateModuleCounter();
 }
@@ -469,6 +529,7 @@ function toggleChip(d, v, chip, container) {
     [...container.querySelectorAll('.chip')].forEach(c => c.classList.remove('on'));
     if (selected[d.id].size) chip.classList.add('on');
   }
+  chip.blur();
 }
 
 async function addValue(d) {
@@ -484,16 +545,20 @@ async function addValue(d) {
 
 // ---------- SAVE / NAVIGATE ----------
 
-$('saveBtn').addEventListener('click', saveAndNext);
-$('skipBtn').addEventListener('click', () => move(1, false));
-$('prevBtn').addEventListener('click', () => move(-1, false));
+$('saveBtn').addEventListener('click', e => { e.currentTarget.blur(); saveAndNext(); });
+$('skipBtn').addEventListener('click', e => { e.currentTarget.blur(); move(1, false); });
+$('prevBtn').addEventListener('click', e => { e.currentTarget.blur(); move(-1, false); });
 
 document.addEventListener('keydown', e => {
   if ($('tagView').classList.contains('hidden')) return;
   if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-  if (e.key === 'Enter') { e.preventDefault(); saveAndNext(); }
-  else if (e.key === 'ArrowRight') move(1, false);
-  else if (e.key === 'ArrowLeft') move(-1, false);
+  if (e.key === 'Enter') {
+    // if a button/chip is focused, let its own click fire instead of double-triggering
+    if (document.activeElement.tagName === 'BUTTON') return;
+    e.preventDefault(); saveAndNext();
+  }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); move(1, false); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1, false); }
   else if (/^[1-5]$/.test(e.key)) {
     const dif = dimensions.find(d => d.name === 'difficulty');
     if (!dif) return;
@@ -523,7 +588,9 @@ async function saveAndNext() {
   flashSaved();
   updateGlobalCounter();
 
-  if ($('filterSelect').value === 'untagged' && isTagged(it.item_id)) {
+  // if the item no longer matches the current filter (e.g. it just became tagged
+  // in "Untagged only" view), drop it from the list and stay in place
+  if (!matchesFilter(it.item_id)) {
     items.splice(idx, 1);
     if (!items.length) { applyFilter(); return; }
     if (idx >= items.length) idx = items.length - 1;
@@ -538,7 +605,10 @@ function move(step, fromSave) {
   const next = idx + step;
   if (next < 0) return;
   if (next >= items.length) {
-    if (fromSave) $('itemBox').innerHTML = '<p class="sub">End of this set. Pick another module or switch the filter.</p>';
+    if (fromSave) {
+      buildGrid();  // refresh tag colors; grid stays clickable
+      $('itemBox').innerHTML = '<p class="sub">End of this set. Click any square above to revisit an item, or pick another module or filter.</p>';
+    }
     return;
   }
   idx = next;
