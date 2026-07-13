@@ -49,6 +49,8 @@
     .greeting-sub{font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:.5px}
 
     .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;animation:fadeUp .4s .08s ease both}
+    .drill-card{grid-column:3}
+    .drill-lock{font-family:var(--mono);font-size:10px;letter-spacing:.3px;color:var(--muted);margin-top:2px}
 
     .pcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;transition:border-color .2s;text-decoration:none}
     a.pcard:hover{border-color:var(--border-hi)}
@@ -99,6 +101,7 @@
 
     @media(max-width:820px){
       .cards-grid{grid-template-columns:1fr}
+      .drill-card{grid-column:auto}
       .hub-wrap{padding:40px 20px 60px}
       .greeting-name{font-size:26px}
       .nav{padding:14px 20px}
@@ -202,6 +205,31 @@ function render(){
       </a>`;
   }
 
+  const today=new Date().toISOString().slice(0,10);
+  const drillOK=!!(s&&s.drill_access_enabled&&(!s.drill_access_until||s.drill_access_until>=today));
+  const drillCard=drillOK
+    ? `<a href="/drills.html" class="pcard drill-card">
+        <div class="pcard-label">Practice</div>
+        <div class="pcard-title">Drill Room</div>
+        <div class="pcard-sub">Real LSAT questions · by type</div>
+        <div class="pcard-divider"></div>
+        <div class="unenrolled-body">
+          <div class="unenrolled-text">Build your own drills from official LSAT questions. Pick a question type, pick how many, go.</div>
+          <div class="unenrolled-cta">Enter drills →</div>
+        </div>
+      </a>`
+    : `<a href="/pricing.html" class="pcard drill-card">
+        <div class="pcard-label">Practice</div>
+        <div class="pcard-title">Drill Room</div>
+        <div class="pcard-sub">Real LSAT questions · by type</div>
+        <div class="pcard-divider"></div>
+        <div class="unenrolled-body">
+          <div class="unenrolled-text">Drill official LSAT questions by type and difficulty, with results your tutor reviews with you.</div>
+          <div class="drill-lock">Included with tutoring packages</div>
+          <div class="unenrolled-cta">See packages →</div>
+        </div>
+      </a>`;
+
   document.getElementById('app').innerHTML=`
     <nav class="nav">
       <div class="nav-left">
@@ -266,6 +294,8 @@ function render(){
         </a>
 
         ${tutoringCard}
+
+        ${drillCard}
 
       </div>
 
