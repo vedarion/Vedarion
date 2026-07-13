@@ -101,15 +101,6 @@
 
   <!-- DRILL LIST -->
   <div id="listView" class="hidden">
-    <div class="card">
-      <h1>Your drills</h1>
-      <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
-        <label for="previewStudent" style="display:inline; margin-right:8px;">Previewing as:</label>
-        <select id="previewStudent"></select>
-      </div>
-      <div id="drillList" style="margin-top:8px;"><p class="sub">Loading…</p></div>
-    </div>
-
     <div class="card" id="selfServeCard">
       <h1 style="font-size:18px;">Create your own drill</h1>
       <p class="sub">Pick a question type and go. Questions you have already seen are never repeated.</p>
@@ -136,6 +127,40 @@
         <button class="btn" id="ssCreateBtn">Create drill</button>
       </div>
       <div id="ssMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
+    </div>
+
+    <div class="card" id="sectionCard">
+      <h1 style="font-size:18px;">Section practice</h1>
+      <p class="sub">A full section, real order, from a test you have not seen here. Full timed tests stay on LawHub.</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:flex-end;">
+        <div>
+          <label for="secType">Section</label>
+          <select id="secType">
+            <option value="LR">Logical Reasoning</option>
+            <option value="RC">Reading Comprehension</option>
+          </select>
+        </div>
+        <div>
+          <label for="secTiming">Timing</label>
+          <select id="secTiming">
+            <option value="untimed">Untimed</option>
+            <option value="1">Standard · 35:00</option>
+            <option value="1.5">Time and a half · 52:30</option>
+            <option value="2">Double time · 70:00</option>
+          </select>
+        </div>
+        <button class="btn" id="secCreateBtn">Start section</button>
+      </div>
+      <div id="secMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
+    </div>
+
+    <div class="card">
+      <h1>Your drills</h1>
+      <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
+        <label for="previewStudent" style="display:inline; margin-right:8px;">Previewing as:</label>
+        <select id="previewStudent"></select>
+      </div>
+      <div id="drillList" style="margin-top:8px;"><p class="sub">Loading…</p></div>
     </div>
   </div>
 
@@ -303,6 +328,35 @@ $('ssCreateBtn').addEventListener('click', async () => {
   loadDrillList();
 });
 
+// ---------- SECTION PRACTICE ----------
+async function applyTimeFactorDefault() {
+  try {
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) return;
+    const { data: srow } = await db.from('students')
+      .select('time_factor').eq('profile_id', user.id).limit(1).maybeSingle();
+    const tf = (srow?.time_factor || '').toString();
+    if (tf.includes('2')) $('secTiming').value = '2';
+    else if (tf.includes('1.5')) $('secTiming').value = '1.5';
+    else if (tf) $('secTiming').value = '1';
+  } catch (e) {}
+}
+applyTimeFactorDefault();
+
+$('secCreateBtn').addEventListener('click', async () => {
+  $('secMsg').textContent = 'Finding a fresh section…';
+  const timing = $('secTiming').value;
+  const seconds = timing === 'untimed' ? null : Math.round(35 * 60 * parseFloat(timing));
+  const { data, error } = await db.rpc('vd_create_section_drill', {
+    p_section_type: $('secType').value,
+    p_time_seconds: seconds
+  });
+  if (error) { $('secMsg').textContent = error.message; return; }
+  if (data?.error) { $('secMsg').textContent = data.error; return; }
+  $('secMsg').textContent = 'Section ready — it is at the top of your list.';
+  loadDrillList();
+});
+
 // ---------- DRILL LIST ----------
 async function loadDrillList() {
   const list = $('drillList');
@@ -321,7 +375,7 @@ async function loadDrillList() {
     row.innerHTML = `
       <div>
         <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''}</div>
-        <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by Rahela'} · ${when}</div>
+        <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by your tutor'} · ${when}</div>
       </div>
       <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>`;
     row.addEventListener('click', () => openDrill(d));
@@ -460,7 +514,7 @@ function renderQuestion() {
   $('flagBtn').classList.toggle('on', flagged);
 
   $('qCounter').textContent = `Question ${qi + 1} of ${drillItems.length}`;
-  $('posHint').textContent = currentDrill.reveal_answers ? '' : 'Answers reviewed in session with Rahela';
+  $('posHint').textContent = currentDrill.reveal_answers ? '' : 'Answers reviewed in session with your tutor';
   $('progFill').style.width = `${(Object.keys(responses).length / drillItems.length) * 100}%`;
   $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
 
@@ -612,7 +666,7 @@ function showResults() {
     });
   } else {
     $('resultSummary').textContent =
-      `All ${answered.length} answers recorded · ${flaggedCount} flagged. You will review results with Rahela in your next session.`;
+      `All ${answered.length} answers recorded · ${flaggedCount} flagged. You will review results with your tutor in your next session.`;
     drillItems.forEach((d, i) => {
       const r = responses[d.item_id];
       const row = document.createElement('div');
