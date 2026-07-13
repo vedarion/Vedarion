@@ -853,6 +853,10 @@ async function loadStudent(id){
     .eq('student_id',id).eq('created_by','tutor').in('status',['assigned','in_progress'])
     .order('created_at',{ascending:false});
   S.assignedDrills=ad||[];
+  const{data:allDrills}=await db.from('drills')
+    .select('id, status, question_count').eq('student_id',id);
+  S.drillsById={};
+  for(const dr of(allDrills||[]))S.drillsById[dr.id]={status:dr.status,question_count:dr.question_count};
 }
 
 async function addStudent(){
@@ -1136,7 +1140,8 @@ function sessHTML(s,i){
       <div class="hw-list">
         ${hws.map((h,hi)=>hwHTML(h,hi,s,i,hwUnlocked)).join('')}
       </div>
-      ${t?`<button class="add-b" data-addhw="${s.id}">+ Add Homework</button>`:''}
+      ${t?`<button class="add-b" data-addhw="${s.id}">+ Add Homework</button>
+      <button class="add-b" data-assigndrill="${s.id}" style="margin-top:6px">+ Assign Live Drill</button>`:''}
       <div class="slbl" style="margin-top:22px">Session Notes</div>
       <div class="tn-box">${t?ed(s.tutor_notes,'sess:'+s.id+':tutor_notes','true'):esc(s.tutor_notes||'')}</div>
     </div>`;
@@ -1171,8 +1176,10 @@ function hwHTML(h,hi,s,si,unlocked){
   const steps=(h.description||'').split('\n').filter(l=>l.trim());
   const comps=getStepCompletions(h);
   const ws=hwWs(h);
+  const isLiveDrill=(h.hw_type||'').indexOf('live_drill:')===0;
+  const liveDrillId=isLiveDrill?h.hw_type.slice(11):null;
   let stepsHTML='';
-  if(steps.length>0&&unlocked){
+  if(steps.length>0&&unlocked&&!isLiveDrill){
     stepsHTML=`<div class="hw-desc">${steps.map((line,li)=>{
       const l=line.trim();
       if(l.startsWith('--'))return`<div class="hw-label">${esc(l.replace(/^--/,'').replace(/:$/,''))}</div>`;
@@ -1181,10 +1188,20 @@ function hwHTML(h,hi,s,si,unlocked){
     }).join('')}</div>`;
   }
   let wsFooter='';
-  if(ws&&unlocked){
+  if(ws&&unlocked&&!isLiveDrill){
     wsFooter=`<div class="ws-card-footer">
       <button class="ws-open-btn" data-openws="${h.id}" data-wstype="${ws}" data-wssess="${s.id}">Open Worksheet →</button>
       <span class="ws-summary-line">${wsSummaryText(h.id,ws)}</span>
+    </div>`;
+  }
+  let liveFooter='';
+  if(isLiveDrill&&unlocked){
+    const dr=(S.drillsById&&S.drillsById[liveDrillId])||{};
+    const dst=dr.status||'assigned';
+    const dstLabel=dst==='completed'?'completed ✓':dst==='in_progress'?'in progress':'assigned';
+    liveFooter=`<div class="ws-card-footer">
+      <a class="ws-open-btn" href="/drills.html?drill=${esc(liveDrillId)}" style="text-decoration:none;display:inline-block">Start Drill →</a>
+      <span class="ws-summary-line">${dstLabel}</span>
     </div>`;
   }
   return`<div class="hw ${!unlocked?'lk':''} ${done?'hw-done':''}">
@@ -1198,7 +1215,7 @@ function hwHTML(h,hi,s,si,unlocked){
       <button class="rm-btn" data-delhw="${h.id}">×</button>`:''}
     </div>
     ${stepsHTML}
-    ${t&&unlocked?(steps.length>0?`<button class="hw-add-step" data-edithw="${h.id}">Edit steps</button>`:`<div class="hw-desc-ph" data-edithw="${h.id}">+ Add step-by-step description</div>`):''}
+    ${t&&unlocked&&!isLiveDrill?(steps.length>0?`<button class="hw-add-step" data-edithw="${h.id}">Edit steps</button>`:`<div class="hw-desc-ph" data-edithw="${h.id}">+ Add step-by-step description</div>`):''}
     ${S.hwEditing===h.id?`<div class="hw-edit-wrap">
       <textarea class="hw-desc-edit" id="hw-edit-ta" data-hwid="${h.id}">${esc(h.description||'')}</textarea>
       <div class="hw-edit-toolbar" style="margin-top:6px">
@@ -1207,6 +1224,7 @@ function hwHTML(h,hi,s,si,unlocked){
       </div>
     </div>`:''}
     ${wsFooter}
+    ${liveFooter}
   </div>`;
 }
 
@@ -1568,6 +1586,113 @@ function wsRCClaimHTML(v,name){
 }
 
 /* ===================== PICKERS ===================== */
+async function openDrillPicker(sessId){
+  if(document.getElementById('drill-picker-overlay'))return;
+  const{data:dim}=await db.from('tag_dimensions').select('id').eq('name','question_type').single();
+  let vals=[];
+  if(dim){
+    const{data:v}=await db.from('tag_values').select('id, value, display_order').eq('dimension_id',dim.id).order('display_order');
+    vals=v||[];
+  }
+  const tf=S.student?(S.student.time_factor||'1x'):'1x';
+  const overlay=document.createElement('div');
+  overlay.className='picker-overlay';overlay.id='drill-picker-overlay';
+  overlay.innerHTML=`<div class="picker-panel" style="max-width:440px">
+    <div class="picker-title">Assign Live Drill</div>
+    <div class="picker-sub">Questions draw fresh when the student starts</div>
+    <div class="ws-sec-lbl">Question type</div>
+    <select class="ws-sel" id="dp-type" style="width:100%">
+      <option value="">Choose a type…</option>
+      ${vals.map(v=>`<option value="${esc(v.id)}">${esc(v.value)}</option>`).join('')}
+    </select>
+    <div class="ws-sec-lbl">Questions</div>
+    <input class="ws-qnum" id="dp-count" type="number" min="1" max="25" value="10" style="width:80px">
+    <div class="ws-sec-lbl">Timing</div>
+    <select class="ws-sel" id="dp-timing" style="width:100%">
+      <option value="student">Student pace</option>
+      <option value="untimed">Untimed</option>
+      <option value="1">1x</option>
+      <option value="1.25">1.25x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2x</option>
+    </select>
+    <div class="picker-sub" id="dp-note" style="margin:8px 0 0"></div>
+    <div class="ws-toggle-row" style="margin-top:16px">
+      <label class="ws-toggle-lbl" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="dp-reveal"> Reveal answers to student
+      </label>
+    </div>
+    <div class="picker-footer">
+      <div class="picker-count" id="dp-msg"></div>
+      <div class="picker-actions">
+        <button class="picker-cancel" id="dp-cancel">Cancel</button>
+        <button class="picker-add" id="dp-assign">Assign</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  const timingEl=overlay.querySelector('#dp-timing');
+  const noteEl=overlay.querySelector('#dp-note');
+  const countEl=overlay.querySelector('#dp-count');
+  const typeEl=overlay.querySelector('#dp-type');
+  const msgEl=overlay.querySelector('#dp-msg');
+  function factorOf(){
+    const m=timingEl.value;
+    if(m==='untimed')return null;
+    if(m==='student'){const f=parseFloat(tf.replace('x',''));return isNaN(f)?1:f;}
+    return parseFloat(m);
+  }
+  function updateNote(){
+    const f=factorOf();
+    if(f===null){noteEl.textContent='No clock for this drill.';return;}
+    const sec=Math.floor(85*f);
+    const perQ=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+    const src=timingEl.value==='student'?`from student's time factor (${tf})`:'tutor override';
+    noteEl.textContent=`${perQ} per question · ${src}`;
+  }
+  timingEl.addEventListener('change',updateNote);updateNote();
+  const cancel=overlay.querySelector('#dp-cancel');
+  cancel.addEventListener('click',()=>overlay.remove());
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
+  const assign=overlay.querySelector('#dp-assign');
+  assign.addEventListener('click',async()=>{
+    if(!typeEl.value){msgEl.textContent='Pick a question type';return;}
+    const typeName=typeEl.options[typeEl.selectedIndex].textContent;
+    const count=Math.max(1,Math.min(25,parseInt(countEl.value)||10));
+    const f=factorOf();
+    const timed=f!==null;
+    const total=timed?Math.round(count*85*f):null;
+    assign.disabled=true;assign.textContent='Assigning…';
+    const{data:drill,error}=await db.from('drills').insert({
+      student_id:S.selId,
+      session_id:sessId,
+      created_by:'tutor',
+      title:`${typeName} drill`,
+      filters:{recipe:true,tag_value_ids:[typeEl.value],question_type:typeName},
+      question_count:count,
+      is_timed:timed,
+      time_limit_seconds:total,
+      reveal_answers:overlay.querySelector('#dp-reveal').checked,
+      is_recipe:true,
+      status:'assigned'
+    }).select().single();
+    if(error||!drill){alert('Could not assign drill: '+((error&&error.message)||'unknown error'));assign.disabled=false;assign.textContent='Assign';return;}
+    const sess=S.sessions.find(x=>x.id===sessId);
+    const hws=(sess&&sess.homework)||[];
+    const sortBase=hws.length>0?Math.max(...hws.map(h=>h.sort_order||0))+1:0;
+    const{error:hErr}=await db.from('homework').insert({
+      session_id:sessId,
+      label:`Drill: ${typeName} · ${count} questions`,
+      hw_type:`live_drill:${drill.id}`,
+      description:null,
+      sort_order:sortBase
+    });
+    overlay.remove();
+    if(hErr)alert('Drill assigned, but the homework row failed: '+hErr.message);
+    await loadStudent(S.selId);R();showSaved(!hErr);
+  });
+}
+
 function openPicker(sessId){
   if(document.getElementById('hw-picker-overlay'))return;
   const selected=new Set();
@@ -1930,12 +2055,22 @@ function bind(){
   document.querySelectorAll('[data-addhw]').forEach(b=>b.addEventListener('click',e=>{
     e.stopPropagation();openPicker(b.dataset.addhw);
   }));
+  document.querySelectorAll('[data-assigndrill]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();openDrillPicker(b.dataset.assigndrill);
+  }));
   const addSess=document.getElementById('add-sess');
   if(addSess)addSess.addEventListener('click',openSessPicker);
   document.querySelectorAll('[data-delhw]').forEach(b=>b.addEventListener('click',async e=>{
     e.stopPropagation();
     if(!confirm('Delete this homework item?'))return;
-    const{error}=await db.from('homework').delete().eq('id',b.dataset.delhw);
+    const id=b.dataset.delhw;
+    let hw=null;for(const s of S.sessions){const f=(s.homework||[]).find(h=>h.id===id);if(f){hw=f;break;}}
+    if(hw&&(hw.hw_type||'').indexOf('live_drill:')===0){
+      const drillId=hw.hw_type.slice(11);
+      const dr=S.drillsById&&S.drillsById[drillId];
+      if(dr&&dr.status==='assigned')await db.from('drills').delete().eq('id',drillId);
+    }
+    const{error}=await db.from('homework').delete().eq('id',id);
     await loadStudent(S.selId);R();showSaved(!error);
   }));
   document.querySelectorAll('[data-hwcb]').forEach(cb=>cb.addEventListener('click',async e=>{
