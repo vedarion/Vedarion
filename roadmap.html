@@ -58,6 +58,13 @@
     .nav-user{color:var(--faint);font-size:11px;font-family:var(--mono)}
     .sign-out{padding:6px 14px;background:transparent;border:1px solid var(--border-hi);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
     .sign-out:hover{border-color:var(--dim);color:var(--bright)}
+    .admin-menu{position:relative}
+    .admin-trigger{padding:6px 14px;background:transparent;border:1px solid var(--border-hi);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+    .admin-trigger:hover,.admin-trigger.open{border-color:var(--dim);color:var(--bright)}
+    .admin-drop{position:absolute;top:calc(100% + 8px);right:0;min-width:172px;background:rgba(8,8,8,.98);border:1px solid var(--border-hi);border-radius:8px;padding:6px;display:none;flex-direction:column;gap:2px;z-index:200;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .admin-drop.open{display:flex}
+    .admin-drop a{padding:8px 12px;color:var(--bright);font-family:var(--mono);font-size:11px;text-decoration:none;border-radius:6px;transition:all .2s;letter-spacing:.5px;white-space:nowrap}
+    .admin-drop a:hover{color:#fff;background:rgba(255,255,255,.04)}
 
     .layout{display:flex;max-width:1080px;margin:0 auto;padding:32px;gap:28px;animation:fadeUp .4s ease}
     .main{flex:1;min-width:0}.sidebar{width:230px;flex-shrink:0}
@@ -782,7 +789,7 @@ async function doLogin(){
   await loadUser();
 }
 
-async function doLogout(){await db.auth.signOut();S={...S,view:'login',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],loginErr:'',exSess:-1};R();}
+async function doLogout(){await db.auth.signOut();S={...S,view:'login',user:null,profile:null,isTutor:false,isAdmin:false,students:[],selId:null,student:null,sessions:[],loginErr:'',exSess:-1};R();}
 
 async function loadUser(){
   const{data:{user}}=await db.auth.getUser();
@@ -790,6 +797,7 @@ async function loadUser(){
   S.user=user;
   const{data:prof}=await db.from('profiles').select('*').eq('id',user.id).single();
   S.profile=prof;S.isTutor=prof&&(prof.role==='owner'||prof.role==='tutor');
+  S.isAdmin=prof&&(prof.role==='owner'||prof.role==='admin');
   if(S.isTutor){
     const{data:sts}=await db.from('students').select('*, profiles!profile_id(first_name, email)').eq('assigned_tutor_id',user.id).order('created_at',{ascending:false});
     S.students=sts||[];
@@ -1053,7 +1061,7 @@ function dashHTML(){
   return`
   <div class="nav">
     <div class="nav-left"><div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div><span class="nav-sep">/</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-    <div class="nav-right"><span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
+    <div class="nav-right">${S.isAdmin?`<div class="admin-menu"><button class="admin-trigger" id="adminTrig">Admin ▾</button><div class="admin-drop" id="adminDrop"><a href="/admin-drills.html">Drill Builder</a><a href="/admin-tagging.html">Tagging</a><a href="/admin-students.html">Student Access</a><a href="/admin-ingest.html">Content Ingest</a></div></div>`:''}<span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
   </div>
   <div class="layout">
     <div class="main">${main}</div>
@@ -1743,6 +1751,9 @@ async function renumberSessions(ordered){
 /* ===================== EVENT BINDING ===================== */
 function bind(){
   const so=document.getElementById('so');if(so)so.addEventListener('click',doLogout);
+  const adminTrig=document.getElementById('adminTrig');
+  if(adminTrig)adminTrig.addEventListener('click',e=>{e.stopPropagation();const d=document.getElementById('adminDrop');d.classList.toggle('open');adminTrig.classList.toggle('open',d.classList.contains('open'));});
+  if(!window.__adminDropBound){window.__adminDropBound=true;document.addEventListener('click',()=>{const d=document.getElementById('adminDrop');if(d){d.classList.remove('open');const t=document.getElementById('adminTrig');if(t)t.classList.remove('open');}});}
   const lb=document.getElementById('lb');if(lb)lb.addEventListener('click',doLogin);
   const lp=document.getElementById('lp');if(lp)lp.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
   const fp=document.getElementById('fp');if(fp)fp.addEventListener('click',async e=>{
