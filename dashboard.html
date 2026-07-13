@@ -49,7 +49,7 @@
     .greeting-sub{font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:.5px}
 
     .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;animation:fadeUp .4s .08s ease both}
-    .drill-card{grid-column:3}
+    .right-col{display:flex;flex-direction:column;gap:12px;align-self:start}
     .drill-lock{font-family:var(--mono);font-size:10px;letter-spacing:.3px;color:var(--muted);margin-top:2px}
 
     .pcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;transition:border-color .2s;text-decoration:none}
@@ -101,7 +101,6 @@
 
     @media(max-width:820px){
       .cards-grid{grid-template-columns:1fr}
-      .drill-card{grid-column:auto}
       .hub-wrap{padding:40px 20px 60px}
       .greeting-name{font-size:26px}
       .nav{padding:14px 20px}
@@ -293,9 +292,10 @@ function render(){
           </div>
         </a>
 
-        ${tutoringCard}
-
-        ${drillCard}
+        <div class="right-col">
+          ${tutoringCard}
+          ${drillCard}
+        </div>
 
       </div>
 
