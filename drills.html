@@ -679,7 +679,7 @@ function itemIdentity(it) {
 
 function itemKey(it) { return it.module_id + '|' + it.item_id; }
 
-function itemTypeName(it) { return itemTypeByKey[itemKey(it)] || null; }
+function itemTypeName(it) { return itemTypeByKey[it.item_id] || null; }
 
 /* ---------- OPEN DRILL ---------- */
 async function openDrill(drill) {
@@ -717,15 +717,15 @@ async function openDrill(drill) {
 
   itemTypeByKey = {};
   try {
-    const { data: tags } = await db.from('item_tags')
-      .select('module_id, item_id, tag_value_id').in('item_id', keys);
+    const { data: tags, error: tagErr } = await db.from('item_tags')
+      .select('item_id, tag_value_id').in('item_id', keys);
+    if (tagErr) console.error('item_tags lookup failed:', tagErr.message);
     (tags || []).forEach(t => {
       const name = qtValueById[t.tag_value_id];
       if (!name) return;
-      const k = t.module_id + '|' + t.item_id;
-      if (!itemTypeByKey[k]) itemTypeByKey[k] = name;
+      if (!itemTypeByKey[t.item_id]) itemTypeByKey[t.item_id] = name;
     });
-  } catch (e) {}
+  } catch (e) { console.error('item_tags lookup failed:', e); }
 
   responses = {};
   const { data: resp } = await db.from('drill_responses')
