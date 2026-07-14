@@ -8,84 +8,155 @@
 <style>
   :root {
     --cream: #FAF8F5; --cream-warm: #FDF5F1;
-    --orange: #C65D3B; --orange-dark: #A34A2D;
-    --ink: #2B2B2B; --ink-soft: #6B6560; --line: #E8E2DB;
+    --orange: #C65D3B; --orange-dark: #A34A2D; --orange-line: #E8D5CC;
+    --ink: #2B2B2B; --ink-soft: #6B6560; --ink-faint: #9B948D; --line: #E8E2DB;
     --green: #3E7A52; --red: #A33B3B;
     --hl-yellow: #FCE9A8; --hl-orange: #F8D3BC; --hl-blue: #CFE3F5;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--cream); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; min-height: 100vh; }
-  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 5; }
-  .logo { font-family: Georgia, serif; font-size: 18px; letter-spacing: 1px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 5; }
+  .topleft { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex-wrap: wrap; }
+  .logo { font-family: Georgia, serif; font-size: 17px; letter-spacing: 1px; white-space: nowrap; }
   .logo .v { color: var(--orange); }
-  .topmeta { font-size: 13px; color: var(--ink-soft); display: flex; gap: 14px; align-items: center; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 18px 90px; }
+  .bar-title { font-size: 13px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40vw; }
+  .mode-pill { font-size: 11px; font-weight: 600; color: var(--orange-dark); background: var(--cream-warm); border: 1px solid var(--orange-line); border-radius: 10px; padding: 2px 10px; white-space: nowrap; }
+  .topmeta { font-size: 13px; color: var(--ink-soft); display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+  .topmeta .qcount { font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .progress-strip { height: 4px; background: #F0EBE4; }
+  .progress-strip > div { height: 100%; width: 0%; background: var(--orange); transition: width 0.2s; }
+
+  .viewbar { background: #3A2E28; color: #F5EDE6; font-size: 13px; padding: 8px 20px; display: none; align-items: center; gap: 10px; }
+  .viewbar.on { display: flex; }
+  .viewbar .dot { width: 8px; height: 8px; border-radius: 50%; background: #E8C76F; flex-shrink: 0; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 20px 18px 90px; }
+  .wrap.wide { max-width: 1100px; }
   .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-bottom: 16px; }
   h1 { font-family: Georgia, serif; font-size: 22px; font-weight: 500; margin-bottom: 6px; }
   .sub { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
   label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 6px; }
   input[type=email], input[type=password] { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; font-size: 15px; background: var(--cream); }
   select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; background: #fff; }
-  input:focus, select:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--orange); background: var(--orange); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 8px; border: 1px solid var(--orange); background: var(--orange); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
   .btn:hover { background: var(--orange-dark); }
   .btn.secondary { background: #fff; color: var(--orange-dark); }
   .btn.secondary:hover { background: var(--cream-warm); }
+  .btn.small { padding: 5px 12px; font-size: 12px; }
   .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .hidden { display: none; }
+  .hidden { display: none !important; }
   #authError { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
-  .drillrow { display: flex; justify-content: space-between; align-items: center; padding: 12px 4px; border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer; }
+
+  .drillrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 4px; border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer; }
   .drillrow:hover { background: var(--cream-warm); }
-  .drillrow .meta { font-size: 12px; color: var(--ink-soft); }
-  .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); }
+  .drillrow .meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+  .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
   .pill.completed { border-color: var(--green); color: var(--green); }
   .pill.in_progress { border-color: var(--orange); color: var(--orange-dark); }
-  .progress { height: 5px; background: var(--cream); border-radius: 3px; margin: 12px 0 16px; overflow: hidden; }
-  .progress > div { height: 100%; width: 0%; background: var(--orange); transition: width 0.2s; }
+  .pill.reviewed { border-color: var(--green); color: var(--green); background: #EDF5EF; }
+
   .toolbar { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
-  .tool { padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-size: 13px; cursor: pointer; }
-  .tool.on { border-color: var(--orange); background: var(--cream-warm); }
-  .swatch { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer; }
+  .tool { padding: 6px 11px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-size: 12.5px; cursor: pointer; color: var(--ink-soft); }
+  .tool:hover { border-color: var(--orange); color: var(--orange-dark); }
+  .tool.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); }
+  .tool.accent { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 600; }
+  .tool.accent:hover { background: var(--orange-dark); color: #fff; }
+  .hint { font-size: 11.5px; color: var(--ink-faint); }
+  .swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer; padding: 0; }
   .swatch.on { outline: 2px solid var(--orange); }
   .sw-y { background: var(--hl-yellow); } .sw-o { background: var(--hl-orange); } .sw-b { background: var(--hl-blue); }
-  .stimbox { position: relative; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 18px; font-size: 15px; line-height: 1.8; margin-bottom: 16px; overflow: hidden; }
-  .stimbox .wm { position: absolute; left: 0; right: 0; top: 42%; text-align: center; font-size: 13px; color: var(--ink-soft); opacity: 0.28; transform: rotate(-16deg); pointer-events: none; user-select: none; }
-  .stimbox .vmark { position: absolute; right: -24px; bottom: -34px; opacity: 0.05; pointer-events: none; }
-  .stim { margin-bottom: 14px; position: relative; }
-  .stem { font-weight: 600; position: relative; }
+
+  .qchips { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .qchip { min-width: 27px; height: 27px; padding: 0 5px; border-radius: 6px; border: 1px solid var(--line); background: #fff; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 1px; color: var(--ink-soft); cursor: pointer; }
+  .qchip:hover { border-color: var(--orange); }
+  .qchip.flagged { color: var(--orange-dark); }
+  .qchip.now { border: 2px solid var(--orange); background: var(--cream-warm); color: var(--orange-dark); font-weight: 600; }
+  .qchip.right { border-color: var(--green); color: var(--green); }
+  .qchip.wrong { border-color: var(--red); color: var(--red); }
+
+  .playgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
+  .playgrid.split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+  @media (max-width: 820px) { .playgrid.split { grid-template-columns: minmax(0, 1fr); } }
+
+  .stimbox { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 8px; margin-bottom: 12px; overflow: hidden; }
+  .stimbox .vmark { position: absolute; right: -24px; bottom: -34px; opacity: 0.04; pointer-events: none; }
+  .qident { font-size: 12px; color: var(--orange-dark); font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .qident .youranswer { font-size: 11px; color: var(--ink-faint); font-weight: 400; }
+  .stim { margin-bottom: 12px; position: relative; line-height: 1.65; max-width: 60ch; }
+  .stem { font-weight: 600; position: relative; line-height: 1.5; margin-bottom: 8px; }
+  .license-line { text-align: right; font-size: 10.5px; color: #B8B0A7; user-select: none; margin: 0; }
+  body[data-ts="s"] .stim, body[data-ts="s"] .stem { font-size: 13px; }
+  body[data-ts="m"] .stim, body[data-ts="m"] .stem { font-size: 14.5px; }
+  body[data-ts="l"] .stim, body[data-ts="l"] .stem { font-size: 16.5px; }
+  body[data-ts="s"] .optbtn { font-size: 12.5px; }
+  body[data-ts="m"] .optbtn { font-size: 14px; }
+  body[data-ts="l"] .optbtn { font-size: 15.5px; }
   mark { border-radius: 2px; padding: 0 1px; cursor: pointer; }
   mark.hl-y { background: var(--hl-yellow); } mark.hl-o { background: var(--hl-orange); } mark.hl-b { background: var(--hl-blue); }
+
   .optrow { display: flex; gap: 8px; align-items: stretch; margin-bottom: 8px; }
-  .optbtn { flex: 1; text-align: left; font-size: 14px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; display: flex; gap: 10px; line-height: 1.5; }
+  .optbtn { flex: 1; text-align: left; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; display: flex; gap: 10px; line-height: 1.5; align-items: flex-start; }
   .optbtn .letter { font-weight: 700; color: var(--orange-dark); }
+  .optbtn .tagend { margin-left: auto; font-size: 11px; color: var(--orange-dark); white-space: nowrap; align-self: center; }
   .optbtn:hover { border-color: var(--orange); }
-  .optbtn.picked { border-color: var(--orange); background: var(--cream-warm); }
+  .optbtn.picked { border: 1.5px solid var(--orange); background: var(--cream-warm); }
   .optbtn.elim { opacity: 0.38; text-decoration: line-through; }
-  .optbtn.correct { border-color: var(--green); background: #EDF5EF; }
-  .optbtn.wrong { border-color: var(--red); background: #FAEDED; }
+  .optbtn.correct { border: 1.5px solid var(--green); background: #EDF5EF; }
+  .optbtn.wrong { border: 1.5px solid var(--red); background: #FAEDED; }
+  .optbtn.readonly { cursor: default; }
   .elimbtn { border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; padding: 0 12px; font-size: 13px; color: var(--ink-soft); }
   .elimbtn:hover { border-color: var(--orange); }
-  .playbar { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
-  .hint { font-size: 12px; color: var(--ink-soft); }
+  .elimbtn.on { border-color: var(--orange); color: var(--orange-dark); }
+
+  .wspanel { background: #fff; border: 1px solid var(--orange-line); border-radius: 10px; padding: 12px 14px; }
+  .wstabs { display: flex; gap: 6px; margin-bottom: 8px; }
+  .wstab { padding: 5px 12px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-size: 12.5px; cursor: pointer; color: var(--ink-soft); }
+  .wstab.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); font-weight: 600; }
+  .wshead { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .wstitle { font-size: 13.5px; font-weight: 600; }
+  .wsclose { font-size: 12px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 6px; padding: 1px 8px; background: #fff; cursor: pointer; }
+  .wsclose:hover { border-color: var(--orange); }
+  .wsnote { font-size: 11px; color: var(--ink-faint); margin: 2px 0 10px; }
+  .wsfield-label { font-size: 11.5px; font-weight: 600; margin: 0 0 3px; }
+  .wsfield { width: 100%; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 6px 9px; font-size: 12.5px; margin-bottom: 8px; font-family: inherit; color: var(--ink); }
+  textarea.wsfield { min-height: 56px; resize: vertical; }
+  .wschecks { margin-bottom: 8px; }
+  .wschecks label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 400; margin: 2px 0; cursor: pointer; }
+  .wschecks input { accent-color: var(--orange); }
+  .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
+
+  .playbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .timer { font-variant-numeric: tabular-nums; font-weight: 600; }
   .timer.low { color: var(--red); }
-  .feedback { font-size: 14px; margin-top: 12px; min-height: 20px; }
+  .feedback { font-size: 14px; margin-top: 10px; min-height: 20px; }
   .feedback.good { color: var(--green); } .feedback.bad { color: var(--red); }
-  .resultrow { display: flex; justify-content: space-between; padding: 8px 4px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .resultrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 14px; flex-wrap: wrap; }
+  .resultrow .rid { color: var(--ink); }
+  .resultrow .rmeta { font-size: 12px; color: var(--ink-soft); }
+  .verdict-good { color: var(--green); font-weight: 600; }
+  .verdict-bad { color: var(--red); font-weight: 600; }
 </style>
 </head>
-<body>
+<body data-ts="m">
 
 <div class="topbar">
-  <div class="logo"><span class="v">V</span>EDARION</div>
+  <div class="topleft">
+    <div class="logo"><span class="v">V</span>EDARION</div>
+    <span class="bar-title" id="barTitle"></span>
+    <span class="mode-pill hidden" id="modePill"></span>
+  </div>
   <div class="topmeta">
-    <span id="whoami"></span>
     <span id="drillTimer" class="timer hidden"></span>
-    <span id="qCounter"></span>
+    <span id="qCounter" class="qcount"></span>
+    <button class="btn secondary small hidden" id="exitBtn">Exit</button>
   </div>
 </div>
+<div class="progress-strip hidden" id="progStrip"><div id="progFill"></div></div>
+<div class="viewbar" id="viewBar"><span class="dot"></span><span id="viewBarText"></span></div>
 
-<div class="wrap">
+<div class="wrap" id="wrapEl">
 
   <!-- AUTH -->
   <div id="authView" class="card" style="max-width: 440px; margin: 50px auto;">
@@ -157,48 +228,63 @@
     <div class="card">
       <h1>Your drills</h1>
       <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
-        <label for="previewStudent" style="display:inline; margin-right:8px;">Previewing as:</label>
+        <label for="previewStudent" style="display:inline; margin-right:8px;">Viewing as:</label>
         <select id="previewStudent"></select>
       </div>
       <div id="drillList" style="margin-top:8px;"><p class="sub">Loading…</p></div>
     </div>
   </div>
 
-  <!-- PLAYER -->
+  <!-- PLAYER (take + review) -->
   <div id="playView" class="hidden">
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h1 id="drillTitle"></h1>
-        <button class="btn secondary" id="exitBtn">Exit</button>
-      </div>
-      <div class="progress"><div id="progFill"></div></div>
+    <div class="toolbar" id="playToolbar">
+      <span class="hint">Highlight</span>
+      <button class="swatch sw-y" data-hl="hl-y" aria-label="Yellow highlighter"></button>
+      <button class="swatch sw-o" data-hl="hl-o" aria-label="Orange highlighter"></button>
+      <button class="swatch sw-b" data-hl="hl-b" aria-label="Blue highlighter"></button>
+      <span class="hint">tap a mark to erase</span>
+      <span style="flex:1;"></span>
+      <button class="tool" id="tsDown" aria-label="Smaller text">A−</button>
+      <button class="tool" id="tsUp" aria-label="Larger text">A+</button>
+      <button class="tool hidden" id="cheatBtn">Cheat sheet</button>
+      <button class="tool hidden" id="wsToggleBtn">Worksheet</button>
+      <button class="tool" id="flagBtn">⚑ Flag for session</button>
+    </div>
 
-      <div class="toolbar">
-        <span class="hint">Highlight:</span>
-        <button class="swatch sw-y" data-hl="hl-y" aria-label="Yellow highlighter"></button>
-        <button class="swatch sw-o" data-hl="hl-o" aria-label="Orange highlighter"></button>
-        <button class="swatch sw-b" data-hl="hl-b" aria-label="Blue highlighter"></button>
-        <span class="hint" style="margin-left:6px;">click a highlight to remove it</span>
-        <span style="flex:1;"></span>
-        <button class="tool" id="flagBtn">⚑ Flag for session</button>
-      </div>
+    <div class="qchips hidden" id="qChips"></div>
 
-      <div class="stimbox" id="stimBox">
-        <span class="wm" id="wmText"></span>
-        <svg class="vmark" viewBox="0 0 24 24" width="150" height="150" aria-hidden="true"><path d="M4 4 L9 4 L12 15 L15 4 L20 4 L14 20 L10 20 Z" fill="#C65D3B"/></svg>
-        <div class="stim" id="stimEl"></div>
-        <div class="stem" id="stemEl"></div>
-      </div>
-
-      <div id="optsEl"></div>
-      <div class="feedback" id="feedback"></div>
-
-      <div class="playbar">
-        <span class="hint" id="posHint"></span>
-        <div style="display:flex; gap:8px;">
-          <button class="btn secondary" id="backBtn">← Back</button>
-          <button class="btn" id="nextBtn">Submit and next →</button>
+    <div class="playgrid" id="playGrid">
+      <div id="qCol">
+        <div class="stimbox" id="stimBox">
+          <svg class="vmark" viewBox="0 0 24 24" width="150" height="150" aria-hidden="true"><path d="M4 4 L9 4 L12 15 L15 4 L20 4 L14 20 L10 20 Z" fill="#C65D3B"/></svg>
+          <div class="qident"><span id="qIdent"></span><span class="youranswer" id="qYourAnswer"></span></div>
+          <div class="stim" id="stimEl"></div>
+          <div class="stem" id="stemEl"></div>
+          <p class="license-line">Licensed to VEDARION</p>
         </div>
+        <div id="optsEl"></div>
+        <div class="feedback" id="feedback"></div>
+        <p class="hint hidden" id="reviewHint">Answers stay hidden while you review — your picks and marks are shown exactly as you left them.</p>
+      </div>
+
+      <div class="wspanel hidden" id="wsPanel">
+        <div class="wshead">
+          <span class="wstitle" id="wsTitle">Worksheet</span>
+          <button class="wsclose" id="wsCloseBtn">✕ close</button>
+        </div>
+        <div class="wstabs" id="wsTabs"></div>
+        <p class="wsnote" id="wsNote">For flagged questions · saves as you type</p>
+        <div id="wsFields"></div>
+        <div class="wsstatus" id="wsStatus"></div>
+      </div>
+    </div>
+
+    <div class="playbar">
+      <span class="hint" id="posHint"></span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn secondary" id="backBtn">← Back</button>
+        <button class="btn" id="nextBtn">Submit and next →</button>
+        <button class="btn hidden" id="showResultsBtn">Show results</button>
       </div>
     </div>
   </div>
@@ -206,10 +292,10 @@
   <!-- RESULTS -->
   <div id="resultView" class="hidden">
     <div class="card">
-      <h1 id="resultTitle">Drill complete</h1>
+      <h1 id="resultTitle">Results</h1>
       <p class="sub" id="resultSummary"></p>
       <div id="resultRows" style="margin-top:14px;"></div>
-      <div style="margin-top:18px;">
+      <div style="margin-top:18px; display:flex; gap:8px;">
         <button class="btn secondary" id="resultBackBtn">Back to drills</button>
       </div>
     </div>
@@ -223,12 +309,130 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const $ = id => document.getElementById(id);
 
+/* ---------- QUESTION TYPE PAGES ---------- */
+const TYPE_META = {
+  'Main Point':              { slug: 'main-point',               ws: true },
+  'Argument Part':           { slug: 'argument-part',            ws: true },
+  'Flaw':                    { slug: 'flaw',                     ws: true },
+  'Strengthen':              { slug: 'strengthen-weaken',        ws: true },
+  'Weaken':                  { slug: 'strengthen-weaken',        ws: true },
+  'Necessary Assumption':    { slug: 'necessary-assumption',     ws: true },
+  'Sufficient Assumption':   { slug: 'sufficient-assumption',    ws: true },
+  'Must Be True':            { slug: 'must-be-true',             ws: true },
+  'Most Strongly Supported': { slug: 'most-strongly-supported',  ws: true },
+  'Parallel Reasoning':      { slug: 'parallel-reasoning',       ws: true },
+  'Parallel Flaw':           { slug: 'parallel-reasoning',       ws: true },
+  'Method of Reasoning':     { slug: 'method-of-reasoning',      ws: false },
+  'Point at Issue':          { slug: 'agree-disagree',           ws: false },
+  'Resolve the Paradox':     { slug: 'resolve-reconcile-explain',ws: false },
+  'Evaluate':                { slug: 'evaluate',                 ws: false }
+};
+
+/* ---------- WORKSHEET TEMPLATES (fields mirror /question-types worksheets) ---------- */
+const WS_TEMPLATES = {
+  'main-point': { title: 'Main Point worksheet', fields: [
+    { label: 'Question source', kind: 'text', auto: 'identity' },
+    { label: 'Step 1 — Find the Main Point: Which method did you use?', kind: 'checkbox', options: ['Conclusion Indicator', 'Process of Elimination', 'The Why Test'] },
+    { label: 'Step 1 — Find the Main Point: What is the main point of the argument?', kind: 'textarea' },
+    { label: 'Step 2 — Note the Details: Restate the main point in your own words (Noun, verb, predicate)', kind: 'textarea' },
+    { label: 'Step 3 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea' }
+  ]},
+  'argument-part': { title: 'Argument Part worksheet', fields: [
+    { label: 'Question source', kind: 'text', auto: 'identity' },
+    { label: 'Step 1 — Read the Question Stem: Copy or describe the referenced sentence', kind: 'textarea' },
+    { label: 'Step 2 — Read the Stimulus: Sentence text', kind: 'textarea' },
+    { label: 'Step 2 — Read the Stimulus: Role of the sentence (e.g. conclusion, premise, background)', kind: 'text' },
+    { label: 'Step 3 — Describe the Referenced Sentence: What does this sentence do in the argument?', kind: 'textarea' },
+    { label: 'Step 4 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea' }
+  ]},
+  'must-be-true': { title: 'Must Be True worksheet', fields: [
+    { label: 'Connect the Dots: Simplify sentence 1', kind: 'text' },
+    { label: 'Connect the Dots: Simplify sentence 2', kind: 'text' },
+    { label: 'Connect the Dots: How does sentence 2 connect to sentence 1?', kind: 'text' },
+    { label: 'Connect the Dots: Simplify sentence 3', kind: 'text' },
+    { label: 'Connect the Dots: How does sentence 3 connect to prior sentences?', kind: 'text' },
+    { label: 'Connect the Dots: Simplify sentence 4 (if applicable)', kind: 'text' },
+    { label: 'Connect the Dots: How does sentence 4 connect to prior sentences?', kind: 'text' },
+    { label: "Overall Inference: What follows from connecting these facts? (If no inference, write 'none — look for restatement')", kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Is every word 100% supported by the stimulus? Supported / Not supported — why?', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): What type is it? Inference / Summary / Restatement / Not supported', kind: 'text' },
+    { label: 'Final Selection: Select the answer where every word is 100% supported. Final Answer', kind: 'text' }
+  ]},
+  'most-strongly-supported': { title: 'Most Strongly Supported worksheet', fields: [
+    { label: 'Connect the Dots — Simplify sentence 1 in your own words', kind: 'text' },
+    { label: 'Connect the Dots — Simplify sentence 2 in your own words', kind: 'text' },
+    { label: 'Connect the Dots — Sentence 2: How does it connect to sentence 1?', kind: 'text' },
+    { label: 'Connect the Dots — Simplify sentence 3 in your own words', kind: 'text' },
+    { label: 'Connect the Dots — Sentence 3: How does it connect to prior sentences?', kind: 'text' },
+    { label: 'Connect the Dots — Simplify sentence 4 (if applicable)', kind: 'text' },
+    { label: 'Connect the Dots — Sentence 4: How does it connect to prior sentences?', kind: 'text' },
+    { label: 'Overall Inference — What follows from connecting these facts?', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Could I make a reasonable argument this is supported? Yes / No — connection to the stimulus?', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): How big is the gap? No gap / Small gap / Large gap', kind: 'text' },
+    { label: 'Final Selection — Strongest support, smallest assumption. Final Answer', kind: 'text' }
+  ]},
+  'sufficient-assumption': { title: 'Sufficient Assumption worksheet', fields: [
+    { label: 'Question', kind: 'text', auto: 'identity' },
+    { label: 'Identify Premise(s) & Conclusion — Premise(s): What evidence does the author give?', kind: 'textarea' },
+    { label: 'Identify Premise(s) & Conclusion — Conclusion: What is the author concluding?', kind: 'textarea' },
+    { label: 'Core Argument — Simplify & Identify the Gap (Mandatory): Simplified Premise', kind: 'textarea' },
+    { label: 'Core Argument — Simplify & Identify the Gap (Mandatory): Simplified Conclusion', kind: 'textarea' },
+    { label: 'Answer Choices — Hunt Mode: The correct answer bridges the gap (select pattern)', kind: 'checkbox', options: ['P → C', '/C → /P'] },
+    { label: 'Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea' }
+  ]},
+  'necessary-assumption': { title: 'Necessary Assumption worksheet', fields: [
+    { label: 'Question', kind: 'text', auto: 'identity' },
+    { label: 'Identify Premise(s) & Conclusion — Premise(s): What evidence does the author give?', kind: 'textarea' },
+    { label: 'Identify Premise(s) & Conclusion — Conclusion: What is the author concluding?', kind: 'textarea' },
+    { label: 'Core Argument & Gap — Simplified Premise', kind: 'textarea' },
+    { label: 'Core Argument & Gap — Simplified Conclusion', kind: 'textarea' },
+    { label: 'Core Argument & Gap — Identify the Gap: What must the author be assuming to connect premise to conclusion? (A → B if helpful)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea' }
+  ]},
+  'strengthen-weaken': { title: 'Strengthen/Weaken worksheet', fields: [
+    { label: 'Core Argument — Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: 'Core Argument — Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: "Prediction — What's the gap between Premise & Conclusion?", kind: 'textarea' },
+    { label: 'Framework (if recognizable)', kind: 'checkbox', options: ['Part to Whole', 'Cost vs. Benefit', 'Correlation to Causation', 'Other'] },
+    { label: 'Answer choice reasoning (A–E) — Step 1: Is the answer choice relevant? If yes, how does it connect?', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E) — Step 2: Does AC + Premise strengthen or weaken the Conclusion? Strengthens / Weakens / No impact', kind: 'textarea' },
+    { label: 'Final Selection — Strongest impact in the right direction. Final Answer', kind: 'text' }
+  ]},
+  'flaw': { title: 'Flaw worksheet', fields: [
+    { label: 'Core Argument — Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: 'Core Argument — Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: "Prediction — What's the gap? Why doesn't the premise support the conclusion?", kind: 'textarea' },
+    { label: 'Prediction — State the flaw in your own words (The argument assumes that... / The problem is...)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E) — Step 1: Is the answer choice descriptively accurate? (Accurate / Not accurate — why?)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E) — Step 2: If accurate, is it actually a flaw? (Flaw / Not a flaw)', kind: 'textarea' },
+    { label: 'Final Selection — Final Answer: descriptively accurate AND identifies a real flaw', kind: 'text' }
+  ]},
+  'parallel-reasoning': { title: 'Parallel Reasoning worksheet', fields: [
+    { label: 'Premise and Conclusion — Premise(s): What evidence or facts does the argument provide?', kind: 'textarea' },
+    { label: 'Premise and Conclusion — Conclusion: What is the argument trying to prove?', kind: 'text' },
+    { label: 'Evaluate the Argument — What would YOU conclude from these premises?', kind: 'text' },
+    { label: 'Evaluate the Argument — For Parallel Flaw: What is the flaw? (part to whole, sufficient/necessary, correlation to causation...)', kind: 'text' },
+    { label: 'Abstract Structure — Write the argument pattern in abstract terms', kind: 'textarea' },
+    { label: 'Shallow Dip Strategy — What markers will you look for?', kind: 'text' },
+    { label: 'Answer choice reasoning (A–E): Shallow Dip — Does this answer have your markers? (Yes/No — if no, skip)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Piece-by-Piece — Does it match your prediction?', kind: 'textarea' },
+    { label: 'Final Answer: If an answer matches your structure/flaw, select it', kind: 'text' }
+  ]},
+  '__review': { title: 'Review worksheet', fields: [
+    { label: 'Why I flagged this question', kind: 'textarea' },
+    { label: 'What made me hesitate (the trap, the wording, the timing)', kind: 'textarea' },
+    { label: "What I'd look for next time on a question like this", kind: 'textarea' }
+  ]}
+};
+
 let isAdmin = false;
+let readOnly = false;
 let myStudentIds = [];
 let viewingStudentId = null;
 let currentDrill = null;
-let drillItems = [];      // [{module_id, item_id, position, content}]
-let responses = {};       // item_id -> response row
+let drillItems = [];
+let responses = {};
+let resultsByItem = null;
 let qi = 0;
 let picked = null;
 let eliminated = new Set();
@@ -236,8 +440,15 @@ let flagged = false;
 let activeHl = null;
 let itemShownAt = null;
 let drillTimerHandle = null;
+let playMode = 'take';
+let qtValueById = {};
+let itemTypeByKey = {};
+let wsEntries = {};
+let wsActiveKind = 'type';
+let wsSaveTimer = null;
+let wsOpen = false;
 
-// ---------- COPY PROTECTION ----------
+/* ---------- COPY PROTECTION ---------- */
 ['copy','cut'].forEach(ev => document.addEventListener(ev, e => {
   if (!$('playView').classList.contains('hidden')) { e.preventDefault(); }
 }));
@@ -249,7 +460,23 @@ window.addEventListener('beforeprint', () => {
 });
 window.addEventListener('afterprint', () => { document.body.style.visibility = ''; });
 
-// ---------- AUTH ----------
+/* ---------- TEXT SIZE ---------- */
+const TS_ORDER = ['s','m','l'];
+function setTextSize(ts) {
+  document.body.setAttribute('data-ts', ts);
+  try { localStorage.setItem('vd_textsize', ts); } catch (e) {}
+}
+try { setTextSize(localStorage.getItem('vd_textsize') || 'm'); } catch (e) {}
+$('tsDown').addEventListener('click', () => {
+  const i = TS_ORDER.indexOf(document.body.getAttribute('data-ts'));
+  if (i > 0) setTextSize(TS_ORDER[i - 1]);
+});
+$('tsUp').addEventListener('click', () => {
+  const i = TS_ORDER.indexOf(document.body.getAttribute('data-ts'));
+  if (i < TS_ORDER.length - 1) setTextSize(TS_ORDER[i + 1]);
+});
+
+/* ---------- AUTH ---------- */
 $('signInBtn').addEventListener('click', signIn);
 $('password').addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
 
@@ -270,13 +497,15 @@ async function boot() {
   if (!user) return;
   const { data: p } = await db.from('profiles').select('first_name, role').eq('id', user.id).single();
   isAdmin = p && ['owner','admin'].includes(p.role);
-  $('whoami').textContent = p?.first_name || '';
+  window.__myName = p?.first_name || '';
 
   const { data: mine } = await db.from('students').select('id').eq('profile_id', user.id);
   myStudentIds = (mine || []).map(s => s.id);
 
   $('authView').classList.add('hidden');
   $('listView').classList.remove('hidden');
+
+  await loadQuestionTypeValues();
 
   if (isAdmin) {
     $('adminPickRow').classList.remove('hidden');
@@ -288,27 +517,56 @@ async function boot() {
       const o = document.createElement('option');
       o.value = s.id;
       o.textContent = s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8);
+      o.dataset.name = s.profiles?.first_name || s.profiles?.email || 'student';
       sel.appendChild(o);
     });
-    sel.addEventListener('change', () => { viewingStudentId = sel.value; loadDrillList(); });
-    viewingStudentId = sel.value || null;
+    sel.addEventListener('change', () => { setViewingStudent(sel.value); loadDrillList(); });
+    setViewingStudent(sel.value || null);
   } else {
     viewingStudentId = myStudentIds[0] || null;
+    readOnly = false;
   }
   loadDrillList();
   loadSelfServeTypes();
+  applyTimeFactorDefault();
 }
 
-// ---------- SELF-SERVE ----------
+function setViewingStudent(sid) {
+  viewingStudentId = sid;
+  readOnly = isAdmin && sid && !myStudentIds.includes(sid);
+  const bar = $('viewBar');
+  if (readOnly) {
+    const sel = $('previewStudent');
+    const name = sel.selectedOptions[0]?.dataset?.name || 'student';
+    window.__viewName = name;
+    $('viewBarText').textContent = 'Viewing as ' + name + ' — read only. Nothing you click is submitted for them.';
+    bar.classList.add('on');
+    $('selfServeCard').classList.add('hidden');
+    $('sectionCard').classList.add('hidden');
+  } else {
+    bar.classList.remove('on');
+    $('selfServeCard').classList.remove('hidden');
+    $('sectionCard').classList.remove('hidden');
+  }
+}
+
+/* ---------- QUESTION TYPES ---------- */
+async function loadQuestionTypeValues() {
+  try {
+    const { data: dims } = await db.from('tag_dimensions').select('id, name');
+    const qt = (dims || []).find(d => d.name === 'question_type');
+    if (!qt) return;
+    const { data: vals } = await db.from('tag_values')
+      .select('id, value').eq('dimension_id', qt.id).order('display_order');
+    (vals || []).forEach(v => { qtValueById[v.id] = v.value; });
+    window.__qtDimValues = vals || [];
+  } catch (e) {}
+}
+
 async function loadSelfServeTypes() {
-  const { data: dims } = await db.from('tag_dimensions').select('id, name');
-  const qt = (dims || []).find(d => d.name === 'question_type');
-  if (!qt) return;
-  const { data: vals } = await db.from('tag_values')
-    .select('id, value').eq('dimension_id', qt.id).order('display_order');
   const sel = $('ssType');
   sel.innerHTML = '';
-  (vals || []).forEach(v => {
+  (window.__qtDimValues || []).forEach(v => {
     const o = document.createElement('option');
     o.value = v.id; o.textContent = v.value;
     sel.appendChild(o);
@@ -316,6 +574,7 @@ async function loadSelfServeTypes() {
 }
 
 $('ssCreateBtn').addEventListener('click', async () => {
+  if (readOnly) return;
   $('ssMsg').textContent = 'Creating…';
   const { data, error } = await db.rpc('vd_create_self_drill', {
     p_tag_value_ids: [$('ssType').value],
@@ -328,7 +587,7 @@ $('ssCreateBtn').addEventListener('click', async () => {
   loadDrillList();
 });
 
-// ---------- SECTION PRACTICE ----------
+/* ---------- SECTION PRACTICE ---------- */
 async function applyTimeFactorDefault() {
   try {
     const { data: { user } } = await db.auth.getUser();
@@ -341,9 +600,9 @@ async function applyTimeFactorDefault() {
     else if (tf) $('secTiming').value = '1';
   } catch (e) {}
 }
-applyTimeFactorDefault();
 
 $('secCreateBtn').addEventListener('click', async () => {
+  if (readOnly) return;
   $('secMsg').textContent = 'Finding a fresh section…';
   const timing = $('secTiming').value;
   const seconds = timing === 'untimed' ? null : Math.round(35 * 60 * parseFloat(timing));
@@ -357,18 +616,24 @@ $('secCreateBtn').addEventListener('click', async () => {
   loadDrillList();
 });
 
-// ---------- DRILL LIST ----------
+/* ---------- DRILL LIST ---------- */
 async function loadDrillList() {
   const list = $('drillList');
   if (!viewingStudentId) { list.innerHTML = '<p class="sub">No student record found for this account.</p>'; return; }
   const { data, error } = await db.from('drills')
-    .select('id, title, question_count, status, is_timed, reveal_answers, created_by, is_recipe, created_at')
+    .select('id, student_id, title, question_count, status, is_timed, time_limit_seconds, reveal_answers, results_shown, created_by, is_recipe, created_at')
     .eq('student_id', viewingStudentId)
     .order('created_at', { ascending: false });
   if (error) { list.innerHTML = `<p class="sub">${escapeHtml(error.message)}</p>`; return; }
   if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet — create one above.</p>'; return; }
 
-  // deep link: /drills.html?drill=<id> opens that drill directly
+  let wsByDrill = {};
+  try {
+    const { data: wsRows } = await db.from('drill_worksheet_entries')
+      .select('drill_id').in('drill_id', data.map(d => d.id));
+    (wsRows || []).forEach(r => { wsByDrill[r.drill_id] = (wsByDrill[r.drill_id] || 0) + 1; });
+  } catch (e) {}
+
   const wanted = new URLSearchParams(location.search).get('drill');
   if (wanted && !window.__deepLinked) {
     const target = data.find(d => d.id === wanted);
@@ -379,25 +644,53 @@ async function loadDrillList() {
     const row = document.createElement('div');
     row.className = 'drillrow';
     const when = new Date(d.created_at).toLocaleDateString();
+    const wsCount = wsByDrill[d.id] || 0;
+    const statusLabel = (d.status === 'completed' && d.results_shown) ? 'reviewed' : d.status;
     row.innerHTML = `
       <div>
         <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''}</div>
-        <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by your tutor'} · ${when}</div>
+        <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by your tutor'} · ${when}${wsCount ? ' · ' + wsCount + ' worksheet' + (wsCount > 1 ? 's' : '') : ''}</div>
       </div>
-      <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>`;
+      <span class="pill ${statusLabel === 'reviewed' ? 'reviewed' : d.status}">${statusLabel.replace('_',' ')}</span>`;
     row.addEventListener('click', () => openDrill(d));
     list.appendChild(row);
   });
 }
 
-// ---------- OPEN DRILL ----------
+/* ---------- ITEM IDENTITY ---------- */
+function ptLabel(moduleId) {
+  const m = /^LSAC(\d+)$/.exec(moduleId || '');
+  if (m) return 'PT ' + parseInt(m[1], 10);
+  if (moduleId === 'LSACJune2007') return 'June 2007 PT';
+  if (moduleId === 'LSACPRA') return 'Puerto Rico PT';
+  if (moduleId === 'LSACPrepTestC') return 'PT C';
+  return moduleId || '';
+}
+
+function itemIdentity(it) {
+  const c = it.content || {};
+  const vd = c._vd || {};
+  const parts = [ptLabel(it.module_id)];
+  if (vd.sectionOrder) parts.push('Section ' + vd.sectionOrder);
+  const qn = it.item_position ?? c.itemPosition;
+  if (qn) parts.push('Question ' + qn);
+  return parts.join(' · ');
+}
+
+function itemKey(it) { return it.module_id + '|' + it.item_id; }
+
+function itemTypeName(it) { return itemTypeByKey[itemKey(it)] || null; }
+
+/* ---------- OPEN DRILL ---------- */
 async function openDrill(drill) {
   currentDrill = drill;
+  resultsByItem = null;
   let { data: dis } = await db.from('drill_items')
     .select('module_id, item_id, position')
     .eq('drill_id', drill.id).order('position');
 
   if ((!dis || !dis.length) && drill.is_recipe) {
+    if (readOnly) { alert('This drill has not been started by the student yet.'); return; }
     const { data: started, error: rerr } = await db.rpc('vd_start_recipe_drill', { p_drill_id: drill.id });
     if (rerr) { alert(rerr.message); return; }
     if (started?.error) { alert(started.error); return; }
@@ -414,10 +707,25 @@ async function openDrill(drill) {
 
   const keys = dis.map(d => d.item_id);
   const { data: contents } = await db.from('lsac_items')
-    .select('module_id, item_id, content').in('item_id', keys);
+    .select('module_id, item_id, item_position, content').in('item_id', keys);
   const byKey = {};
-  (contents || []).forEach(c => { byKey[c.module_id + '|' + c.item_id] = c.content; });
-  drillItems = dis.map(d => ({ ...d, content: byKey[d.module_id + '|' + d.item_id] || {} }));
+  (contents || []).forEach(c => { byKey[c.module_id + '|' + c.item_id] = c; });
+  drillItems = dis.map(d => {
+    const row = byKey[d.module_id + '|' + d.item_id] || {};
+    return { ...d, content: row.content || {}, item_position: row.item_position ?? null };
+  });
+
+  itemTypeByKey = {};
+  try {
+    const { data: tags } = await db.from('item_tags')
+      .select('module_id, item_id, tag_value_id').in('item_id', keys);
+    (tags || []).forEach(t => {
+      const name = qtValueById[t.tag_value_id];
+      if (!name) return;
+      const k = t.module_id + '|' + t.item_id;
+      if (!itemTypeByKey[k]) itemTypeByKey[k] = name;
+    });
+  } catch (e) {}
 
   responses = {};
   const { data: resp } = await db.from('drill_responses')
@@ -425,26 +733,105 @@ async function openDrill(drill) {
     .eq('drill_id', drill.id);
   (resp || []).forEach(r => { responses[r.item_id] = r; });
 
-  if (drill.status === 'completed') { showResults(); return; }
+  wsEntries = {};
+  try {
+    const { data: wsRows } = await db.from('drill_worksheet_entries')
+      .select('item_id, module_id, worksheet_kind, worksheet_slug, data')
+      .eq('drill_id', drill.id);
+    (wsRows || []).forEach(r => { wsEntries[r.item_id + '|' + r.worksheet_kind] = r; });
+  } catch (e) {}
+
+  if (drill.status === 'completed') {
+    if (drill.results_shown) { await ensureResults(); showResults(); }
+    else enterReviewMode();
+    return;
+  }
 
   qi = drillItems.findIndex(d => !responses[d.item_id]);
   if (qi === -1) qi = 0;
 
-  if (drill.status === 'assigned') {
+  if (drill.status === 'assigned' && !readOnly) {
     await db.from('drills').update({ status: 'in_progress' }).eq('id', drill.id);
     currentDrill.status = 'in_progress';
   }
 
+  enterTakeMode();
+}
+
+/* ---------- MODES ---------- */
+function baseEnterPlay() {
   $('listView').classList.add('hidden');
   $('resultView').classList.add('hidden');
   $('playView').classList.remove('hidden');
-  $('drillTitle').textContent = drill.title;
-  $('wmText').textContent = `licensed to ${$('whoami').textContent || 'student'} · VEDARION`;
+  $('exitBtn').classList.remove('hidden');
+  $('barTitle').textContent = currentDrill.title;
+  $('wrapEl').classList.add('wide');
+  closeWorksheet();
+}
 
+function enterTakeMode() {
+  playMode = 'take';
+  baseEnterPlay();
+  $('modePill').classList.add('hidden');
+  $('qChips').classList.add('hidden');
+  $('reviewHint').classList.add('hidden');
+  $('showResultsBtn').classList.add('hidden');
+  $('nextBtn').classList.remove('hidden');
+  $('backBtn').classList.remove('hidden');
+  $('progStrip').classList.remove('hidden');
+  const timedNow = !!(currentDrill.is_timed && currentDrill.time_limit_seconds);
+  const toolsOpen = !timedNow;
+  $('cheatBtn').classList.toggle('hidden', !toolsOpen);
+  $('wsToggleBtn').classList.toggle('hidden', !toolsOpen);
+  $('flagBtn').classList.remove('hidden');
   startDrillTimer();
   renderQuestion();
 }
 
+function enterReviewMode(fresh) {
+  playMode = 'review';
+  baseEnterPlay();
+  clearInterval(drillTimerHandle);
+  $('drillTimer').classList.add('hidden');
+  $('progStrip').classList.add('hidden');
+  $('modePill').textContent = 'Review · untimed';
+  $('modePill').classList.remove('hidden');
+  $('qChips').classList.remove('hidden');
+  $('reviewHint').classList.remove('hidden');
+  $('nextBtn').classList.add('hidden');
+  $('backBtn').classList.add('hidden');
+  $('cheatBtn').classList.remove('hidden');
+  $('wsToggleBtn').classList.remove('hidden');
+  $('flagBtn').classList.add('hidden');
+  const srb = $('showResultsBtn');
+  srb.classList.remove('hidden');
+  srb.disabled = false;
+  if (readOnly) { srb.disabled = true; srb.title = 'Read only — the student reveals their own results'; }
+  const firstFlagged = drillItems.findIndex(d => responses[d.item_id]?.flagged);
+  qi = fresh && firstFlagged !== -1 ? firstFlagged : Math.max(0, Math.min(qi, drillItems.length - 1));
+  if (fresh) qi = firstFlagged !== -1 ? firstFlagged : 0;
+  renderQuestion();
+}
+
+function enterResultsQuestionView(index) {
+  playMode = 'results-q';
+  baseEnterPlay();
+  $('modePill').textContent = 'Results';
+  $('modePill').classList.remove('hidden');
+  $('progStrip').classList.add('hidden');
+  $('qChips').classList.remove('hidden');
+  $('reviewHint').classList.add('hidden');
+  $('nextBtn').classList.add('hidden');
+  $('backBtn').classList.add('hidden');
+  $('showResultsBtn').classList.add('hidden');
+  $('cheatBtn').classList.remove('hidden');
+  $('wsToggleBtn').classList.remove('hidden');
+  $('flagBtn').classList.add('hidden');
+  qi = index;
+  renderQuestion();
+}
+
+/* ---------- TIMER ---------- */
 function startDrillTimer() {
   clearInterval(drillTimerHandle);
   const t = $('drillTimer');
@@ -462,7 +849,7 @@ function startDrillTimer() {
   drillTimerHandle = setInterval(tick, 1000);
 }
 
-// ---------- RENDER QUESTION ----------
+/* ---------- RENDER QUESTION ---------- */
 function extractOptions(content) {
   const raw = content.options;
   if (!raw) return [];
@@ -478,70 +865,163 @@ function extractOptions(content) {
   return Object.entries(raw).map(([k, v]) => ({ letter: k, text: String(v) }));
 }
 
+function buildChips() {
+  const box = $('qChips');
+  box.innerHTML = '';
+  const lab = document.createElement('span');
+  lab.className = 'hint';
+  lab.textContent = 'Questions';
+  lab.style.marginRight = '3px';
+  box.appendChild(lab);
+  drillItems.forEach((d, i) => {
+    const r = responses[d.item_id];
+    const chip = document.createElement('button');
+    chip.className = 'qchip';
+    chip.textContent = (i + 1) + (r?.flagged ? '⚑' : '');
+    if (r?.flagged) chip.classList.add('flagged');
+    if (i === qi) chip.classList.add('now');
+    if (playMode === 'results-q' && resultsByItem) {
+      const res = resultsByItem[d.item_id];
+      if (res) chip.classList.add(res.is_correct ? 'right' : 'wrong');
+    }
+    chip.addEventListener('click', () => { saveWsNow(); qi = i; renderQuestion(); });
+    box.appendChild(chip);
+  });
+}
+
 function renderQuestion() {
   const it = drillItems[qi];
   const c = it.content || {};
-  picked = null; eliminated = new Set(); flagged = false;
+  const prior = responses[it.item_id];
+  const inTake = playMode === 'take';
+  picked = inTake ? null : (prior?.selected_answer ?? null);
+  eliminated = new Set();
+  flagged = false;
   $('feedback').textContent = ''; $('feedback').className = 'feedback';
 
-  const prior = responses[it.item_id];
+  $('qIdent').innerHTML = escapeHtml(itemIdentity(it)) + (prior?.flagged && !inTake ? ' <span style="color:var(--orange);">⚑ flagged</span>' : '');
+  $('qYourAnswer').textContent = (!inTake && prior?.selected_answer) ? 'Your answer: ' + prior.selected_answer : '';
+
   $('stimEl').innerHTML = prior?.annotations?.highlightedStim ?? (c.stimulusText ?? '');
   $('stemEl').innerHTML = prior?.annotations?.highlightedStem ?? (c.stemText ?? '');
 
   const opts = extractOptions(c);
   const box = $('optsEl');
   box.innerHTML = '';
+  const res = resultsByItem ? resultsByItem[it.item_id] : null;
   opts.forEach(o => {
     const row = document.createElement('div');
     row.className = 'optrow';
     const btn = document.createElement('button');
     btn.className = 'optbtn';
     btn.dataset.letter = o.letter;
-    btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span>${o.text}</span>`;
-    btn.addEventListener('click', () => {
-      if (eliminated.has(o.letter)) return;
-      picked = o.letter;
-      [...box.querySelectorAll('.optbtn')].forEach(b => b.classList.remove('picked'));
-      btn.classList.add('picked');
-    });
-    const el = document.createElement('button');
-    el.className = 'elimbtn';
-    el.textContent = '✕';
-    el.setAttribute('aria-label', `Eliminate ${o.letter}`);
-    el.addEventListener('click', () => {
-      if (eliminated.has(o.letter)) { eliminated.delete(o.letter); btn.classList.remove('elim'); }
-      else {
-        eliminated.add(o.letter); btn.classList.add('elim');
-        if (picked === o.letter) { picked = null; btn.classList.remove('picked'); }
-      }
-    });
-    row.appendChild(btn); row.appendChild(el);
+    let endTag = '';
+    if (!inTake && prior?.selected_answer === o.letter) endTag = '<span class="tagend">your pick</span>';
+    btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span>${o.text}</span>${endTag}`;
+    if (inTake && !readOnly) {
+      btn.addEventListener('click', () => {
+        if (eliminated.has(o.letter)) return;
+        picked = o.letter;
+        [...box.querySelectorAll('.optbtn')].forEach(b => b.classList.remove('picked'));
+        btn.classList.add('picked');
+      });
+    } else {
+      btn.classList.add('readonly');
+    }
+    row.appendChild(btn);
+    if (inTake) {
+      const el = document.createElement('button');
+      el.className = 'elimbtn';
+      el.textContent = '✕';
+      el.setAttribute('aria-label', `Eliminate ${o.letter}`);
+      if (!readOnly) el.addEventListener('click', () => {
+        if (eliminated.has(o.letter)) { eliminated.delete(o.letter); btn.classList.remove('elim'); el.classList.remove('on'); }
+        else {
+          eliminated.add(o.letter); btn.classList.add('elim'); el.classList.add('on');
+          if (picked === o.letter) { picked = null; btn.classList.remove('picked'); }
+        }
+      });
+      row.appendChild(el);
+    }
     box.appendChild(row);
   });
 
   if (prior) {
-    picked = prior.selected_answer;
     (prior.annotations?.eliminated || []).forEach(l => {
       eliminated.add(l);
       const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(l)}"]`);
       if (b) b.classList.add('elim');
+      const eb = b?.parentNode?.querySelector('.elimbtn');
+      if (eb) eb.classList.add('on');
     });
-    if (picked) {
-      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(picked)}"]`);
-      if (b) b.classList.add('picked');
+    if (prior.selected_answer) {
+      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(prior.selected_answer)}"]`);
+      if (b && !res) b.classList.add('picked');
     }
     flagged = !!prior.flagged;
   }
-  $('flagBtn').classList.toggle('on', flagged);
 
+  if (res) {
+    const pickedBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(res.selected || '')}"]`);
+    const corrBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(res.correct_answer || '')}"]`);
+    if (res.is_correct) { pickedBtn?.classList.add('correct'); }
+    else { pickedBtn?.classList.add('wrong'); corrBtn?.classList.add('correct'); }
+  }
+
+  $('flagBtn').classList.toggle('on', flagged);
   $('qCounter').textContent = `Question ${qi + 1} of ${drillItems.length}`;
-  $('posHint').textContent = currentDrill.reveal_answers ? '' : 'Answers reviewed in session with your tutor';
+  $('posHint').textContent = playMode === 'review' ? reviewFooterText() : '';
   $('progFill').style.width = `${(Object.keys(responses).length / drillItems.length) * 100}%`;
   $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
 
-  itemShownAt = Date.now();
-  logAccess(it, 'item_viewed');
+  updateCheatButton(it);
+  if (!inTake) buildChips();
+  if (wsOpen) renderWorksheet();
+
+  if (inTake) {
+    itemShownAt = Date.now();
+    if (!readOnly) logAccess(it, 'item_viewed');
+  } else if (!readOnly) {
+    logAccess(it, 'item_reviewed');
+  }
 }
+
+function reviewFooterText() {
+  const flaggedItems = drillItems.filter(d => responses[d.item_id]?.flagged);
+  if (!flaggedItems.length) return 'No flagged questions · fill the worksheet for any question you want';
+  const done = flaggedItems.filter(d => {
+    const e1 = wsEntries[d.item_id + '|type'];
+    const e2 = wsEntries[d.item_id + '|review'];
+    return hasContent(e1) || hasContent(e2);
+  }).length;
+  return `${flaggedItems.length} flagged · worksheet: ${done} of ${flaggedItems.length} done`;
+}
+
+function hasContent(entry) {
+  if (!entry || !entry.data) return false;
+  return Object.values(entry.data).some(v => Array.isArray(v) ? v.length : String(v || '').trim().length);
+}
+
+function updateCheatButton(it) {
+  const typeName = itemTypeName(it);
+  const meta = typeName ? TYPE_META[typeName] : null;
+  const btn = $('cheatBtn');
+  if (meta) {
+    btn.dataset.url = '/question-types/' + meta.slug + '/flowchart.html';
+    btn.textContent = 'Cheat sheet';
+    btn.disabled = false;
+    btn.title = typeName + ' cheat sheet';
+  } else {
+    btn.dataset.url = '';
+    btn.disabled = true;
+    btn.title = 'No cheat sheet for this question type yet';
+  }
+}
+
+$('cheatBtn').addEventListener('click', () => {
+  const url = $('cheatBtn').dataset.url;
+  if (url) window.open(url, '_blank', 'noopener');
+});
 
 async function logAccess(it, type) {
   try {
@@ -553,14 +1033,165 @@ async function logAccess(it, type) {
   } catch (e) {}
 }
 
-// ---------- HIGHLIGHTING ----------
+/* ---------- WORKSHEET PANEL ---------- */
+$('wsToggleBtn').addEventListener('click', () => { wsOpen ? closeWorksheet() : openWorksheet(); });
+$('wsCloseBtn').addEventListener('click', closeWorksheet);
+
+function openWorksheet() {
+  wsOpen = true;
+  $('wsPanel').classList.remove('hidden');
+  $('playGrid').classList.add('split');
+  $('wsToggleBtn').classList.add('on');
+  renderWorksheet();
+}
+
+function closeWorksheet() {
+  saveWsNow();
+  wsOpen = false;
+  $('wsPanel').classList.add('hidden');
+  $('playGrid').classList.remove('split');
+  $('wsToggleBtn').classList.remove('on');
+}
+
+function wsTemplateFor(it, kind) {
+  if (kind === 'review') return { slug: '__review', tpl: WS_TEMPLATES['__review'] };
+  const typeName = itemTypeName(it);
+  const meta = typeName ? TYPE_META[typeName] : null;
+  if (meta && meta.ws && WS_TEMPLATES[meta.slug]) return { slug: meta.slug, tpl: WS_TEMPLATES[meta.slug] };
+  return null;
+}
+
+function renderWorksheet() {
+  const it = drillItems[qi];
+  const typeOption = wsTemplateFor(it, 'type');
+  if (!typeOption && wsActiveKind === 'type') wsActiveKind = 'review';
+
+  const tabs = $('wsTabs');
+  tabs.innerHTML = '';
+  if (typeOption) {
+    const t1 = document.createElement('button');
+    t1.className = 'wstab' + (wsActiveKind === 'type' ? ' on' : '');
+    t1.textContent = typeOption.tpl.title;
+    t1.addEventListener('click', () => { saveWsNow(); wsActiveKind = 'type'; renderWorksheet(); });
+    tabs.appendChild(t1);
+  }
+  const t2 = document.createElement('button');
+  t2.className = 'wstab' + (wsActiveKind === 'review' ? ' on' : '');
+  t2.textContent = 'Review worksheet';
+  t2.addEventListener('click', () => { saveWsNow(); wsActiveKind = 'review'; renderWorksheet(); });
+  tabs.appendChild(t2);
+
+  const chosen = wsActiveKind === 'type' ? typeOption : { slug: '__review', tpl: WS_TEMPLATES['__review'] };
+  $('wsTitle').textContent = chosen.tpl.title;
+  $('wsNote').textContent = readOnly
+    ? 'Read only — this is the student\u2019s worksheet'
+    : 'Fill this out for your flagged questions · saves as you type';
+
+  const entryKey = it.item_id + '|' + wsActiveKind;
+  const existing = wsEntries[entryKey];
+  const data = existing?.data || {};
+
+  const box = $('wsFields');
+  box.innerHTML = '';
+  chosen.tpl.fields.forEach((f, idx) => {
+    const lab = document.createElement('p');
+    lab.className = 'wsfield-label';
+    lab.textContent = f.label;
+    box.appendChild(lab);
+    const key = 'f' + idx;
+    let val = data[key];
+    if (val == null && f.auto === 'identity') val = itemIdentity(it);
+    if (f.kind === 'checkbox') {
+      const grp = document.createElement('div');
+      grp.className = 'wschecks';
+      const arr = Array.isArray(val) ? val : [];
+      (f.options || []).forEach(opt => {
+        const l = document.createElement('label');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = arr.includes(opt);
+        cb.disabled = readOnly;
+        cb.addEventListener('change', () => scheduleWsSave());
+        cb.dataset.opt = opt;
+        cb.dataset.field = key;
+        l.appendChild(cb);
+        l.appendChild(document.createTextNode(opt));
+        grp.appendChild(l);
+      });
+      box.appendChild(grp);
+    } else {
+      const inp = document.createElement(f.kind === 'textarea' ? 'textarea' : 'input');
+      inp.className = 'wsfield';
+      if (f.kind !== 'textarea') inp.type = 'text';
+      inp.value = val || '';
+      inp.dataset.field = key;
+      inp.disabled = readOnly;
+      inp.addEventListener('input', () => scheduleWsSave());
+      box.appendChild(inp);
+    }
+  });
+  $('wsStatus').textContent = '';
+}
+
+function collectWsData() {
+  const out = {};
+  $('wsFields').querySelectorAll('.wsfield').forEach(inp => { out[inp.dataset.field] = inp.value; });
+  const checks = {};
+  $('wsFields').querySelectorAll('.wschecks input').forEach(cb => {
+    if (!checks[cb.dataset.field]) checks[cb.dataset.field] = [];
+    if (cb.checked) checks[cb.dataset.field].push(cb.dataset.opt);
+  });
+  Object.entries(checks).forEach(([k, v]) => { out[k] = v; });
+  return out;
+}
+
+function scheduleWsSave() {
+  if (readOnly) return;
+  $('wsStatus').textContent = 'Saving…';
+  clearTimeout(wsSaveTimer);
+  wsSaveTimer = setTimeout(saveWsNow, 800);
+}
+
+async function saveWsNow() {
+  clearTimeout(wsSaveTimer);
+  if (readOnly || !wsOpen || !currentDrill) return;
+  const it = drillItems[qi];
+  if (!it) return;
+  const data = collectWsData();
+  const anything = Object.values(data).some(v => Array.isArray(v) ? v.length : String(v || '').trim().length);
+  const entryKey = it.item_id + '|' + wsActiveKind;
+  if (!anything && !wsEntries[entryKey]) return;
+  const chosen = wsTemplateFor(it, wsActiveKind) || { slug: '__review' };
+  const row = {
+    drill_id: currentDrill.id,
+    module_id: it.module_id,
+    item_id: it.item_id,
+    worksheet_kind: wsActiveKind,
+    worksheet_slug: chosen.slug,
+    data,
+    updated_at: new Date().toISOString()
+  };
+  try {
+    const { error } = await db.from('drill_worksheet_entries')
+      .upsert(row, { onConflict: 'drill_id,item_id,worksheet_kind' });
+    if (error) { $('wsStatus').textContent = error.message; return; }
+    wsEntries[entryKey] = row;
+    $('wsStatus').textContent = 'Saved';
+    setTimeout(() => { if ($('wsStatus').textContent === 'Saved') $('wsStatus').textContent = ''; }, 1500);
+    if (playMode === 'review') $('posHint').textContent = reviewFooterText();
+  } catch (e) { $('wsStatus').textContent = 'Could not save'; }
+}
+
+/* ---------- HIGHLIGHTING (take mode only) ---------- */
 [...document.querySelectorAll('.swatch')].forEach(sw =>
   sw.addEventListener('click', () => {
+    if (playMode !== 'take' || readOnly) return;
     activeHl = activeHl === sw.dataset.hl ? null : sw.dataset.hl;
     [...document.querySelectorAll('.swatch')].forEach(s => s.classList.toggle('on', s.dataset.hl === activeHl));
   }));
 
 $('stimBox').addEventListener('mouseup', () => {
+  if (playMode !== 'take' || readOnly) return;
   if (!activeHl) return;
   const sel = window.getSelection();
   if (!sel.rangeCount || sel.isCollapsed) return;
@@ -574,6 +1205,7 @@ $('stimBox').addEventListener('mouseup', () => {
 });
 
 $('stimBox').addEventListener('click', e => {
+  if (playMode !== 'take' || readOnly) return;
   if (e.target.tagName === 'MARK') {
     const m = e.target;
     while (m.firstChild) m.parentNode.insertBefore(m.firstChild, m);
@@ -582,26 +1214,35 @@ $('stimBox').addEventListener('click', e => {
 });
 
 $('flagBtn').addEventListener('click', () => {
+  if (playMode !== 'take' || readOnly) return;
   flagged = !flagged;
   $('flagBtn').classList.toggle('on', flagged);
 });
 
-// ---------- SUBMIT / NAVIGATE ----------
+/* ---------- SUBMIT / NAVIGATE ---------- */
 $('nextBtn').addEventListener('click', submitCurrent);
 $('backBtn').addEventListener('click', () => { if (qi > 0) { qi--; renderQuestion(); } });
 $('exitBtn').addEventListener('click', exitToList);
 $('resultBackBtn').addEventListener('click', exitToList);
+$('showResultsBtn').addEventListener('click', showResultsPressed);
 
 function exitToList() {
+  saveWsNow();
   clearInterval(drillTimerHandle);
   $('playView').classList.add('hidden');
   $('resultView').classList.add('hidden');
   $('listView').classList.remove('hidden');
+  $('exitBtn').classList.add('hidden');
+  $('progStrip').classList.add('hidden');
+  $('modePill').classList.add('hidden');
   $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+  $('barTitle').textContent = '';
+  $('wrapEl').classList.remove('wide');
   loadDrillList();
 }
 
 async function submitCurrent() {
+  if (readOnly) return;
   const it = drillItems[qi];
   if (!picked) { $('feedback').textContent = 'Pick an answer first.'; $('feedback').className = 'feedback bad'; return; }
   $('nextBtn').disabled = true;
@@ -657,45 +1298,99 @@ function advance() {
 
 async function finishDrill() {
   clearInterval(drillTimerHandle);
-  await db.from('drills').update({ status: 'completed', completed_at: new Date().toISOString() })
-    .eq('id', currentDrill.id);
+  if (!readOnly) {
+    await db.from('drills').update({ status: 'completed', completed_at: new Date().toISOString() })
+      .eq('id', currentDrill.id);
+  }
   currentDrill.status = 'completed';
+  enterReviewMode(true);
+}
+
+/* ---------- SHOW RESULTS ---------- */
+async function showResultsPressed() {
+  saveWsNow();
+  if (readOnly) return;
+  $('showResultsBtn').disabled = true;
+  const ok = await ensureResults();
+  $('showResultsBtn').disabled = false;
+  if (!ok) return;
+  currentDrill.results_shown = true;
   showResults();
+}
+
+async function ensureResults() {
+  if (resultsByItem) return true;
+  resultsByItem = {};
+  if (readOnly) {
+    try {
+      const keys = drillItems.map(d => d.item_id);
+      const { data: answers } = await db.from('lsac_item_answers')
+        .select('module_id, item_id, correct_answer').in('item_id', keys);
+      const ansBy = {};
+      (answers || []).forEach(a => { ansBy[a.module_id + '|' + a.item_id] = a.correct_answer; });
+      drillItems.forEach(d => {
+        const r = responses[d.item_id];
+        if (!r) return;
+        const ca = ansBy[itemKey(d)] ?? null;
+        resultsByItem[d.item_id] = {
+          selected: r.selected_answer,
+          correct_answer: ca,
+          is_correct: r.is_correct != null ? r.is_correct : (ca != null ? r.selected_answer === ca : null)
+        };
+      });
+      return true;
+    } catch (e) { resultsByItem = null; return false; }
+  }
+  const { data, error } = await db.rpc('vd_show_drill_results', { p_drill_id: currentDrill.id });
+  if (error) { alert(error.message); resultsByItem = null; return false; }
+  if (data?.error) { alert(data.error); resultsByItem = null; return false; }
+  (data?.results || []).forEach(r => {
+    resultsByItem[r.item_id] = { selected: r.selected, correct_answer: r.correct_answer, is_correct: r.is_correct };
+  });
+  return true;
 }
 
 function showResults() {
   $('playView').classList.add('hidden');
   $('listView').classList.add('hidden');
   $('resultView').classList.remove('hidden');
+  $('exitBtn').classList.remove('hidden');
+  $('progStrip').classList.add('hidden');
+  $('modePill').classList.add('hidden');
   $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+  $('barTitle').textContent = currentDrill.title;
 
   const answered = drillItems.filter(d => responses[d.item_id]);
   const flaggedCount = answered.filter(d => responses[d.item_id].flagged).length;
+  const correct = drillItems.filter(d => resultsByItem?.[d.item_id]?.is_correct === true).length;
+  $('resultTitle').textContent = 'Results — ' + currentDrill.title;
+  $('resultSummary').textContent = `${correct} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
+
   const rows = $('resultRows');
   rows.innerHTML = '';
-
-  if (currentDrill.reveal_answers) {
-    const correct = answered.filter(d => responses[d.item_id].is_correct === true).length;
-    $('resultSummary').textContent = `${correct} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
-    drillItems.forEach((d, i) => {
-      const r = responses[d.item_id];
-      const row = document.createElement('div');
-      row.className = 'resultrow';
-      row.innerHTML = `<span>Question ${i + 1}${r?.flagged ? ' ⚑' : ''}</span>
-        <span>${r ? (r.is_correct ? '✓ correct' : '✕ incorrect') : '—'}</span>`;
-      rows.appendChild(row);
-    });
-  } else {
-    $('resultSummary').textContent =
-      `All ${answered.length} answers recorded · ${flaggedCount} flagged. You will review results with your tutor in your next session.`;
-    drillItems.forEach((d, i) => {
-      const r = responses[d.item_id];
-      const row = document.createElement('div');
-      row.className = 'resultrow';
-      row.innerHTML = `<span>Question ${i + 1}${r?.flagged ? ' ⚑' : ''}</span><span>${r ? 'answered' : '—'}</span>`;
-      rows.appendChild(row);
-    });
-  }
+  drillItems.forEach((d, i) => {
+    const r = responses[d.item_id];
+    const res = resultsByItem?.[d.item_id];
+    const row = document.createElement('div');
+    row.className = 'resultrow';
+    const wsDone = hasContent(wsEntries[d.item_id + '|type']) || hasContent(wsEntries[d.item_id + '|review']);
+    const verdict = res
+      ? (res.is_correct
+          ? '<span class="verdict-good">✓ correct</span>'
+          : `<span class="verdict-bad">✕ ${escapeHtml(res.selected || '—')} → ${escapeHtml(res.correct_answer || '?')}</span>`)
+      : '<span>—</span>';
+    row.innerHTML = `
+      <div>
+        <div class="rid">Q${i + 1} · ${escapeHtml(itemIdentity(d))}${r?.flagged ? ' <span style="color:var(--orange);">⚑</span>' : ''}</div>
+        <div class="rmeta">${wsDone ? 'Worksheet filled' : ''}</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        ${verdict}
+        <button class="btn secondary small" data-i="${i}">View</button>
+      </div>`;
+    row.querySelector('button').addEventListener('click', () => enterResultsQuestionView(i));
+    rows.appendChild(row);
+  });
 }
 
 function escapeHtml(s) {
