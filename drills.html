@@ -126,7 +126,6 @@
   .wschecks label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 400; margin: 2px 0; cursor: pointer; }
   .wschecks input { accent-color: var(--orange); }
   .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
-  .wscheat { width: 100%; height: 70vh; border: none; border-radius: 8px; }
 
   .playbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .timer { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -277,7 +276,6 @@
         <p class="wsnote" id="wsNote">For flagged questions · saves as you type</p>
         <div id="wsFields"></div>
         <div class="wsstatus" id="wsStatus"></div>
-        <iframe class="wscheat hidden" id="wsCheatFrame" title="Cheat sheet"></iframe>
       </div>
     </div>
 
@@ -1058,9 +1056,8 @@ function updateCheatButton(it) {
 }
 
 $('cheatBtn').addEventListener('click', () => {
-  if (!$('cheatBtn').dataset.url) return;
-  if (wsOpen && wsActiveKind === 'cheat') closeWorksheet();
-  else openWorksheet('cheat');
+  const url = $('cheatBtn').dataset.url;
+  if (url) window.open(url, '_blank', 'noopener');
 });
 
 async function logAccess(it, type) {
@@ -1074,16 +1071,11 @@ async function logAccess(it, type) {
 }
 
 /* ---------- WORKSHEET PANEL ---------- */
-$('wsToggleBtn').addEventListener('click', () => {
-  if (wsOpen && wsActiveKind !== 'cheat') closeWorksheet();
-  else openWorksheet();
-});
+$('wsToggleBtn').addEventListener('click', () => { wsOpen ? closeWorksheet() : openWorksheet(); });
 $('wsCloseBtn').addEventListener('click', closeWorksheet);
 
-function openWorksheet(kind) {
+function openWorksheet() {
   wsOpen = true;
-  if (kind === 'cheat') wsActiveKind = 'cheat';
-  else if (wsActiveKind === 'cheat') wsActiveKind = 'type';
   $('wsPanel').classList.remove('hidden');
   $('playGrid').classList.add('split');
   $('wsToggleBtn').classList.add('on');
@@ -1110,8 +1102,6 @@ function renderWorksheet() {
   const it = drillItems[qi];
   const typeOption = wsTemplateFor(it, 'type');
   if (!typeOption && wsActiveKind === 'type') wsActiveKind = 'review';
-  const cheatUrl = $('cheatBtn').disabled ? '' : ($('cheatBtn').dataset.url || '');
-  if (wsActiveKind === 'cheat' && !cheatUrl) wsActiveKind = typeOption ? 'type' : 'review';
 
   const tabs = $('wsTabs');
   tabs.innerHTML = '';
@@ -1127,28 +1117,6 @@ function renderWorksheet() {
   t2.textContent = 'Review worksheet';
   t2.addEventListener('click', () => { saveWsNow(); wsActiveKind = 'review'; renderWorksheet(); });
   tabs.appendChild(t2);
-  if (cheatUrl) {
-    const t3 = document.createElement('button');
-    t3.className = 'wstab' + (wsActiveKind === 'cheat' ? ' on' : '');
-    t3.textContent = 'Cheat sheet';
-    t3.addEventListener('click', () => { saveWsNow(); wsActiveKind = 'cheat'; renderWorksheet(); });
-    tabs.appendChild(t3);
-  }
-
-  const frame = $('wsCheatFrame');
-  if (wsActiveKind === 'cheat') {
-    $('wsTitle').textContent = 'Cheat sheet';
-    if (frame.getAttribute('src') !== cheatUrl) frame.setAttribute('src', cheatUrl);
-    frame.classList.remove('hidden');
-    $('wsNote').classList.add('hidden');
-    $('wsFields').classList.add('hidden');
-    $('wsStatus').classList.add('hidden');
-    return;
-  }
-  frame.classList.add('hidden');
-  $('wsNote').classList.remove('hidden');
-  $('wsFields').classList.remove('hidden');
-  $('wsStatus').classList.remove('hidden');
 
   const chosen = wsActiveKind === 'type' ? typeOption : { slug: '__review', tpl: WS_TEMPLATES['__review'] };
   $('wsTitle').textContent = chosen.tpl.title;
@@ -1223,7 +1191,7 @@ function scheduleWsSave() {
 
 async function saveWsNow() {
   clearTimeout(wsSaveTimer);
-  if (readOnly || !wsOpen || !currentDrill || wsActiveKind === 'cheat') return;
+  if (readOnly || !wsOpen || !currentDrill) return;
   const it = drillItems[qi];
   if (!it) return;
   const data = collectWsData();
