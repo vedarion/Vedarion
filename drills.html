@@ -126,6 +126,13 @@
   .wschecks label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 400; margin: 2px 0; cursor: pointer; }
   .wschecks input { accent-color: var(--orange); }
   .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
+  .wsinstr { display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--cream-warm); border: 1px solid var(--orange-line); border-radius: 7px; margin-bottom: 10px; font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
+  .wsinstr-done { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--orange-dark); cursor: pointer; flex-shrink: 0; white-space: nowrap; }
+  .wsinstr-done input { accent-color: var(--orange); cursor: pointer; }
+  .wslegacy { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 8px; }
+  .wslegacy-hd { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .5px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+  .wslegacy-row { font-size: 11px; color: var(--ink-faint); line-height: 1.6; margin-bottom: 3px; }
+  .wslegacy-lbl { color: var(--ink-soft); }
 
   .cheatstep { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid #F0EBE4; font-size: 12.5px; line-height: 1.55; }
   .cheatstep.last { border-bottom: none; }
@@ -429,13 +436,16 @@ const WS_TEMPLATES = {
     { label: 'Step 3 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea' }
   ]},
   'argument-part': { title: 'Argument Part worksheet', fields: [
-    { label: 'Question source', kind: 'text', auto: 'identity' },
-    { label: 'Step 1 — Read the Question Stem: Copy or describe the referenced sentence', kind: 'textarea' },
-    { label: 'Step 2 — Read the Stimulus: Sentence text', kind: 'textarea' },
-    { label: 'Step 2 — Read the Stimulus: Role of the sentence (e.g. conclusion, premise, background)', kind: 'text' },
-    { label: 'Step 3 — Describe the Referenced Sentence: What does this sentence do in the argument?', kind: 'textarea' },
-    { label: 'Step 4 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea' }
-  ]},
+    { label: 'Question source', kind: 'text', auto: 'identity', key: 'f0' },
+    { label: 'Step 1 — Highlight the referenced sentence in the stimulus, then check Done.', kind: 'note', key: 'step1_done' },
+    { label: 'Step 2 — Read the stimulus. For each sentence, describe its role: conclusion, support, or background. Start there, add more detail if needed.', kind: 'textarea', key: 'roles', h: 96 },
+    { label: 'Step 3 — Describe the role of the referenced sentence: premise, conclusion, or background. Add more detail if necessary.', kind: 'textarea', key: 'f4', h: 64 },
+    { label: 'Step 4 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea', key: 'f5', h: 130 }
+  ], legacy: {
+    'f1': 'Copy or describe the referenced sentence',
+    'f2': 'Sentence text',
+    'f3': 'Role of the sentence'
+  }},
   'must-be-true': { title: 'Must Be True worksheet', fields: [
     { label: 'Connect the Dots: Simplify sentence 1', kind: 'text' },
     { label: 'Connect the Dots: Simplify sentence 2', kind: 'text' },
@@ -1291,11 +1301,34 @@ function renderWorksheet() {
   const box = $('wsFields');
   box.innerHTML = '';
   chosen.tpl.fields.forEach((f, idx) => {
+    if (f.kind === 'note') {
+      const note = document.createElement('div');
+      note.className = 'wsinstr';
+      const txt = document.createElement('span');
+      txt.textContent = f.label;
+      txt.style.flex = '1';
+      note.appendChild(txt);
+      if (f.key) {
+        const l = document.createElement('label');
+        l.className = 'wsinstr-done';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = data[f.key] === true;
+        cb.disabled = readOnly;
+        cb.dataset.donekey = f.key;
+        cb.addEventListener('change', () => scheduleWsSave());
+        l.appendChild(cb);
+        l.appendChild(document.createTextNode('Done'));
+        note.appendChild(l);
+      }
+      box.appendChild(note);
+      return;
+    }
     const lab = document.createElement('p');
     lab.className = 'wsfield-label';
     lab.textContent = f.label;
     box.appendChild(lab);
-    const key = 'f' + idx;
+    const key = f.key || ('f' + idx);
     let val = data[key];
     if (val == null && f.auto === 'identity') val = itemIdentity(it);
     if (f.kind === 'checkbox') {
@@ -1320,6 +1353,7 @@ function renderWorksheet() {
       const inp = document.createElement(f.kind === 'textarea' ? 'textarea' : 'input');
       inp.className = 'wsfield';
       if (f.kind !== 'textarea') inp.type = 'text';
+      if (f.kind === 'textarea' && f.h) inp.style.minHeight = f.h + 'px';
       inp.value = val || '';
       inp.dataset.field = key;
       inp.disabled = readOnly;
@@ -1327,12 +1361,42 @@ function renderWorksheet() {
       box.appendChild(inp);
     }
   });
+
+  /* Earlier answers: data saved under keys the current template no longer uses
+     (e.g. after a worksheet redesign). Shown read-only so no student work is
+     ever hidden; carried forward untouched on every save. */
+  const legacy = chosen.tpl.legacy || null;
+  if (legacy) {
+    const rows = Object.keys(legacy)
+      .filter(k => data[k] != null && String(data[k]).trim().length)
+      .map(k => ({ label: legacy[k], val: String(data[k]) }));
+    if (rows.length) {
+      const wrapEl = document.createElement('div');
+      wrapEl.className = 'wslegacy';
+      const hd = document.createElement('div');
+      hd.className = 'wslegacy-hd';
+      hd.textContent = 'Earlier answers · previous worksheet version';
+      wrapEl.appendChild(hd);
+      rows.forEach(r => {
+        const line = document.createElement('div');
+        line.className = 'wslegacy-row';
+        const l = document.createElement('span');
+        l.className = 'wslegacy-lbl';
+        l.textContent = r.label + ': ';
+        line.appendChild(l);
+        line.appendChild(document.createTextNode(r.val));
+        wrapEl.appendChild(line);
+      });
+      box.appendChild(wrapEl);
+    }
+  }
   $('wsStatus').textContent = '';
 }
 
 function collectWsData() {
   const out = {};
   $('wsFields').querySelectorAll('.wsfield').forEach(inp => { out[inp.dataset.field] = inp.value; });
+  $('wsFields').querySelectorAll('input[data-donekey]').forEach(cb => { out[cb.dataset.donekey] = cb.checked; });
   const checks = {};
   $('wsFields').querySelectorAll('.wschecks input').forEach(cb => {
     if (!checks[cb.dataset.field]) checks[cb.dataset.field] = [];
@@ -1354,9 +1418,12 @@ async function saveWsNow() {
   if (readOnly || !wsOpen || !currentDrill || panelMode !== 'ws') return;
   const it = drillItems[qi];
   if (!it) return;
-  const data = collectWsData();
-  const anything = Object.values(data).some(v => Array.isArray(v) ? v.length : String(v || '').trim().length);
   const entryKey = it.item_id + '|' + wsActiveKind;
+  /* Merge over any previously saved data so keys the current template no
+     longer renders (earlier worksheet versions) are never wiped by a save. */
+  const priorData = (wsEntries[entryKey] && wsEntries[entryKey].data) || {};
+  const data = Object.assign({}, priorData, collectWsData());
+  const anything = Object.values(data).some(v => Array.isArray(v) ? v.length : String(v || '').trim().length);
   if (!anything && !wsEntries[entryKey]) return;
   const chosen = wsTemplateFor(it, wsActiveKind) || { slug: '__review' };
   const row = {
