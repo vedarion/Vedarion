@@ -305,7 +305,7 @@
     .ws-ac-badge:hover{border-color:var(--faint)}
     .ws-ac-badge.correct{background:rgba(92,184,92,.15);border-color:rgba(92,184,92,.4);color:#5cb85c}
     .ws-ac-badge.wrong{background:rgba(217,83,79,.12);border-color:rgba(217,83,79,.3);color:#d9534f}
-    .ws-ac-inp{flex:1;padding:6px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .2s}
+    .ws-ac-inp{display:block;width:100%;padding:6px 10px;background:var(--input);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;resize:vertical;line-height:1.6;white-space:normal;overflow-wrap:break-word;word-break:break-word;min-height:34px;transition:border-color .2s}
     .ws-ac-inp:focus{border-color:var(--faint)}
     .ws-add-btn{width:100%;padding:12px;background:transparent;border:1.5px dashed rgba(201,122,69,.3);border-radius:10px;color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;margin-top:8px}
     .ws-add-btn:hover{border-color:var(--accent);background:rgba(201,122,69,.04)}
@@ -1396,7 +1396,7 @@ function wsQuestionTypeDrillHTML(v,name){
                   <span class="ws-ac-badge ${st==='correct'?'correct':st==='wrong'?'wrong':''}" data-qtac="${e.id}" data-letter="${L}" data-acmode="explain">${L}</span>
                   <span class="qt-ac-state">${st==='correct'?'My answer':st==='wrong'?'Eliminated':'Tap letter to mark'}</span>
                 </div>
-                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="why" value="${esc(a.why||'')}" placeholder="Why is this right or wrong?"></div>`;
+                <textarea class="ws-ac-inp" rows="1" data-qtacinp="${e.id}" data-letter="${L}" data-acf="why" placeholder="Why is this right or wrong?">${esc(a.why||'')}</textarea></div>`;
               }else{
                 const st=a.state||'';
                 const states=f.states==='sep'?['skip','elim','pick']:['keep','elim'];
@@ -1406,9 +1406,9 @@ function wsQuestionTypeDrillHTML(v,name){
                   <span class="qt-ac-state">${stLbl}</span>
                 </div>
                 <div class="qt-ac-q">${esc(f.q1)}</div>
-                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a1" value="${esc(a.a1||'')}" placeholder="...">
+                <textarea class="ws-ac-inp" rows="1" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a1" placeholder="...">${esc(a.a1||'')}</textarea>
                 <div class="qt-ac-q">${esc(f.q2)}</div>
-                <input class="ws-ac-inp" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a2" value="${esc(a.a2||'')}" placeholder="..." style="margin-top:4px"></div>`;
+                <textarea class="ws-ac-inp" rows="1" data-qtacinp="${e.id}" data-letter="${L}" data-acf="a2" placeholder="..." style="margin-top:4px">${esc(a.a2||'')}</textarea></div>`;
               }
             }).join('')}</div>`;
           }
@@ -2465,10 +2465,14 @@ function bind(){
     else next=cur===''?'keep':cur==='keep'?'elim':'';
     await saveQtAc(b.dataset.qtac,b.dataset.letter,{state:next});R();
   }));
-  document.querySelectorAll('[data-qtacinp]').forEach(inp=>inp.addEventListener('blur',()=>{
-    const patch={};patch[inp.dataset.acf]=inp.value;
-    saveQtAc(inp.dataset.qtacinp,inp.dataset.letter,patch);
-  }));
+  document.querySelectorAll('[data-qtacinp]').forEach(inp=>{
+    const grow=()=>{inp.style.height='auto';inp.style.height=inp.scrollHeight+'px';};
+    if(inp.tagName==='TEXTAREA'){grow();inp.addEventListener('input',grow);}
+    inp.addEventListener('blur',()=>{
+      const patch={};patch[inp.dataset.acf]=inp.value;
+      saveQtAc(inp.dataset.qtacinp,inp.dataset.letter,patch);
+    });
+  });
   document.querySelectorAll('[data-claiminp]').forEach(inp=>inp.addEventListener('blur',()=>saveClaimField(inp.dataset.claiminp,parseInt(inp.dataset.ci),inp.value)));
   document.querySelectorAll('[data-addclaim]').forEach(b=>b.addEventListener('click',()=>addClaimToEntry(b.dataset.addclaim)));
   document.querySelectorAll('[data-itafield]').forEach(el=>el.addEventListener('blur',()=>saveItaField(el.dataset.itafield,el.dataset.wsf,el.value)));
