@@ -62,6 +62,12 @@
   .tool:hover { border-color: var(--orange); color: var(--orange-dark); }
   .tool.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); }
   .tool.accent { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 600; }
+  .cheatfloat { position: fixed; width: 380px; max-height: 55vh; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.16); z-index: 90; display: none; flex-direction: column; overflow: hidden; }
+  .cheatfloat-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .cheatfloat-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .cheatfloat-close { background: none; border: none; cursor: pointer; font-size: 13px; color: var(--ink-faint); line-height: 1; padding: 2px 4px; }
+  .cheatfloat-close:hover { color: var(--ink); }
+  .cheatfloat-frame { width: 100%; height: 100%; border: none; flex: 1; min-height: 300px; }
   .tool.accent:hover { background: var(--orange-dark); color: #fff; }
   .hint { font-size: 11.5px; color: var(--ink-faint); }
   .swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer; padding: 0; }
@@ -992,6 +998,7 @@ function renderQuestion() {
   $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
 
   updateCheatButton(it);
+  syncCheatFloat();
   if (!inTake) buildChips();
   if (wsOpen) renderWorksheet();
 
@@ -1055,9 +1062,50 @@ function updateCheatButton(it) {
   }
 }
 
-$('cheatBtn').addEventListener('click', () => {
+let cheatOpen = false;
+let cheatFloatEl = null;
+
+function positionCheatFloat() {
+  if (!cheatFloatEl) return;
+  const r = $('cheatBtn').getBoundingClientRect();
+  cheatFloatEl.style.top = (r.bottom + 8) + 'px';
+  cheatFloatEl.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
+}
+
+function openCheatFloat() {
   const url = $('cheatBtn').dataset.url;
-  if (url) window.open(url, '_blank', 'noopener');
+  if (!url) return;
+  if (!cheatFloatEl) {
+    cheatFloatEl = document.createElement('div');
+    cheatFloatEl.className = 'cheatfloat';
+    cheatFloatEl.innerHTML = '<div class="cheatfloat-head"><span class="cheatfloat-title">Cheat sheet</span><button class="cheatfloat-close" type="button" aria-label="Close">✕</button></div><iframe class="cheatfloat-frame" title="Cheat sheet"></iframe>';
+    document.body.appendChild(cheatFloatEl);
+    cheatFloatEl.querySelector('.cheatfloat-close').addEventListener('click', closeCheatFloat);
+  }
+  const frame = cheatFloatEl.querySelector('.cheatfloat-frame');
+  if (frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+  positionCheatFloat();
+  cheatFloatEl.style.display = 'flex';
+  cheatOpen = true;
+}
+
+function closeCheatFloat() {
+  cheatOpen = false;
+  if (cheatFloatEl) cheatFloatEl.style.display = 'none';
+}
+
+function syncCheatFloat() {
+  if (!cheatOpen) return;
+  const url = $('cheatBtn').dataset.url;
+  if (!url) { closeCheatFloat(); return; }
+  const frame = cheatFloatEl && cheatFloatEl.querySelector('.cheatfloat-frame');
+  if (frame && frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+  positionCheatFloat();
+}
+
+$('cheatBtn').addEventListener('click', () => {
+  if (!$('cheatBtn').dataset.url) return;
+  cheatOpen ? closeCheatFloat() : openCheatFloat();
 });
 
 async function logAccess(it, type) {
