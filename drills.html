@@ -521,6 +521,8 @@ async function boot() {
       sel.appendChild(o);
     });
     sel.addEventListener('change', () => { setViewingStudent(sel.value); loadDrillList(); });
+    const wantStudent = new URLSearchParams(location.search).get('student');
+    if (wantStudent && [...sel.options].some(o => o.value === wantStudent)) sel.value = wantStudent;
     setViewingStudent(sel.value || null);
   } else {
     viewingStudentId = myStudentIds[0] || null;

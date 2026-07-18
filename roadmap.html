@@ -1059,6 +1059,7 @@ function dashHTML(){
         <div style="text-align:right">
           <div class="p-goal-lbl">Goal</div>
           <div class="p-goal">${t?ed(st.goal_score,'st:goal_score','false'):esc(st.goal_score||'—')}</div>
+          ${t&&st?`<a class="tc-btn" href="/admin-review.html?student=${esc(st.id)}" style="display:inline-flex;margin:10px 0 0">View analytics</a>`:''}
         </div>
       </div>
       <div class="stats">
@@ -1167,6 +1168,10 @@ function ldRow(d){
     const canEdit=d.status==='assigned'&&d.is_recipe;
     links=`${canEdit?`<a class="ld-link" data-ldedit="${esc(d.id)}">Edit</a>`:''}<a class="ld-link ld-del" data-lddel="${esc(d.id)}">Delete</a>`;
   }
+  const brLink=(d.status==='in_progress'||d.status==='completed')
+    ?`<a class="ld-link" href="/drills.html?student=${esc(S.selId)}&drill=${esc(d.id)}">Blind review →</a>`
+    :`<span class="ld-link" style="opacity:.35;cursor:default" title="Not started yet — nothing to review">Blind review →</span>`;
+  links=links+brLink;
   return`<div class="ld-row${dim?' ld-dim':''}">
     <div class="ld-info">
       <span class="ld-title">${esc(d.title||'Drill')}</span>
