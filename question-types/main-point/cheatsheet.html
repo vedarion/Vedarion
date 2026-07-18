@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Point Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .lesson-hero { background: #FAFAFA; padding: 40px 50px 20px; max-width: 800px; margin: 0 auto; }
+        .lesson-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; margin-bottom: 12px; }
+        .lesson-title { font-size: 28px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; letter-spacing: 1px; }
+        .lesson-subtitle { font-size: 15px; color: #888; line-height: 1.6; margin-bottom: 25px; }
+        .tab-nav { display: flex; gap: 0; border-bottom: 1px solid #E0E0E0; margin-bottom: 30px; }
+        .tab-link { padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; border-bottom: 2px solid #C65D3B; text-decoration: none; }
+        .tab-link-inactive { padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #888; border-bottom: 2px solid transparent; text-decoration: none; transition: color 0.3s; }
+        .tab-link-inactive:hover { color: #C65D3B; }
+        .lesson-content { max-width: 800px; margin: 0 auto; padding: 0 50px 40px; }
+        .prereq-toggle { background: white; border: 1px solid #E0E0E0; margin-bottom: 25px; transition: border-color 0.3s; }
+        .prereq-toggle:hover { border-color: #C65D3B; }
+        .prereq-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; }
+        .prereq-header-left { display: flex; align-items: center; gap: 10px; }
+        .prereq-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; }
+        .prereq-desc { font-size: 13px; color: #888; }
+        .prereq-chevron { transition: transform 0.3s; color: #CCC; }
+        .prereq-toggle.open .prereq-chevron { transform: rotate(180deg); }
+        .prereq-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .prereq-toggle.open .prereq-list { max-height: 300px; }
+        .prereq-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid #F0F0F0; text-decoration: none; transition: background 0.2s; }
+        .prereq-item:hover { background: #FAFAFA; }
+        .prereq-item-dot { width: 6px; height: 6px; border-radius: 50%; background: #C65D3B; flex-shrink: 0; }
+        .prereq-item-title { font-size: 13px; color: #0A0A0A; font-weight: 500; }
+        .cs-section { margin-bottom: 10px; }
+        .cs-section h2 { font-size: 18px; font-weight: 600; color: #0A0A0A; margin-bottom: 18px; }
+        .cs-section p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+        .cs-section strong { color: #0A0A0A; }
+        .divider { height: 1px; background: #E0E0E0; margin: 25px 0; }
+        .approach-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+        .approach-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FDF5F1; border: 1px solid #F0DDD3; color: #C65D3B; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .approach-title { font-size: 15px; font-weight: 600; color: #0A0A0A; margin-bottom: 3px; }
+        .approach-desc { font-size: 14px; color: #555; line-height: 1.6; }
+        .way-label { font-size: 15px; font-weight: 600; color: #0A0A0A; margin: 22px 0 4px; }
+        .way-label .way-num { color: #0A0A0A; }
+        .indicator-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; }
+        .chip { background: #F5F5F5; border: 1px solid #E5E5E5; color: #555; font-size: 13px; padding: 5px 12px; border-radius: 20px; }
+        .formula-box { background: #FDF5F1; border: 1px solid #F0DDD3; border-radius: 4px; padding: 14px 18px; font-size: 15px; color: #0A0A0A; margin: 12px 0 16px; }
+        .formula-box .ph { color: #C65D3B; font-weight: 600; }
+        .test-result { font-size: 14px; color: #555; line-height: 1.9; margin-bottom: 12px; }
+        .test-result .mark { font-weight: 600; }
+        .test-result .yes { color: #555; }
+        .test-result .flip { color: #888; }
+        .takeaway-box { background: #FDF5F1; border: 2px solid #C65D3B; border-radius: 4px; padding: 18px 20px; margin-top: 25px; }
+        .takeaway-box p { font-size: 14px; color: #555; line-height: 1.6; margin: 0 0 8px; }
+        .takeaway-box p:last-child { margin: 0; }
+        .takeaway-box strong { color: #C65D3B; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+            .lesson-hero { padding: 30px 20px 15px; }
+            .lesson-content { padding: 0 20px 30px; }
+            .lesson-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>›</span>
+        Main Point
+    </div>
+
+    <div class="lesson-hero">
+        <div class="prereq-toggle" onclick="this.classList.toggle('open')">
+            <div class="prereq-header">
+                <div class="prereq-header-left">
+                    <span class="prereq-label">Before you start</span>
+                    <span class="prereq-desc">Review Premises and Conclusions first</span>
+                </div>
+                <svg class="prereq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="prereq-list">
+                <a href="../../foundations/identifying-conclusions/lesson.html" class="prereq-item">
+                    <div class="prereq-item-dot"></div>
+                    <span class="prereq-item-title">Premises and Conclusions — Lesson</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="lesson-label" style="margin-top: 20px;">Main Point</div>
+        <h1 class="lesson-title">Cheat Sheet</h1>
+        <p class="lesson-subtitle">What is the author's main conclusion? Find it, put it in your own words, then match.</p>
+        <div class="tab-nav">
+            <a href="lesson.html" class="tab-link-inactive">Lesson</a>
+            <a href="cheatsheet.html" class="tab-link">Cheat Sheet</a>
+            <a href="worksheet.html" class="tab-link-inactive">Worksheet</a>
+        </div>
+    </div>
+
+    <div class="lesson-content">
+        <div class="cs-section">
+            <h2>How to Approach</h2>
+
+            <div class="approach-step">
+                <div class="approach-num">1</div>
+                <div>
+                    <div class="approach-title">Find the Main Point</div>
+                    <div class="approach-desc">Use one of the three ways below: conclusion indicators, process of elimination, or the Why Test.</div>
+                </div>
+            </div>
+
+            <div class="approach-step">
+                <div class="approach-num">2</div>
+                <div>
+                    <div class="approach-title">Note the Details</div>
+                    <div class="approach-desc">Can you put it in your own words without looking back? Say your noun, verb, and predicate clearly.</div>
+                </div>
+            </div>
+
+            <div class="approach-step">
+                <div class="approach-num">3</div>
+                <div>
+                    <div class="approach-title">Find the Best Match</div>
+                    <div class="approach-desc">Find the answer choice that best captures it.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="cs-section">
+            <h2>Three Ways to Find the Main Point</h2>
+
+            <div class="way-label"><span class="way-num">1 ·</span> Conclusion Indicators</div>
+            <p>If you spot one of these, the sentence it introduces is the conclusion.</p>
+            <div class="indicator-chips">
+                <span class="chip">Therefore</span>
+                <span class="chip">Thus</span>
+                <span class="chip">Hence</span>
+                <span class="chip">So</span>
+                <span class="chip">Consequently</span>
+                <span class="chip">It follows that</span>
+                <span class="chip">This shows that</span>
+                <span class="chip">This means that</span>
+                <span class="chip">We can conclude that</span>
+                <span class="chip">It can be properly inferred that</span>
+            </div>
+
+            <div class="way-label"><span class="way-num">2 ·</span> Process of Elimination</div>
+            <p>No conclusion indicator? Look for a premise indicator instead. Whatever it supports is the conclusion.</p>
+            <div class="indicator-chips">
+                <span class="chip">Because</span>
+                <span class="chip">Since</span>
+                <span class="chip">For</span>
+                <span class="chip">After all</span>
+                <span class="chip">Given that</span>
+                <span class="chip">Due to the fact that</span>
+                <span class="chip">This is supported by</span>
+                <span class="chip">The reason is that</span>
+                <span class="chip">As indicated by</span>
+                <span class="chip">This is evidenced by</span>
+            </div>
+
+            <div class="way-label"><span class="way-num">3 ·</span> The Why Test</div>
+            <p>When there are no indicator words, take two sentences and plug them into this template:</p>
+            <div class="formula-box">"Because <span class="ph">[Sentence A]</span>, therefore <span class="ph">[Sentence B]</span>."</div>
+            <div class="test-result">
+                <span class="mark yes">✓</span> If the logical flow makes sense &rarr; <strong>Sentence B is the conclusion.</strong><br>
+                <span class="mark flip">↻</span> If it doesn't make sense &rarr; flip them and try again.
+            </div>
+
+            <div class="takeaway-box">
+                <p><strong>The Why Test is the game-changer.</strong></p>
+                <p>It works even when there are zero indicator words. Practice it until it becomes automatic.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
