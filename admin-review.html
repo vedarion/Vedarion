@@ -46,8 +46,10 @@
   .drillhead { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; cursor: pointer; background: #fff; }
   .drillhead:hover { background: var(--cream-warm); }
   .drillhead .meta { font-size: 12px; color: var(--ink-soft); }
-  .drillhead .gohint { font-size: 12px; color: var(--ink-soft); opacity: 0; margin-left: 6px; transition: opacity 0.12s; }
-  .drillhead:hover .gohint { opacity: 1; color: var(--orange-dark); }
+  .drillactions { display: flex; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--line); background: #fff; }
+  .actbtn { font-size: 13px; padding: 6px 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; color: var(--ink-soft); }
+  .actbtn:hover { border-color: var(--orange); }
+  .actbtn.primaryact { color: var(--ink); font-weight: 600; }
   .score { font-weight: 600; }
   .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); margin-left: 8px; }
   .pill.completed { border-color: var(--green); color: var(--green); }
@@ -310,23 +312,26 @@ function renderDrills() {
     head.className = 'drillhead';
     head.innerHTML = `
       <div>
-        <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''} <span class="gohint">open review →</span></div>
+        <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''}</div>
         <div class="meta">${d.created_by === 'student' ? 'Self-created' : 'Assigned'} · ${when}${flags ? ` · <span style="color:var(--orange-dark)">${flags} flagged ⚑</span>` : ''}</div>
       </div>
       <div style="display:flex; align-items:center;">
         <span class="score">${graded.length ? `${correct}/${graded.length}` : '—'}</span>
         <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>
-        <button class="viewbtn quickbtn" style="margin-left:10px;">Quick view ▾</button>
       </div>`;
+    const actions = document.createElement('div');
+    actions.className = 'drillactions';
+    actions.innerHTML = `
+      <button class="actbtn primaryact reviewbtn">Full Drill Review</button>
+      <button class="actbtn quickbtn">Quick view ▾</button>`;
     const body = document.createElement('div');
     body.className = 'qtable hidden';
-    // Clicking the drill opens the full drill review (questions, picks, worksheets) in drills.html
-    head.addEventListener('click', () => {
+    const openReview = () => {
       window.open(`drills.html?student=${encodeURIComponent(currentStudentId)}&drill=${encodeURIComponent(d.id)}`, '_blank');
-    });
-    // Quick view toggles the inline stats table without leaving the page
-    head.querySelector('.quickbtn').addEventListener('click', e => {
-      e.stopPropagation();
+    };
+    head.addEventListener('click', openReview);
+    actions.querySelector('.reviewbtn').addEventListener('click', openReview);
+    actions.querySelector('.quickbtn').addEventListener('click', e => {
       if (body.classList.contains('hidden')) {
         body.classList.remove('hidden');
         fillQuestions(d, body);
@@ -336,7 +341,7 @@ function renderDrills() {
         e.target.textContent = 'Quick view ▾';
       }
     });
-    wrap.appendChild(head); wrap.appendChild(body);
+    wrap.appendChild(head); wrap.appendChild(actions); wrap.appendChild(body);
     box.appendChild(wrap);
   });
 }
