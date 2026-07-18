@@ -126,9 +126,8 @@
   .wschecks label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 400; margin: 2px 0; cursor: pointer; }
   .wschecks input { accent-color: var(--orange); }
   .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
-  .wsinstr { display: flex; gap: 8px; align-items: center; padding: 8px 10px; background: var(--cream-warm); border: 1px solid var(--orange-line); border-radius: 7px; margin-bottom: 10px; font-size: 12px; line-height: 1.5; color: var(--ink-soft); }
-  .wsinstr-done { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--orange-dark); cursor: pointer; flex-shrink: 0; white-space: nowrap; }
-  .wsinstr-done input { accent-color: var(--orange); cursor: pointer; }
+  .wsdone-row { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 8px 9px; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; cursor: pointer; }
+  .wsdone-row input { width: 16px; height: 16px; accent-color: var(--orange); flex-shrink: 0; cursor: pointer; }
   .wslegacy { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 8px; }
   .wslegacy-hd { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .5px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
   .wslegacy-row { font-size: 11px; color: var(--ink-faint); line-height: 1.6; margin-bottom: 3px; }
@@ -437,7 +436,7 @@ const WS_TEMPLATES = {
   ]},
   'argument-part': { title: 'Argument Part worksheet', fields: [
     { label: 'Question source', kind: 'text', auto: 'identity', key: 'f0' },
-    { label: 'Step 1 — Highlight the referenced sentence in the stimulus, then check Done.', kind: 'note', key: 'step1_done' },
+    { label: 'Step 1 — Highlight the referenced sentence in the stimulus', kind: 'note', key: 'step1_done', done: 'Done — I highlighted it' },
     { label: 'Step 2 — Read the stimulus. For each sentence, describe its role: conclusion, support, or background. Start there, add more detail if needed.', kind: 'textarea', key: 'roles', h: 96 },
     { label: 'Step 3 — Describe the role of the referenced sentence: premise, conclusion, or background. Add more detail if necessary.', kind: 'textarea', key: 'f4', h: 64 },
     { label: 'Step 4 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea', key: 'f5', h: 130 }
@@ -1302,15 +1301,13 @@ function renderWorksheet() {
   box.innerHTML = '';
   chosen.tpl.fields.forEach((f, idx) => {
     if (f.kind === 'note') {
-      const note = document.createElement('div');
-      note.className = 'wsinstr';
-      const txt = document.createElement('span');
-      txt.textContent = f.label;
-      txt.style.flex = '1';
-      note.appendChild(txt);
+      const lab = document.createElement('p');
+      lab.className = 'wsfield-label';
+      lab.textContent = f.label;
+      box.appendChild(lab);
       if (f.key) {
         const l = document.createElement('label');
-        l.className = 'wsinstr-done';
+        l.className = 'wsdone-row';
         const cb = document.createElement('input');
         cb.type = 'checkbox';
         cb.checked = data[f.key] === true;
@@ -1318,10 +1315,9 @@ function renderWorksheet() {
         cb.dataset.donekey = f.key;
         cb.addEventListener('change', () => scheduleWsSave());
         l.appendChild(cb);
-        l.appendChild(document.createTextNode('Done'));
-        note.appendChild(l);
+        l.appendChild(document.createTextNode(f.done || 'Done'));
+        box.appendChild(l);
       }
-      box.appendChild(note);
       return;
     }
     const lab = document.createElement('p');
