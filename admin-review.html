@@ -64,6 +64,7 @@
   .viewbtn:hover { border-color: var(--orange); }
   /* question viewer modal */
   #overlay { position: fixed; inset: 0; background: rgba(30,25,20,0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 20; }
+  #overlay.hidden { display: none; } /* FIX: ID selector was beating .hidden, so the empty modal covered the page on load */
   #qview { background: #fff; border-radius: 12px; max-width: 700px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 24px; }
   #qview .qmeta { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
   #qview .stim { font-size: 15px; line-height: 1.8; background: var(--cream); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
@@ -184,6 +185,18 @@ async function loadStudents() {
     sel.appendChild(o);
   });
   sel.addEventListener('change', () => { if (sel.value) loadStudent(sel.value); });
+
+  // Deep link: admin-review.html?student=<students.id> auto-selects and loads that student
+  const preselect = new URLSearchParams(window.location.search).get('student');
+  if (preselect) {
+    sel.value = preselect;
+    if (sel.value === preselect) {
+      loadStudent(preselect);
+    } else {
+      sel.value = '';
+      $('loadState').textContent = 'Student not found — pick one from the list.';
+    }
+  }
 }
 
 async function loadStudent(studentId) {
