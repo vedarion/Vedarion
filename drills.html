@@ -264,7 +264,7 @@
         </div>
         <div id="optsEl"></div>
         <div class="feedback" id="feedback"></div>
-        <p class="hint hidden" id="reviewHint">Answers stay hidden while you review — your picks and marks are shown exactly as you left them.</p>
+        <p class="hint hidden" id="reviewHint">Answers stay hidden while you review. Tap a choice to record a review pick — your timed answer is kept too, and both are compared when you show results.</p>
       </div>
 
       <div class="wspanel hidden" id="wsPanel">
@@ -729,7 +729,7 @@ async function openDrill(drill) {
 
   responses = {};
   const { data: resp } = await db.from('drill_responses')
-    .select('item_id, module_id, selected_answer, is_correct, flagged, annotations')
+    .select('item_id, module_id, selected_answer, review_answer, is_correct, flagged, annotations')
     .eq('drill_id', drill.id);
   (resp || []).forEach(r => { responses[r.item_id] = r; });
 
@@ -882,7 +882,10 @@ function buildChips() {
     if (i === qi) chip.classList.add('now');
     if (playMode === 'results-q' && resultsByItem) {
       const res = resultsByItem[d.item_id];
-      if (res) chip.classList.add(res.is_correct ? 'right' : 'wrong');
+      if (res) {
+        const ok = res.review_answer ? res.review_is_correct : res.is_correct;
+        chip.classList.add(ok ? 'right' : 'wrong');
+      }
     }
     chip.addEventListener('click', () => { saveWsNow(); qi = i; renderQuestion(); });
     box.appendChild(chip);
@@ -909,6 +912,7 @@ function renderQuestion() {
   const box = $('optsEl');
   box.innerHTML = '';
   const res = resultsByItem ? resultsByItem[it.item_id] : null;
+  const canReviewPick = playMode === 'review' && !readOnly && !currentDrill.results_shown && !!prior;
   opts.forEach(o => {
     const row = document.createElement('div');
     row.className = 'optrow';
@@ -916,7 +920,13 @@ function renderQuestion() {
     btn.className = 'optbtn';
     btn.dataset.letter = o.letter;
     let endTag = '';
-    if (!inTake && prior?.selected_answer === o.letter) endTag = '<span class="tagend">your pick</span>';
+    if (!inTake && prior) {
+      const rv = prior.review_answer;
+      const tags = [];
+      if (prior.selected_answer === o.letter) tags.push(rv && rv !== prior.selected_answer ? 'timed pick' : (rv ? 'timed + review pick' : 'your pick'));
+      if (rv && rv !== prior.selected_answer && rv === o.letter) tags.push('review pick');
+      if (tags.length) endTag = `<span class="tagend">${tags.join(' · ')}</span>`;
+    }
     btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span>${o.text}</span>${endTag}`;
     if (inTake && !readOnly) {
       btn.addEventListener('click', () => {
@@ -925,6 +935,8 @@ function renderQuestion() {
         [...box.querySelectorAll('.optbtn')].forEach(b => b.classList.remove('picked'));
         btn.classList.add('picked');
       });
+    } else if (canReviewPick) {
+      btn.addEventListener('click', () => setReviewAnswer(it, o.letter));
     } else {
       btn.classList.add('readonly');
     }
@@ -955,17 +967,20 @@ function renderQuestion() {
       if (eb) eb.classList.add('on');
     });
     if (prior.selected_answer) {
-      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(prior.selected_answer)}"]`);
+      const effective = prior.review_answer || prior.selected_answer;
+      const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(effective)}"]`);
       if (b && !res) b.classList.add('picked');
     }
     flagged = !!prior.flagged;
   }
 
   if (res) {
-    const pickedBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(res.selected || '')}"]`);
+    const finalPick = res.review_answer || res.selected;
+    const finalCorrect = res.review_answer ? res.review_is_correct : res.is_correct;
+    const finalBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(finalPick || '')}"]`);
     const corrBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(res.correct_answer || '')}"]`);
-    if (res.is_correct) { pickedBtn?.classList.add('correct'); }
-    else { pickedBtn?.classList.add('wrong'); corrBtn?.classList.add('correct'); }
+    if (finalCorrect) { finalBtn?.classList.add('correct'); }
+    else { finalBtn?.classList.add('wrong'); corrBtn?.classList.add('correct'); }
   }
 
   $('flagBtn').classList.toggle('on', flagged);
@@ -984,6 +999,26 @@ function renderQuestion() {
   } else if (!readOnly) {
     logAccess(it, 'item_reviewed');
   }
+}
+
+async function setReviewAnswer(it, letter) {
+  const prior = responses[it.item_id];
+  if (!prior) return;
+  const send = (prior.review_answer === letter) ? null : letter;
+  const { data, error } = await db.rpc('vd_set_review_answer', {
+    p_drill_id: currentDrill.id,
+    p_module_id: it.module_id,
+    p_item_id: it.item_id,
+    p_review_answer: send
+  });
+  if (error) { $('feedback').textContent = error.message; $('feedback').className = 'feedback bad'; return; }
+  if (data?.error) { $('feedback').textContent = data.error; $('feedback').className = 'feedback bad'; return; }
+  prior.review_answer = send;
+  $('feedback').textContent = send
+    ? (send === prior.selected_answer ? 'Review pick: kept ' + send + '.' : 'Review pick saved: ' + send + '.')
+    : 'Review pick cleared — your timed answer stands.';
+  $('feedback').className = 'feedback good';
+  renderQuestion();
 }
 
 function reviewFooterText() {
@@ -1334,8 +1369,10 @@ async function ensureResults() {
         const ca = ansBy[itemKey(d)] ?? null;
         resultsByItem[d.item_id] = {
           selected: r.selected_answer,
+          review_answer: r.review_answer || null,
           correct_answer: ca,
-          is_correct: r.is_correct != null ? r.is_correct : (ca != null ? r.selected_answer === ca : null)
+          is_correct: r.is_correct != null ? r.is_correct : (ca != null ? r.selected_answer === ca : null),
+          review_is_correct: (r.review_answer && ca != null) ? r.review_answer === ca : null
         };
       });
       return true;
@@ -1345,7 +1382,11 @@ async function ensureResults() {
   if (error) { alert(error.message); resultsByItem = null; return false; }
   if (data?.error) { alert(data.error); resultsByItem = null; return false; }
   (data?.results || []).forEach(r => {
-    resultsByItem[r.item_id] = { selected: r.selected, correct_answer: r.correct_answer, is_correct: r.is_correct };
+    resultsByItem[r.item_id] = {
+      selected: r.selected, review_answer: r.review_answer || null,
+      correct_answer: r.correct_answer, is_correct: r.is_correct,
+      review_is_correct: r.review_is_correct
+    };
   });
   return true;
 }
@@ -1362,9 +1403,17 @@ function showResults() {
 
   const answered = drillItems.filter(d => responses[d.item_id]);
   const flaggedCount = answered.filter(d => responses[d.item_id].flagged).length;
-  const correct = drillItems.filter(d => resultsByItem?.[d.item_id]?.is_correct === true).length;
+  const timedCorrect = drillItems.filter(d => resultsByItem?.[d.item_id]?.is_correct === true).length;
+  const finalCorrect = drillItems.filter(d => {
+    const r = resultsByItem?.[d.item_id];
+    if (!r) return false;
+    return r.review_answer ? r.review_is_correct === true : r.is_correct === true;
+  }).length;
+  const anyReview = drillItems.some(d => resultsByItem?.[d.item_id]?.review_answer);
   $('resultTitle').textContent = 'Results — ' + currentDrill.title;
-  $('resultSummary').textContent = `${correct} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
+  $('resultSummary').textContent = anyReview
+    ? `Timed: ${timedCorrect} of ${drillItems.length} · After review: ${finalCorrect} of ${drillItems.length} · ${flaggedCount} flagged for session`
+    : `${timedCorrect} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
 
   const rows = $('resultRows');
   rows.innerHTML = '';
@@ -1374,11 +1423,17 @@ function showResults() {
     const row = document.createElement('div');
     row.className = 'resultrow';
     const wsDone = hasContent(wsEntries[d.item_id + '|type']) || hasContent(wsEntries[d.item_id + '|review']);
-    const verdict = res
-      ? (res.is_correct
-          ? '<span class="verdict-good">✓ correct</span>'
-          : `<span class="verdict-bad">✕ ${escapeHtml(res.selected || '—')} → ${escapeHtml(res.correct_answer || '?')}</span>`)
-      : '<span>—</span>';
+    let verdict = '<span>—</span>';
+    if (res) {
+      const changed = res.review_answer && res.review_answer !== res.selected;
+      const finalOk = res.review_answer ? res.review_is_correct : res.is_correct;
+      const pickPath = changed
+        ? `${escapeHtml(res.selected || '—')} → ${escapeHtml(res.review_answer)}`
+        : escapeHtml(res.selected || '—');
+      verdict = finalOk
+        ? `<span class="verdict-good">✓ ${pickPath}</span>`
+        : `<span class="verdict-bad">✕ ${pickPath} (correct: ${escapeHtml(res.correct_answer || '?')})</span>`;
+    }
     row.innerHTML = `
       <div>
         <div class="rid">Q${i + 1} · ${escapeHtml(itemIdentity(d))}${r?.flagged ? ' <span style="color:var(--orange);">⚑</span>' : ''}</div>
