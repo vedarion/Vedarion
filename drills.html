@@ -311,7 +311,7 @@ const $ = id => document.getElementById(id);
 
 /* ---------- QUESTION TYPE PAGES ---------- */
 const TYPE_META = {
-  'Main Point':              { slug: 'main-point',               ws: true },
+  'Main Point':              { slug: 'main-point',               ws: true, cheat: '/question-types/main-point/cheatsheet.html' },
   'Argument Part':           { slug: 'argument-part',            ws: true },
   'Flaw':                    { slug: 'flaw',                     ws: true },
   'Strengthen':              { slug: 'strengthen-weaken',        ws: true },
@@ -1044,7 +1044,7 @@ function updateCheatButton(it) {
   const meta = typeName ? TYPE_META[typeName] : null;
   const btn = $('cheatBtn');
   if (meta) {
-    btn.dataset.url = '/question-types/' + meta.slug + '/flowchart.html';
+    btn.dataset.url = meta.cheat || ('/question-types/' + meta.slug + '/flowchart.html');
     btn.textContent = 'Cheat sheet';
     btn.disabled = false;
     btn.title = typeName + ' cheat sheet';
