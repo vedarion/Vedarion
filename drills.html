@@ -62,12 +62,6 @@
   .tool:hover { border-color: var(--orange); color: var(--orange-dark); }
   .tool.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); }
   .tool.accent { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 600; }
-  .cheatfloat { position: fixed; width: 380px; max-height: 55vh; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.16); z-index: 90; display: none; flex-direction: column; overflow: hidden; }
-  .cheatfloat-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
-  .cheatfloat-title { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
-  .cheatfloat-close { background: none; border: none; cursor: pointer; font-size: 13px; color: var(--ink-faint); line-height: 1; padding: 2px 4px; }
-  .cheatfloat-close:hover { color: var(--ink); }
-  .cheatfloat-frame { width: 100%; height: 100%; border: none; flex: 1; min-height: 300px; }
   .tool.accent:hover { background: var(--orange-dark); color: #fff; }
   .hint { font-size: 11.5px; color: var(--ink-faint); }
   .swatch { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--line); cursor: pointer; padding: 0; }
@@ -132,6 +126,13 @@
   .wschecks label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 400; margin: 2px 0; cursor: pointer; }
   .wschecks input { accent-color: var(--orange); }
   .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
+
+  .cheatstep { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid #F0EBE4; font-size: 12.5px; line-height: 1.55; }
+  .cheatstep.last { border-bottom: none; }
+  .cheatnum { width: 20px; height: 20px; border-radius: 50%; background: var(--cream-warm); border: 1px solid var(--orange-line); color: var(--orange-dark); font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cheatfoot { margin-top: 12px; padding-top: 10px; border-top: 1px solid #F0EBE4; font-size: 11.5px; }
+  .cheatfoot a { color: var(--orange-dark); text-decoration: none; font-weight: 600; }
+  .cheatfoot a:hover { text-decoration: underline; }
 
   .playbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .timer { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -334,6 +335,90 @@ const TYPE_META = {
   'Evaluate':                { slug: 'evaluate',                 ws: false }
 };
 
+/* ---------- CHEAT SHEET STEPS (rendered natively in the side panel) ----------
+   Keyed by TYPE_META slug. Mirrors the steps arrays in roadmap.html QT_DRILLS —
+   if a step is reworded there, reword it here too. Types with no entry get no
+   cheat sheet button. */
+const CHEAT_STEPS = {
+'main-point': [
+'Read the stimulus and find the conclusion — use a conclusion indicator, process of elimination, or the Why Test',
+'Without looking back, restate the main point in your own words — noun, verb, predicate',
+'Go to the answer choices and hunt for your prediction',
+'For each answer choice, say why it is right or wrong',
+'Check the winner: descriptively accurate — every word reflects the stimulus'
+],
+'argument-part': [
+'Read the question stem first — identify and highlight the referenced sentence',
+'Read the stimulus and label each sentence: conclusion, support, or background',
+'Describe the referenced sentence\u2019s job BEFORE looking at the answer choices',
+'Hunt for the answer that matches your prediction',
+'Check: does every word accurately capture the role of that sentence?'
+],
+'method-of-reasoning': [
+'Identify the stem — "the argument proceeds by..." asks HOW the author argues',
+'Read the stimulus and label the premises and the conclusion',
+'Describe how the premises support the conclusion — what is the author doing?',
+'Predict the move in your own words before the answer choices',
+'Check each answer word by word: does every word accurately describe the reasoning?'
+],
+'must-be-true': [
+'Identify the stem — everything in the stimulus is fact; don\u2019t look for gaps',
+'Simplify each sentence in your own words as you read',
+'Connect each new sentence to what came before — do the facts combine?',
+'Ask: is there an overall inference? A \u2192 B and B \u2192 C gives A \u2192 C',
+'Check: every word of the correct answer must be 100% proven by the stimulus'
+],
+'most-strongly-supported': [
+'Identify the stem — the bar is lower than Must Be True: strongly supported, not proven',
+'Simplify each sentence and connect the dots as you read',
+'For each answer, ask: could I make a reasonable case this is supported?',
+'If you don\u2019t love an answer, don\u2019t eliminate it — keep it and compare',
+'Pick the answer with the strongest support and the smallest assumption'
+],
+'sufficient-assumption': [
+'Identify the stem — you\u2019re looking for the answer that makes the conclusion 100% follow',
+'Identify the premise(s) and conclusion — write the core argument',
+'Identify the gap and express it as Premise \u2192 Conclusion',
+'Hunt Mode first: scan for your predicted bridge — P \u2192 C or /C \u2192 /P',
+'If hunting fails, Process of Elimination: Premise + Answer = Conclusion?',
+'Verify: Answer Choice + Premise = Conclusion, 100%'
+],
+'necessary-assumption': [
+'Identify the stem — "requires," "depends on," "assumes"',
+'Read the stimulus — identify the premise(s) and conclusion',
+'Write the core argument: simplified Premise \u2192 Conclusion',
+'Identify the gap — what is the author taking for granted?',
+'Lead with the Must Be True test: if the argument works, this answer has to be true',
+'Fallback: Negation Test — if this answer were false, the argument falls apart'
+],
+'strengthen-weaken': [
+'Read the stem — are you strengthening or weakening?',
+'Break down the stimulus — find the conclusion and the support',
+'Write the core argument: Premise \u2192 Conclusion',
+'Predict: why does the support fall short of the conclusion?',
+'Relevance Test: does the answer connect to the argument? Low bar — keep it',
+'Impact Test: Premise + Answer = what happens to the conclusion?',
+'Pick the answer with the clearest impact and fewest language issues'
+],
+'flaw': [
+'Identify the stem — "the argument is vulnerable to criticism because..."',
+'Identify the premise(s) and conclusion — write the core argument',
+'Predict the flaw and name it in your own words BEFORE the answer choices',
+'Check each answer: is it descriptively accurate? Noun, verb, predicate',
+'If it\u2019s accurate, ask: is it actually the flaw in THIS argument?'
+],
+'parallel-reasoning': [
+'Identify from the stem: Parallel Reasoning or Parallel Flaw',
+'Find the conclusion first, then all the premises',
+'Ask: what would YOU conclude from these premises?',
+'Write the abstract structure — do not skip this step',
+'Pick markers from your structure and shallow dip each answer',
+'No markers in an answer? Move on — don\u2019t fully eliminate yet',
+'Read close matches in small pieces — predict what it needs to say next',
+'Pick and go — don\u2019t second-guess'
+]
+};
+
 /* ---------- WORKSHEET TEMPLATES (fields mirror /question-types worksheets) ---------- */
 const WS_TEMPLATES = {
   'main-point': { title: 'Main Point worksheet', fields: [
@@ -453,6 +538,7 @@ let wsEntries = {};
 let wsActiveKind = 'type';
 let wsSaveTimer = null;
 let wsOpen = false;
+let panelMode = 'ws';
 
 /* ---------- COPY PROTECTION ---------- */
 ['copy','cut'].forEach(ev => document.addEventListener(ev, e => {
@@ -998,9 +1084,8 @@ function renderQuestion() {
   $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
 
   updateCheatButton(it);
-  syncCheatFloat();
   if (!inTake) buildChips();
-  if (wsOpen) renderWorksheet();
+  if (wsOpen) { if (panelMode === 'cheat') renderCheat(); else renderWorksheet(); }
 
   if (inTake) {
     itemShownAt = Date.now();
@@ -1049,8 +1134,9 @@ function hasContent(entry) {
 function updateCheatButton(it) {
   const typeName = itemTypeName(it);
   const meta = typeName ? TYPE_META[typeName] : null;
+  const hasSteps = !!(meta && CHEAT_STEPS[meta.slug]);
   const btn = $('cheatBtn');
-  if (meta) {
+  if (hasSteps) {
     btn.dataset.url = meta.cheat || ('/question-types/' + meta.slug + '/flowchart.html');
     btn.textContent = 'Cheat sheet';
     btn.disabled = false;
@@ -1062,50 +1148,9 @@ function updateCheatButton(it) {
   }
 }
 
-let cheatOpen = false;
-let cheatFloatEl = null;
-
-function positionCheatFloat() {
-  if (!cheatFloatEl) return;
-  const r = $('cheatBtn').getBoundingClientRect();
-  cheatFloatEl.style.top = (r.bottom + 8) + 'px';
-  cheatFloatEl.style.right = Math.max(8, window.innerWidth - r.right) + 'px';
-}
-
-function openCheatFloat() {
-  const url = $('cheatBtn').dataset.url;
-  if (!url) return;
-  if (!cheatFloatEl) {
-    cheatFloatEl = document.createElement('div');
-    cheatFloatEl.className = 'cheatfloat';
-    cheatFloatEl.innerHTML = '<div class="cheatfloat-head"><span class="cheatfloat-title">Cheat sheet</span><button class="cheatfloat-close" type="button" aria-label="Close">✕</button></div><iframe class="cheatfloat-frame" title="Cheat sheet"></iframe>';
-    document.body.appendChild(cheatFloatEl);
-    cheatFloatEl.querySelector('.cheatfloat-close').addEventListener('click', closeCheatFloat);
-  }
-  const frame = cheatFloatEl.querySelector('.cheatfloat-frame');
-  if (frame.getAttribute('src') !== url) frame.setAttribute('src', url);
-  positionCheatFloat();
-  cheatFloatEl.style.display = 'flex';
-  cheatOpen = true;
-}
-
-function closeCheatFloat() {
-  cheatOpen = false;
-  if (cheatFloatEl) cheatFloatEl.style.display = 'none';
-}
-
-function syncCheatFloat() {
-  if (!cheatOpen) return;
-  const url = $('cheatBtn').dataset.url;
-  if (!url) { closeCheatFloat(); return; }
-  const frame = cheatFloatEl && cheatFloatEl.querySelector('.cheatfloat-frame');
-  if (frame && frame.getAttribute('src') !== url) frame.setAttribute('src', url);
-  positionCheatFloat();
-}
-
 $('cheatBtn').addEventListener('click', () => {
-  if (!$('cheatBtn').dataset.url) return;
-  cheatOpen ? closeCheatFloat() : openCheatFloat();
+  if (wsOpen && panelMode === 'cheat') { closeWorksheet(); return; }
+  openCheat();
 });
 
 async function logAccess(it, type) {
@@ -1118,24 +1163,91 @@ async function logAccess(it, type) {
   } catch (e) {}
 }
 
-/* ---------- WORKSHEET PANEL ---------- */
-$('wsToggleBtn').addEventListener('click', () => { wsOpen ? closeWorksheet() : openWorksheet(); });
+/* ---------- SIDE PANEL: WORKSHEET + CHEAT SHEET ----------
+   One panel, two modes. panelMode 'ws' shows the worksheet (tabs, fields,
+   autosave). panelMode 'cheat' shows the current question type's steps,
+   rendered natively — no iframe, no autosave. The two toolbar buttons swap
+   modes; clicking the active one closes the panel. */
+$('wsToggleBtn').addEventListener('click', () => {
+  if (wsOpen && panelMode === 'ws') { closeWorksheet(); return; }
+  openWorksheet();
+});
 $('wsCloseBtn').addEventListener('click', closeWorksheet);
+
+function syncPanelButtons() {
+  $('wsToggleBtn').classList.toggle('on', wsOpen && panelMode === 'ws');
+  $('cheatBtn').classList.toggle('on', wsOpen && panelMode === 'cheat');
+}
 
 function openWorksheet() {
   wsOpen = true;
+  panelMode = 'ws';
   $('wsPanel').classList.remove('hidden');
   $('playGrid').classList.add('split');
-  $('wsToggleBtn').classList.add('on');
+  syncPanelButtons();
   renderWorksheet();
 }
 
+function openCheat() {
+  if (!$('cheatBtn').dataset.url) return;
+  if (wsOpen && panelMode === 'ws') saveWsNow();
+  wsOpen = true;
+  panelMode = 'cheat';
+  $('wsPanel').classList.remove('hidden');
+  $('playGrid').classList.add('split');
+  syncPanelButtons();
+  renderCheat();
+}
+
 function closeWorksheet() {
-  saveWsNow();
+  if (panelMode === 'ws') saveWsNow();
   wsOpen = false;
   $('wsPanel').classList.add('hidden');
   $('playGrid').classList.remove('split');
-  $('wsToggleBtn').classList.remove('on');
+  syncPanelButtons();
+}
+
+function cheatStepsFor(it) {
+  const typeName = itemTypeName(it);
+  const meta = typeName ? TYPE_META[typeName] : null;
+  if (!meta || !CHEAT_STEPS[meta.slug]) return null;
+  return { typeName, steps: CHEAT_STEPS[meta.slug] };
+}
+
+function renderCheat() {
+  const it = drillItems[qi];
+  const cs = cheatStepsFor(it);
+  if (!cs) { panelMode = 'ws'; syncPanelButtons(); renderWorksheet(); return; }
+  $('wsTitle').textContent = cs.typeName + ' cheat sheet';
+  $('wsTabs').innerHTML = '';
+  $('wsNote').textContent = 'The steps — run these every single time';
+  const box = $('wsFields');
+  box.innerHTML = '';
+  cs.steps.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'cheatstep' + (i === cs.steps.length - 1 ? ' last' : '');
+    const num = document.createElement('span');
+    num.className = 'cheatnum';
+    num.textContent = i + 1;
+    const txt = document.createElement('span');
+    txt.textContent = s;
+    row.appendChild(num);
+    row.appendChild(txt);
+    box.appendChild(row);
+  });
+  const url = $('cheatBtn').dataset.url;
+  if (url) {
+    const foot = document.createElement('div');
+    foot.className = 'cheatfoot';
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = 'Full page ↗';
+    foot.appendChild(a);
+    box.appendChild(foot);
+  }
+  $('wsStatus').textContent = '';
 }
 
 function wsTemplateFor(it, kind) {
@@ -1239,7 +1351,7 @@ function scheduleWsSave() {
 
 async function saveWsNow() {
   clearTimeout(wsSaveTimer);
-  if (readOnly || !wsOpen || !currentDrill) return;
+  if (readOnly || !wsOpen || !currentDrill || panelMode !== 'ws') return;
   const it = drillItems[qi];
   if (!it) return;
   const data = collectWsData();
