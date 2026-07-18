@@ -866,7 +866,7 @@ async function loadStudent(id){
   S.studentDrills=allDrills||[];
   S.drillsById={};
   for(const dr of(allDrills||[]))S.drillsById[dr.id]={status:dr.status,question_count:dr.question_count};
-  S.assignedDrills=(allDrills||[]).filter(dr=>dr.created_by==='tutor'&&(dr.status==='assigned'||dr.status==='in_progress'));
+  S.assignedDrills=(allDrills||[]).filter(dr=>dr.created_by==='tutor').slice(0,5);
 }
 
 async function addStudent(){
@@ -1102,15 +1102,17 @@ function dashHTML(){
 function assignedDrillsHTML(){
   const ds=S.assignedDrills||[];
   if(!ds.length)return'';
+  const waiting=ds.filter(d=>d.status==='assigned'||d.status==='in_progress').length;
   return`<div class="ad-strip">
-    <div class="ad-head">Assigned by your tutor · ${ds.length} waiting</div>
+    <div class="ad-head">Assigned by your tutor${waiting>0?' · '+waiting+' waiting':''}</div>
     ${ds.map(d=>{
       const timing=d.is_timed?('timed '+fmtClock(d.time_limit_seconds)+' total'):'untimed';
-      const btn=d.status==='in_progress'?'Resume →':'Start →';
+      const btn=d.status==='completed'?'Review →':d.status==='in_progress'?'Resume →':'Start →';
+      const doneNote=d.status==='completed'?' · <span style="color:var(--green)">done ✓</span>':'';
       return`<div class="ad-row">
         <div>
           <div class="ad-title">${esc(d.title||'Drill')}</div>
-          <div class="ad-meta">${d.question_count||0} questions · ${timing}</div>
+          <div class="ad-meta">${d.question_count||0} questions · ${timing}${doneNote}</div>
         </div>
         <a class="ws-open-btn" href="/drills.html?drill=${esc(d.id)}" style="text-decoration:none;display:inline-block;flex-shrink:0">${btn}</a>
       </div>`;
