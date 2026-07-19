@@ -342,17 +342,17 @@ const $ = id => document.getElementById(id);
 /* ---------- QUESTION TYPE PAGES ---------- */
 const TYPE_META = {
   'Main Point':              { slug: 'main-point',               ws: true, cheat: '/question-types/main-point/cheatsheet.html' },
-  'Argument Part':           { slug: 'argument-part',            ws: true },
-  'Flaw':                    { slug: 'flaw',                     ws: true },
-  'Strengthen':              { slug: 'strengthen-weaken',        ws: true },
-  'Weaken':                  { slug: 'strengthen-weaken',        ws: true },
-  'Necessary Assumption':    { slug: 'necessary-assumption',     ws: true },
-  'Sufficient Assumption':   { slug: 'sufficient-assumption',    ws: true },
-  'Must Be True':            { slug: 'must-be-true',             ws: true },
-  'Most Strongly Supported': { slug: 'most-strongly-supported',  ws: true },
-  'Parallel Reasoning':      { slug: 'parallel-reasoning',       ws: true },
-  'Parallel Flaw':           { slug: 'parallel-reasoning',       ws: true },
-  'Method of Reasoning':     { slug: 'method-of-reasoning',      ws: false },
+  'Argument Part':           { slug: 'argument-part',            ws: true, cheat: '/question-types/argument-part/cheatsheet.html' },
+  'Flaw':                    { slug: 'flaw',                     ws: true, cheat: '/question-types/flaw/cheatsheet.html' },
+  'Strengthen':              { slug: 'strengthen-weaken',        ws: true, cheat: '/question-types/strengthen-weaken/cheatsheet.html' },
+  'Weaken':                  { slug: 'strengthen-weaken',        ws: true, cheat: '/question-types/strengthen-weaken/cheatsheet.html' },
+  'Necessary Assumption':    { slug: 'necessary-assumption',     ws: true, cheat: '/question-types/necessary-assumption/cheatsheet.html' },
+  'Sufficient Assumption':   { slug: 'sufficient-assumption',    ws: true, cheat: '/question-types/sufficient-assumption/cheatsheet.html' },
+  'Must Be True':            { slug: 'must-be-true',             ws: true, cheat: '/question-types/must-be-true/cheatsheet.html' },
+  'Most Strongly Supported': { slug: 'most-strongly-supported',  ws: true, cheat: '/question-types/most-strongly-supported/cheatsheet.html' },
+  'Parallel Reasoning':      { slug: 'parallel-reasoning',       ws: true, cheat: '/question-types/parallel-reasoning/cheatsheet.html' },
+  'Parallel Flaw':           { slug: 'parallel-reasoning',       ws: true, cheat: '/question-types/parallel-reasoning/cheatsheet.html' },
+  'Method of Reasoning':     { slug: 'method-of-reasoning',      ws: false, cheat: '/question-types/method-of-reasoning/cheatsheet.html' },
   'Point at Issue':          { slug: 'agree-disagree',           ws: false },
   'Resolve the Paradox':     { slug: 'resolve-reconcile-explain',ws: false },
   'Evaluate':                { slug: 'evaluate',                 ws: false }
@@ -623,11 +623,15 @@ async function boot() {
       .select('id, profiles:profile_id ( first_name, email )').order('created_at');
     const sel = $('previewStudent');
     sel.innerHTML = '';
-    (all || []).forEach(s => {
+    const mineFirst = [...(all || [])].sort((a, b) =>
+      (myStudentIds.includes(b.id) ? 1 : 0) - (myStudentIds.includes(a.id) ? 1 : 0));
+    mineFirst.forEach(s => {
       const o = document.createElement('option');
       o.value = s.id;
-      o.textContent = s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8);
-      o.dataset.name = s.profiles?.first_name || s.profiles?.email || 'student';
+      const nm = s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8);
+      const isMine = myStudentIds.includes(s.id);
+      o.textContent = isMine ? ('Tutor — ' + nm) : nm;
+      o.dataset.name = isMine ? ('Tutor — ' + nm) : (s.profiles?.first_name || s.profiles?.email || 'student');
       sel.appendChild(o);
     });
     sel.addEventListener('change', () => { setViewingStudent(sel.value); loadDrillList(); });
