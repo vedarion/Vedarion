@@ -232,7 +232,9 @@ function render(){
   }
 
   const today=new Date().toISOString().slice(0,10);
-  const drillOK=!!(s&&s.drill_access_enabled&&(!s.drill_access_until||s.drill_access_until>=today));
+  /* Drill Room: paid students (drill_access_enabled) and tutors/owners.
+     Unpaid accounts stay locked on the packages card. */
+  const drillOK=isTutor||!!(s&&s.drill_access_enabled&&(!s.drill_access_until||s.drill_access_until>=today));
   const drillCard=drillOK
     ? `<a href="/drills.html" class="pcard drill-card">
         <div class="pcard-label">Practice</div>
