@@ -183,6 +183,10 @@
     .tc{display:flex;gap:10px;margin-bottom:16px;align-items:center;padding:8px 14px;background:rgba(255,255,255,.015);border:1px solid var(--border);border-radius:9px}
     .tc-lbl{font-size:9px;color:var(--faint);font-family:var(--mono);font-weight:600;letter-spacing:1.5px}
     .tc-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:6px;border:1px solid #222;background:var(--deep);color:var(--dim);cursor:pointer;font-size:9px;font-family:var(--mono);font-weight:600;margin-left:auto;transition:all .2s;letter-spacing:.5px}
+    .viewseg{display:inline-flex;border:1px solid var(--border-hi);border-radius:7px;overflow:hidden}
+    .viewseg-btn{font-family:var(--mono);font-size:10px;padding:5px 12px;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .viewseg-btn+.viewseg-btn{border-left:1px solid var(--border-hi)}
+    .viewseg-btn.on{background:var(--deep);color:var(--bright);font-weight:600}
     .tc-btn:hover{border-color:var(--faint);color:var(--text)}
     .slbl{color:var(--text);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:var(--mono);margin:0 0 14px}
     .slbl .lkn{color:var(--faint);font-weight:500;letter-spacing:1px}
@@ -399,7 +403,7 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null,archiveOpen:false};
+let S={view:'loading',user:null,profile:null,isTutor:false,students:[],selId:null,student:null,sessions:[],exSess:-1,loginErr:'',loginLoad:false,addEmail:'',addMsg:'',addMsgType:'',addTpl:'',wsView:null,wsEntries:{},hwCopyMsg:'',hwCopyMsgSess:null,archiveOpen:false,studentView:false};
 
 const TEMPLATES={};
 
@@ -1053,7 +1057,13 @@ function dashHTML(){
     <div class="profile">
       <div class="profile-top">
         <div>
-          <div class="p-name">${esc(nm)}</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="p-name">${esc(nm)}</div>
+            ${t?`<div class="viewseg">
+              <button class="viewseg-btn ${!S.studentView?'on':''}" data-viewseg="tutor">Tutor view</button>
+              <button class="viewseg-btn ${S.studentView?'on':''}" data-viewseg="student">Student view</button>
+            </div>`:''}
+          </div>
           <div class="p-pkg">${t?ed(st.package_type,'st:package_type','false'):esc(st.package_type||'')}${t?` · <span class="ed" data-eid="st:sessions_bought" data-ml="false">${st.sessions_bought||0}</span> sessions`:` · ${st.sessions_bought||0} sessions`}</div>
         </div>
         <div style="text-align:right">
@@ -1090,11 +1100,11 @@ function dashHTML(){
   return`
   <div class="nav">
     <div class="nav-left"><div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div><span class="nav-sep">/</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-    <div class="nav-right"><a href="/dashboard.html" class="nav-link">Dashboard</a>${S.isAdmin?`<div class="admin-menu"><button class="admin-trigger" id="adminTrig">Admin ▾</button><div class="admin-drop" id="adminDrop"><a href="/admin-drills.html">Drill Builder</a><a href="/admin-review.html">Student Review</a><a href="/admin-tagging.html">Tagging</a><a href="/admin-students.html">Student Access</a><a href="/admin-ingest.html">Content Ingest</a></div></div>`:''}<span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
+    <div class="nav-right"><a href="/dashboard.html" class="nav-link">Dashboard</a>${S.isAdmin&&!S.studentView?`<div class="admin-menu"><button class="admin-trigger" id="adminTrig">Admin ▾</button><div class="admin-drop" id="adminDrop"><a href="/admin-drills.html">Drill Builder</a><a href="/admin-review.html">Student Review</a><a href="/admin-tagging.html">Tagging</a><a href="/admin-students.html">Student Access</a><a href="/admin-ingest.html">Content Ingest</a></div></div>`:''}<span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
   </div>
   <div class="layout">
     <div class="main">${main}</div>
-    ${t?`<div class="sidebar">${sidebar}</div>`:''}
+    ${t&&!S.studentView?`<div class="sidebar">${sidebar}</div>`:''}
   </div>
   <div class="footer"><span class="v">V</span><span class="rest">EDARION</span></div>`;
 }
@@ -2193,6 +2203,11 @@ async function renumberSessions(ordered){
 /* ===================== EVENT BINDING ===================== */
 function bind(){
   const so=document.getElementById('so');if(so)so.addEventListener('click',doLogout);
+  document.querySelectorAll('[data-viewseg]').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation();
+    S.studentView=b.dataset.viewseg==='student';
+    R();
+  }));
   const adminTrig=document.getElementById('adminTrig');
   if(adminTrig)adminTrig.addEventListener('click',e=>{e.stopPropagation();const d=document.getElementById('adminDrop');d.classList.toggle('open');adminTrig.classList.toggle('open',d.classList.contains('open'));});
   if(!window.__adminDropBound){window.__adminDropBound=true;document.addEventListener('click',()=>{const d=document.getElementById('adminDrop');if(d){d.classList.remove('open');const t=document.getElementById('adminTrig');if(t)t.classList.remove('open');}});}
