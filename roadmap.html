@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VEDARION — Dashboard</title>
+  <title>VEDARION — Roadmap</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script>
     /* A password-recovery link must never land on the dashboard. If we arrived
@@ -1090,7 +1090,7 @@ function dashHTML(){
   return`
   <div class="nav">
     <div class="nav-left"><div class="logo"><span class="v">V</span><span class="rest">EDARION</span></div><span class="nav-sep">/</span><span class="nav-role">${t?'Tutor':'Student'}</span></div>
-    <div class="nav-right">${S.isAdmin?`<div class="admin-menu"><button class="admin-trigger" id="adminTrig">Admin ▾</button><div class="admin-drop" id="adminDrop"><a href="/admin-drills.html">Drill Builder</a><a href="/admin-review.html">Student Review</a><a href="/admin-tagging.html">Tagging</a><a href="/admin-students.html">Student Access</a><a href="/admin-ingest.html">Content Ingest</a></div></div>`:''}<span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
+    <div class="nav-right"><a href="/dashboard.html" class="nav-link">Dashboard</a>${S.isAdmin?`<div class="admin-menu"><button class="admin-trigger" id="adminTrig">Admin ▾</button><div class="admin-drop" id="adminDrop"><a href="/admin-drills.html">Drill Builder</a><a href="/admin-review.html">Student Review</a><a href="/admin-tagging.html">Tagging</a><a href="/admin-students.html">Student Access</a><a href="/admin-ingest.html">Content Ingest</a></div></div>`:''}<span class="nav-user">${esc((S.profile&&S.profile.email)||'')}</span><button class="sign-out" id="so">Sign Out</button></div>
   </div>
   <div class="layout">
     <div class="main">${main}</div>
