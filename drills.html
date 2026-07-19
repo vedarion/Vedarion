@@ -164,6 +164,26 @@
   .feedback.good { color: var(--green); } .feedback.bad { color: var(--red); }
   .resultrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 14px; flex-wrap: wrap; }
   .resultrow .rid { color: var(--ink); }
+  .btn-ink { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 8px; border: 1px solid var(--ink); background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn-ink:hover { background: #000; }
+  .btn-ink:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-ink.small { padding: 5px 12px; font-size: 12px; }
+  .tg-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid #F0EBE4; font-size: 12.5px; }
+  .tg-row:last-child { border-bottom: none; }
+  .tg-rows { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; max-height: 320px; overflow-y: auto; }
+  .tg-row .tg-id { color: var(--ink); }
+  .tg-row .tg-seen { font-size: 10.5px; color: var(--ink-faint); margin-left: 8px; }
+  .tg-row .tg-added { font-size: 10.5px; color: var(--green); margin-left: 8px; }
+  .tg-btn { font-size: 11px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 6px; padding: 3px 10px; background: #fff; cursor: pointer; }
+  .tg-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .tg-btn.add { color: var(--ink); border-color: #B4B2A9; font-weight: 600; }
+  .tg-tray { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tg-chip { font-size: 10.5px; background: var(--cream); border: 1px solid #D3D1C7; border-radius: 12px; padding: 3px 9px; color: var(--ink); cursor: pointer; }
+  .tg-chip:hover { border-color: var(--red); color: var(--red); }
+  .qmodal { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 30px 16px; overflow-y: auto; }
+  .qmodal-box { background: var(--cream); border-radius: 12px; max-width: 640px; width: 100%; padding: 16px 18px; }
+  .qmodal-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+  .qmodal .optbtn { cursor: default; }
   .resultrow .rmeta { font-size: 12px; color: var(--ink-soft); }
   .verdict-good { color: var(--green); font-weight: 600; }
   .verdict-bad { color: var(--red); font-weight: 600; }
@@ -253,6 +273,46 @@
         <button class="btn" id="secCreateBtn">Start section</button>
       </div>
       <div id="secMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
+    </div>
+
+    <div class="card hidden" id="targetedCard">
+      <h1 style="font-size:18px;">Build a targeted drill</h1>
+      <p class="sub">Exact number or browse by type · view · add. Only you see this.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; margin-top:12px;">
+        <div>
+          <label for="tgRef">Exact question</label>
+          <input type="text" id="tgRef" placeholder="PT 101 S2 Q13" style="width:160px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:var(--cream); font-family:inherit;">
+        </div>
+        <span class="hint" style="padding-bottom:10px;">or</span>
+        <div>
+          <label for="tgType">Browse by type</label>
+          <select id="tgType"><option value="">Pick a type…</option></select>
+        </div>
+        <button class="btn secondary" id="tgSearchBtn">Find</button>
+        <span class="hint" id="tgCount" style="padding-bottom:10px;"></span>
+      </div>
+      <div id="tgResults" style="margin-top:10px;"></div>
+      <div class="tg-tray" id="tgTray">
+        <span class="hint" style="font-weight:600;" id="tgTrayLabel">Drill (0):</span>
+        <span id="tgChips" style="display:contents;"></span>
+        <span style="flex:1;"></span>
+        <select id="tgFor"></select>
+        <button class="btn-ink" id="tgCreateBtn" disabled>Create drill</button>
+      </div>
+      <div class="sub" id="tgMsg" style="margin-top:8px; min-height:18px;"></div>
+    </div>
+
+    <div class="qmodal hidden" id="qModal">
+      <div class="qmodal-box">
+        <div class="qmodal-bar">
+          <span style="display:flex; gap:8px;">
+            <button class="btn-ink small" id="qmAddBtn">+ Add to drill</button>
+            <button class="tool" id="qmAnswerBtn">Show answer</button>
+          </span>
+          <button class="wsclose" id="qmCloseBtn">✕ close</button>
+        </div>
+        <div id="qmBody"></div>
+      </div>
     </div>
 
     <div class="card">
@@ -558,6 +618,246 @@ let wsSaveTimer = null;
 let wsOpen = false;
 let panelMode = 'ws';
 
+/* ---------- TARGETED DRILL BUILDER (admin/tutor only) ----------
+   Find questions by exact reference or type, preview them in a popup that
+   reuses the drill-room question layout, and create a drill from the picks.
+   The popup opens with the answer hidden; Show answer reveals it. */
+let T = { results: [], picked: new Map(), seen: new Set(), seenFor: null, viewing: null, answers: {} };
+
+function tgInit() {
+  if (!isAdmin) return;
+  $('targetedCard').classList.remove('hidden');
+  const ts = $('tgType');
+  (window.__qtDimValues || []).forEach(v => {
+    const o = document.createElement('option');
+    o.value = v.id; o.textContent = v.value;
+    ts.appendChild(o);
+  });
+  const forSel = $('tgFor');
+  forSel.innerHTML = '';
+  [...$('previewStudent').options].forEach(op => {
+    const o = document.createElement('option');
+    o.value = op.value; o.textContent = 'For: ' + op.dataset.name;
+    forSel.appendChild(o);
+  });
+  forSel.addEventListener('change', async () => { await tgLoadSeen(); tgRenderResults(); });
+  $('tgSearchBtn').addEventListener('click', tgSearch);
+  $('tgRef').addEventListener('keydown', e => { if (e.key === 'Enter') tgSearch(); });
+  $('tgCreateBtn').addEventListener('click', tgCreate);
+  $('qmCloseBtn').addEventListener('click', () => $('qModal').classList.add('hidden'));
+  $('qModal').addEventListener('click', e => { if (e.target === $('qModal')) $('qModal').classList.add('hidden'); });
+  $('qmAnswerBtn').addEventListener('click', tgToggleAnswer);
+  $('qmAddBtn').addEventListener('click', () => { if (T.viewing) { tgAdd(T.viewing); $('qModal').classList.add('hidden'); } });
+  tgLoadSeen();
+}
+
+function tgParseRef(str) {
+  const m = /(?:pt\s*)?(\d+)\s*[,·\s]\s*s(?:ection)?\s*(\d+)\s*[,·\s]\s*q(?:uestion)?\s*(\d+)/i.exec(str.trim())
+    || /^(\d+)\s+(\d+)\s+(\d+)$/.exec(str.trim());
+  if (!m) return null;
+  return { pt: parseInt(m[1]), section: parseInt(m[2]), q: parseInt(m[3]) };
+}
+
+function tgRowIdentity(r) {
+  const sec = r.content?._vd?.sectionOrder;
+  return ptLabel(r.module_id) + ' · S' + (sec ?? '?') + ' · Q' + (r.item_position ?? '?');
+}
+
+async function tgSearch() {
+  const box = $('tgResults');
+  const ref = $('tgRef').value.trim();
+  T.results = [];
+  box.innerHTML = '<p class="sub">Searching…</p>';
+  $('tgCount').textContent = '';
+  try {
+    if (ref) {
+      const p = tgParseRef(ref);
+      if (!p) { box.innerHTML = '<p class="sub">Could not read that — try the form "PT 101 S2 Q13".</p>'; return; }
+      const modId = 'LSAC' + p.pt;
+      const { data } = await db.from('lsac_items')
+        .select('module_id, item_id, item_position, content')
+        .eq('module_id', modId).eq('item_position', p.q);
+      T.results = (data || []).filter(r => (r.content?._vd?.sectionOrder ?? null) == p.section);
+      if (!T.results.length) { box.innerHTML = '<p class="sub">No question found at ' + escapeHtml('PT ' + p.pt + ' S' + p.section + ' Q' + p.q) + '.</p>'; return; }
+    } else {
+      const typeId = $('tgType').value;
+      if (!typeId) { box.innerHTML = '<p class="sub">Type an exact question or pick a type.</p>'; return; }
+      const { data: tags } = await db.from('item_tags').select('item_id').eq('tag_value_id', typeId);
+      const ids = (tags || []).map(t => t.item_id);
+      if (!ids.length) { box.innerHTML = '<p class="sub">No questions tagged with this type yet.</p>'; return; }
+      const rows = [];
+      for (let i = 0; i < ids.length && rows.length < 400; i += 150) {
+        const { data: chunk } = await db.from('lsac_items')
+          .select('module_id, item_id, item_position, content')
+          .in('item_id', ids.slice(i, i + 150));
+        rows.push(...(chunk || []));
+      }
+      rows.sort((a, b) => {
+        if (a.module_id !== b.module_id) return a.module_id < b.module_id ? -1 : 1;
+        const sa = a.content?._vd?.sectionOrder ?? 0, sb = b.content?._vd?.sectionOrder ?? 0;
+        if (sa !== sb) return sa - sb;
+        return (a.item_position ?? 0) - (b.item_position ?? 0);
+      });
+      T.results = rows;
+    }
+    $('tgCount').textContent = T.results.length + ' question' + (T.results.length !== 1 ? 's' : '');
+    tgRenderResults();
+  } catch (e) { box.innerHTML = '<p class="sub">' + escapeHtml(e.message || 'Search failed.') + '</p>'; }
+}
+
+async function tgLoadSeen() {
+  const sid = $('tgFor').value;
+  T.seen = new Set();
+  T.seenFor = sid || null;
+  if (!sid || myStudentIds.includes(sid)) { T.seenFor = null; return; }
+  try {
+    const { data: ds } = await db.from('drills').select('id').eq('student_id', sid);
+    const dids = (ds || []).map(d => d.id);
+    for (let i = 0; i < dids.length; i += 100) {
+      const { data: items } = await db.from('drill_items').select('item_id').in('drill_id', dids.slice(i, i + 100));
+      (items || []).forEach(it => T.seen.add(it.item_id));
+    }
+  } catch (e) {}
+}
+
+function tgTypeNameOf(r) { return itemTypeByKey[r.item_id] || qtNameFor(r) || ''; }
+function qtNameFor(r) { return null; }
+
+function tgRenderResults() {
+  const box = $('tgResults');
+  if (!T.results.length) { if (!box.querySelector('.sub')) box.innerHTML = ''; return; }
+  const wrapEl = document.createElement('div');
+  wrapEl.className = 'tg-rows';
+  T.results.forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'tg-row';
+    const typeName = $('tgRef').value.trim() ? '' : ($('tgType').selectedOptions[0]?.textContent || '');
+    const key = r.item_id;
+    const seen = T.seenFor && T.seen.has(key);
+    const added = T.picked.has(key);
+    const left = document.createElement('span');
+    left.className = 'tg-id';
+    left.innerHTML = escapeHtml(tgRowIdentity(r)) + (typeName ? ' · ' + escapeHtml(typeName) : '')
+      + (seen ? '<span class="tg-seen">seen</span>' : '')
+      + (added ? '<span class="tg-added">✓ added</span>' : '');
+    const btns = document.createElement('span');
+    btns.style.display = 'flex'; btns.style.gap = '6px'; btns.style.flexShrink = '0';
+    const vb = document.createElement('button');
+    vb.className = 'tg-btn'; vb.textContent = 'View';
+    vb.addEventListener('click', () => tgView(r));
+    btns.appendChild(vb);
+    if (!added) {
+      const ab = document.createElement('button');
+      ab.className = 'tg-btn add'; ab.textContent = '+ Add';
+      ab.addEventListener('click', () => tgAdd(r));
+      btns.appendChild(ab);
+    }
+    row.appendChild(left); row.appendChild(btns);
+    wrapEl.appendChild(row);
+  });
+  box.innerHTML = '';
+  box.appendChild(wrapEl);
+}
+
+function tgView(r) {
+  T.viewing = r;
+  T.answerShown = false;
+  $('qmAnswerBtn').textContent = 'Show answer';
+  const c = r.content || {};
+  const opts = extractOptions(c);
+  const body = $('qmBody');
+  body.innerHTML = '';
+  const sb = document.createElement('div');
+  sb.className = 'stimbox';
+  sb.innerHTML = '<div class="qident"><span>' + escapeHtml(tgRowIdentity(r).replace(/S(\d+)/, 'Section $1').replace(/Q(\d+)/, 'Question $1')) + '</span></div>'
+    + '<div class="stim">' + (c.stimulusText ?? '') + '</div>'
+    + '<div class="stem">' + (c.stemText ?? '') + '</div>'
+    + '<p class="license-line">Licensed to VEDARION</p>';
+  body.appendChild(sb);
+  opts.forEach(o => {
+    const b = document.createElement('div');
+    b.className = 'optbtn readonly';
+    b.dataset.letter = o.letter;
+    b.style.marginBottom = '8px';
+    b.innerHTML = '<span class="letter">' + escapeHtml(o.letter) + '</span><span>' + o.text + '</span>';
+    body.appendChild(b);
+  });
+  $('qModal').classList.remove('hidden');
+}
+
+async function tgToggleAnswer() {
+  if (!T.viewing) return;
+  const key = T.viewing.item_id;
+  const body = $('qmBody');
+  if (T.answerShown) {
+    body.querySelectorAll('.optbtn').forEach(b => { b.classList.remove('correct'); const t = b.querySelector('.tagend'); if (t) t.remove(); });
+    T.answerShown = false;
+    $('qmAnswerBtn').textContent = 'Show answer';
+    return;
+  }
+  if (!(key in T.answers)) {
+    try {
+      const { data } = await db.from('lsac_item_answers')
+        .select('correct_answer').eq('module_id', T.viewing.module_id).eq('item_id', key).maybeSingle();
+      T.answers[key] = data?.correct_answer ?? null;
+    } catch (e) { T.answers[key] = null; }
+  }
+  const ca = T.answers[key];
+  if (!ca) { $('qmAnswerBtn').textContent = 'Answer unavailable'; return; }
+  const b = body.querySelector('.optbtn[data-letter="' + CSS.escape(ca) + '"]');
+  if (b) {
+    b.classList.add('correct');
+    const tag = document.createElement('span');
+    tag.className = 'tagend';
+    tag.textContent = 'correct';
+    b.appendChild(tag);
+  }
+  T.answerShown = true;
+  $('qmAnswerBtn').textContent = 'Hide answer';
+}
+
+function tgAdd(r) {
+  T.picked.set(r.item_id, r);
+  tgRenderTray();
+  tgRenderResults();
+}
+
+function tgRenderTray() {
+  const chips = $('tgChips');
+  chips.innerHTML = '';
+  T.picked.forEach((r, key) => {
+    const ch = document.createElement('button');
+    ch.className = 'tg-chip';
+    ch.textContent = tgRowIdentity(r).replace(/ · /g, ' ') + ' ✕';
+    ch.title = 'Remove';
+    ch.addEventListener('click', () => { T.picked.delete(key); tgRenderTray(); tgRenderResults(); });
+    chips.appendChild(ch);
+  });
+  $('tgTrayLabel').textContent = 'Drill (' + T.picked.size + '):';
+  $('tgCreateBtn').disabled = T.picked.size === 0;
+}
+
+async function tgCreate() {
+  if (!T.picked.size) return;
+  const sid = $('tgFor').value;
+  if (!sid) { $('tgMsg').textContent = 'Pick who this drill is for.'; return; }
+  $('tgCreateBtn').disabled = true;
+  $('tgMsg').textContent = 'Creating…';
+  const items = [...T.picked.values()].map((r, i) => ({ module_id: r.module_id, item_id: r.item_id, position: i + 1 }));
+  const title = 'Targeted drill · ' + items.length + ' question' + (items.length !== 1 ? 's' : '');
+  const { data, error } = await db.rpc('vd_create_targeted_drill', {
+    p_student_id: sid, p_title: title, p_items: items
+  });
+  $('tgCreateBtn').disabled = false;
+  if (error) { $('tgMsg').textContent = error.message; return; }
+  if (data?.error) { $('tgMsg').textContent = data.error; return; }
+  $('tgMsg').textContent = 'Drill created for ' + ($('tgFor').selectedOptions[0]?.textContent.replace('For: ', '') || '') + '.';
+  T.picked.clear();
+  tgRenderTray();
+  tgRenderResults();
+  if (sid === viewingStudentId) loadDrillList();
+}
+
 /* ---------- COPY PROTECTION ---------- */
 ['copy','cut'].forEach(ev => document.addEventListener(ev, e => {
   if (!$('playView').classList.contains('hidden')) { e.preventDefault(); }
@@ -638,6 +938,7 @@ async function boot() {
     const wantStudent = new URLSearchParams(location.search).get('student');
     if (wantStudent && [...sel.options].some(o => o.value === wantStudent)) sel.value = wantStudent;
     setViewingStudent(sel.value || null);
+    tgInit();
   } else {
     viewingStudentId = myStudentIds[0] || null;
     readOnly = false;
