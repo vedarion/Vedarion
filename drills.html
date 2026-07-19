@@ -120,6 +120,7 @@
   .wsclose:hover { border-color: var(--orange); }
   .wsnote { font-size: 11px; color: var(--ink-faint); margin: 2px 0 10px; }
   .wsfield-label { font-size: 11.5px; font-weight: 600; margin: 0 0 3px; }
+  .wsfield-sub { font-size: 10.5px; color: var(--ink-faint); line-height: 1.5; margin: 0 0 4px; }
   .wsfield { width: 100%; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 6px 9px; font-size: 12.5px; margin-bottom: 8px; font-family: inherit; color: var(--ink); }
   textarea.wsfield { min-height: 56px; resize: vertical; }
   .wschecks { margin-bottom: 8px; }
@@ -128,6 +129,22 @@
   .wsstatus { font-size: 11px; color: var(--ink-faint); min-height: 14px; text-align: right; }
   .wsdone-row { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 8px 9px; font-size: 12.5px; color: var(--ink-soft); margin-bottom: 8px; cursor: pointer; }
   .wsdone-row input { width: 16px; height: 16px; accent-color: var(--orange); flex-shrink: 0; cursor: pointer; }
+  .wssent-s { min-height: 34px; }
+  .wscon { border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 0 7px 7px 0; background: var(--cream); padding: 9px 11px; margin-bottom: 12px; }
+  .wscon-q { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .wscon-lbl { font-size: 12px; font-weight: 600; flex: 1; min-width: 150px; }
+  .wscon-btns { display: flex; gap: 4px; }
+  .wscon-btn { padding: 4px 14px; border-radius: 6px; border: 1px solid var(--line); background: #fff; color: var(--ink-soft); font-size: 11px; cursor: pointer; }
+  .wscon-btn:hover { border-color: var(--orange); color: var(--orange-dark); }
+  .wscon-btn.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); font-weight: 700; }
+  .wscon-sub { font-size: 11px; color: var(--ink-soft); margin: 8px 0 3px; }
+  .wscombo { background: #fff; min-height: 34px; margin-bottom: 0; }
+  .wssent-add { width: 100%; border: 1.5px dashed var(--orange-line); border-radius: 8px; background: none; padding: 9px; text-align: center; color: var(--orange-dark); font-size: 11.5px; font-weight: 600; cursor: pointer; margin: 2px 0 12px; }
+  .wssent-add:hover { border-color: var(--orange); background: var(--cream-warm); }
+  .wstags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+  .wstag { padding: 5px 13px; border-radius: 6px; border: 1px solid var(--line); background: #fff; color: var(--ink-soft); font-size: 11px; cursor: pointer; }
+  .wstag:hover { border-color: var(--orange); color: var(--orange-dark); }
+  .wstag.on { border-color: var(--orange); background: var(--cream-warm); color: var(--orange-dark); font-weight: 700; }
   .wslegacy { border-top: 1px dashed var(--line); margin-top: 10px; padding-top: 8px; }
   .wslegacy-hd { font-size: 10.5px; color: var(--ink-faint); letter-spacing: .5px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
   .wslegacy-row { font-size: 11px; color: var(--ink-faint); line-height: 1.6; margin-bottom: 3px; }
@@ -446,31 +463,23 @@ const WS_TEMPLATES = {
     'f3': 'Role of the sentence'
   }},
   'must-be-true': { title: 'Must Be True worksheet', fields: [
-    { label: 'Connect the Dots: Simplify sentence 1', kind: 'text' },
-    { label: 'Connect the Dots: Simplify sentence 2', kind: 'text' },
-    { label: 'Connect the Dots: How does sentence 2 connect to sentence 1?', kind: 'text' },
-    { label: 'Connect the Dots: Simplify sentence 3', kind: 'text' },
-    { label: 'Connect the Dots: How does sentence 3 connect to prior sentences?', kind: 'text' },
-    { label: 'Connect the Dots: Simplify sentence 4 (if applicable)', kind: 'text' },
-    { label: 'Connect the Dots: How does sentence 4 connect to prior sentences?', kind: 'text' },
-    { label: "Overall Inference: What follows from connecting these facts? (If no inference, write 'none — look for restatement')", kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E): Is every word 100% supported by the stimulus? Supported / Not supported — why?', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E): What type is it? Inference / Summary / Restatement / Not supported', kind: 'text' },
-    { label: 'Final Selection: Select the answer where every word is 100% supported. Final Answer', kind: 'text' }
-  ]},
+    { label: '', kind: 'sentences', key: 'sentences' },
+    { label: 'Overall inference — the biggest conclusion from combining all of these facts (if none, the answer restates a single sentence)', kind: 'textarea', key: 'f7', h: 56 },
+    { label: 'Answer choices (A–E) — is every word 100% supported by the stimulus? Supported / Not supported — why?', kind: 'textarea', key: 'f8', h: 100 },
+    { label: 'For the answer you picked — what type is it?', kind: 'tags', key: 'anstype', options: ['Inference', 'Summary', 'Restatement'] },
+    { label: 'Final answer — every word 100% supported', kind: 'text', key: 'f10' }
+  ], legacy: {
+    'f9': 'What type is it'
+  }},
   'most-strongly-supported': { title: 'Most Strongly Supported worksheet', fields: [
-    { label: 'Connect the Dots — Simplify sentence 1 in your own words', kind: 'text' },
-    { label: 'Connect the Dots — Simplify sentence 2 in your own words', kind: 'text' },
-    { label: 'Connect the Dots — Sentence 2: How does it connect to sentence 1?', kind: 'text' },
-    { label: 'Connect the Dots — Simplify sentence 3 in your own words', kind: 'text' },
-    { label: 'Connect the Dots — Sentence 3: How does it connect to prior sentences?', kind: 'text' },
-    { label: 'Connect the Dots — Simplify sentence 4 (if applicable)', kind: 'text' },
-    { label: 'Connect the Dots — Sentence 4: How does it connect to prior sentences?', kind: 'text' },
-    { label: 'Overall Inference — What follows from connecting these facts?', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E): Could I make a reasonable argument this is supported? Yes / No — connection to the stimulus?', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E): How big is the gap? No gap / Small gap / Large gap', kind: 'text' },
-    { label: 'Final Selection — Strongest support, smallest assumption. Final Answer', kind: 'text' }
-  ]},
+    { label: '', kind: 'sentences', key: 'sentences' },
+    { label: 'Overall inference — the biggest conclusion from combining all of these facts (the answer only needs strong support, not proof)', kind: 'textarea', key: 'f7', h: 56 },
+    { label: 'Answer choices (A–E) — could you make a reasonable case that each word of the answer choice is supported?', sub: 'It\u2019s okay if the support isn\u2019t 100% — it just has to be reasonable. If you don\u2019t love it but think you have good support, don\u2019t eliminate it. Pick the one with the best support at the end.', kind: 'textarea', key: 'f8', h: 100 },
+    { label: 'For the answer you picked — how big is the gap?', kind: 'tags', key: 'gapsize', options: ['No gap', 'Small gap', 'Large gap'] },
+    { label: 'Final answer — strongest support, smallest assumption', kind: 'text', key: 'f10' }
+  ], legacy: {
+    'f9': 'How big is the gap'
+  }},
   'sufficient-assumption': { title: 'Sufficient Assumption worksheet', fields: [
     { label: 'Question', kind: 'text', auto: 'identity' },
     { label: 'Identify Premise(s) & Conclusion — Premise(s): What evidence does the author give?', kind: 'textarea' },
@@ -1300,6 +1309,32 @@ function renderWorksheet() {
   const box = $('wsFields');
   box.innerHTML = '';
   chosen.tpl.fields.forEach((f, idx) => {
+    if (f.kind === 'sentences') { renderSentences(box, f, data); return; }
+    if (f.kind === 'tags') {
+      const lab = document.createElement('p');
+      lab.className = 'wsfield-label';
+      lab.textContent = f.label;
+      box.appendChild(lab);
+      const key = f.key || ('f' + idx);
+      const grp = document.createElement('div');
+      grp.className = 'wstags';
+      grp.dataset.field = key;
+      grp.dataset.val = (typeof data[key] === 'string' && (f.options || []).includes(data[key])) ? data[key] : '';
+      (f.options || []).forEach(opt => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'wstag' + (grp.dataset.val === opt ? ' on' : '');
+        b.textContent = opt;
+        if (!readOnly) b.addEventListener('click', () => {
+          grp.dataset.val = grp.dataset.val === opt ? '' : opt;
+          [...grp.children].forEach(x => x.classList.toggle('on', x.textContent === grp.dataset.val));
+          scheduleWsSave();
+        });
+        grp.appendChild(b);
+      });
+      box.appendChild(grp);
+      return;
+    }
     if (f.kind === 'note') {
       const lab = document.createElement('p');
       lab.className = 'wsfield-label';
@@ -1324,6 +1359,12 @@ function renderWorksheet() {
     lab.className = 'wsfield-label';
     lab.textContent = f.label;
     box.appendChild(lab);
+    if (f.sub) {
+      const sub = document.createElement('p');
+      sub.className = 'wsfield-sub';
+      sub.textContent = f.sub;
+      box.appendChild(sub);
+    }
     const key = f.key || ('f' + idx);
     let val = data[key];
     if (val == null && f.auto === 'identity') val = itemIdentity(it);
@@ -1389,9 +1430,128 @@ function renderWorksheet() {
   $('wsStatus').textContent = '';
 }
 
+/* Dynamic simplify-and-connect blocks for Must Be True. Sentence text and
+   Yes/No state live in the DOM; collectWsData reads them back into an array
+   under the field's key. Old fixed-field answers (f0–f6) seed the blocks the
+   first time an old entry is opened, so no student work disappears. */
+function seedSentences(data) {
+  const pairs = [
+    { s: 'f0', c: null },
+    { s: 'f1', c: 'f2' },
+    { s: 'f3', c: 'f4' },
+    { s: 'f5', c: 'f6' }
+  ];
+  const arr = [];
+  pairs.forEach((p, i) => {
+    const s = (data[p.s] || '').toString();
+    const combo = p.c ? (data[p.c] || '').toString() : '';
+    if (i < 3 || s.trim() || combo.trim()) {
+      arr.push({ s: s, connect: combo.trim() ? true : null, combo: combo });
+    }
+  });
+  while (arr.length < 3) arr.push({ s: '', connect: null, combo: '' });
+  return arr;
+}
+
+function buildSentBlock(i, val) {
+  const block = document.createElement('div');
+  block.className = 'wssent';
+  const lab = document.createElement('p');
+  lab.className = 'wsfield-label';
+  lab.textContent = 'Step ' + (i + 1) + ' — Simplify sentence ' + (i + 1) + ' in your own words (try not to look back)';
+  block.appendChild(lab);
+  const ta = document.createElement('textarea');
+  ta.className = 'wsfield wssent-s';
+  ta.value = val.s || '';
+  ta.disabled = readOnly;
+  ta.addEventListener('input', () => scheduleWsSave());
+  block.appendChild(ta);
+  if (i >= 1) {
+    const con = document.createElement('div');
+    con.className = 'wscon';
+    con.dataset.con = val.connect === true ? 'yes' : val.connect === false ? 'no' : '';
+    const qrow = document.createElement('div');
+    qrow.className = 'wscon-q';
+    const q = document.createElement('span');
+    q.className = 'wscon-lbl';
+    q.textContent = i === 1 ? 'Do sentences 1 and 2 connect?' : 'Does sentence ' + (i + 1) + ' connect to what came before?';
+    qrow.appendChild(q);
+    const btns = document.createElement('span');
+    btns.className = 'wscon-btns';
+    ['yes', 'no'].forEach(v => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'wscon-btn' + (con.dataset.con === v ? ' on' : '');
+      b.textContent = v === 'yes' ? 'Yes' : 'No';
+      if (!readOnly) b.addEventListener('click', () => {
+        con.dataset.con = con.dataset.con === v ? '' : v;
+        [...btns.children].forEach(x => x.classList.toggle('on', x.textContent.toLowerCase() === con.dataset.con));
+        scheduleWsSave();
+      });
+      btns.appendChild(b);
+    });
+    qrow.appendChild(btns);
+    con.appendChild(qrow);
+    const cl = document.createElement('div');
+    cl.className = 'wscon-sub';
+    cl.textContent = 'If yes — what\u2019s the combination?';
+    con.appendChild(cl);
+    const combo = document.createElement('textarea');
+    combo.className = 'wsfield wscombo';
+    combo.value = val.combo || '';
+    combo.disabled = readOnly;
+    combo.addEventListener('input', () => scheduleWsSave());
+    con.appendChild(combo);
+    block.appendChild(con);
+  }
+  return block;
+}
+
+function renderSentences(box, f, data) {
+  const key = f.key || 'sentences';
+  let arr = Array.isArray(data[key]) ? data[key] : null;
+  if (!arr || !arr.length) arr = seedSentences(data);
+  const wrapEl = document.createElement('div');
+  wrapEl.className = 'wssent-wrap';
+  wrapEl.dataset.field = key;
+  arr.forEach((val, i) => wrapEl.appendChild(buildSentBlock(i, val)));
+  if (!readOnly) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'wssent-add';
+    add.textContent = '+ Add sentence ' + (arr.length + 1);
+    add.addEventListener('click', () => {
+      const count = wrapEl.querySelectorAll('.wssent').length;
+      wrapEl.insertBefore(buildSentBlock(count, { s: '', connect: null, combo: '' }), add);
+      add.textContent = '+ Add sentence ' + (count + 2);
+    });
+    wrapEl.appendChild(add);
+  }
+  box.appendChild(wrapEl);
+}
+
 function collectWsData() {
   const out = {};
-  $('wsFields').querySelectorAll('.wsfield').forEach(inp => { out[inp.dataset.field] = inp.value; });
+  $('wsFields').querySelectorAll('.wsfield').forEach(inp => {
+    if (inp.classList.contains('wssent-s') || inp.classList.contains('wscombo')) return;
+    out[inp.dataset.field] = inp.value;
+  });
+  const sw = $('wsFields').querySelector('.wssent-wrap');
+  if (sw) {
+    const arr = [];
+    sw.querySelectorAll('.wssent').forEach(b => {
+      const s = b.querySelector('.wssent-s')?.value || '';
+      const conEl = b.querySelector('.wscon');
+      const conState = conEl ? conEl.dataset.con : '';
+      arr.push({
+        s: s,
+        connect: conState === 'yes' ? true : conState === 'no' ? false : null,
+        combo: conEl ? (conEl.querySelector('.wscombo')?.value || '') : ''
+      });
+    });
+    out[sw.dataset.field] = arr;
+  }
+  $('wsFields').querySelectorAll('.wstags').forEach(g => { out[g.dataset.field] = g.dataset.val || ''; });
   $('wsFields').querySelectorAll('input[data-donekey]').forEach(cb => { out[cb.dataset.donekey] = cb.checked; });
   const checks = {};
   $('wsFields').querySelectorAll('.wschecks input').forEach(cb => {
