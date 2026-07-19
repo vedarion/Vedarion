@@ -48,7 +48,7 @@
     .greeting-name{font-family:var(--serif);font-size:32px;color:var(--bright);line-height:1.2;margin-bottom:6px;font-weight:400;font-style:italic}
     .greeting-sub{font-size:13px;color:var(--dim);font-family:var(--mono);letter-spacing:.5px}
 
-    .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;animation:fadeUp .4s .08s ease both}
+    .cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;animation:fadeUp .4s .08s ease both}
     .right-col{display:flex;flex-direction:column;gap:12px;align-self:start}
     .drill-lock{font-family:var(--mono);font-size:10px;letter-spacing:.3px;color:var(--muted);margin-top:2px}
 
@@ -111,15 +111,6 @@
 </head>
 <body>
 
-<div class="ann-bar" id="ann-bar">
-  <div class="ann-dot"></div>
-  <div class="ann-text">
-    Live classes starting <strong>April 2026</strong> —
-    <a href="/course.html">Foundation &amp; Advanced now open for enrollment</a>
-  </div>
-  <button class="ann-close" id="ann-close">×</button>
-</div>
-
 <div id="app">
   <div class="loading">LOADING</div>
 </div>
@@ -129,11 +120,41 @@ const SB_URL='https://fqshijwiushtrncinjif.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxc2hpandpdXNodHJuY2luamlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5MzIwMDcsImV4cCI6MjA4NjUwODAwN30.tkPgY4oGhjQLzl81MVDG0a1PhjCgcGMQ6HBD0UOPruA';
 const db=window.supabase.createClient(SB_URL,SB_KEY);
 
-let H={user:null,profile:null,isTutor:false,student:null,sessions:[],tutorStudents:[]};
+let H={user:null,profile:null,isTutor:false,student:null,sessions:[],tutorStudents:[],methodDone:new Set()};
 
-document.getElementById('ann-close').addEventListener('click',()=>{
-  document.getElementById('ann-bar').classList.add('hidden');
-});
+/* mirrors learn.html WALL_DATA — update both.
+   Core "Method" lessons in learn.html order. Multi-video cards use their primary
+   lesson slug; entries with an empty slug are not-yet-built lessons (skipped when
+   picking the next lesson). Slugs match lesson_completions.lesson_slug. */
+const METHOD_LESSONS=[
+  {slug:'premises-conclusions',title:'Premises'},
+  {slug:'conditional-logic',title:'Conditional Logic'},
+  {slug:'translating-words',title:'Translating'},
+  {slug:'negation',title:'Negation'},
+  {slug:'main-point-lesson',title:'Main Point'},
+  {slug:'argument-part-lesson',title:'Argument Part'},
+  {slug:'method-of-reasoning-lesson',title:'Method'},
+  {slug:'must-be-true-lesson',title:'Must Be True'},
+  {slug:'most-strongly-supported-lesson',title:'MSS'},
+  {slug:'sufficient-assumption-theory',title:'Suff. Asmp.'},
+  {slug:'necessary-assumption-theory',title:'Nec. Asmp.'},
+  {slug:'strengthen-weaken-lesson',title:'Str. & Wkn.'},
+  {slug:'flaw-lesson',title:'Flaw'},
+  {slug:'',title:'Paradox'},
+  {slug:'',title:'Evaluate'},
+  {slug:'',title:'Agree/Disagree'},
+  {slug:'',title:'Parallel'}
+];
+
+function methodCtaText(){
+  const done=H.methodDone||new Set();
+  const real=METHOD_LESSONS.filter(L=>L.slug);
+  const completedCount=real.filter(L=>done.has(L.slug)).length;
+  if(completedCount===0)return 'Start here';
+  const nextL=real.find(L=>!done.has(L.slug));
+  if(!nextL)return 'All lessons complete';
+  return 'Next lesson: '+esc(nextL.title)+' →';
+}
 
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
@@ -262,7 +283,7 @@ function render(){
             <div class="method-tag">Foundation</div>
             <div class="method-section-title">Core Pattern Recognition</div>
             <div class="method-section-body">Start here. Master the foundations — conditional logic and question types.</div>
-            <div class="method-cta">Start here</div>
+            <div class="method-cta">${methodCtaText()}</div>
           </a>
           <div class="method-sep"></div>
           <a href="/learn.html#advanced" class="method-section">
@@ -272,25 +293,6 @@ function render(){
             <div class="method-cta">Skip to advanced</div>
           </a>
         </div>
-
-        <a href="/course.html" class="pcard">
-          <div class="pcard-label">Live Instruction</div>
-          <div class="pcard-title">Live Classes</div>
-          <div class="pcard-sub">Starting April 2026</div>
-          <div class="pcard-divider"></div>
-          <div class="course-list">
-            <div class="course-item">
-              <div class="course-name">Foundation — Ground Zero</div>
-              <div class="course-meta">Sun &amp; Thu · 7–9 PM CST · 4 weeks</div>
-              <div class="course-price">$700</div>
-            </div>
-            <div class="course-item">
-              <div class="course-name">Advanced — Pattern Recognition</div>
-              <div class="course-meta">Sat &amp; Sun · 10 AM–12 PM CST · 4 weeks</div>
-              <div class="course-price">$800</div>
-            </div>
-          </div>
-        </a>
 
         <div class="right-col">
           ${tutoringCard}
@@ -316,6 +318,12 @@ async function init(){
 
   const{data:prof}=await db.from('profiles').select('*').eq('id',H.user.id).single();
   H.profile=prof;
+
+  /* Lesson progress for the Method card's "next lesson" line. Never block render. */
+  try{
+    const{data:comps}=await db.from('lesson_completions').select('lesson_slug').eq('user_id',H.user.id);
+    H.methodDone=new Set((comps||[]).map(r=>r.lesson_slug));
+  }catch(e){H.methodDone=new Set();}
 
   /* Tutor detection: try fetching students assigned to this user.
      If any come back, this user is a tutor. Bypasses RLS on profiles.role. */
