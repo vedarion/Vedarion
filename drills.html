@@ -160,6 +160,12 @@
   .playbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; padding-top: 13px; border-top: 1px solid var(--line); flex-wrap: wrap; }
   .timer { font-variant-numeric: tabular-nums; font-weight: 600; }
   .timer.low { color: var(--red); }
+  .clockpill { display: inline-flex; align-items: center; gap: 6px; background: var(--cream-warm); border: 1px solid var(--orange-line); border-radius: 8px; padding: 3px 10px; }
+  .clockpill svg { color: var(--orange-dark); flex-shrink: 0; }
+  .clockhide { border: none; background: none; padding: 0 0 0 2px; cursor: pointer; color: var(--ink-faint); font-size: 11px; line-height: 1; }
+  .clockhide:hover { color: var(--orange-dark); }
+  .clockshow { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 5px 8px; cursor: pointer; color: var(--ink-faint); }
+  .clockshow:hover { border-color: var(--orange); color: var(--orange-dark); }
   .feedback { font-size: 14px; margin-top: 10px; min-height: 20px; }
   .feedback.good { color: var(--green); } .feedback.bad { color: var(--red); }
   .resultrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 14px; flex-wrap: wrap; }
@@ -198,7 +204,14 @@
     <span class="mode-pill hidden" id="modePill"></span>
   </div>
   <div class="topmeta">
-    <span id="drillTimer" class="timer hidden"></span>
+    <span class="clockpill hidden" id="clockPill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span id="drillTimer" class="timer">0:00</span>
+      <button class="clockhide" id="clockHideBtn" aria-label="Hide clock" title="Hide clock">✕</button>
+    </span>
+    <button class="clockshow hidden" id="clockShowBtn" aria-label="Show clock" title="Show clock">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    </button>
     <span id="qCounter" class="qcount"></span>
     <button class="btn secondary small hidden" id="exitBtn">Exit</button>
   </div>
@@ -1208,8 +1221,7 @@ function enterTakeMode() {
 function enterReviewMode(fresh) {
   playMode = 'review';
   baseEnterPlay();
-  clearInterval(drillTimerHandle);
-  $('drillTimer').classList.add('hidden');
+  stopClock();
   $('progStrip').classList.add('hidden');
   $('modePill').textContent = 'Review · untimed';
   $('modePill').classList.remove('hidden');
@@ -1233,6 +1245,7 @@ function enterReviewMode(fresh) {
 function enterResultsQuestionView(index) {
   playMode = 'results-q';
   baseEnterPlay();
+  applyClockVisibility(false);
   $('modePill').textContent = 'Results';
   $('modePill').classList.remove('hidden');
   $('progStrip').classList.add('hidden');
@@ -1248,22 +1261,55 @@ function enterResultsQuestionView(index) {
   renderQuestion();
 }
 
-/* ---------- TIMER ---------- */
+/* ---------- CLOCK (count-up) ----------
+   One clock for every drill, always counting up from 0:00. Timed drills run
+   up to the limit and auto-submit there (red in the final minute); untimed
+   drills run forever. Students can hide it — the clock keeps running
+   underneath — and the choice sticks across sessions (localStorage). */
+let drillElapsed = 0;
+let clockShown = true;
+try { clockShown = localStorage.getItem('vd_clock') !== 'off'; } catch (e) {}
+
+function fmtClock(sec) {
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return m + ':' + String(s).padStart(2, '0');
+}
+
+function applyClockVisibility(inTake) {
+  $('clockPill').classList.toggle('hidden', !(inTake && clockShown));
+  $('clockShowBtn').classList.toggle('hidden', !(inTake && !clockShown));
+}
+
+$('clockHideBtn').addEventListener('click', () => {
+  clockShown = false;
+  try { localStorage.setItem('vd_clock', 'off'); } catch (e) {}
+  applyClockVisibility(playMode === 'take' && !$('playView').classList.contains('hidden'));
+});
+$('clockShowBtn').addEventListener('click', () => {
+  clockShown = true;
+  try { localStorage.setItem('vd_clock', 'on'); } catch (e) {}
+  applyClockVisibility(playMode === 'take' && !$('playView').classList.contains('hidden'));
+});
+
 function startDrillTimer() {
   clearInterval(drillTimerHandle);
+  drillElapsed = 0;
+  const limit = (currentDrill.is_timed && currentDrill.time_limit_seconds) ? currentDrill.time_limit_seconds : null;
   const t = $('drillTimer');
-  if (!currentDrill.is_timed || !currentDrill.time_limit_seconds) { t.classList.add('hidden'); return; }
-  t.classList.remove('hidden');
-  let remain = currentDrill.time_limit_seconds;
+  applyClockVisibility(true);
   const tick = () => {
-    const m = Math.floor(remain / 60), s = remain % 60;
-    t.textContent = `${m}:${String(s).padStart(2,'0')}`;
-    t.classList.toggle('low', remain <= 60);
-    if (remain <= 0) { clearInterval(drillTimerHandle); finishDrill(); return; }
-    remain--;
+    t.textContent = fmtClock(drillElapsed);
+    t.classList.toggle('low', !!limit && (limit - drillElapsed) <= 60);
+    if (limit && drillElapsed >= limit) { clearInterval(drillTimerHandle); finishDrill(); return; }
+    drillElapsed++;
   };
   tick();
   drillTimerHandle = setInterval(tick, 1000);
+}
+
+function stopClock() {
+  clearInterval(drillTimerHandle);
+  applyClockVisibility(false);
 }
 
 /* ---------- RENDER QUESTION ---------- */
@@ -1309,6 +1355,50 @@ function buildChips() {
   });
 }
 
+/* ---------- ANNOTATION INTEGRITY ----------
+   Ghost-highlight cleanup and self-healing for saves corrupted by the old
+   highlighter (which could split the DOM on overlapping selections).
+
+   sweepStrayMarks: destroys any highlight fragment that lives inside the
+   stimbox but outside the stimulus/stem text, plus any unexpected element
+   that got inserted between the stimbox's fixed children. This is what
+   stops old pieces from surviving into the next question.
+
+   cleanAnnotationHtml: a saved annotation is trusted only if it adds no
+   tags beyond <mark> (plus whatever inline tags the clean source itself
+   contains) AND its visible text still matches the clean source. Anything
+   else is corruption — fall back to the clean text, so previously broken
+   questions heal themselves the next time they are opened. */
+function sweepStrayMarks() {
+  const box = $('stimBox');
+  const stim = $('stimEl');
+  const stem = $('stemEl');
+  box.querySelectorAll('mark').forEach(m => {
+    if (!stim.contains(m) && !stem.contains(m)) m.remove();
+  });
+  [...box.children].forEach(ch => {
+    const ok = ch.classList.contains('vmark') || ch.classList.contains('qident')
+      || ch.classList.contains('stim') || ch.classList.contains('stem')
+      || ch.classList.contains('license-line');
+    if (!ok) ch.remove();
+  });
+}
+
+function cleanAnnotationHtml(saved, clean) {
+  const cleanStr = clean ?? '';
+  if (saved == null) return cleanStr;
+  const a = document.createElement('div');
+  a.innerHTML = saved;
+  const b = document.createElement('div');
+  b.innerHTML = cleanStr;
+  const allowed = new Set(['MARK']);
+  b.querySelectorAll('*').forEach(el => allowed.add(el.tagName));
+  const badTag = [...a.querySelectorAll('*')].some(el => !allowed.has(el.tagName));
+  const norm = s => String(s || '').replace(/\s+/g, ' ').trim();
+  if (badTag || norm(a.textContent) !== norm(b.textContent)) return cleanStr;
+  return saved;
+}
+
 function renderQuestion() {
   const it = drillItems[qi];
   const c = it.content || {};
@@ -1322,8 +1412,9 @@ function renderQuestion() {
   $('qIdent').innerHTML = escapeHtml(itemIdentity(it)) + (prior?.flagged && !inTake ? ' <span style="color:var(--orange);">⚑ flagged</span>' : '');
   $('qYourAnswer').textContent = (!inTake && prior?.selected_answer) ? 'Your answer: ' + prior.selected_answer : '';
 
-  $('stimEl').innerHTML = prior?.annotations?.highlightedStim ?? (c.stimulusText ?? '');
-  $('stemEl').innerHTML = prior?.annotations?.highlightedStem ?? (c.stemText ?? '');
+  sweepStrayMarks();
+  $('stimEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStim, c.stimulusText ?? '');
+  $('stemEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStem, c.stemText ?? '');
 
   const opts = extractOptions(c);
   const box = $('optsEl');
@@ -1907,13 +1998,53 @@ async function saveWsNow() {
   } catch (e) { $('wsStatus').textContent = 'Could not save'; }
 }
 
-/* ---------- HIGHLIGHTING (take mode only) ---------- */
+/* ---------- HIGHLIGHTING (take mode only) ----------
+   Per-text-node wrapping. Never uses surroundContents/extractContents, so an
+   overlapping or cross-element selection can never split or relocate the DOM
+   (the cause of highlights "breaking apart" and leaking into later questions).
+   Only text inside #stimEl / #stemEl is ever wrapped. Selecting over an
+   already-highlighted run recolors the existing mark instead of nesting. */
 [...document.querySelectorAll('.swatch')].forEach(sw =>
   sw.addEventListener('click', () => {
     if (playMode !== 'take' || readOnly) return;
     activeHl = activeHl === sw.dataset.hl ? null : sw.dataset.hl;
     [...document.querySelectorAll('.swatch')].forEach(s => s.classList.toggle('on', s.dataset.hl === activeHl));
   }));
+
+/* Split the text nodes at the range's edges so every text node is either
+   fully inside or fully outside the range. */
+function splitRangeBoundaries(range) {
+  const ec = range.endContainer;
+  const eo = range.endOffset;
+  if (ec.nodeType === 3 && eo > 0 && eo < ec.length) {
+    ec.splitText(eo);
+    range.setEnd(ec, ec.length);
+  }
+  const sc = range.startContainer;
+  const so = range.startOffset;
+  if (sc.nodeType === 3 && so > 0 && so < sc.length) {
+    const n = sc.splitText(so);
+    range.setStart(n, 0);
+    if (ec === sc) range.setEnd(n, n.length);
+  }
+}
+
+/* Text nodes fully covered by the range that live inside the stimulus or
+   the stem — nothing else in the stimbox is ever eligible for a mark. */
+function textNodesInRange(range) {
+  const nodes = [];
+  [$('stimEl'), $('stemEl')].forEach(zone => {
+    const walker = document.createTreeWalker(zone, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) {
+      if (!n.length) continue;
+      try {
+        if (range.comparePoint(n, 0) === 0 && range.comparePoint(n, n.length) === 0) nodes.push(n);
+      } catch (e) {}
+    }
+  });
+  return nodes;
+}
 
 $('stimBox').addEventListener('mouseup', () => {
   if (playMode !== 'take' || readOnly) return;
@@ -1922,19 +2053,26 @@ $('stimBox').addEventListener('mouseup', () => {
   if (!sel.rangeCount || sel.isCollapsed) return;
   const range = sel.getRangeAt(0);
   if (!$('stimBox').contains(range.commonAncestorContainer)) return;
-  const mark = document.createElement('mark');
-  mark.className = activeHl;
-  try { range.surroundContents(mark); }
-  catch { try { mark.appendChild(range.extractContents()); range.insertNode(mark); } catch (e) {} }
+  splitRangeBoundaries(range);
+  textNodesInRange(range).forEach(n => {
+    const p = n.parentElement;
+    if (p && p.tagName === 'MARK') { p.className = activeHl; return; }
+    const mark = document.createElement('mark');
+    mark.className = activeHl;
+    n.parentNode.insertBefore(mark, n);
+    mark.appendChild(n);
+  });
   sel.removeAllRanges();
 });
 
 $('stimBox').addEventListener('click', e => {
   if (playMode !== 'take' || readOnly) return;
-  if (e.target.tagName === 'MARK') {
-    const m = e.target;
-    while (m.firstChild) m.parentNode.insertBefore(m.firstChild, m);
+  const m = e.target.closest ? e.target.closest('mark') : null;
+  if (m && $('stimBox').contains(m)) {
+    const parent = m.parentNode;
+    while (m.firstChild) parent.insertBefore(m.firstChild, m);
     m.remove();
+    if (parent && parent.normalize) parent.normalize();
   }
 });
 
@@ -1960,7 +2098,7 @@ function exitToList() {
   $('exitBtn').classList.add('hidden');
   $('progStrip').classList.add('hidden');
   $('modePill').classList.add('hidden');
-  $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+  $('qCounter').textContent = ''; applyClockVisibility(false);
   $('barTitle').textContent = '';
   $('wrapEl').classList.remove('wide');
   loadDrillList();
@@ -2088,7 +2226,7 @@ function showResults() {
   $('exitBtn').classList.remove('hidden');
   $('progStrip').classList.add('hidden');
   $('modePill').classList.add('hidden');
-  $('qCounter').textContent = ''; $('drillTimer').classList.add('hidden');
+  $('qCounter').textContent = ''; applyClockVisibility(false);
   $('barTitle').textContent = currentDrill.title;
 
   const answered = drillItems.filter(d => responses[d.item_id]);
