@@ -170,18 +170,12 @@
         .video-row .video-chevron { color: #CCC; flex-shrink: 0; transition: color 0.2s ease; }
         .video-row:hover .video-chevron { color: #C65D3B; }
 
-        /* ===== MASTERED COLLAPSE ===== */
-        .lesson-item[data-tier="mastered"] .qt-card-header { cursor: pointer; padding-right: 150px; }
-        .lesson-item[data-tier="mastered"] .collapse-toggle { position: absolute; top: 50%; transform: translateY(-50%); right: 16px; }
-        .lesson-item[data-tier="mastered"].collapsed .qt-card-body { display: none; }
-        .lesson-item[data-tier="mastered"].collapsed .qt-card-header { border-bottom: none; }
-        .lesson-item[data-tier="mastered"] .qt-card-header:hover { background: #FBF7EF; }
-        .collapse-toggle { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #E0D6C2; background: transparent; color: #B08D45; display: none; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s ease, color 0.2s ease; padding: 0; z-index: 3; }
-        .collapse-toggle svg { transition: transform 0.3s ease; }
-        .lesson-item[data-tier="mastered"] .collapse-toggle { display: inline-flex; }
-        .lesson-item[data-tier="mastered"] .qt-card-header:hover .collapse-toggle { background: #C9A55C; color: #fff; border-color: #C9A55C; }
-        .lesson-item[data-tier="mastered"]:not(.collapsed) .collapse-toggle svg { transform: rotate(180deg); }
-        .lesson-item[data-tier="mastered"] .card-stamp { top: 22px; transform: none; right: 54px; }
+        /* ===== FIRST-ROW EXPANDER (multi-row cards) ===== */
+        .lesson-item.multi-video.has-extra.rows-collapsed .qt-card-body .video-row:not(:first-child) { display: none; }
+        .row-toggle { flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px 5px 12px; border-radius: 16px; border: 1px solid #F0DDD3; background: #FDF5F1; color: #C65D3B; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+        .row-toggle:hover { background: #C65D3B; color: #fff; border-color: #C65D3B; }
+        .row-toggle-label { line-height: 1; }
+        .row-toggle svg { transition: transform 0.3s ease; }
 
         /* STAMPS */
         .card-stamp { position: absolute; top: 14px; right: 16px; pointer-events: none; font-family: Georgia, 'Times New Roman', serif; }
@@ -245,9 +239,7 @@
             .lesson-item.single-row .lesson-content { flex-wrap: wrap; }
             .lesson-item.single-row .lesson-extras { width: 100%; padding-left: 50px; margin-top: 4px; justify-content: flex-start; }
             .qt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .lesson-item[data-tier="mastered"] .qt-card-header { padding-right: 52px; }
             .lesson-item[data-tier="mastered"] .card-stamp { position: static; transform: none; margin-top: 2px; }
-            .lesson-item[data-tier="mastered"] .collapse-toggle { position: absolute; top: 12px; right: 14px; }
             .video-row { padding: 12px 16px; }
             .video-row .video-title { font-size: 13px; }
         }
@@ -811,18 +803,23 @@
                 </div>
                 <ul class="lessons-list">
 
-                    <li class="lesson-item single-row" data-slug="causal-arguments" data-card-key="causal-arguments">
-                        <div class="lesson-content">
-                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                            <a href="advanced/causal-arguments/lesson.html" class="lesson-link-wrapper">
-                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                                <div class="lesson-body">
-                                    <div class="lesson-title">Causal Arguments</div>
-                                </div>
-                            </a>
-                            <div class="lesson-extras">
+                    <li class="lesson-item multi-video" data-card-key="causal-arguments">
+                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
+                        <div class="qt-card-header">
+                            <div class="qt-card-title">Causal Arguments</div>
+                            <div class="qt-card-resources">
                                 <a href="advanced/causal-arguments/cheatsheet.html">Cheat Sheet</a>
                             </div>
+                        </div>
+                        <div class="qt-card-body">
+                            <a href="advanced/causal-arguments/lesson.html" class="video-row" data-slug="causal-arguments">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="video-body">
+                                    <div class="video-title">Lesson</div>
+                                </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
                         </div>
                     </li>
 
@@ -918,33 +915,43 @@
                 </div>
                 <ul class="lessons-list">
 
-                    <li class="lesson-item single-row" data-slug="cost-benefit" data-card-key="cost-benefit">
-                        <div class="lesson-content">
-                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                            <a href="advanced/cost-benefit/lesson.html" class="lesson-link-wrapper">
-                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                                <div class="lesson-body">
-                                    <div class="lesson-title">Cost-Benefit</div>
-                                </div>
-                            </a>
-                            <div class="lesson-extras">
+                    <li class="lesson-item multi-video" data-card-key="cost-benefit">
+                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
+                        <div class="qt-card-header">
+                            <div class="qt-card-title">Cost-Benefit</div>
+                            <div class="qt-card-resources">
                                 <a href="advanced/cost-benefit/cheatsheet.html">Cheat Sheet</a>
                             </div>
                         </div>
+                        <div class="qt-card-body">
+                            <a href="advanced/cost-benefit/lesson.html" class="video-row" data-slug="cost-benefit">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="video-body">
+                                    <div class="video-title">Lesson</div>
+                                </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
+                        </div>
                     </li>
 
-                    <li class="lesson-item single-row" data-slug="whole-to-part" data-card-key="whole-to-part">
-                        <div class="lesson-content">
-                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                            <a href="advanced/whole-to-part/lesson.html" class="lesson-link-wrapper">
-                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                                <div class="lesson-body">
-                                    <div class="lesson-title">Part to Whole</div>
-                                </div>
-                            </a>
-                            <div class="lesson-extras">
+                    <li class="lesson-item multi-video" data-card-key="whole-to-part">
+                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
+                        <div class="qt-card-header">
+                            <div class="qt-card-title">Part to Whole</div>
+                            <div class="qt-card-resources">
                                 <a href="advanced/whole-to-part/cheatsheet.html">Cheat Sheet</a>
                             </div>
+                        </div>
+                        <div class="qt-card-body">
+                            <a href="advanced/whole-to-part/lesson.html" class="video-row" data-slug="whole-to-part">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="video-body">
+                                    <div class="video-title">Lesson</div>
+                                </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
                         </div>
                     </li>
 
@@ -1173,9 +1180,7 @@
             var key = card.getAttribute('data-card-key');
             current.push(key);
             if (seen.indexOf(key) === -1 && card.classList.contains('multi-video')) {
-                card.classList.remove('collapsed');
                 playMasteryCeremony(card);
-                setTimeout(function() { card.classList.add('collapsed'); }, 900);
             }
         });
         try { localStorage.setItem('vedarion_mastered_seen', JSON.stringify(current)); } catch(e) {}
@@ -1184,16 +1189,9 @@
     function applyCardTier(cardEl, tier, animate) {
         const previousTier = cardEl.getAttribute('data-tier');
         cardEl.setAttribute('data-tier', tier);
-        if (tier === 'mastered' && cardEl.classList.contains('multi-video')) {
-            if (animate && previousTier !== tier) {
-                playMasteryCeremony(cardEl);
-                markMasteredSeen(cardEl.getAttribute('data-card-key'));
-                setTimeout(function() { cardEl.classList.add('collapsed'); }, 900);
-            } else {
-                cardEl.classList.add('collapsed');
-            }
-        } else {
-            cardEl.classList.remove('collapsed');
+        if (tier === 'mastered' && cardEl.classList.contains('multi-video') && animate && previousTier !== tier) {
+            playMasteryCeremony(cardEl);
+            markMasteredSeen(cardEl.getAttribute('data-card-key'));
         }
     }
 
@@ -1222,23 +1220,29 @@
         });
     }
 
-    function setupCollapseToggles() {
+    function setupRowToggles() {
         document.querySelectorAll('.lesson-item.multi-video').forEach(function(card) {
-            var header = card.querySelector('.qt-card-header');
-            if (!header || header.querySelector('.collapse-toggle')) return;
+            var rows = card.querySelectorAll('.qt-card-body .video-row');
+            if (rows.length < 2) return; // single-video cards: nothing to expand
+            card.classList.add('has-extra', 'rows-collapsed');
+            var firstRow = rows[0];
+            if (firstRow.querySelector('.row-toggle')) return;
+            var deco = firstRow.querySelector('.video-chevron');
+            if (deco) deco.remove(); // drop the decorative right chevron on the first row
             var btn = document.createElement('button');
-            btn.className = 'collapse-toggle';
+            btn.className = 'row-toggle';
             btn.type = 'button';
-            btn.setAttribute('aria-label', 'Show lessons');
-            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-            header.appendChild(btn);
-            header.addEventListener('click', function(e) {
-                if (!card.classList.contains('collapsed') && !card.matches('[data-tier="mastered"]')) return;
-                if (e.target.closest('a')) return;
-                if (!card.matches('[data-tier="mastered"]')) return;
-                var nowCollapsed = card.classList.toggle('collapsed');
-                btn.setAttribute('aria-label', nowCollapsed ? 'Show lessons' : 'Hide lessons');
+            btn.setAttribute('aria-label', 'Show more videos');
+            btn.innerHTML = '<span class="row-toggle-label">More</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var collapsed = card.classList.toggle('rows-collapsed');
+                btn.querySelector('.row-toggle-label').textContent = collapsed ? 'More' : 'Less';
+                btn.querySelector('svg').style.transform = collapsed ? '' : 'rotate(180deg)';
+                btn.setAttribute('aria-label', collapsed ? 'Show more videos' : 'Hide extra videos');
             });
+            firstRow.appendChild(btn);
         });
     }
 
@@ -1301,7 +1305,7 @@
         stateRef.isLoggedIn = !!session;
 
         setupCardProgressSegments();
-        setupCollapseToggles();
+        setupRowToggles();
 
         document.querySelectorAll('.path-card').forEach(function(card) {
             card.addEventListener('keydown', function(e) {
