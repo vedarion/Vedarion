@@ -1,189 +1,215 @@
-# Task: Add the Paradox (Resolve, Reconcile, Explain) lesson video
-
-Work in the VEDARION site repo (vedarion/Vedarion). One new file, two edits in learn.html.
-The folder question-types/resolve-reconcile-explain/ already exists (it has flowchart.html).
-
-============================================================
-STEP 1 - CREATE THE LESSON FILE (verbatim, do not edit)
-============================================================
-Create this file exactly as given in the HTML block at the BOTTOM of this brief:
-
-    question-types/resolve-reconcile-explain/lesson.html
-
-Write it byte-for-byte. Do NOT reformat or restyle. Its siblings in that folder are
-flowchart.html (the Cheat Sheet the page links to) - confirm you are in the right folder.
-
-============================================================
-STEP 2 - GIVE THE PARADOX CARD A LESSON ROW (learn.html)
-============================================================
-Open learn.html. Find the card with  data-card-key="resolve-reconcile-explain"
-(in the Core path, "Complete Your Toolkit" section). Right now it is header-only:
-
-    <li class="lesson-item multi-video" data-card-key="resolve-reconcile-explain">
-        <div class="qt-card-header">
-            <div class="qt-card-title">Paradox (Resolve &amp; Explain)</div>
-            <div class="qt-card-resources">
-                <a href="question-types/resolve-reconcile-explain/flowchart.html">Cheat Sheet</a>
-            </div>
-        </div>
-    </li>
-
-Replace that entire <li> with this (adds the mastery stamp + a Lesson video row):
-
-    <li class="lesson-item multi-video" data-card-key="resolve-reconcile-explain">
-        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
-        <div class="qt-card-header">
-            <div class="qt-card-title">Paradox (Resolve &amp; Explain)</div>
-            <div class="qt-card-resources">
-                <a href="question-types/resolve-reconcile-explain/flowchart.html">Cheat Sheet</a>
-            </div>
-        </div>
-        <div class="qt-card-body">
-            <a href="question-types/resolve-reconcile-explain/lesson.html" class="video-row" data-slug="resolve-reconcile-explain-lesson">
-                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                <div class="video-body">
-                    <div class="video-title">Lesson</div>
-                </div>
-                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-        </div>
-    </li>
-
-============================================================
-STEP 3 - TURN ON ITS MASTERY SLUG (learn.html, WALL_DATA)
-============================================================
-Still in learn.html, in the WALL_DATA object (Core > TOOLKIT section), find:
-
-    { key: 'resolve-reconcile-explain', name: 'Paradox', slugs: [] },
-
-and change it to:
-
-    { key: 'resolve-reconcile-explain', name: 'Paradox', slugs: ['resolve-reconcile-explain-lesson'] },
-
-============================================================
-CONSTRAINTS
-============================================================
-- Only: the new lesson.html + those two spots in learn.html. Nothing else.
-- Do not touch the other Toolkit cards (evaluate, agree-disagree, parallel-reasoning) -
-  they stay header-only.
-- Keep data-card-key stable. The data-slug on the row must match WALL_DATA exactly:
-  resolve-reconcile-explain-lesson.
-- This card has one video row, so the first-row "More/Less" pill logic correctly adds
-  NO pill (it only triggers at 2+ rows) - just the visible Lesson row. Do not add a pill.
-- The card sits in the data-requires-auth="free" Toolkit section; leave that gating as is.
-- No arrows added, no em dashes.
-
-============================================================
-VERIFY, then stop
-============================================================
-- The Paradox card shows a Lesson row that opens the new lesson page; the video plays;
-  the Cheat Sheet tab on the lesson opens flowchart.html.
-- Completing it toggles the checkmark and lights the Paradox slot on the mastery wall.
-- Show me a diff of learn.html. Do NOT commit, push, or deploy.
-
-============================================================
-FILE CONTENT - question-types/resolve-reconcile-explain/lesson.html (write exactly)
-============================================================
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paradox (Resolve, Reconcile, Explain) - VEDARION</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
-        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
-        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
-        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
-        .nav-links a:hover, .nav-links a.active { color: white; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resolve, Reconcile, Explain — Cheat Sheet - VEDARION</title>
+<style>
+  :root{
+    --paper:#FAF8F5; --ink:#1A1A1A; --soft:#3a3733; --muted:#8f8a81;
+    --rule:#E7E1D6; --accent:#C65D3B;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
-        .hero { background: #0A0A0A; padding: 40px 20px 50px; text-align: center; border-bottom: 1px solid #222; }
-        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; margin-bottom: 15px; color: white; }
-        .page-subtitle { color: #666; font-size: 15px; }
+  /* nav */
+  .nav{background:#0A0A0A;display:flex;justify-content:space-between;align-items:center;padding:24px 50px;}
+  .nav-brand{font-size:23px;font-weight:300;letter-spacing:4px;color:#fff;text-decoration:none;}
+  .nav-brand .v-accent{color:var(--accent);font-weight:700;}
+  .nav-links{display:flex;gap:38px;}
+  .nav-links a{color:#8a8a8a;text-decoration:none;font-size:14px;letter-spacing:1px;transition:color .3s;}
+  .nav-links a:hover{color:#fff;}
 
-        .tab-nav { background: #0A0A0A; display: flex; justify-content: center; border-bottom: 1px solid #222; }
-        .tab-btn { background: none; border: none; color: #666; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 16px 30px; cursor: pointer; transition: all 0.3s ease; border-bottom: 2px solid transparent; }
-        .tab-btn:hover { color: #CCC; }
-        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+  /* black banner masthead */
+  .hero{background:#0A0A0A;text-align:center;padding:44px 24px 46px;border-top:1px solid #1c1c1c;}
+  .hero .eyebrow{color:var(--accent);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;}
+  .hero h1{font-family:var(--serif);font-weight:400;font-size:38px;line-height:1.08;letter-spacing:.2px;color:#fff;}
+  .hero .sub{color:#b3ada3;font-size:15px;line-height:1.7;max-width:58ch;margin:16px auto 0;}
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+  /* tabs on cream, aligned to the content column */
+  .tabwrap{max-width:760px;margin:0 auto;padding:0 50px;}
+  .tabs{display:flex;gap:28px;border-bottom:1px solid var(--rule);}
+  .tab{padding:16px 2px 14px;font-size:13px;letter-spacing:.6px;color:var(--muted);text-decoration:none;border-bottom:1.5px solid transparent;margin-bottom:-1px;transition:color .3s;}
+  .tab:hover{color:var(--ink);}
+  .tab.active{color:var(--ink);border-bottom-color:var(--accent);}
 
-        .video-section { background: #FAFAFA; padding: 40px 20px; }
-        .video-container { max-width: 700px; margin: 0 auto; }
-        .group-header { text-align: center; margin-bottom: 25px; }
-        .group-title { font-size: 18px; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
-        .group-subtitle { color: #888; font-size: 13px; }
+  /* document body */
+  .doc{max-width:760px;margin:0 auto;padding:14px 50px 60px;}
+  section{padding:34px 0;}
+  h2{font-family:var(--serif);font-weight:400;font-size:23px;letter-spacing:-.2px;margin-bottom:16px;}
+  .doc p{font-size:15.5px;color:var(--soft);line-height:1.75;max-width:62ch;}
+  p + p{margin-top:12px;}
+  hr{border:0;border-top:1px solid var(--rule);}
 
-        .back-link { display: inline-block; margin-top: 30px; color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s ease; }
-        .back-link:hover { color: #C65D3B; }
+  /* one accent device: thin orange bar + black text */
+  .pull{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--ink);
+        border-left:2px solid var(--accent);padding-left:18px;margin-top:20px;max-width:none;}
 
-        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
-        .footer a { color: #C65D3B; text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
+  /* two forms */
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+  .lab{display:block;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
 
-        @media (max-width: 650px) {
-            .nav { padding: 20px; flex-direction: column; gap: 20px; }
-            .nav-links { gap: 25px; }
-            .page-title { font-size: 22px; }
-            .tab-btn { padding: 14px 16px; font-size: 10px; }
-        }
-    </style>
+  /* examples */
+  .ex{margin-top:26px;}
+  .ex:first-of-type{margin-top:6px;}
+  .ex h3{font-family:var(--serif);font-weight:400;font-size:18px;margin-bottom:14px;}
+  .row{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:baseline;padding:7px 0;border-top:1px solid var(--rule);}
+  .row .lab{margin:0;padding-top:1px;}
+  .row .val{font-size:15px;color:var(--ink);line-height:1.5;}
+  .gap{margin-top:16px;border-left:2px solid var(--accent);padding-left:18px;font-size:15px;color:var(--ink);line-height:1.65;max-width:none;}
+  .gap .glab{display:block;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--ink);margin-bottom:5px;}
+
+  /* answer stage */
+  .ask{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.45;color:var(--ink);
+       border-left:2px solid var(--accent);padding-left:18px;margin-top:18px;max-width:none;}
+  .ask-ans{font-size:15px;color:var(--muted);margin-top:12px;}
+
+  /* recap */
+  .recap{display:grid;grid-template-columns:1fr 1fr;gap:34px;border:1px solid var(--rule);padding:26px 28px;margin-top:20px;background:#fff;}
+  .recap p{font-size:14.5px;line-height:1.6;color:var(--soft);}
+  .recap .lab{color:var(--ink);}
+
+  /* bottom chrome */
+  .cta{background:#0A0A0A;text-align:center;padding:44px 20px;margin-top:24px;}
+  .cta p,.footer p{max-width:none;margin-left:auto;margin-right:auto;}
+  .cta a.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;padding:14px 30px;transition:background .3s;}
+  .cta a.btn:hover{background:#A04D2E;}
+  .cta .tag{color:#b0b0b0;font-size:14px;margin-top:14px;}
+  .cta .alt{display:block;margin-top:12px;color:#666;font-size:13px;}
+  .cta .alt a{color:#8a8a8a;text-decoration:none;}
+  .cta .alt a:hover{color:#fff;}
+  .footer{background:#0A0A0A;color:#555;text-align:center;padding:28px 20px;font-size:13px;}
+  .footer a{color:var(--accent);text-decoration:none;}
+
+  .stems{margin-top:14px;display:flex;flex-direction:column;gap:9px;}
+  .stems .q{font-family:var(--serif);font-style:italic;font-size:15px;color:#4a4744;border-left:2px solid #e6ddce;padding-left:16px;line-height:1.5;}
+  .points{margin-top:4px;display:flex;flex-direction:column;gap:10px;}
+  .points .pt{font-size:15px;color:var(--soft);line-height:1.6;padding-left:20px;position:relative;}
+  .points .pt:before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  @media(max-width:680px){
+    .nav{padding:18px 22px;flex-direction:column;gap:16px;}
+    .nav-links{gap:22px;}
+    .tabwrap,.doc{padding-left:22px;padding-right:22px;}
+    .hero h1{font-size:31px;}
+    .pair,.recap{grid-template-columns:1fr;gap:22px;}
+    .row{grid-template-columns:90px 1fr;gap:12px;}
+  }
+</style>
 </head>
-<body>
-    <nav class="nav">
-        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
-        <div class="nav-links">
-            <a href="../../about.html">About</a>
-            <a href="../../pricing.html">Pricing</a>
-            <a href="../../learn.html" class="active">Learn</a>
-            <a href="../../index.html#testimonials">Testimonials</a>
-        </div>
-    </nav>
 
-    <section class="hero">
-        <h1 class="page-title">PARADOX</h1>
-        <p class="page-subtitle">Two facts seem to conflict. The right answer lets both be true.</p>
+<body>
+  <nav class="nav">
+    <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+    <div class="nav-links">
+      <a href="../../about.html">About</a>
+      <a href="../../pricing.html">Pricing</a>
+      <a href="../../learn.html">Learn</a>
+      <a href="../../testimonials.html">Testimonials</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">Strategy</div>
+    <h1>Resolve, Reconcile, Explain</h1>
+    <p class="sub">Two facts seem to contradict each other. The right answer makes both true at the same time by adding the piece you were missing.</p>
+  </header>
+
+  <div class="tabwrap">
+    <nav class="tabs">
+      <a class="tab" href="lesson.html">Lesson</a>
+      <a class="tab active" href="cheatsheet.html">Cheat Sheet</a>
+    </nav>
+  </div>
+
+  <main class="doc">
+
+    <section>
+      <h2>What it asks</h2>
+      <div class="pair">
+        <div><span class="lab">Fact A</span><p>Something true.</p></div>
+        <div><span class="lab">Fact B</span><p>Also true, and it seems to clash with Fact A.</p></div>
+      </div>
+      <p class="pull">Find the answer that makes both facts true at the same time.</p>
     </section>
 
-    <div class="tab-nav">
-        <button class="tab-btn active" data-tab="lesson">Lesson</button>
-        <a href="flowchart.html" class="tab-btn" style="text-decoration:none;">Cheat Sheet</a>
-    </div>
+    <hr>
 
-    <div class="tab-content active" data-tab="lesson">
-        <section class="video-section">
-            <div class="video-container">
-                <div class="group-header">
-                    <h2 class="group-title">Paradox (Resolve, Reconcile, Explain)</h2>
-                    <p class="group-subtitle">Watch this first, then review the Cheat Sheet.</p>
-                </div>
-                <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/600986/1e75888f-290d-4dc7-9c3f-986a73c27ea2?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowfullscreen="true"></iframe></div>
-                <div style="text-align:center;"><a href="../../learn.html" class="back-link">Back to Learn</a></div>
-            </div>
-        </section>
-    </div>
+    <section>
+      <h2>Step 1: Spot the question</h2>
+      <p>In the question stem, look for the words resolve, reconcile, or explain. If one shows up, it's an RRE question.</p>
+      <div class="stems">
+        <div class="q">"...most helps to resolve the apparent paradox..."</div>
+        <div class="q">"...most helps to explain the discrepancy..."</div>
+        <div class="q">"...best reconciles the conflicting facts..."</div>
+        <div class="q">"...most helps to explain how both X and Y can be true..."</div>
+      </div>
+    </section>
 
-    <footer class="footer">
-        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
-    </footer>
+    <hr>
 
-    <script>
-        document.querySelectorAll('.tab-btn[data-tab]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-                document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-                btn.classList.add('active');
-                document.querySelector('.tab-content[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
-            });
-        });
-    </script>
+    <section>
+      <h2>Step 2: Read the stimulus</h2>
+      <p>There's no argument here, just two facts. Note both, and state the contradiction as clearly as you can.</p>
+      <p class="pull">The clearer the contradiction, the easier the rest gets.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Step 3: Test each answer</h2>
+      <p>Go choice by choice. Stay flexible: the right answer may not look the way you expected, so test every option instead of locking onto a prediction.</p>
+      <p class="ask">If this answer were true, could it resolve the contradiction?</p>
+      <p class="ask-ans">Pick the one that needs the fewest extra assumptions.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>The right answer</h2>
+      <div class="points">
+        <div class="pt">Makes both facts true at the same time.</div>
+        <div class="pt">Adds a missing piece you didn't know about.</div>
+        <div class="pt">Doesn't deny either fact.</div>
+      </div>
+      <p class="pull">If both facts can sit side by side without contradiction, that's your answer.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Common traps</h2>
+      <div class="row"><span class="lab">Denies a fact</span><span class="val">Says one of the two facts isn't really true.</span></div>
+      <div class="row"><span class="lab">Partial explanation</span><span class="val">Explains a piece of the puzzle, but not all of it.</span></div>
+      <div class="row"><span class="lab">Blocks explaining</span><span class="val">A vague claim that prevents explaining anything.</span></div>
+      <div class="row"><span class="lab">Deepens it</span><span class="val">Makes the contradiction harder to reconcile.</span></div>
+      <div class="row"><span class="lab">New puzzle</span><span class="val">Adds a new contradiction on top.</span></div>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Method</h2>
+      <div class="row"><span class="lab">Step 1</span><span class="val">Spot the stem: resolve, reconcile, or explain.</span></div>
+      <div class="row"><span class="lab">Step 2</span><span class="val">Read the stimulus: both facts, and the contradiction.</span></div>
+      <div class="row"><span class="lab">Step 3</span><span class="val">Test each answer: if it's true, does it resolve the contradiction?</span></div>
+      <p class="pull">The right answer makes both facts true at the same time.</p>
+    </section>
+
+  </main>
+
+  <section class="cta">
+    <a class="btn" href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall">Book a Free 30-Min Session</a>
+    <p class="tag">Talk to me about anything LSAT.</p>
+    <p class="alt">or <a href="../../pricing.html">view pricing</a></p>
+  </section>
+
+  <footer class="footer">
+    <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script data-cfasync="false" src="/auth.js"></script>
 </body>
 </html>
-```
