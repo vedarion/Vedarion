@@ -17,6 +17,7 @@
         .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
         .breadcrumb a { color: #888; text-decoration: none; }
         .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #555; }
         .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
         .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
         .flowchart-container { max-width: 500px; width: 100%; }
@@ -26,10 +27,13 @@
         .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
         .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .step-content { font-size: 13px; color: #666; line-height: 1.6; }
+        .step-content .lead { margin-bottom: 6px; }
         .step-content ul { list-style: none; margin-top: 8px; }
         .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
-        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
+        .step-content li:before { content: "\2022"; position: absolute; left: 0; color: #C9C0B2; }
+        .step-content .stem { font-style: italic; color: #555; }
+        .connector { display: flex; justify-content: center; padding: 7px 0; }
+        .connector:before { content: ""; width: 1px; height: 22px; background: #D8D2C5; }
         .final-step { background: #0A0A0A; border: none; text-align: center; }
         .final-step .step-title { margin-bottom: 5px; color: white; }
         .final-step .step-content { color: #888; }
@@ -55,7 +59,7 @@
     </nav>
 
     <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Agree / Disagree</div>
+        <div class="breadcrumb"><a href="../../Learn.html">Learn</a><span>&rsaquo;</span>Agree / Disagree</div>
         <h1 class="page-title">Agree / Disagree</h1>
     </section>
 
@@ -64,45 +68,76 @@
             <div class="flowchart">
                 <div class="step">
                     <div class="step-number">STEP 1</div>
+                    <div class="step-title">Spot the Question Stem</div>
+                    <div class="step-content">
+                        <p class="lead">Two speakers, and the stem asks what they agree or disagree on. Look for:</p>
+                        <ul>
+                            <li class="stem">"...disagree about whether..."</li>
+                            <li class="stem">"the point at issue between them is..."</li>
+                            <li class="stem">"...committed to disagreeing about..."</li>
+                            <li class="stem">Agree variant: "...most likely to agree that..."</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="connector"></div>
+
+                <div class="step">
+                    <div class="step-number">STEP 2</div>
                     <div class="step-title">Read Speaker 1's Argument</div>
                     <div class="step-content">
                         <ul>
                             <li>Analyze as you read</li>
-                            <li>Identify main claim and reasoning</li>
+                            <li>Identify premise and conclusion</li>
                         </ul>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="connector"></div>
+
                 <div class="step highlight">
-                    <div class="step-number">STEP 2</div>
+                    <div class="step-number">STEP 3</div>
                     <div class="step-title">Test Answers Through Speaker 1's Lens</div>
                     <div class="step-content">
                         <ul>
-                            <li>Ask: Agree or Disagree?</li>
+                            <li>Ask: agree or disagree?</li>
                             <li>Use MSS-style reasoning</li>
-                            <li>If Out of Scope → Eliminate</li>
-                            <li>Record Agree / Disagree for each</li>
+                            <li>If out of scope, eliminate</li>
+                            <li>Record agree / disagree for each</li>
                         </ul>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="connector"></div>
+
                 <div class="step">
-                    <div class="step-number">STEP 3</div>
+                    <div class="step-number">STEP 4</div>
                     <div class="step-title">Read Speaker 2's Argument</div>
                     <div class="step-content">
                         <ul>
                             <li>Only if more than one choice remains</li>
-                            <li>Only evaluate remaining choices from Step 2</li>
+                            <li>Identify premise and conclusion</li>
                         </ul>
                     </div>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
+
+                <div class="connector"></div>
+
+                <div class="step">
+                    <div class="step-number">STEP 5</div>
+                    <div class="step-title">Decide From the Leftover Answers</div>
+                    <div class="step-content">
+                        <ul>
+                            <li>Only revisit the answers you marked agree or disagree in Step 3</li>
+                            <li>Skip the ones eliminated as out of scope</li>
+                            <li>Record agree / disagree for each leftover answer</li>
+                            <li>Pick the appropriate one</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="connector"></div>
+
                 <div class="step final-step">
                     <div class="step-title">Correct Answer Check</div>
                     <div class="step-content">
@@ -116,7 +151,7 @@
     <section class="cta-section">
         <p>Want to work through this together?</p>
         <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
+        <a href="../../Learn.html" class="cta-button secondary">Back to Learn</a>
     </section>
 
     <footer class="footer">
