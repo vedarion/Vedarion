@@ -10,7 +10,7 @@
     --cream: #FAF8F5; --cream-warm: #FDF5F1;
     --orange: #C65D3B; --orange-dark: #A34A2D; --orange-line: #E8D5CC;
     --ink: #2B2B2B; --ink-soft: #6B6560; --ink-faint: #9B948D; --line: #E8E2DB;
-    --green: #3E7A52; --red: #A33B3B;
+    --green: #566B4C; --sage: #566B4C; --red: #A33B3B;
     --hl-yellow: #FCE9A8; --hl-orange: #F8D3BC; --hl-blue: #CFE3F5;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,7 +55,7 @@
   .pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--line); color: var(--ink-soft); white-space: nowrap; }
   .pill.completed { border-color: var(--green); color: var(--green); }
   .pill.in_progress { border-color: var(--orange); color: var(--orange-dark); }
-  .pill.reviewed { border-color: var(--green); color: var(--green); background: #EDF5EF; }
+  .pill.reviewed { border-color: var(--green); color: var(--green); background: #EEF1E8; }
 
   .toolbar { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
   .tool { padding: 6px 11px; border-radius: 8px; border: 1px solid var(--line); background: #fff; font-size: 12.5px; cursor: pointer; color: var(--ink-soft); }
@@ -103,7 +103,7 @@
   .optbtn:hover { border-color: var(--orange); }
   .optbtn.picked { border: 1.5px solid var(--orange); background: var(--cream-warm); }
   .optbtn.elim { opacity: 0.38; text-decoration: line-through; }
-  .optbtn.correct { border: 1.5px solid var(--green); background: #EDF5EF; }
+  .optbtn.correct { border: 1.5px solid var(--green); background: #EEF1E8; }
   .optbtn.wrong { border: 1.5px solid var(--red); background: #FAEDED; }
   .optbtn.readonly { cursor: default; }
   .elimbtn { border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; padding: 0 12px; font-size: 13px; color: var(--ink-soft); }
@@ -228,6 +228,37 @@
   .ready-title { font-size: 14px; font-weight: 600; color: var(--ink); }
   .ready-meta { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
   .ready-banner .ready-start { flex-shrink: 0; }
+
+  /* ================= ELEGANT PASS ================= */
+  .card { background: #FFFDFB; border: none; border-radius: 14px; padding: 28px 32px; }
+  h1 { font-family: Georgia, serif; font-size: 24px; font-weight: 400; letter-spacing: 0.2px; color: var(--ink); margin-bottom: 0; }
+  .section-rule { width: 32px; height: 2px; background: var(--orange); margin: 10px 0 20px; }
+  .sub, .panel-sub { color: var(--ink-soft); font-size: 13.5px; line-height: 1.65; }
+  .panel-sub { margin-bottom: 18px; }
+  label { font-size: 10.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 7px; }
+  select, input[type=email], input[type=password] { border: 1px solid #ECE7E0; border-radius: 8px; }
+  .btn { letter-spacing: 0.3px; padding: 11px 22px; }
+  .btn.secondary { color: var(--ink); border-color: var(--line); }
+  .btn.secondary:hover { background: var(--cream-warm); border-color: var(--ink-soft); }
+  .qident { color: var(--ink-soft); }
+
+  .create-tabs { display: inline-flex; gap: 4px; background: var(--cream); border: 1px solid var(--line); border-radius: 9px; padding: 3px; margin-bottom: 22px; }
+  .create-tab { font-size: 12.5px; padding: 7px 16px; border-radius: 7px; border: none; background: none; color: var(--ink-soft); font-weight: 600; cursor: pointer; }
+  .create-tab.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+
+  .status { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+  .status .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--ink-faint); }
+  .status.assigned .dot { background: var(--orange); }
+  .status.in_progress .dot { background: #D8A657; }
+  .status.completed .dot, .status.reviewed .dot { background: var(--sage); }
+
+  .drillrow { padding: 15px 2px; }
+  .drillrow:hover { background: transparent; }
+
+  .ready-banner { border: none; border-top: 1px solid #EFEAE3; background: none; border-radius: 0; padding: 18px 0 4px; margin-top: 18px; gap: 13px; }
+  .ready-check { width: auto; height: auto; border-radius: 0; background: none; color: var(--sage); font-size: 17px; }
+  .ready-title { font-weight: 400; }
+  .ready-meta { color: var(--ink-faint); }
 </style>
 </head>
 <body data-ts="m">
@@ -270,10 +301,18 @@
 
   <!-- DRILL LIST -->
   <div id="listView" class="hidden">
-    <div class="card" id="selfServeCard">
-      <h1 style="font-size:18px;">Create your own drill</h1>
-      <p class="sub">Pick a question type and go. Questions you have already seen are never repeated.</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:flex-end;">
+    <div class="card" id="createCard">
+      <h1>Create a drill</h1>
+      <div class="section-rule"></div>
+      <div class="create-tabs" id="createTabs">
+        <button type="button" class="create-tab on" data-tab="quick">Quick drill</button>
+        <button type="button" class="create-tab" data-tab="section">Section</button>
+        <button type="button" class="create-tab" data-tab="targeted">Targeted</button>
+      </div>
+
+      <div class="create-panel" id="panelQuick">
+      <p class="panel-sub">Pick a question type and go. Questions you have already seen are never repeated.</p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end;">
         <div>
           <label for="ssType">Question type</label>
           <select id="ssType"></select>
@@ -295,13 +334,12 @@
         </div>
         <button class="btn" id="ssCreateBtn">Create drill</button>
       </div>
-      <div id="ssMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
-    </div>
+      <div id="ssMsg" class="sub" style="margin-top:12px; min-height:18px;"></div>
+      </div>
 
-    <div class="card" id="sectionCard">
-      <h1 style="font-size:18px;">Section practice</h1>
-      <p class="sub">A full section, real order, from a test you have not seen here. Full timed tests stay on LawHub.</p>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:flex-end;">
+      <div class="create-panel hidden" id="panelSection">
+      <p class="panel-sub">A full section, real order, from a test you have not seen here. Full timed tests stay on LawHub.</p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end;">
         <div>
           <label for="secType">Section</label>
           <select id="secType">
@@ -320,12 +358,11 @@
         </div>
         <button class="btn" id="secCreateBtn">Start section</button>
       </div>
-      <div id="secMsg" class="sub" style="margin-top:10px; min-height:18px;"></div>
-    </div>
+      <div id="secMsg" class="sub" style="margin-top:12px; min-height:18px;"></div>
+      </div>
 
-    <div class="card hidden" id="targetedCard">
-      <h1 style="font-size:18px;">Build a targeted drill</h1>
-      <p class="sub">Find questions or a passage · view · add. Only you see this.</p>
+      <div class="create-panel hidden" id="panelTargeted">
+      <p class="panel-sub">Find questions or a passage · view · add. Only you see this.</p>
 
       <div class="tgmode" id="tgModeToggle" style="display:inline-flex; gap:4px; margin-top:14px; background:var(--cream); border:1px solid var(--line); border-radius:9px; padding:3px;">
         <button type="button" class="tgmode-btn on" data-mode="LR" style="font-size:12.5px; padding:6px 16px; border-radius:7px; border:none; background:var(--orange); color:#fff; font-weight:600; cursor:pointer;">LR questions</button>
@@ -375,6 +412,7 @@
         <button class="btn-ink" id="tgCreateBtn" disabled>Create drill</button>
       </div>
       <div class="sub" id="tgMsg" style="margin-top:8px; min-height:18px;"></div>
+      </div>
     </div>
 
     <div class="qmodal hidden" id="qModal">
@@ -392,6 +430,7 @@
 
     <div class="card">
       <h1>Your drills</h1>
+      <div class="section-rule"></div>
       <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
         <label for="previewStudent" style="display:inline; margin-right:8px;">Viewing as:</label>
         <select id="previewStudent"></select>
@@ -707,7 +746,6 @@ let tgMode = 'LR';
 
 function tgInit() {
   if (!isAdmin) return;
-  $('targetedCard').classList.remove('hidden');
   const ts = $('tgType');
   (window.__qtDimValues || []).forEach(v => {
     const o = document.createElement('option');
@@ -1201,6 +1239,7 @@ async function boot() {
 
   $('authView').classList.add('hidden');
   $('listView').classList.remove('hidden');
+  document.querySelectorAll('.create-tab').forEach(b => b.addEventListener('click', () => createSetTab(b.dataset.tab)));
 
   await loadQuestionTypeValues();
 
@@ -1229,6 +1268,7 @@ async function boot() {
   } else {
     viewingStudentId = myStudentIds[0] || null;
     readOnly = false;
+    createTabsUpdate();
   }
   loadDrillList();
   loadSelfServeTypes();
@@ -1245,13 +1285,10 @@ function setViewingStudent(sid) {
     window.__viewName = name;
     $('viewBarText').textContent = 'Viewing as ' + name + ' — read only. Nothing you click is submitted for them.';
     bar.classList.add('on');
-    $('selfServeCard').classList.add('hidden');
-    $('sectionCard').classList.add('hidden');
   } else {
     bar.classList.remove('on');
-    $('selfServeCard').classList.remove('hidden');
-    $('sectionCard').classList.remove('hidden');
   }
+  createTabsUpdate();
 }
 
 /* ---------- QUESTION TYPES ---------- */
@@ -1363,7 +1400,7 @@ async function loadDrillList() {
         <div>${escapeHtml(d.title)} · ${d.question_count} questions${d.is_timed ? ' · timed' : ''}</div>
         <div class="meta">${d.created_by === 'student' ? 'Created by you' : 'Assigned by your tutor'} · ${when}${wsCount ? ' · ' + wsCount + ' worksheet' + (wsCount > 1 ? 's' : '') : ''}</div>
       </div>
-      <span class="pill ${statusLabel === 'reviewed' ? 'reviewed' : d.status}">${statusLabel.replace('_',' ')}</span>`;
+      <span class="status ${statusLabel === 'reviewed' ? 'reviewed' : d.status}"><span class="dot"></span>${statusLabel.replace('_',' ')}</span>`;
     row.addEventListener('click', () => openDrill(d));
     list.appendChild(row);
   });
@@ -1405,10 +1442,38 @@ function renderReadyBanner(container, opts) {
   text.appendChild(title); text.appendChild(meta);
   const btn = document.createElement('button');
   btn.className = 'btn ready-start';
-  btn.textContent = opts.multi ? 'Open first drill \u2192' : 'Start drill \u2192';
+  btn.textContent = opts.multi ? 'Open first drill' : 'Start drill';
   btn.addEventListener('click', () => startCreatedDrill(opts.drillId, opts.studentId));
   banner.appendChild(check); banner.appendChild(text); banner.appendChild(btn);
   container.appendChild(banner);
+}
+
+/* ---------- CREATE-CARD TABS ----------
+   One card, three modes. Quick + Section are the student's own self-serve
+   tools (hidden when a tutor is previewing another student, read-only);
+   Targeted is tutor-only. The active tab always falls back to the first one
+   that's actually available. */
+function createSetTab(tab) {
+  document.querySelectorAll('.create-tab').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  $('panelQuick').classList.toggle('hidden', tab !== 'quick');
+  $('panelSection').classList.toggle('hidden', tab !== 'section');
+  $('panelTargeted').classList.toggle('hidden', tab !== 'targeted');
+}
+
+function createTabsUpdate() {
+  const showSelf = !readOnly;
+  const showTargeted = isAdmin;
+  const qb = document.querySelector('.create-tab[data-tab="quick"]');
+  const sb = document.querySelector('.create-tab[data-tab="section"]');
+  const tb = document.querySelector('.create-tab[data-tab="targeted"]');
+  if (qb) qb.classList.toggle('hidden', !showSelf);
+  if (sb) sb.classList.toggle('hidden', !showSelf);
+  if (tb) tb.classList.toggle('hidden', !showTargeted);
+  const order = [];
+  if (showSelf) order.push('quick', 'section');
+  if (showTargeted) order.push('targeted');
+  const current = document.querySelector('.create-tab.on:not(.hidden)');
+  if (!current) createSetTab(order[0] || 'quick');
 }
 
 /* ---------- ITEM IDENTITY ---------- */
