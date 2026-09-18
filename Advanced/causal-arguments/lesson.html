@@ -56,6 +56,31 @@
             font-size: 15px;
         }
 
+        .tab-nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 16px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn:hover { color: #CCC; }
+        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
         .video-section {
             background: #FAFAFA;
             padding: 40px 20px;
@@ -105,6 +130,7 @@
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
             .page-title { font-size: 22px; }
+            .tab-btn { padding: 14px 16px; font-size: 10px; }
         }
     </style>
 </head>
@@ -124,20 +150,38 @@
         <p class="page-subtitle">How arguments move from what they see to what caused it</p>
     </section>
 
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="lesson">Lesson</button>
+        <a href="cheatsheet.html" class="tab-btn" style="text-decoration:none;">Cheat Sheet</a>
+    </div>
+
+    <div class="tab-content active" data-tab="lesson">
     <section class="video-section">
         <div class="video-container">
             <div class="group-header">
                 <h2 class="group-title">Causal Arguments</h2>
-                <p class="group-subtitle">Watch this first, then head back to Learn.</p>
+                <p class="group-subtitle">Watch this first. Then review the Cheat Sheet tab.</p>
             </div>
             <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/600986/69b35b81-49db-44ee-8b77-87ef7777f2ae?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowfullscreen="true"></iframe></div>
 
             <a href="../../learn.html" class="back-link">← Back to Learn</a>
         </div>
     </section>
+    </div>
 
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
+
+    <script>
+        document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector('.tab-content[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>

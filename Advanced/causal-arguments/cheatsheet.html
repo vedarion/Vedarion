@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Arguments — Cheat Sheet - VEDARION</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+    background:#FAFAFA;color:#0A0A0A;min-height:100vh;
+  }
+  .nav{background:#0A0A0A;display:flex;justify-content:space-between;align-items:center;padding:25px 50px;border-bottom:1px solid #222;}
+  .nav-brand{font-size:24px;font-weight:300;letter-spacing:4px;color:#fff;text-decoration:none;}
+  .nav-brand .v-accent{color:#C65D3B;font-weight:700;}
+  .nav-links{display:flex;gap:40px;}
+  .nav-links a{color:#888;text-decoration:none;font-size:14px;letter-spacing:1px;transition:color .3s;}
+  .nav-links a:hover,.nav-links a.active{color:#fff;}
+  .hero{background:#0A0A0A;padding:26px 20px 30px;text-align:center;}
+  .back-link{color:#888;text-decoration:none;font-size:13px;letter-spacing:.5px;transition:color .3s;}
+  .back-link:hover{color:#fff;}
+  .page-title{font-size:28px;font-weight:400;letter-spacing:4px;color:#fff;margin-top:14px;}
+  .page-subtitle{color:#9a9a9a;font-size:14px;margin-top:10px;}
+  .wrap{max-width:860px;margin:0 auto;padding:44px 24px 80px;}
+  .section-label{color:#C65D3B;font-size:12px;font-weight:700;letter-spacing:3px;}
+  .section-heading{font-size:21px;font-weight:500;margin:8px 0 20px;}
+  .block{margin-bottom:46px;}
+  .note{font-size:13px;color:#777;margin-top:12px;font-style:italic;}
+  .callout{background:#fff;border:1px solid #eee;border-radius:10px;padding:20px 22px;}
+  .callout p{font-size:14.5px;color:#444;line-height:1.6;}
+  .callout .big{font-size:15.5px;color:#0A0A0A;font-weight:600;margin-bottom:6px;}
+  .lang{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .lang .box{background:#fff;border:1px solid #eee;border-radius:10px;padding:18px 20px;}
+  .lang h3{font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:12px;}
+  .lang .cor h3{color:#6a6a6a;}
+  .lang .cau h3{color:#C65D3B;}
+  .lang .words{display:flex;flex-wrap:wrap;gap:8px;}
+  .lang .w{background:#f1f1f1;color:#555;border-radius:16px;padding:5px 12px;font-size:12.5px;}
+  .lang .cau .w{background:#F5F1EA;color:#8a4a30;}
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .pillar{background:#fff;border:1px solid #eee;border-radius:10px;padding:16px;}
+  .pillar .n{width:28px;height:28px;background:#F5F1EA;color:#C65D3B;font-weight:700;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;margin-bottom:10px;}
+  .pillar h4{font-size:13.5px;font-weight:600;margin-bottom:5px;}
+  .pillar p{font-size:12.5px;color:#666;line-height:1.45;}
+  .sw{background:#fff;border:1px solid #eee;border-radius:10px;overflow:hidden;}
+  .sw-head{display:grid;grid-template-columns:1fr 1fr;}
+  .sw-head div{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:2px;}
+  .sw-head .s{color:#3f6d4e;background:#f4f8f5;}
+  .sw-head .w{color:#a63d2e;background:#faf3f1;}
+  .sw-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #f0f0f0;}
+  .sw-row>div{padding:14px 20px;}
+  .sw-row .s{border-right:1px solid #f0f0f0;}
+  .cell-title{font-size:14px;font-weight:600;margin-bottom:3px;}
+  .cell-sub{font-size:12.5px;color:#666;line-height:1.45;}
+  .tag{display:inline-block;margin-top:7px;font-size:10.5px;letter-spacing:1px;font-weight:700;color:#C65D3B;background:#F5F1EA;padding:2px 8px;border-radius:5px;}
+  .dash{color:#bbb;font-size:14px;}
+  .mini{background:#fff;border:1px solid #eee;border-left:3px solid #d8cfc2;border-radius:8px;padding:16px 18px;margin-top:14px;}
+  .mini .lead{font-size:13px;font-weight:600;margin-bottom:6px;}
+  .mini p{font-size:13px;color:#555;line-height:1.55;}
+  .mini .r{font-size:12.5px;color:#444;margin-top:6px;}
+  .listcard{background:#fff;border:1px solid #eee;border-radius:10px;padding:18px 22px;}
+  .listcard ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .listcard li{font-size:14px;color:#444;line-height:1.5;padding-left:18px;position:relative;}
+  .listcard li:before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:#C65D3B;opacity:.55;}
+  .listcard li b{color:#0A0A0A;font-weight:600;}
+  .takeaway{background:#F5F1EA;border:1px solid #e6ddce;border-left:4px solid #C65D3B;border-radius:10px;padding:22px 24px;}
+  .takeaway .t-label{color:#C65D3B;font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:10px;}
+  .takeaway p{font-size:14.5px;line-height:1.6;color:#2a2a2a;}
+  .takeaway .foot{margin-top:12px;font-size:13.5px;color:#5a5147;font-weight:600;}
+  .defs{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .defcard{background:#fff;border:1px solid #eee;border-radius:10px;padding:18px 20px;}
+  .defcard h3{font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:8px;color:#C65D3B;}
+  .defcard p{font-size:13.5px;color:#555;line-height:1.55;}
+  @media(max-width:720px){
+    .nav{padding:18px 22px;flex-direction:column;gap:14px;}
+    .nav-links{gap:22px;}
+    .lang,.pillars,.defs{grid-template-columns:1fr;}
+    .sw-head,.sw-row{grid-template-columns:1fr;}
+    .sw-row .s{border-right:none;border-bottom:1px solid #f0f0f0;}
+  }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+    <div class="nav-links">
+      <a href="../../about.html">About</a>
+      <a href="../../pricing.html">Pricing</a>
+      <a href="../../learn.html" class="active">Learn</a>
+      <a href="../../index.html#testimonials">Testimonials</a>
+    </div>
+  </nav>
+  <section class="hero">
+    <a href="lesson.html" class="back-link">Back to lesson</a>
+    <h1 class="page-title">CAUSAL ARGUMENTS</h1>
+    <p class="page-subtitle">Cheat Sheet</p>
+  </section>
+  <div class="wrap">
+
+    <div class="block">
+      <div class="section-label">START HERE</div>
+      <h2 class="section-heading">Correlation and causation</h2>
+      <div class="defs">
+        <div class="defcard">
+          <h3>CORRELATION</h3>
+          <p>Two things tend to show up together. For example: people eat more ice cream during summer. Summer and ice cream are correlated.</p>
+        </div>
+        <div class="defcard">
+          <h3>CAUSATION</h3>
+          <p>One thing actually produces the other. The cause brings the effect about.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">THE CORE PROBLEM</div>
+      <h2 class="section-heading">Correlation is not causation</h2>
+      <div class="callout">
+        <p class="big">The problem that shows up most often: correlation is not causation.</p>
+        <p>Two things happening together doesn't mean one caused the other. In our example above, just because summer and ice cream are correlated, happening together, doesn't mean summer caused the increase in ice cream usage. Maybe it's being out of school that causes kids to have the time to eat more ice cream (alternate cause).</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">SPOT THE LANGUAGE</div>
+      <h2 class="section-heading">Correlation words vs causation words</h2>
+      <div class="lang">
+        <div class="box cor">
+          <h3>CORRELATION (usually the premise)</h3>
+          <div class="words">
+            <span class="w">associated with</span><span class="w">linked to</span><span class="w">connected to</span>
+            <span class="w">more common in</span><span class="w">tends to occur with</span><span class="w">found together with</span>
+          </div>
+        </div>
+        <div class="box cau">
+          <h3>CAUSATION (usually the conclusion)</h3>
+          <div class="words">
+            <span class="w">caused by</span><span class="w">leads to</span><span class="w">results in</span>
+            <span class="w">due to</span><span class="w">responsible for</span><span class="w">produces / makes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">THE FRAMEWORK</div>
+      <h2 class="section-heading">What supports a causal claim</h2>
+      <div class="pillars">
+        <div class="pillar"><div class="n">1</div><h4>Correlation</h4><p>Two things happen together in a predictable pattern.</p></div>
+        <div class="pillar"><div class="n">2</div><h4>Timeline</h4><p>The cause comes before the effect.</p></div>
+        <div class="pillar"><div class="n">3</div><h4>Mechanism</h4><p>A plausible pathway from cause to effect.</p></div>
+        <div class="pillar"><div class="n">4</div><h4>Block alternate causes</h4><p>Rule out other possible explanations.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">STRENGTHEN vs WEAKEN</div>
+      <h2 class="section-heading">Same four pillars, opposite directions</h2>
+      <div class="sw">
+        <div class="sw-head">
+          <div class="s">STRENGTHEN</div>
+          <div class="w">WEAKEN</div>
+        </div>
+        <div class="sw-row">
+          <div class="s"><div class="cell-title">Correlation</div><div class="cell-sub">The same pattern shows up elsewhere.</div></div>
+          <div class="w"><div class="cell-title">No additional correlation</div><div class="cell-sub">The correlation doesn't appear anywhere else.</div></div>
+        </div>
+        <div class="sw-row">
+          <div class="s"><div class="cell-title">Timeline (cause first)</div><div class="cell-sub">The cause comes before the effect.</div></div>
+          <div class="w"><div class="cell-title">Timeline reversed</div><div class="cell-sub">The effect came before the cause.</div></div>
+        </div>
+        <div class="sw-row">
+          <div class="s"><div class="cell-title">Mechanism</div><div class="cell-sub">A plausible pathway from cause to effect.</div></div>
+          <div class="w"><div class="cell-title">No mechanism</div><div class="cell-sub">The cause couldn't have produced the effect.</div></div>
+        </div>
+        <div class="sw-row">
+          <div class="s"><div class="cell-title">Block alternate causes</div><div class="cell-sub">Other possible causes are ruled out.</div><span class="tag">MOST COMMON STRENGTHENER</span></div>
+          <div class="w"><div class="cell-title">Alternate cause</div><div class="cell-sub">Something else could explain the effect.</div><span class="tag">MOST COMMON WEAKENER</span></div>
+        </div>
+        <div class="sw-row">
+          <div class="s"><span class="dash">—</span></div>
+          <div class="w"><div class="cell-title">Reverse causation</div><div class="cell-sub">B might be causing A instead of A causing B.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">NECESSARY ASSUMPTION</div>
+      <h2 class="section-heading">What the argument assumes</h2>
+      <div class="listcard">
+        <ul>
+          <li><b>Correlation.</b> The pattern would replicate.</li>
+          <li><b>Timeline.</b> The cause came before the effect.</li>
+          <li><b>Mechanism.</b> There's a plausible pathway.</li>
+          <li><b>No alternate cause.</b> Nothing else explains it.</li>
+        </ul>
+        <p class="note">NA assumes the strengthen side. Negate any one and the argument collapses.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">FLAW</div>
+      <h2 class="section-heading">What the argument missed</h2>
+      <div class="listcard">
+        <ul>
+          <li><b>Correlation as causation.</b> The umbrella flaw on causal arguments.</li>
+          <li><b>Timeline reversed.</b> Fails to consider the effect came first.</li>
+          <li><b>Alternate cause.</b> Fails to consider another explanation.</li>
+          <li><b>Reverse causation.</b> Fails to consider B might cause A.</li>
+        </ul>
+        <p class="note">These are the trap-answer phrasings on causal Flaw questions.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">WATCH OUT</div>
+      <h2 class="section-heading">Outliers don't weaken</h2>
+      <div class="listcard">
+        <ul>
+          <li>Causal claims are statistical, not conditional.</li>
+          <li>"Some smokers don't get cancer" doesn't weaken "smoking causes cancer."</li>
+          <li><b>Anchor language:</b> tends to, generally, usually, increases the likelihood.</li>
+          <li><b>Trap on Weaken:</b> "Person X did the cause but didn't get the effect." Usually wrong.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="section-label">ONE MORE THING</div>
+      <h2 class="section-heading">Chaining causal claims</h2>
+      <div class="callout">
+        <p class="big">If A causes B, and B causes C, then A causes C.</p>
+        <p>Smoking causes tar in the lungs. Tar in the lungs causes cancer. So smoking causes cancer.</p>
+        <p class="note">Caveat: each link has to hold. The chain is only as strong as its weakest link.</p>
+      </div>
+    </div>
+
+    <div class="block" style="margin-bottom:0;">
+      <div class="takeaway">
+        <div class="t-label">RECAP</div>
+        <p>Test every causal claim against four pillars: correlation, timeline, mechanism, and blocked alternate causes. Strengthen shores one up. Weaken breaks one (or reverses the causation). Outliers don't weaken, because causal claims are about tendencies, not absolutes.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
