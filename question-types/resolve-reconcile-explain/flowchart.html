@@ -1,9 +1,98 @@
+# Task: Add the Paradox (Resolve, Reconcile, Explain) lesson video
+
+Work in the VEDARION site repo (vedarion/Vedarion). One new file, two edits in learn.html.
+The folder question-types/resolve-reconcile-explain/ already exists (it has flowchart.html).
+
+============================================================
+STEP 1 - CREATE THE LESSON FILE (verbatim, do not edit)
+============================================================
+Create this file exactly as given in the HTML block at the BOTTOM of this brief:
+
+    question-types/resolve-reconcile-explain/lesson.html
+
+Write it byte-for-byte. Do NOT reformat or restyle. Its siblings in that folder are
+flowchart.html (the Cheat Sheet the page links to) - confirm you are in the right folder.
+
+============================================================
+STEP 2 - GIVE THE PARADOX CARD A LESSON ROW (learn.html)
+============================================================
+Open learn.html. Find the card with  data-card-key="resolve-reconcile-explain"
+(in the Core path, "Complete Your Toolkit" section). Right now it is header-only:
+
+    <li class="lesson-item multi-video" data-card-key="resolve-reconcile-explain">
+        <div class="qt-card-header">
+            <div class="qt-card-title">Paradox (Resolve &amp; Explain)</div>
+            <div class="qt-card-resources">
+                <a href="question-types/resolve-reconcile-explain/flowchart.html">Cheat Sheet</a>
+            </div>
+        </div>
+    </li>
+
+Replace that entire <li> with this (adds the mastery stamp + a Lesson video row):
+
+    <li class="lesson-item multi-video" data-card-key="resolve-reconcile-explain">
+        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
+        <div class="qt-card-header">
+            <div class="qt-card-title">Paradox (Resolve &amp; Explain)</div>
+            <div class="qt-card-resources">
+                <a href="question-types/resolve-reconcile-explain/flowchart.html">Cheat Sheet</a>
+            </div>
+        </div>
+        <div class="qt-card-body">
+            <a href="question-types/resolve-reconcile-explain/lesson.html" class="video-row" data-slug="resolve-reconcile-explain-lesson">
+                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                <div class="video-body">
+                    <div class="video-title">Lesson</div>
+                </div>
+                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+        </div>
+    </li>
+
+============================================================
+STEP 3 - TURN ON ITS MASTERY SLUG (learn.html, WALL_DATA)
+============================================================
+Still in learn.html, in the WALL_DATA object (Core > TOOLKIT section), find:
+
+    { key: 'resolve-reconcile-explain', name: 'Paradox', slugs: [] },
+
+and change it to:
+
+    { key: 'resolve-reconcile-explain', name: 'Paradox', slugs: ['resolve-reconcile-explain-lesson'] },
+
+============================================================
+CONSTRAINTS
+============================================================
+- Only: the new lesson.html + those two spots in learn.html. Nothing else.
+- Do not touch the other Toolkit cards (evaluate, agree-disagree, parallel-reasoning) -
+  they stay header-only.
+- Keep data-card-key stable. The data-slug on the row must match WALL_DATA exactly:
+  resolve-reconcile-explain-lesson.
+- This card has one video row, so the first-row "More/Less" pill logic correctly adds
+  NO pill (it only triggers at 2+ rows) - just the visible Lesson row. Do not add a pill.
+- The card sits in the data-requires-auth="free" Toolkit section; leave that gating as is.
+- No arrows added, no em dashes.
+
+============================================================
+VERIFY, then stop
+============================================================
+- The Paradox card shows a Lesson row that opens the new lesson page; the video plays;
+  the Cheat Sheet tab on the lesson opens flowchart.html.
+- Completing it toggles the checkmark and lights the Paradox slot on the mastery wall.
+- Show me a diff of learn.html. Do NOT commit, push, or deploy.
+
+============================================================
+FILE CONTENT - question-types/resolve-reconcile-explain/lesson.html (write exactly)
+============================================================
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resolve / Reconcile / Explain - VEDARION</title>
+    <title>Paradox (Resolve, Reconcile, Explain) - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
@@ -13,158 +102,88 @@
         .nav-links { display: flex; gap: 40px; }
         .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
         .nav-links a:hover, .nav-links a.active { color: white; }
-        .hero { background: #0A0A0A; padding: 30px 20px 40px; text-align: center; }
-        .breadcrumb { font-size: 13px; color: #666; margin-bottom: 20px; }
-        .breadcrumb a { color: #888; text-decoration: none; }
-        .breadcrumb a:hover { color: #C65D3B; }
-        .page-title { font-size: 22px; font-weight: 400; letter-spacing: 4px; color: white; text-transform: uppercase; }
-        .flowchart-section { padding: 50px 20px; display: flex; justify-content: center; }
-        .flowchart-container { max-width: 550px; width: 100%; }
-        .flowchart { display: flex; flex-direction: column; gap: 0; }
-        .step { background: white; border: 1px solid #E0E0E0; padding: 20px 25px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .step.highlight { border-color: #C65D3B; border-width: 2px; }
-        .step-number { position: absolute; top: -10px; left: 20px; background: #C65D3B; color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; letter-spacing: 1px; }
-        .step-title { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .step-content { font-size: 13px; color: #666; line-height: 1.6; }
-        .step-content ul { list-style: none; margin-top: 8px; }
-        .step-content li { padding-left: 15px; position: relative; margin-bottom: 5px; }
-        .step-content li:before { content: "→"; position: absolute; left: 0; color: #999; }
-        .arrow { text-align: center; padding: 8px 0; color: #CCC; font-size: 18px; }
-        .branch-container { display: flex; gap: 15px; }
-        .branch { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 15px 20px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .branch .step-number { font-size: 10px; padding: 2px 8px; }
-        .branch .step-title { font-size: 12px; margin-bottom: 8px; }
-        .branch .step-content { font-size: 12px; }
-        .final-step { background: #0A0A0A; border: none; text-align: center; }
-        .final-step .step-title { margin-bottom: 5px; color: white; }
-        .final-step .step-content { color: #888; }
-        .wrong-answers { background: #F5F5F5; border: 1px dashed #CCC; padding: 15px 20px; margin-top: 15px; }
-        .wrong-answers .step-title { font-size: 12px; color: #666; }
-        .wrong-answers .step-content { font-size: 12px; }
-        .cta-section { background: #0A0A0A; padding: 50px 20px; text-align: center; }
-        .cta-section p { color: #888; font-size: 16px; margin-bottom: 20px; }
-        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; margin: 0 10px; }
-        .cta-button:hover { background: #A04D2E; }
-        .cta-button.secondary { background: transparent; border: 1px solid #444; color: #888; }
-        .cta-button.secondary:hover { border-color: #C65D3B; color: white; }
+
+        .hero { background: #0A0A0A; padding: 40px 20px 50px; text-align: center; border-bottom: 1px solid #222; }
+        .page-title { font-size: 28px; font-weight: 400; letter-spacing: 4px; margin-bottom: 15px; color: white; }
+        .page-subtitle { color: #666; font-size: 15px; }
+
+        .tab-nav { background: #0A0A0A; display: flex; justify-content: center; border-bottom: 1px solid #222; }
+        .tab-btn { background: none; border: none; color: #666; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 16px 30px; cursor: pointer; transition: all 0.3s ease; border-bottom: 2px solid transparent; }
+        .tab-btn:hover { color: #CCC; }
+        .tab-btn.active { color: white; border-bottom-color: #C65D3B; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .video-section { background: #FAFAFA; padding: 40px 20px; }
+        .video-container { max-width: 700px; margin: 0 auto; }
+        .group-header { text-align: center; margin-bottom: 25px; }
+        .group-title { font-size: 18px; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+        .group-subtitle { color: #888; font-size: 13px; }
+
+        .back-link { display: inline-block; margin-top: 30px; color: #888; text-decoration: none; font-size: 13px; letter-spacing: 0.5px; transition: color 0.3s ease; }
+        .back-link:hover { color: #C65D3B; }
+
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .nav-links { gap: 25px; } .page-title { font-size: 18px; } .branch-container { flex-direction: column; } .cta-button { display: block; margin: 10px auto; max-width: 250px; } }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+            .tab-btn { padding: 14px 16px; font-size: 10px; }
+        }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <a href="../../Index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
         <div class="nav-links">
-            <a href="../../About.html">About</a>
+            <a href="../../about.html">About</a>
             <a href="../../pricing.html">Pricing</a>
-            <a href="../../Learn.html" class="active">Learn</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="breadcrumb"><a href="../../Learn.html">Learn</a> → Resolve / Reconcile / Explain</div>
-        <h1 class="page-title">Resolve / Reconcile / Explain</h1>
+        <h1 class="page-title">PARADOX</h1>
+        <p class="page-subtitle">Two facts seem to conflict. The right answer lets both be true.</p>
     </section>
 
-    <section class="flowchart-section">
-        <div class="flowchart-container">
-            <div class="flowchart">
-                <div class="step">
-                    <div class="step-number">STEP 1</div>
-                    <div class="step-title">Read & Analyze the Stimulus</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Identify the puzzling facts or contradiction</li>
-                            <li>Mentally note: What needs to be resolved?</li>
-                        </ul>
-                    </div>
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="lesson">Lesson</button>
+        <a href="flowchart.html" class="tab-btn" style="text-decoration:none;">Cheat Sheet</a>
+    </div>
+
+    <div class="tab-content active" data-tab="lesson">
+        <section class="video-section">
+            <div class="video-container">
+                <div class="group-header">
+                    <h2 class="group-title">Paradox (Resolve, Reconcile, Explain)</h2>
+                    <p class="group-subtitle">Watch this first, then review the Cheat Sheet.</p>
                 </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step highlight">
-                    <div class="step-number">STEP 2</div>
-                    <div class="step-title">Prediction Check</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Predict: What explains this?</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="branch-container">
-                    <div class="branch">
-                        <div class="step-number">STEP 3A</div>
-                        <div class="step-title">If You Have a Prediction</div>
-                        <div class="step-content">
-                            <ul>
-                                <li>Go into Hunt Mode</li>
-                                <li>Scan answers for your explanation</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="branch">
-                        <div class="step-number">STEP 3B</div>
-                        <div class="step-title">If No Prediction</div>
-                        <div class="step-content">
-                            <ul>
-                                <li>Use POE (Process of Elimination)</li>
-                                <li>Test each answer against the stimulus</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step">
-                    <div class="step-number">STEP 4</div>
-                    <div class="step-title">Evaluate Answer Choices</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Assume each choice is true</li>
-                            <li>Ask: Does it resolve/reconcile/explain?</li>
-                            <li>Correct = causal explanation that fits all facts</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="arrow">↓</div>
-                
-                <div class="step final-step">
-                    <div class="step-title">Correct Answer Check</div>
-                    <div class="step-content">
-                        Explains how both facts can be true at the same time
-                    </div>
-                </div>
-                
-                <div class="wrong-answers">
-                    <div class="step-title">Common Wrong Answers</div>
-                    <div class="step-content">
-                        <ul>
-                            <li>Denies a fact</li>
-                            <li>Partial explanation</li>
-                            <li>Blocks an explanation</li>
-                            <li>Deepens the phenomenon</li>
-                            <li>Introduces new puzzle</li>
-                        </ul>
-                    </div>
-                </div>
+                <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/600986/1e75888f-290d-4dc7-9c3f-986a73c27ea2?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowfullscreen="true"></iframe></div>
+                <div style="text-align:center;"><a href="../../learn.html" class="back-link">Back to Learn</a></div>
             </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <p>Want to work through this together?</p>
-        <a href="../../pricing.html" class="cta-button">Book a Session</a>
-        <a href="../../Learn.html" class="cta-button secondary">← Back to Learn</a>
-    </section>
+        </section>
+    </div>
 
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
+
+    <script>
+        document.querySelectorAll('.tab-btn[data-tab]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+                btn.classList.add('active');
+                document.querySelector('.tab-content[data-tab="' + btn.dataset.tab + '"]').classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
+```
