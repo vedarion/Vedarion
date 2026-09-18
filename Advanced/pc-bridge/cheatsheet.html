@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P → C Bridge Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAFAFA; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .lesson-hero { background: #FAFAFA; padding: 40px 50px 20px; max-width: 800px; margin: 0 auto; }
+        .lesson-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; margin-bottom: 12px; }
+        .lesson-title { font-size: 28px; font-weight: 600; color: #0A0A0A; margin-bottom: 10px; letter-spacing: 1px; }
+        .lesson-subtitle { font-size: 15px; color: #888; line-height: 1.6; margin-bottom: 25px; }
+        .tab-nav { display: flex; gap: 0; border-bottom: 1px solid #E0E0E0; margin-bottom: 30px; }
+        .tab-link { padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; border-bottom: 2px solid #C65D3B; text-decoration: none; }
+        .tab-link-inactive { padding: 10px 20px; font-size: 13px; font-weight: 600; letter-spacing: 1px; color: #888; border-bottom: 2px solid transparent; text-decoration: none; transition: color 0.3s; }
+        .tab-link-inactive:hover { color: #C65D3B; }
+        .lesson-content { max-width: 800px; margin: 0 auto; padding: 0 50px 40px; }
+        .prereq-toggle { background: white; border: 1px solid #E0E0E0; margin-bottom: 25px; transition: border-color 0.3s; }
+        .prereq-toggle:hover { border-color: #C65D3B; }
+        .prereq-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; }
+        .prereq-header-left { display: flex; align-items: center; gap: 10px; }
+        .prereq-label { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #C65D3B; }
+        .prereq-desc { font-size: 13px; color: #888; }
+        .prereq-chevron { transition: transform 0.3s; color: #CCC; }
+        .prereq-toggle.open .prereq-chevron { transform: rotate(180deg); }
+        .prereq-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .prereq-toggle.open .prereq-list { max-height: 300px; }
+        .prereq-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid #F0F0F0; text-decoration: none; transition: background 0.2s; }
+        .prereq-item:hover { background: #FAFAFA; }
+        .prereq-item-dot { width: 6px; height: 6px; border-radius: 50%; background: #C65D3B; flex-shrink: 0; }
+        .prereq-item-title { font-size: 13px; color: #0A0A0A; font-weight: 500; }
+        .cs-section { margin-bottom: 10px; }
+        .cs-section h2 { font-size: 18px; font-weight: 600; color: #0A0A0A; margin-bottom: 18px; }
+        .cs-section p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 12px; }
+        .cs-section strong { color: #0A0A0A; }
+        .divider { height: 1px; background: #E0E0E0; margin: 25px 0; }
+        .approach-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+        .approach-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FDF5F1; border: 1px solid #F0DDD3; color: #C65D3B; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .approach-title { font-size: 15px; font-weight: 600; color: #0A0A0A; margin-bottom: 3px; }
+        .approach-desc { font-size: 14px; color: #555; line-height: 1.6; }
+        .way-label { font-size: 15px; font-weight: 600; color: #0A0A0A; margin: 22px 0 4px; }
+        .way-label .way-num { color: #0A0A0A; }
+        .indicator-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; }
+        .chip { background: #F5F5F5; border: 1px solid #E5E5E5; color: #555; font-size: 13px; padding: 5px 12px; border-radius: 20px; }
+        .formula-box { background: #FDF5F1; border: 1px solid #F0DDD3; border-radius: 4px; padding: 14px 18px; font-size: 15px; color: #0A0A0A; margin: 12px 0 16px; }
+        .formula-box .ph { color: #C65D3B; font-weight: 600; }
+        .test-result { font-size: 14px; color: #555; line-height: 1.9; margin-bottom: 12px; }
+        .test-result .mark { font-weight: 600; }
+        .test-result .yes { color: #555; }
+        .test-result .flip { color: #888; }
+        .takeaway-box { background: #FDF5F1; border: 2px solid #C65D3B; border-radius: 4px; padding: 18px 20px; margin-top: 25px; }
+        .takeaway-box p { font-size: 14px; color: #555; line-height: 1.6; margin: 0 0 8px; }
+        .takeaway-box p:last-child { margin: 0; }
+        .takeaway-box strong { color: #C65D3B; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+            .lesson-hero { padding: 30px 20px 15px; }
+            .lesson-content { padding: 0 20px 30px; }
+            .lesson-title { font-size: 22px; }
+        }
+
+        .ex-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+        .ex-card { background: white; border: 1px solid #E0E0E0; border-radius: 4px; padding: 16px 18px; }
+        .ex-card h3 { font-size: 14px; font-weight: 600; color: #0A0A0A; margin-bottom: 12px; }
+        .ex-row { font-size: 13px; color: #555; line-height: 1.45; margin-bottom: 9px; }
+        .ex-row .lab { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #888; display: block; margin-bottom: 1px; }
+        .ex-assumption { background: #FDF5F1; border: 1px solid #F0DDD3; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #0A0A0A; margin-top: 4px; }
+        .ex-assumption .lab { display: block; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #C65D3B; margin-bottom: 3px; }
+        .arrow { color: #C65D3B; font-weight: 700; }
+        .big-notation { text-align: center; font-size: 22px; letter-spacing: 2px; color: #0A0A0A; }
+        @media (max-width: 650px) { .ex-cards { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>&rsaquo;</span>
+        Conditional Patterns
+        <span>&rsaquo;</span>
+        P &rarr; C Bridge
+    </div>
+
+    <div class="lesson-hero">
+        <div class="lesson-label">P &rarr; C Bridge</div>
+        <h1 class="lesson-title">Cheat Sheet</h1>
+        <p class="lesson-subtitle">the sufficient assumption pattern</p>
+        <div class="tab-nav">
+            <a href="lesson.html" class="tab-link-inactive">Lesson</a>
+            <a href="cheatsheet.html" class="tab-link">Cheat Sheet</a>
+        </div>
+    </div>
+
+    <div class="lesson-content">
+        <div class="cs-section">
+            <h2>How to spot it in the stimulus</h2>
+            <div class="approach-step">
+                <div class="approach-num">1</div>
+                <div><div class="approach-desc">One premise supporting one conclusion.</div></div>
+            </div>
+            <div class="approach-step">
+                <div class="approach-num">2</div>
+                <div><div class="approach-desc">The conclusion introduces a new idea the premise never mentioned.</div></div>
+            </div>
+            <div class="approach-step">
+                <div class="approach-num">3</div>
+                <div><div class="approach-desc">That jump from the premise's idea to the new idea is the gap.</div></div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="cs-section">
+            <h2>The assumption</h2>
+            <p>True for every P &rarr; C argument: the assumption is the link that connects the premise to the conclusion.</p>
+            <div class="formula-box big-notation">P <span class="arrow">&rarr;</span> C</div>
+            <p>The argument treats the premise as <strong>sufficient</strong> for the conclusion.</p>
+            <div class="way-label">To find it</div>
+            <p>Name the premise, name the conclusion, then link them. Whatever bridges P to C is the assumption.</p>
+            <div class="formula-box"><span class="ph">Quick check:</span> premise = sufficient, conclusion = necessary.</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="cs-section">
+            <h2>Worked examples</h2>
+            <div class="ex-cards">
+                <div class="ex-card">
+                    <h3>Volcano</h3>
+                    <div class="ex-row"><span class="lab">Premise</span>The volcano erupts.</div>
+                    <div class="ex-row"><span class="lab">Conclusion</span>The plants die.</div>
+                    <div class="ex-assumption"><span class="lab">Assumption</span>volcano erupts <span class="arrow">&rarr;</span> plants die</div>
+                </div>
+                <div class="ex-card">
+                    <h3>Stars</h3>
+                    <div class="ex-row"><span class="lab">Premise</span>Two stars collide.</div>
+                    <div class="ex-row"><span class="lab">Conclusion</span>New planets form.</div>
+                    <div class="ex-assumption"><span class="lab">Assumption</span>two stars collide <span class="arrow">&rarr;</span> new planets</div>
+                </div>
+                <div class="ex-card">
+                    <h3>Cave</h3>
+                    <div class="ex-row"><span class="lab">Premise</span>Paintings of men and animals.</div>
+                    <div class="ex-row"><span class="lab">Conclusion</span>Served a religious purpose.</div>
+                    <div class="ex-assumption"><span class="lab">Assumption</span>paintings of men and animals <span class="arrow">&rarr;</span> serve a religious purpose</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
