@@ -106,6 +106,13 @@
             .nav-links { gap: 25px; }
             .page-title { font-size: 22px; }
         }
+
+        .tabwrap{max-width:760px;margin:0 auto;padding:0 50px;}
+        .tabs{display:flex;gap:28px;border-bottom:1px solid #E7E1D6;}
+        .tab{padding:16px 2px 14px;font-size:13px;letter-spacing:.6px;color:#8f8a81;text-decoration:none;border-bottom:1.5px solid transparent;margin-bottom:-1px;transition:color .3s;}
+        .tab:hover{color:#1A1A1A;}
+        .tab.active{color:#1A1A1A;border-bottom-color:#C65D3B;}
+        @media(max-width:680px){.tabwrap{padding-left:22px;padding-right:22px;}}
     </style>
 </head>
 <body>
@@ -123,6 +130,13 @@
         <h1 class="page-title">PART TO WHOLE</h1>
         <p class="page-subtitle">What is true of the parts is not always true of the whole</p>
     </section>
+
+    <div class="tabwrap">
+        <nav class="tabs">
+            <a class="tab active" href="lesson.html">Lesson</a>
+            <a class="tab" href="cheatsheet.html">Cheat Sheet</a>
+        </nav>
+    </div>
 
     <section class="video-section">
         <div class="video-container">
