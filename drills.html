@@ -304,6 +304,10 @@
     <div class="card" id="createCard">
       <h1>Create a drill</h1>
       <div class="section-rule"></div>
+      <div id="buildForRow" class="hidden" style="margin-bottom:18px;">
+        <label for="buildFor">Building for</label>
+        <select id="buildFor" style="min-width:220px;"></select>
+      </div>
       <div class="create-tabs" id="createTabs">
         <button type="button" class="create-tab on" data-tab="quick">Quick drill</button>
         <button type="button" class="create-tab" data-tab="section">Section</button>
@@ -408,7 +412,6 @@
         <span class="hint" style="font-weight:600;" id="tgTrayLabel">Drill (0):</span>
         <span id="tgChips" style="display:contents;"></span>
         <span style="flex:1;"></span>
-        <select id="tgFor"></select>
         <button class="btn-ink" id="tgCreateBtn" disabled>Create drill</button>
       </div>
       <div class="sub" id="tgMsg" style="margin-top:8px; min-height:18px;"></div>
@@ -752,13 +755,14 @@ function tgInit() {
     o.value = v.id; o.textContent = v.value;
     ts.appendChild(o);
   });
-  const forSel = $('tgFor');
+  const forSel = $('buildFor');
   forSel.innerHTML = '';
   [...$('previewStudent').options].forEach(op => {
     const o = document.createElement('option');
-    o.value = op.value; o.textContent = 'For: ' + op.dataset.name;
+    o.value = op.value; o.textContent = op.dataset.name;
     forSel.appendChild(o);
   });
+  if (viewingStudentId) forSel.value = viewingStudentId;
   forSel.addEventListener('change', async () => { await tgLoadSeen(); tgRenderResults(); });
   $('tgSearchBtn').addEventListener('click', tgSearch);
   $('tgRef').addEventListener('keydown', e => { if (e.key === 'Enter') tgSearch(); });
@@ -992,7 +996,7 @@ function tgAddPassage(p) {
 }
 
 async function tgLoadSeen() {
-  const sid = $('tgFor').value;
+  const sid = $('buildFor').value;
   T.seen = new Set();
   T.seenFor = sid || null;
   if (!sid || myStudentIds.includes(sid)) { T.seenFor = null; return; }
@@ -1129,11 +1133,11 @@ function tgRenderTray() {
 
 async function tgCreate() {
   if (!T.picked.size) return;
-  const sid = $('tgFor').value;
+  const sid = $('buildFor').value;
   if (!sid) { $('tgMsg').textContent = 'Pick who this drill is for.'; return; }
   $('tgCreateBtn').disabled = true;
   $('tgMsg').textContent = 'Creating…';
-  const forName = ($('tgFor').selectedOptions[0]?.textContent.replace('For: ', '') || '');
+  const forName = ($('buildFor').selectedOptions[0]?.textContent || '');
 
   if (tgMode === 'RC') {
     // one drill per passage
@@ -1160,7 +1164,7 @@ async function tgCreate() {
       title: made === 1 ? 'RC passage drill' : made + ' passage drills',
       meta: meta, drillId: firstId, studentId: sid, multi: made > 1
     });
-    if (sid === viewingStudentId) loadDrillList();
+    syncViewTo(sid);
     return;
   }
 
@@ -1180,7 +1184,7 @@ async function tgCreate() {
     meta: items.length + ' question' + (items.length !== 1 ? 's' : '') + ' · for ' + forName,
     drillId: data.drill_id, studentId: sid
   });
-  if (sid === viewingStudentId) loadDrillList();
+  syncViewTo(sid);
 }
 
 /* ---------- COPY PROTECTION ---------- */
@@ -1315,21 +1319,25 @@ async function loadSelfServeTypes() {
 }
 
 $('ssCreateBtn').addEventListener('click', async () => {
-  if (readOnly) return;
   $('ssMsg').textContent = 'Creating…';
-  const { data, error } = await db.rpc('vd_create_self_drill', {
+  const sid = tutorTargetId();
+  const other = targetsOtherStudent(sid);
+  const args = {
     p_tag_value_ids: [$('ssType').value],
     p_count: parseInt($('ssCount').value),
     p_timed: $('ssTimed').value === 'timed'
-  });
+  };
+  const { data, error } = other
+    ? await db.rpc('vd_create_self_drill_for', Object.assign({ p_student_id: sid }, args))
+    : await db.rpc('vd_create_self_drill', args);
   if (error) { $('ssMsg').textContent = error.message; return; }
   if (data?.error) { $('ssMsg').textContent = data.error; return; }
   renderReadyBanner($('ssMsg'), {
     title: ($('ssType').selectedOptions[0]?.textContent || 'Custom') + ' drill',
-    meta: $('ssCount').value + ' questions · also saved to Your drills',
-    drillId: data.drill_id, studentId: null
+    meta: $('ssCount').value + ' questions' + (other ? ' · for ' + tutorTargetName() : '') + ' · saved to your drills',
+    drillId: data.drill_id, studentId: other ? sid : null
   });
-  loadDrillList();
+  syncViewTo(sid || viewingStudentId);
 });
 
 /* ---------- SECTION PRACTICE ---------- */
@@ -1347,22 +1355,23 @@ async function applyTimeFactorDefault() {
 }
 
 $('secCreateBtn').addEventListener('click', async () => {
-  if (readOnly) return;
   $('secMsg').textContent = 'Finding a fresh section…';
   const timing = $('secTiming').value;
   const seconds = timing === 'untimed' ? null : Math.round(35 * 60 * parseFloat(timing));
-  const { data, error } = await db.rpc('vd_create_section_drill', {
-    p_section_type: $('secType').value,
-    p_time_seconds: seconds
-  });
+  const sid = tutorTargetId();
+  const other = targetsOtherStudent(sid);
+  const args = { p_section_type: $('secType').value, p_time_seconds: seconds };
+  const { data, error } = other
+    ? await db.rpc('vd_create_section_drill_for', Object.assign({ p_student_id: sid }, args))
+    : await db.rpc('vd_create_section_drill', args);
   if (error) { $('secMsg').textContent = error.message; return; }
   if (data?.error) { $('secMsg').textContent = data.error; return; }
   renderReadyBanner($('secMsg'), {
     title: ($('secType').selectedOptions[0]?.textContent || 'Section') + ' section',
-    meta: (timing === 'untimed' ? 'Untimed' : 'Timed') + ' · also saved to Your drills',
-    drillId: data.drill_id, studentId: null
+    meta: (timing === 'untimed' ? 'Untimed' : 'Timed') + (other ? ' · for ' + tutorTargetName() : '') + ' · saved to your drills',
+    drillId: data.drill_id, studentId: other ? sid : null
   });
-  loadDrillList();
+  syncViewTo(sid || viewingStudentId);
 });
 
 /* ---------- DRILL LIST ---------- */
@@ -1461,19 +1470,37 @@ function createSetTab(tab) {
 }
 
 function createTabsUpdate() {
-  const showSelf = !readOnly;
-  const showTargeted = isAdmin;
-  const qb = document.querySelector('.create-tab[data-tab="quick"]');
-  const sb = document.querySelector('.create-tab[data-tab="section"]');
+  // Quick + Section are available to everyone (tutors pick a student up top;
+  // students always build for themselves). Targeted + the student picker are
+  // tutor-only.
   const tb = document.querySelector('.create-tab[data-tab="targeted"]');
-  if (qb) qb.classList.toggle('hidden', !showSelf);
-  if (sb) sb.classList.toggle('hidden', !showSelf);
-  if (tb) tb.classList.toggle('hidden', !showTargeted);
-  const order = [];
-  if (showSelf) order.push('quick', 'section');
-  if (showTargeted) order.push('targeted');
+  if (tb) tb.classList.toggle('hidden', !isAdmin);
+  const bf = $('buildForRow');
+  if (bf) bf.classList.toggle('hidden', !isAdmin);
   const current = document.querySelector('.create-tab.on:not(.hidden)');
-  if (!current) createSetTab(order[0] || 'quick');
+  if (!current) createSetTab('quick');
+}
+
+/* The student a tutor is building for. null for students, and treated as
+   "build for my own account" when it's the tutor's own id. */
+function tutorTargetId() {
+  if (!isAdmin) return null;
+  const el = $('buildFor');
+  return el ? (el.value || null) : null;
+}
+function tutorTargetName() {
+  const el = $('buildFor');
+  return el ? (el.selectedOptions[0]?.textContent || '') : '';
+}
+function targetsOtherStudent(sid) { return isAdmin && sid && !myStudentIds.includes(sid); }
+
+/* After creating a drill for someone, point the drill list at them so the new
+   drill shows at the top. */
+function syncViewTo(sid) {
+  if (!sid) { loadDrillList(); return; }
+  const sel = $('previewStudent');
+  if (sel && [...sel.options].some(o => o.value === sid)) { sel.value = sid; setViewingStudent(sid); }
+  loadDrillList();
 }
 
 /* ---------- ITEM IDENTITY ---------- */
