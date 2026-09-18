@@ -230,7 +230,8 @@
   .ready-banner .ready-start { flex-shrink: 0; }
 
   /* ================= ELEGANT PASS ================= */
-  .card { background: #FFFDFB; border: none; border-radius: 14px; padding: 28px 32px; }
+  .card { background: #FFFDFB; border: none; border-radius: 14px; padding: 26px 28px; box-shadow: 0 1px 2px rgba(80,60,50,0.05), 0 8px 22px rgba(80,60,50,0.06); }
+  #listView { max-width: 600px; margin: 0 auto; }
   h1 { font-family: Georgia, serif; font-size: 24px; font-weight: 400; letter-spacing: 0.2px; color: var(--ink); margin-bottom: 0; }
   .section-rule { width: 32px; height: 2px; background: var(--orange); margin: 10px 0 20px; }
   .sub, .panel-sub { color: var(--ink-soft); font-size: 13.5px; line-height: 1.65; }
@@ -242,7 +243,7 @@
   .btn.secondary:hover { background: var(--cream-warm); border-color: var(--ink-soft); }
   .qident { color: var(--ink-soft); }
 
-  .create-tabs { display: inline-flex; gap: 4px; background: var(--cream); border: 1px solid var(--line); border-radius: 9px; padding: 3px; margin-bottom: 22px; }
+  .create-tabs { display: inline-flex; gap: 4px; background: #F1EEE8; border: none; border-radius: 9px; padding: 3px; margin-bottom: 20px; }
   .create-tab { font-size: 12.5px; padding: 7px 16px; border-radius: 7px; border: none; background: none; color: var(--ink-soft); font-weight: 600; cursor: pointer; }
   .create-tab.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
 
@@ -255,8 +256,9 @@
   .drillrow { padding: 15px 2px; }
   .drillrow:hover { background: transparent; }
 
-  .ready-banner { border: none; border-top: 1px solid #EFEAE3; background: none; border-radius: 0; padding: 18px 0 4px; margin-top: 18px; gap: 13px; }
-  .ready-check { width: auto; height: auto; border-radius: 0; background: none; color: var(--sage); font-size: 17px; }
+  .ready-banner { border: 1px solid #F0E4DC; background: #FBF5F1; border-radius: 10px; padding: 13px 15px; margin-top: 16px; gap: 12px; }
+  .ready-check { width: auto; height: auto; border-radius: 0; background: none; color: var(--sage); font-size: 16px; }
+  .ready-banner .ready-start { padding: 8px 16px; font-size: 12.5px; }
   .ready-title { font-weight: 400; }
   .ready-meta { color: var(--ink-faint); }
 </style>
@@ -305,7 +307,7 @@
       <h1>Create a drill</h1>
       <div class="section-rule"></div>
       <div id="buildForRow" class="hidden" style="margin-bottom:18px;">
-        <label for="buildFor">Building for</label>
+        <label for="buildFor">Student</label>
         <select id="buildFor" style="min-width:220px;"></select>
       </div>
       <div class="create-tabs" id="createTabs">
@@ -432,7 +434,7 @@
     </div>
 
     <div class="card">
-      <h1>Your drills</h1>
+      <h1 id="drillsHeading">Your drills</h1>
       <div class="section-rule"></div>
       <div id="adminPickRow" class="hidden" style="margin:10px 0 4px;">
         <label for="previewStudent" style="display:inline; margin-right:8px;">Viewing as:</label>
@@ -763,7 +765,14 @@ function tgInit() {
     forSel.appendChild(o);
   });
   if (viewingStudentId) forSel.value = viewingStudentId;
-  forSel.addEventListener('change', async () => { await tgLoadSeen(); tgRenderResults(); });
+  forSel.addEventListener('change', async () => {
+    const sid = forSel.value;
+    const ps = $('previewStudent');
+    if (ps && [...ps.options].some(o => o.value === sid)) ps.value = sid;
+    setViewingStudent(sid);
+    loadDrillList();
+    await tgLoadSeen(); tgRenderResults();
+  });
   $('tgSearchBtn').addEventListener('click', tgSearch);
   $('tgRef').addEventListener('keydown', e => { if (e.key === 'Enter') tgSearch(); });
   $('tgPassageSearchBtn').addEventListener('click', tgPassageSearch);
@@ -1248,7 +1257,6 @@ async function boot() {
   await loadQuestionTypeValues();
 
   if (isAdmin) {
-    $('adminPickRow').classList.remove('hidden');
     const { data: all } = await db.from('students')
       .select('id, profiles:profile_id ( first_name, email )').order('created_at');
     const sel = $('previewStudent');
@@ -1377,6 +1385,7 @@ $('secCreateBtn').addEventListener('click', async () => {
 /* ---------- DRILL LIST ---------- */
 async function loadDrillList() {
   const list = $('drillList');
+  updateDrillsHeading();
   if (!viewingStudentId) { list.innerHTML = '<p class="sub">No student record found for this account.</p>'; return; }
   const { data, error } = await db.from('drills')
     .select('id, student_id, title, question_count, status, is_timed, time_limit_seconds, reveal_answers, results_shown, created_by, is_recipe, created_at')
@@ -1500,7 +1509,20 @@ function syncViewTo(sid) {
   if (!sid) { loadDrillList(); return; }
   const sel = $('previewStudent');
   if (sel && [...sel.options].some(o => o.value === sid)) { sel.value = sid; setViewingStudent(sid); }
+  const bf = $('buildFor');
+  if (bf && [...bf.options].some(o => o.value === sid)) bf.value = sid;
   loadDrillList();
+}
+
+/* The drills list belongs to whoever is being viewed — retitle it so a tutor
+   always knows whose drills they're looking at. */
+function updateDrillsHeading() {
+  const h = $('drillsHeading'); if (!h) return;
+  const sid = viewingStudentId;
+  if (!isAdmin || !sid || myStudentIds.includes(sid)) { h.textContent = 'Your drills'; return; }
+  const ps = $('previewStudent');
+  const opt = ps ? [...ps.options].find(o => o.value === sid) : null;
+  h.textContent = (opt?.dataset.name || 'Student') + '\u2019s drills';
 }
 
 /* ---------- ITEM IDENTITY ---------- */
