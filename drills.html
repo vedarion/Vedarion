@@ -193,6 +193,41 @@
   .resultrow .rmeta { font-size: 12px; color: var(--ink-soft); }
   .verdict-good { color: var(--green); font-weight: 600; }
   .verdict-bad { color: var(--red); font-weight: 600; }
+
+  /* ---- Choice letters muted to ink; orange reserved for selection + passage label ---- */
+  .optbtn .letter { color: var(--ink-soft); }
+  .optbtn.picked .letter { color: var(--orange-dark); }
+  .opttext { flex: 1; }
+
+  /* ---- Small corner eliminate control (✕ → undo) ---- */
+  .elim-x { flex-shrink: 0; align-self: center; margin-left: 6px; border: 1px solid var(--line); background: #fff; color: var(--ink-faint); border-radius: 6px; font-size: 11px; line-height: 1; padding: 4px 7px; cursor: pointer; }
+  .elim-x:hover { border-color: var(--red); color: var(--red); }
+  .elim-x.undo { color: var(--orange-dark); border-color: var(--orange-line); background: var(--cream-warm); }
+
+  /* ---- RC split take layout: passage left, question right ---- */
+  .playgrid.rc { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .playgrid.rc #rcPassagePane { grid-column: 1; }
+  .playgrid.rc #qCol { grid-column: 2; }
+  .playgrid.rc.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .playgrid.rc.split #rcPassagePane { grid-column: 1 / -1; }
+  .playgrid.rc.split #qCol { grid-column: 1; }
+  .playgrid.rc.split #wsPanel { grid-column: 2; }
+  @media (min-width: 821px) {
+    .playgrid.rc #rcPassagePane { position: sticky; top: 80px; max-height: calc(100vh - 150px); overflow-y: auto; }
+  }
+  @media (max-width: 820px) {
+    .playgrid.rc, .playgrid.rc.split { grid-template-columns: minmax(0, 1fr); }
+    .playgrid.rc #rcPassagePane, .playgrid.rc #qCol,
+    .playgrid.rc.split #rcPassagePane, .playgrid.rc.split #qCol, .playgrid.rc.split #wsPanel { grid-column: 1; }
+  }
+
+  /* ---- "Drill ready" banner shown after a drill is created ---- */
+  .ready-banner { border: 2px solid var(--orange); background: var(--cream-warm); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+  .ready-check { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .ready-text { flex: 1; min-width: 160px; }
+  .ready-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .ready-meta { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .ready-banner .ready-start { flex-shrink: 0; }
 </style>
 </head>
 <body data-ts="m">
@@ -290,8 +325,15 @@
 
     <div class="card hidden" id="targetedCard">
       <h1 style="font-size:18px;">Build a targeted drill</h1>
-      <p class="sub">Exact number or browse by type · view · add. Only you see this.</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; margin-top:12px;">
+      <p class="sub">Find questions or a passage · view · add. Only you see this.</p>
+
+      <div class="tgmode" id="tgModeToggle" style="display:inline-flex; gap:4px; margin-top:14px; background:var(--cream); border:1px solid var(--line); border-radius:9px; padding:3px;">
+        <button type="button" class="tgmode-btn on" data-mode="LR" style="font-size:12.5px; padding:6px 16px; border-radius:7px; border:none; background:var(--orange); color:#fff; font-weight:600; cursor:pointer;">LR questions</button>
+        <button type="button" class="tgmode-btn" data-mode="RC" style="font-size:12.5px; padding:6px 16px; border-radius:7px; border:none; background:none; color:var(--ink-soft); font-weight:600; cursor:pointer;">RC passages</button>
+      </div>
+
+      <!-- LR MODE -->
+      <div id="tgLRControls" style="display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; margin-top:14px;">
         <div>
           <label for="tgRef">Exact question</label>
           <input type="text" id="tgRef" placeholder="PT 101 S2 Q13" style="width:160px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:var(--cream); font-family:inherit;">
@@ -304,6 +346,26 @@
         <button class="btn secondary" id="tgSearchBtn">Find</button>
         <span class="hint" id="tgCount" style="padding-bottom:10px;"></span>
       </div>
+
+      <!-- RC MODE -->
+      <div id="tgRCControls" class="hidden" style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-top:14px;">
+        <div>
+          <label for="tgPassageRef">Exact passage</label>
+          <input type="text" id="tgPassageRef" placeholder="PT 101 S1  ·  or  PT 101 S1 P3" style="width:190px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:var(--cream); font-family:inherit;">
+        </div>
+        <span class="hint" style="padding-bottom:10px;">or browse</span>
+        <div>
+          <label for="tgTest">Test</label>
+          <input type="text" id="tgTest" placeholder="PT 101" style="width:90px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; font-size:14px; background:var(--cream); font-family:inherit;">
+        </div>
+        <div>
+          <label for="tgSection">Section</label>
+          <select id="tgSection"><option value="">Any RC section</option></select>
+        </div>
+        <button class="btn secondary" id="tgPassageSearchBtn">Find passages</button>
+        <span class="hint" id="tgPassageCount" style="padding-bottom:10px;"></span>
+      </div>
+
       <div id="tgResults" style="margin-top:10px;"></div>
       <div class="tg-tray" id="tgTray">
         <span class="hint" style="font-weight:600;" id="tgTrayLabel">Drill (0):</span>
@@ -357,6 +419,11 @@
     <div class="qchips hidden" id="qChips"></div>
 
     <div class="playgrid" id="playGrid">
+      <div class="stimbox rc-passage-pane hidden" id="rcPassagePane">
+        <div class="qident" id="rcPassageIdent"></div>
+        <div class="stim" id="rcPassageEl"></div>
+        <p class="license-line">Licensed to VEDARION</p>
+      </div>
       <div id="qCol">
         <div class="stimbox" id="stimBox">
           <svg class="vmark" viewBox="0 0 24 24" width="150" height="150" aria-hidden="true"><path d="M4 4 L9 4 L12 15 L15 4 L20 4 L14 20 L10 20 Z" fill="#C65D3B"/></svg>
@@ -636,6 +703,7 @@ let panelMode = 'ws';
    reuses the drill-room question layout, and create a drill from the picks.
    The popup opens with the answer hidden; Show answer reveals it. */
 let T = { results: [], picked: new Map(), seen: new Set(), seenFor: null, viewing: null, answers: {} };
+let tgMode = 'LR';
 
 function tgInit() {
   if (!isAdmin) return;
@@ -656,12 +724,39 @@ function tgInit() {
   forSel.addEventListener('change', async () => { await tgLoadSeen(); tgRenderResults(); });
   $('tgSearchBtn').addEventListener('click', tgSearch);
   $('tgRef').addEventListener('keydown', e => { if (e.key === 'Enter') tgSearch(); });
+  $('tgPassageSearchBtn').addEventListener('click', tgPassageSearch);
+  $('tgPassageRef').addEventListener('keydown', e => { if (e.key === 'Enter') tgPassageSearch(); });
   $('tgCreateBtn').addEventListener('click', tgCreate);
   $('qmCloseBtn').addEventListener('click', () => $('qModal').classList.add('hidden'));
   $('qModal').addEventListener('click', e => { if (e.target === $('qModal')) $('qModal').classList.add('hidden'); });
   $('qmAnswerBtn').addEventListener('click', tgToggleAnswer);
   $('qmAddBtn').addEventListener('click', () => { if (T.viewing) { tgAdd(T.viewing); $('qModal').classList.add('hidden'); } });
+  [...document.querySelectorAll('.tgmode-btn')].forEach(b =>
+    b.addEventListener('click', () => tgSetMode(b.dataset.mode)));
   tgLoadSeen();
+}
+
+/* Switch the targeted builder between LR (question/type) and RC (passage)
+   modes. Clears the current results and tray so picks from one mode never
+   mix with the other — an LR drill and an RC passage drill are different
+   RPCs. */
+function tgSetMode(mode) {
+  if (mode === tgMode) return;
+  tgMode = mode;
+  [...document.querySelectorAll('.tgmode-btn')].forEach(b => {
+    const on = b.dataset.mode === mode;
+    b.classList.toggle('on', on);
+    b.style.background = on ? 'var(--orange)' : 'none';
+    b.style.color = on ? '#fff' : 'var(--ink-soft)';
+  });
+  $('tgLRControls').classList.toggle('hidden', mode !== 'LR');
+  $('tgRCControls').classList.toggle('hidden', mode !== 'RC');
+  T.results = [];
+  T.picked.clear();
+  $('tgResults').innerHTML = '';
+  $('tgCount').textContent = '';
+  $('tgPassageCount').textContent = '';
+  tgRenderTray();
 }
 
 function tgParseRef(str) {
@@ -716,6 +811,146 @@ async function tgSearch() {
     $('tgCount').textContent = T.results.length + ' question' + (T.results.length !== 1 ? 's' : '');
     tgRenderResults();
   } catch (e) { box.innerHTML = '<p class="sub">' + escapeHtml(e.message || 'Search failed.') + '</p>'; }
+}
+
+/* ---------- RC PASSAGE SEARCH (RC mode) ----------
+   A passage is a set of RC items sharing one group_id (prefix "RC-"). We fetch
+   the module's RC items, group them by group_id, order the groups by section
+   then first item_position, and present one row per passage. "P<n>" numbers
+   passages within their section. Adding a passage stages the whole group. */
+let P = { passages: [], byGroup: {} };
+
+function tgParsePassageRef(str) {
+  const m = /(?:pt\s*)?(\d+)\s*[,·\s]\s*s(?:ection)?\s*(\d+)(?:\s*[,·\s]\s*p(?:assage)?\s*(\d+))?/i.exec(str.trim());
+  if (!m) return null;
+  return { pt: parseInt(m[1]), section: parseInt(m[2]), passage: m[3] ? parseInt(m[3]) : null };
+}
+
+async function tgPassageSearch() {
+  const box = $('tgResults');
+  const ref = $('tgPassageRef').value.trim();
+  let modId = null, wantSection = null, wantPassage = null;
+  if (ref) {
+    const p = tgParsePassageRef(ref);
+    if (!p) { box.innerHTML = '<p class="sub">Could not read that — try "PT 101 S1" or "PT 101 S1 P3".</p>'; return; }
+    modId = 'LSAC' + p.pt; wantSection = p.section; wantPassage = p.passage;
+  } else {
+    const t = $('tgTest').value.trim();
+    const tm = /(\d+)/.exec(t);
+    if (!tm) { box.innerHTML = '<p class="sub">Enter a test, e.g. "PT 101".</p>'; return; }
+    modId = 'LSAC' + tm[1];
+    const secVal = $('tgSection').value;
+    wantSection = secVal ? parseInt(secVal) : null;
+  }
+  box.innerHTML = '<p class="sub">Finding passages…</p>';
+  $('tgPassageCount').textContent = '';
+  P = { passages: [], byGroup: {} };
+  try {
+    const { data, error } = await db.from('lsac_items')
+      .select('module_id, item_id, item_position, group_id, content')
+      .eq('module_id', modId).like('group_id', 'RC-%');
+    if (error) { box.innerHTML = '<p class="sub">' + escapeHtml(error.message) + '</p>'; return; }
+    let rows = data || [];
+    if (wantSection != null) rows = rows.filter(r => (r.content?._vd?.sectionOrder ?? null) == wantSection);
+    if (!rows.length) { box.innerHTML = '<p class="sub">No RC passages found for that test/section.</p>'; return; }
+    const groups = {};
+    rows.forEach(r => {
+      const g = r.group_id;
+      if (!groups[g]) groups[g] = [];
+      groups[g].push(r);
+    });
+    const passages = Object.keys(groups).map(g => {
+      const items = groups[g].slice().sort((a, b) => (a.item_position ?? 0) - (b.item_position ?? 0));
+      const first = items[0];
+      return {
+        group_id: g,
+        module_id: modId,
+        section: first.content?._vd?.sectionOrder ?? null,
+        firstPos: first.item_position ?? 0,
+        count: items.length,
+        preview: stripHtml(first.content?.stimulusText || '').slice(0, 60),
+        items: items
+      };
+    });
+    passages.sort((a, b) => (a.section - b.section) || (a.firstPos - b.firstPos));
+    // number passages within their section
+    const perSec = {};
+    passages.forEach(p => { perSec[p.section] = (perSec[p.section] || 0) + 1; p.passageNo = perSec[p.section]; });
+    let shown = passages;
+    if (wantPassage != null) shown = passages.filter(p => p.passageNo === wantPassage);
+    P.passages = shown;
+    shown.forEach(p => { P.byGroup[p.group_id] = p; });
+    if (!shown.length) { box.innerHTML = '<p class="sub">No passage ' + wantPassage + ' in that section.</p>'; return; }
+    $('tgPassageCount').textContent = shown.length + ' passage' + (shown.length !== 1 ? 's' : '');
+    tgRenderPassages();
+  } catch (e) { box.innerHTML = '<p class="sub">' + escapeHtml(e.message || 'Search failed.') + '</p>'; }
+}
+
+function passageLabel(p) {
+  return ptLabel(p.module_id) + ' · S' + (p.section ?? '?') + ' · Passage ' + (p.passageNo ?? '?');
+}
+
+function tgRenderPassages() {
+  const box = $('tgResults');
+  if (!P.passages.length) { box.innerHTML = ''; return; }
+  const wrapEl = document.createElement('div');
+  wrapEl.className = 'tg-rows';
+  P.passages.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'tg-row';
+    const added = T.picked.has(p.group_id);
+    const left = document.createElement('span');
+    left.className = 'tg-id';
+    left.innerHTML = escapeHtml(passageLabel(p))
+      + ' · <span style="color:var(--ink-soft);">"' + escapeHtml(p.preview) + '…"</span>'
+      + ' · ' + p.count + ' Qs'
+      + (added ? '<span class="tg-added">✓ added</span>' : '');
+    const btns = document.createElement('span');
+    btns.style.display = 'flex'; btns.style.gap = '6px'; btns.style.flexShrink = '0';
+    const vb = document.createElement('button');
+    vb.className = 'tg-btn'; vb.textContent = 'View';
+    vb.addEventListener('click', () => tgViewPassage(p));
+    btns.appendChild(vb);
+    if (!added) {
+      const ab = document.createElement('button');
+      ab.className = 'tg-btn add'; ab.textContent = '+ Add';
+      ab.addEventListener('click', () => tgAddPassage(p));
+      btns.appendChild(ab);
+    }
+    row.appendChild(left); row.appendChild(btns);
+    wrapEl.appendChild(row);
+  });
+  box.innerHTML = '';
+  box.appendChild(wrapEl);
+}
+
+function tgViewPassage(p) {
+  const body = $('qmBody');
+  body.innerHTML = '';
+  const sb = document.createElement('div');
+  sb.className = 'stimbox';
+  sb.innerHTML = '<div class="qident"><span>' + escapeHtml(passageLabel(p)) + ' · ' + p.count + ' questions</span></div>'
+    + '<div class="stim">' + (p.items[0].content?.stimulusText ?? '') + '</div>'
+    + '<p class="license-line">Licensed to VEDARION</p>';
+  body.appendChild(sb);
+  p.items.forEach((it, idx) => {
+    const q = document.createElement('div');
+    q.style.margin = '10px 0 4px';
+    q.style.fontSize = '13px';
+    q.style.fontWeight = '600';
+    q.innerHTML = 'Q' + (idx + 1) + '. ' + (it.content?.stemText ?? '');
+    body.appendChild(q);
+  });
+  $('qmAddBtn').classList.toggle('hidden', T.picked.has(p.group_id));
+  $('qmAnswerBtn').classList.add('hidden');
+  $('qmAddBtn').onclick = () => { tgAddPassage(p); $('qModal').classList.add('hidden'); };
+  $('qModal').classList.remove('hidden');
+}
+
+function tgAddPassage(p) {
+  T.picked.set(p.group_id, p);
+  tgRenderTray();
+  tgRenderPassages();
 }
 
 async function tgLoadSeen() {
@@ -775,7 +1010,10 @@ function tgRenderResults() {
 function tgView(r) {
   T.viewing = r;
   T.answerShown = false;
+  $('qmAnswerBtn').classList.remove('hidden');
   $('qmAnswerBtn').textContent = 'Show answer';
+  $('qmAddBtn').classList.toggle('hidden', T.picked.has(r.item_id));
+  $('qmAddBtn').onclick = () => { if (T.viewing) { tgAdd(T.viewing); $('qModal').classList.add('hidden'); } };
   const c = r.content || {};
   const opts = extractOptions(c);
   const body = $('qmBody');
@@ -841,9 +1079,10 @@ function tgRenderTray() {
   T.picked.forEach((r, key) => {
     const ch = document.createElement('button');
     ch.className = 'tg-chip';
-    ch.textContent = tgRowIdentity(r).replace(/ · /g, ' ') + ' ✕';
+    const label = tgMode === 'RC' ? (passageLabel(r).replace(/ · /g, ' ') + ' · ' + r.count + 'Qs') : tgRowIdentity(r).replace(/ · /g, ' ');
+    ch.textContent = label + ' ✕';
     ch.title = 'Remove';
-    ch.addEventListener('click', () => { T.picked.delete(key); tgRenderTray(); tgRenderResults(); });
+    ch.addEventListener('click', () => { T.picked.delete(key); tgRenderTray(); tgMode === 'RC' ? tgRenderPassages() : tgRenderResults(); });
     chips.appendChild(ch);
   });
   $('tgTrayLabel').textContent = 'Drill (' + T.picked.size + '):';
@@ -856,6 +1095,37 @@ async function tgCreate() {
   if (!sid) { $('tgMsg').textContent = 'Pick who this drill is for.'; return; }
   $('tgCreateBtn').disabled = true;
   $('tgMsg').textContent = 'Creating…';
+  const forName = ($('tgFor').selectedOptions[0]?.textContent.replace('For: ', '') || '');
+
+  if (tgMode === 'RC') {
+    // one drill per passage
+    let made = 0; let firstErr = null; let firstId = null; let firstPassage = null;
+    for (const p of T.picked.values()) {
+      const title = 'RC Passage · ' + passageLabel(p).replace(ptLabel(p.module_id) + ' · ', '');
+      const { data, error } = await db.rpc('vd_create_passage_drill', {
+        p_student_id: sid, p_module_id: p.module_id, p_group_id: p.group_id, p_title: title
+      });
+      if (error) { firstErr = error.message; continue; }
+      if (data?.error) { firstErr = data.error; continue; }
+      made++;
+      if (!firstId) { firstId = data.drill_id; firstPassage = p; }
+    }
+    $('tgCreateBtn').disabled = false;
+    if (!made && firstErr) { $('tgMsg').textContent = firstErr; return; }
+    T.picked.clear();
+    tgRenderTray();
+    tgRenderPassages();
+    let meta = made === 1 ? (firstPassage.count + ' questions · for ' + forName)
+                          : (made + ' drills · for ' + forName);
+    if (firstErr) meta += ' · some failed';
+    renderReadyBanner($('tgMsg'), {
+      title: made === 1 ? 'RC passage drill' : made + ' passage drills',
+      meta: meta, drillId: firstId, studentId: sid, multi: made > 1
+    });
+    if (sid === viewingStudentId) loadDrillList();
+    return;
+  }
+
   const items = [...T.picked.values()].map((r, i) => ({ module_id: r.module_id, item_id: r.item_id, position: i + 1 }));
   const title = 'Targeted drill · ' + items.length + ' question' + (items.length !== 1 ? 's' : '');
   const { data, error } = await db.rpc('vd_create_targeted_drill', {
@@ -864,10 +1134,14 @@ async function tgCreate() {
   $('tgCreateBtn').disabled = false;
   if (error) { $('tgMsg').textContent = error.message; return; }
   if (data?.error) { $('tgMsg').textContent = data.error; return; }
-  $('tgMsg').textContent = 'Drill created for ' + ($('tgFor').selectedOptions[0]?.textContent.replace('For: ', '') || '') + '.';
   T.picked.clear();
   tgRenderTray();
   tgRenderResults();
+  renderReadyBanner($('tgMsg'), {
+    title: 'Targeted drill',
+    meta: items.length + ' question' + (items.length !== 1 ? 's' : '') + ' · for ' + forName,
+    drillId: data.drill_id, studentId: sid
+  });
   if (sid === viewingStudentId) loadDrillList();
 }
 
@@ -1013,7 +1287,11 @@ $('ssCreateBtn').addEventListener('click', async () => {
   });
   if (error) { $('ssMsg').textContent = error.message; return; }
   if (data?.error) { $('ssMsg').textContent = data.error; return; }
-  $('ssMsg').textContent = 'Drill created — it is at the top of your list.';
+  renderReadyBanner($('ssMsg'), {
+    title: ($('ssType').selectedOptions[0]?.textContent || 'Custom') + ' drill',
+    meta: $('ssCount').value + ' questions · also saved to Your drills',
+    drillId: data.drill_id, studentId: null
+  });
   loadDrillList();
 });
 
@@ -1042,7 +1320,11 @@ $('secCreateBtn').addEventListener('click', async () => {
   });
   if (error) { $('secMsg').textContent = error.message; return; }
   if (data?.error) { $('secMsg').textContent = data.error; return; }
-  $('secMsg').textContent = 'Section ready — it is at the top of your list.';
+  renderReadyBanner($('secMsg'), {
+    title: ($('secType').selectedOptions[0]?.textContent || 'Section') + ' section',
+    meta: (timing === 'untimed' ? 'Untimed' : 'Timed') + ' · also saved to Your drills',
+    drillId: data.drill_id, studentId: null
+  });
   loadDrillList();
 });
 
@@ -1087,6 +1369,48 @@ async function loadDrillList() {
   });
 }
 
+/* ---------- START A JUST-CREATED DRILL ----------
+   The "Drill ready" banner's Start button opens the new drill immediately.
+   For a tutor-made drill assigned to a student, point the viewer at that
+   student first so it opens in the correct (read-only) preview. */
+async function startCreatedDrill(drillId, studentId) {
+  if (!drillId) { loadDrillList(); return; }
+  if (isAdmin && studentId) {
+    const sel = $('previewStudent');
+    if ([...sel.options].some(o => o.value === studentId)) sel.value = studentId;
+    setViewingStudent(studentId);
+  }
+  const { data: row, error } = await db.from('drills')
+    .select('id, student_id, title, question_count, status, is_timed, time_limit_seconds, reveal_answers, results_shown, created_by, is_recipe')
+    .eq('id', drillId).single();
+  if (error || !row) { loadDrillList(); return; }
+  openDrill(row);
+}
+
+function renderReadyBanner(container, opts) {
+  container.innerHTML = '';
+  const banner = document.createElement('div');
+  banner.className = 'ready-banner';
+  const check = document.createElement('div');
+  check.className = 'ready-check';
+  check.textContent = '\u2713';
+  const text = document.createElement('div');
+  text.className = 'ready-text';
+  const title = document.createElement('div');
+  title.className = 'ready-title';
+  title.textContent = opts.title;
+  const meta = document.createElement('div');
+  meta.className = 'ready-meta';
+  meta.textContent = opts.meta;
+  text.appendChild(title); text.appendChild(meta);
+  const btn = document.createElement('button');
+  btn.className = 'btn ready-start';
+  btn.textContent = opts.multi ? 'Open first drill \u2192' : 'Start drill \u2192';
+  btn.addEventListener('click', () => startCreatedDrill(opts.drillId, opts.studentId));
+  banner.appendChild(check); banner.appendChild(text); banner.appendChild(btn);
+  container.appendChild(banner);
+}
+
 /* ---------- ITEM IDENTITY ---------- */
 function ptLabel(moduleId) {
   const m = /^LSAC(\d+)$/.exec(moduleId || '');
@@ -1110,6 +1434,10 @@ function itemIdentity(it) {
 function itemKey(it) { return it.module_id + '|' + it.item_id; }
 
 function itemTypeName(it) { return itemTypeByKey[it.item_id] || null; }
+
+/* True when the current item is part of an RC passage (its questions share a
+   group_id prefixed "RC-"). Drives the split take layout. */
+function itemIsRC(it) { return typeof it?.group_id === 'string' && it.group_id.startsWith('RC-'); }
 
 /* ---------- OPEN DRILL ---------- */
 async function openDrill(drill) {
@@ -1137,12 +1465,12 @@ async function openDrill(drill) {
 
   const keys = dis.map(d => d.item_id);
   const { data: contents } = await db.from('lsac_items')
-    .select('module_id, item_id, item_position, content').in('item_id', keys);
+    .select('module_id, item_id, item_position, group_id, content').in('item_id', keys);
   const byKey = {};
   (contents || []).forEach(c => { byKey[c.module_id + '|' + c.item_id] = c; });
   drillItems = dis.map(d => {
     const row = byKey[d.module_id + '|' + d.item_id] || {};
-    return { ...d, content: row.content || {}, item_position: row.item_position ?? null };
+    return { ...d, content: row.content || {}, item_position: row.item_position ?? null, group_id: row.group_id ?? null };
   });
 
   itemTypeByKey = {};
@@ -1369,18 +1697,22 @@ function buildChips() {
    contains) AND its visible text still matches the clean source. Anything
    else is corruption — fall back to the clean text, so previously broken
    questions heal themselves the next time they are opened. */
-function sweepStrayMarks() {
-  const box = $('stimBox');
+function sweepStrayMarks(zone) {
+  const boxes = zone ? [zone] : [$('stimBox'), $('rcPassagePane')];
   const stim = $('stimEl');
   const stem = $('stemEl');
-  box.querySelectorAll('mark').forEach(m => {
-    if (!stim.contains(m) && !stem.contains(m)) m.remove();
-  });
-  [...box.children].forEach(ch => {
-    const ok = ch.classList.contains('vmark') || ch.classList.contains('qident')
-      || ch.classList.contains('stim') || ch.classList.contains('stem')
-      || ch.classList.contains('license-line');
-    if (!ok) ch.remove();
+  const passage = $('rcPassageEl');
+  boxes.forEach(box => {
+    if (!box) return;
+    box.querySelectorAll('mark').forEach(m => {
+      if (!stim.contains(m) && !stem.contains(m) && !passage.contains(m)) m.remove();
+    });
+    [...box.children].forEach(ch => {
+      const ok = ch.classList.contains('vmark') || ch.classList.contains('qident')
+        || ch.classList.contains('stim') || ch.classList.contains('stem')
+        || ch.classList.contains('license-line');
+      if (!ok) ch.remove();
+    });
   });
 }
 
@@ -1404,17 +1736,29 @@ function renderQuestion() {
   const c = it.content || {};
   const prior = responses[it.item_id];
   const inTake = playMode === 'take';
+  const isRC = itemIsRC(it);
   picked = inTake ? null : (prior?.selected_answer ?? null);
   eliminated = new Set();
   flagged = false;
   $('feedback').textContent = ''; $('feedback').className = 'feedback';
 
+  // RC split layout: passage in its own left pane, stem+options on the right.
+  $('playGrid').classList.toggle('rc', isRC);
+  $('rcPassagePane').classList.toggle('hidden', !isRC);
+
   $('qIdent').innerHTML = escapeHtml(itemIdentity(it)) + (prior?.flagged && !inTake ? ' <span style="color:var(--orange);">⚑ flagged</span>' : '');
   $('qYourAnswer').textContent = (!inTake && prior?.selected_answer) ? 'Your answer: ' + prior.selected_answer : '';
 
   sweepStrayMarks();
-  $('stimEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStim, c.stimulusText ?? '');
-  $('stemEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStem, c.stemText ?? '');
+  if (isRC) {
+    $('rcPassageIdent').innerHTML = escapeHtml(rcPassageHeading(it));
+    $('rcPassageEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStim, c.stimulusText ?? '');
+    $('stimEl').innerHTML = '';
+    $('stemEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStem, c.stemText ?? '');
+  } else {
+    $('stimEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStim, c.stimulusText ?? '');
+    $('stemEl').innerHTML = cleanAnnotationHtml(prior?.annotations?.highlightedStem, c.stemText ?? '');
+  }
 
   const opts = extractOptions(c);
   const box = $('optsEl');
@@ -1435,34 +1779,46 @@ function renderQuestion() {
       if (rv && rv !== prior.selected_answer && rv === o.letter) tags.push('review pick');
       if (tags.length) endTag = `<span class="tagend">${tags.join(' · ')}</span>`;
     }
-    btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span>${o.text}</span>${endTag}`;
+    const savedOpt = prior?.annotations?.optHighlights?.[o.letter];
+    const optHtml = cleanAnnotationHtml(savedOpt, o.text);
+    btn.innerHTML = `<span class="letter">${escapeHtml(o.letter)}</span><span class="opttext">${optHtml}</span>${endTag}`;
     if (inTake && !readOnly) {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (ev) => {
+        if (ev.target.closest && ev.target.closest('.elim-x')) return;
+        if (activeHl) return; // a swatch is active → this drag is a highlight, not a pick
         if (eliminated.has(o.letter)) return;
         picked = o.letter;
         [...box.querySelectorAll('.optbtn')].forEach(b => b.classList.remove('picked'));
         btn.classList.add('picked');
       });
     } else if (canReviewPick) {
-      btn.addEventListener('click', () => setReviewAnswer(it, o.letter));
+      btn.addEventListener('click', (ev) => {
+        if (ev.target.closest && ev.target.closest('.elim-x')) return;
+        if (activeHl) return;
+        setReviewAnswer(it, o.letter);
+      });
     } else {
       btn.classList.add('readonly');
     }
-    row.appendChild(btn);
     if (inTake) {
       const el = document.createElement('button');
-      el.className = 'elimbtn';
-      el.textContent = '✕';
+      el.className = 'elim-x';
+      el.type = 'button';
       el.setAttribute('aria-label', `Eliminate ${o.letter}`);
-      if (!readOnly) el.addEventListener('click', () => {
-        if (eliminated.has(o.letter)) { eliminated.delete(o.letter); btn.classList.remove('elim'); el.classList.remove('on'); }
+      const setElimLabel = () => { el.textContent = eliminated.has(o.letter) ? 'undo' : '✕'; el.classList.toggle('undo', eliminated.has(o.letter)); };
+      setElimLabel();
+      if (!readOnly) el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (eliminated.has(o.letter)) { eliminated.delete(o.letter); btn.classList.remove('elim'); }
         else {
-          eliminated.add(o.letter); btn.classList.add('elim'); el.classList.add('on');
+          eliminated.add(o.letter); btn.classList.add('elim');
           if (picked === o.letter) { picked = null; btn.classList.remove('picked'); }
         }
+        setElimLabel();
       });
-      row.appendChild(el);
+      btn.appendChild(el);
     }
+    row.appendChild(btn);
     box.appendChild(row);
   });
 
@@ -1470,9 +1826,11 @@ function renderQuestion() {
     (prior.annotations?.eliminated || []).forEach(l => {
       eliminated.add(l);
       const b = box.querySelector(`.optbtn[data-letter="${CSS.escape(l)}"]`);
-      if (b) b.classList.add('elim');
-      const eb = b?.parentNode?.querySelector('.elimbtn');
-      if (eb) eb.classList.add('on');
+      if (b) {
+        b.classList.add('elim');
+        const x = b.querySelector('.elim-x');
+        if (x) { x.textContent = 'undo'; x.classList.add('undo'); }
+      }
     });
     if (prior.selected_answer) {
       const effective = prior.review_answer || prior.selected_answer;
@@ -1493,7 +1851,7 @@ function renderQuestion() {
 
   $('flagBtn').classList.toggle('on', flagged);
   $('qCounter').textContent = `Question ${qi + 1} of ${drillItems.length}`;
-  $('posHint').textContent = playMode === 'review' ? reviewFooterText() : '';
+  $('posHint').textContent = playMode === 'review' ? reviewFooterText() : (isRC ? rcPosHint(it) : '');
   $('progFill').style.width = `${(Object.keys(responses).length / drillItems.length) * 100}%`;
   $('nextBtn').textContent = qi === drillItems.length - 1 ? 'Submit and finish' : 'Submit and next →';
 
@@ -1507,6 +1865,21 @@ function renderQuestion() {
   } else if (!readOnly) {
     logAccess(it, 'item_reviewed');
   }
+}
+
+/* Passage heading + within-passage position for RC split layout. Numbers the
+   question relative to the passage's own set, not the whole drill. */
+function rcPassageHeading(it) {
+  const vd = it.content?._vd || {};
+  const parts = [ptLabel(it.module_id)];
+  if (vd.sectionOrder) parts.push('Section ' + vd.sectionOrder);
+  parts.push('Passage');
+  return parts.join(' · ');
+}
+function rcPosHint(it) {
+  const group = drillItems.filter(d => d.group_id === it.group_id);
+  const idx = group.findIndex(d => d.item_id === it.item_id);
+  return group.length > 1 ? ('Passage · Question ' + (idx + 1) + ' of ' + group.length) : '';
 }
 
 async function setReviewAnswer(it, letter) {
@@ -2002,7 +2375,8 @@ async function saveWsNow() {
    Per-text-node wrapping. Never uses surroundContents/extractContents, so an
    overlapping or cross-element selection can never split or relocate the DOM
    (the cause of highlights "breaking apart" and leaking into later questions).
-   Only text inside #stimEl / #stemEl is ever wrapped. Selecting over an
+   Only text inside the highlight zones (#stimEl / #stemEl / #rcPassageEl and
+   each answer choice's text) is ever wrapped. Selecting over an
    already-highlighted run recolors the existing mark instead of nesting. */
 [...document.querySelectorAll('.swatch')].forEach(sw =>
   sw.addEventListener('click', () => {
@@ -2029,11 +2403,18 @@ function splitRangeBoundaries(range) {
   }
 }
 
-/* Text nodes fully covered by the range that live inside the stimulus or
-   the stem — nothing else in the stimbox is ever eligible for a mark. */
+/* Text nodes fully covered by the range that live inside a highlight zone —
+   the stimulus, the stem, the RC passage, or any answer choice's text.
+   Nothing else on the screen is ever eligible for a mark. */
+function highlightZones() {
+  const zones = [$('stimEl'), $('stemEl'), $('rcPassageEl')];
+  $('optsEl').querySelectorAll('.opttext').forEach(el => zones.push(el));
+  return zones.filter(Boolean);
+}
+
 function textNodesInRange(range) {
   const nodes = [];
-  [$('stimEl'), $('stemEl')].forEach(zone => {
+  highlightZones().forEach(zone => {
     const walker = document.createTreeWalker(zone, NodeFilter.SHOW_TEXT);
     let n;
     while ((n = walker.nextNode())) {
@@ -2046,13 +2427,15 @@ function textNodesInRange(range) {
   return nodes;
 }
 
-$('stimBox').addEventListener('mouseup', () => {
+/* Apply highlighting on selection release. Works across the passage/stem and
+   the answer choices, in both the single-column and RC split layouts. */
+function applyHighlightFrom(container) {
   if (playMode !== 'take' || readOnly) return;
   if (!activeHl) return;
   const sel = window.getSelection();
   if (!sel.rangeCount || sel.isCollapsed) return;
   const range = sel.getRangeAt(0);
-  if (!$('stimBox').contains(range.commonAncestorContainer)) return;
+  if (!container.contains(range.commonAncestorContainer)) return;
   splitRangeBoundaries(range);
   textNodesInRange(range).forEach(n => {
     const p = n.parentElement;
@@ -2063,18 +2446,27 @@ $('stimBox').addEventListener('mouseup', () => {
     mark.appendChild(n);
   });
   sel.removeAllRanges();
-});
+}
 
-$('stimBox').addEventListener('click', e => {
+/* Erase a mark on click (works in every highlight zone). */
+function eraseMarkFrom(e) {
   if (playMode !== 'take' || readOnly) return;
   const m = e.target.closest ? e.target.closest('mark') : null;
-  if (m && $('stimBox').contains(m)) {
-    const parent = m.parentNode;
-    while (m.firstChild) parent.insertBefore(m.firstChild, m);
-    m.remove();
-    if (parent && parent.normalize) parent.normalize();
-  }
+  if (!m) return;
+  const inZone = highlightZones().some(z => z.contains(m));
+  if (!inZone) return;
+  const parent = m.parentNode;
+  while (m.firstChild) parent.insertBefore(m.firstChild, m);
+  m.remove();
+  if (parent && parent.normalize) parent.normalize();
+}
+
+['stimBox', 'rcPassagePane'].forEach(id => {
+  $(id).addEventListener('mouseup', () => applyHighlightFrom($(id)));
+  $(id).addEventListener('click', eraseMarkFrom);
 });
+$('optsEl').addEventListener('mouseup', () => applyHighlightFrom($('optsEl')));
+$('optsEl').addEventListener('click', e => { if (activeHl) eraseMarkFrom(e); });
 
 $('flagBtn').addEventListener('click', () => {
   if (playMode !== 'take' || readOnly) return;
@@ -2101,6 +2493,8 @@ function exitToList() {
   $('qCounter').textContent = ''; applyClockVisibility(false);
   $('barTitle').textContent = '';
   $('wrapEl').classList.remove('wide');
+  $('playGrid').classList.remove('rc');
+  $('rcPassagePane').classList.add('hidden');
   loadDrillList();
 }
 
@@ -2110,10 +2504,17 @@ async function submitCurrent() {
   if (!picked) { $('feedback').textContent = 'Pick an answer first.'; $('feedback').className = 'feedback bad'; return; }
   $('nextBtn').disabled = true;
 
+  const optHighlights = {};
+  $('optsEl').querySelectorAll('.optbtn').forEach(b => {
+    const letter = b.dataset.letter;
+    const t = b.querySelector('.opttext');
+    if (letter && t && t.querySelector('mark')) optHighlights[letter] = t.innerHTML;
+  });
   const annotations = {
     eliminated: [...eliminated],
-    highlightedStim: $('stimEl').innerHTML,
-    highlightedStem: $('stemEl').innerHTML
+    highlightedStim: (itemIsRC(it) ? $('rcPassageEl') : $('stimEl')).innerHTML,
+    highlightedStem: $('stemEl').innerHTML,
+    optHighlights: optHighlights
   };
   const timeSpent = Math.round((Date.now() - itemShownAt) / 1000);
 
@@ -2135,23 +2536,10 @@ async function submitCurrent() {
     flagged, annotations
   };
 
-  if (currentDrill.reveal_answers && data && 'is_correct' in data) {
-    const box = $('optsEl');
-    const pickedBtn = box.querySelector(`.optbtn[data-letter="${CSS.escape(picked)}"]`);
-    if (data.is_correct) {
-      pickedBtn?.classList.add('correct');
-      $('feedback').textContent = 'Correct.'; $('feedback').className = 'feedback good';
-    } else {
-      pickedBtn?.classList.add('wrong');
-      const corr = box.querySelector(`.optbtn[data-letter="${CSS.escape(data.correct_answer)}"]`);
-      corr?.classList.add('correct');
-      $('feedback').textContent = `The credited response is ${data.correct_answer}.`;
-      $('feedback').className = 'feedback bad';
-    }
-    setTimeout(advance, 1400);
-  } else {
-    advance();
-  }
+  // Blind drilling: never reveal right/wrong during take mode. The answer is
+  // recorded silently; correctness is shown only when the student chooses to
+  // score the drill (Show results) after review.
+  advance();
 }
 
 function advance() {
@@ -2274,6 +2662,12 @@ function showResults() {
     row.querySelector('button').addEventListener('click', () => enterResultsQuestionView(i));
     rows.appendChild(row);
   });
+}
+
+function stripHtml(s) {
+  const d = document.createElement('div');
+  d.innerHTML = String(s || '');
+  return (d.textContent || '').replace(/\s+/g, ' ').trim();
 }
 
 function escapeHtml(s) {
