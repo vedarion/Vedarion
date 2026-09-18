@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part to Whole - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            min-height: 100vh;
+        }
+        .nav {
+            background: #0A0A0A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 50px;
+            border-bottom: 1px solid #222;
+        }
+        .nav-brand {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.active { color: white; }
+
+        .hero {
+            background: #0A0A0A;
+            padding: 40px 20px 50px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .page-subtitle {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .video-section {
+            background: #FAFAFA;
+            padding: 40px 20px;
+        }
+        .video-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .group-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .group-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .group-subtitle {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #888;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover { color: #C65D3B; }
+
+        .footer {
+            background: #0A0A0A;
+            border-top: 1px solid #222;
+            color: #555;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .page-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html" class="active">Learn</a>
+            <a href="../../index.html#testimonials">Testimonials</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="page-title">PART TO WHOLE</h1>
+        <p class="page-subtitle">What is true of the parts is not always true of the whole</p>
+    </section>
+
+    <section class="video-section">
+        <div class="video-container">
+            <div class="group-header">
+                <h2 class="group-title">Part to Whole</h2>
+                <p class="group-subtitle">Watch this first, then head back to Learn.</p>
+            </div>
+            <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/600986/61cb67be-3e3b-406f-91dd-196f74c30caa?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowfullscreen="true"></iframe></div>
+
+            <a href="../../learn.html" class="back-link">← Back to Learn</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+</body>
+</html>
