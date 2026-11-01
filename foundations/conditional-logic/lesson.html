@@ -708,6 +708,11 @@
             });
         });
 
+        // Deep link: ?step=2 opens a step directly (used by related-lesson dropdowns)
+        const linkedStep = new URLSearchParams(window.location.search).get('step');
+        const linkedStepBtn = linkedStep && document.querySelector('.step-nav-btn-main[data-step="' + linkedStep + '"]');
+        if (linkedStepBtn) linkedStepBtn.click();
+
         document.querySelectorAll('.sub-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const panel = btn.closest('.step-panel');

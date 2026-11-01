@@ -913,18 +913,14 @@
                                 </div>
                                 <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
-                        </div>
-                    </li>
-
-                    <li class="lesson-item single-row locked-pattern" data-card-key="shared-necessary">
-                        <div class="lesson-content">
-                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                            <div class="lesson-link-wrapper">
+                            <a href="advanced/shared-sufficient/line-up-the-sufficient.html" class="video-row" data-slug="line-up-the-sufficient">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-                                <div class="lesson-body">
-                                    <div class="lesson-title">Shared Necessary</div>
+                                <div class="video-body">
+                                    <div class="video-title">Tactic: Line Up the Sufficient</div>
                                 </div>
-                            </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
                         </div>
                     </li>
 
@@ -1068,8 +1064,7 @@
                 ]},
                 { label: 'CONDITIONAL', items: [
                     { key: 'pc-bridge', name: 'P→C Bridge', slugs: ['pc-bridge-lesson'] },
-                    { key: 'shared-sufficient', name: 'Shared Suff.', slugs: ['shared-sufficient-lesson'] },
-                    { key: 'shared-necessary', name: 'Shared Nec.', slugs: [] },
+                    { key: 'shared-sufficient', name: 'Shared Suff.', slugs: ['shared-sufficient-lesson', 'line-up-the-sufficient'] },
                     { key: 'triggering', name: 'Triggering', slugs: [] }
                 ]},
                 { label: 'WEIGHING', items: [
@@ -1083,6 +1078,21 @@
 
     let currentPath = 'core';
     let stateRef = { completedSet: new Set(), isLoggedIn: false };
+
+    // A card's slugs come live from the rows currently in its box on the page,
+    // so adding a row automatically raises the bar for VEDA MASTERED.
+    // WALL_DATA slugs are only a fallback for cards not rendered here.
+    function getItemSlugs(item) {
+        const cardEl = document.querySelector('.lesson-item[data-card-key="' + item.key + '"]');
+        if (!cardEl) return item.slugs;
+        const slugs = [];
+        if (cardEl.hasAttribute('data-slug')) slugs.push(cardEl.getAttribute('data-slug'));
+        cardEl.querySelectorAll('[data-slug]').forEach(function(el) {
+            const slug = el.getAttribute('data-slug');
+            if (slugs.indexOf(slug) === -1) slugs.push(slug);
+        });
+        return slugs.length ? slugs : item.slugs;
+    }
 
     function getCardTier(slugs, completedSet) {
         if (!slugs || slugs.length === 0) return 'empty';
@@ -1120,7 +1130,7 @@
             html += '<div class="mastery-section-label">' + section.label + '</div>';
             html += '<div class="mastery-slots">';
             section.items.forEach(function(item) {
-                const tier = getCardTier(item.slugs, stateRef.completedSet);
+                const tier = getCardTier(getItemSlugs(item), stateRef.completedSet);
                 totalItems++;
                 if (tier === 'mastered') masteredItems++;
                 if (tier === 'started') startedItems++;
@@ -1237,7 +1247,7 @@
                     const cardEl = document.querySelector('.lesson-item[data-card-key="' + item.key + '"]');
                     if (!cardEl) return;
                     if (cardEl.classList.contains('locked-pattern')) return;
-                    const tier = getCardTier(item.slugs, stateRef.completedSet);
+                    const tier = getCardTier(getItemSlugs(item), stateRef.completedSet);
                     applyCardTier(cardEl, tier, animateChanges);
                 });
             });
