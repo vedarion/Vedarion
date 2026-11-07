@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentages vs. Numbers Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAF8F5; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+        }
+
+        /* Cheat sheet content (from percentages-vs-numbers-cheatsheet.html) */
+        .cs-page { --cream:#FAF8F5; --orange:#C65D3B; --ink:#1F1B16; --muted:#8A6A4A; --line:#E6DDD0; --card:#FFFDF9; background: var(--cream); color: var(--ink); font-family: "Helvetica Neue", Arial, sans-serif; }
+        .mast { background: #0B0B0B; color: #fff; padding: 44px 56px 36px; border-left: 5px solid var(--orange); }
+        .mast h1 { font-family: Georgia, serif; font-weight: 400; font-size: 38px; margin: 14px 0 6px; letter-spacing: .5px; }
+        .mast p { margin: 0; color: #bbb; font-size: 15px; }
+        .wrap { padding: 36px 56px 48px; border-left: 5px solid var(--orange); }
+        .sec { font-size: 11px; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin: 6px 0 12px; }
+        .formula { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 24px 28px; margin-bottom: 28px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 30px; align-items: center; }
+        .eq { display: flex; align-items: center; gap: 18px; font-family: Georgia, serif; font-size: 26px; }
+        .frac { display: inline-flex; flex-direction: column; align-items: center; }
+        .frac .top { border-bottom: 2px solid var(--ink); padding: 0 10px 2px; }
+        .slot { display: inline-flex; flex-direction: column; align-items: center; }
+        .slot .lab { font-family: Georgia, serif; font-size: 11px; letter-spacing: 2.5px; color: var(--orange); margin-top: 8px; }
+        .blank { display: inline-block; width: 70px; border-bottom: 1.6px solid var(--ink); height: 28px; }
+        .txt { font-size: 15px; line-height: 1.5; }
+        .ex { font-family: Georgia, serif; font-size: 16px; line-height: 1.7; background: #F6F0E6; border-radius: 8px; padding: 10px 12px; }
+        .ex .part { color: var(--orange); }
+        .ex .k { font-family: "Helvetica Neue", Arial; font-size: 11px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; display: inline-block; width: 134px; white-space: nowrap; }
+        .row { display: grid; grid-template-columns: 210px 1fr 1fr 320px; gap: 22px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-bottom: 14px; align-items: start; }
+        .head { font-size: 11px; letter-spacing: 2.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+        .name { font-family: Georgia, serif; font-size: 21px; }
+        .row.k2 { grid-template-columns: 210px 1fr 380px; }
+        .combo { border-collapse: collapse; width: 100%; font-family: Georgia, serif; font-size: 17px; }
+        .combo th { padding: 0 0 10px; text-align: left; }
+        .combo td { padding: 9px 6px; border-top: 1px solid var(--line); }
+        .combo td.mi { color: #8A837B; font-style: italic; }
+        .args { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .arg { background: #F6F0E6; border-radius: 10px; padding: 14px 16px; }
+        .argt { font-family: Georgia, serif; font-size: 11px; letter-spacing: 2.5px; color: var(--orange); margin-bottom: 10px; }
+        .argr { display: grid; grid-template-columns: 122px 1fr; align-items: center; font-family: Georgia, serif; font-size: 17px; margin-bottom: 7px; }
+        .argr .tag { margin: 0; justify-self: start; }
+        .argr .mi { color: #8A837B; font-style: italic; }
+        .argex { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.45; color: #5A5148; }
+        .trap { margin-top: 8px; font-size: 13px; color: #9C3B2F; }
+        .ask { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 4px 0 16px; }
+        .q { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; font-family: Georgia, serif; font-size: 19px; display: flex; align-items: center; gap: 12px; }
+        .q i { font-style: normal; background: var(--orange); color: #FAF8F5; border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex: none; }
+        .miss { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 22px; font-size: 15px; line-height: 1.7; }
+        .tag { display: inline-block; font-family: Georgia, serif; font-size: 10.5px; letter-spacing: 2px; font-weight: bold; border-radius: 5px; padding: 2px 8px; margin: 0 4px; }
+        .g { border: 1.2px solid var(--ink); }
+        .c { background: var(--orange); color: #FAF8F5; }
+        .m { border: 1.4px dashed #8A837B; color: #8A837B; }
+
+        /* Narrow screens: stack the grids */
+        @media (max-width: 900px) {
+            .formula, .row, .row.k2 { grid-template-columns: 1fr; gap: 16px; }
+            .args, .ask { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 650px) {
+            .mast { padding: 30px 20px 26px; }
+            .mast h1 { font-size: 28px; }
+            .wrap { padding: 24px 16px 32px; }
+            .formula { padding: 18px 16px; }
+            .eq { gap: 10px; font-size: 22px; }
+            .blank { width: 56px; }
+            .row { padding: 16px; }
+            .miss { padding: 16px !important; }
+            .ex .k { width: 112px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>&rsaquo;</span>
+        Weighing &amp; Numbers
+        <span>&rsaquo;</span>
+        Percentages vs. Numbers
+    </div>
+
+    <div class="cs-page">
+        <div class="mast"><h1>Percentages vs. Numbers</h1><p>Three pieces, one formula, and the flaw the LSAT keeps testing.</p></div>
+        <div class="wrap">
+
+            <div class="sec">The framework</div>
+            <div class="formula">
+                <div class="eq">
+                    <span class="slot"><span class="frac"><span class="top"><span style="display:inline-block;width:46px"></span>%</span><span>100</span></span><span class="lab">PERCENT</span></span>
+                    <span>&times;</span>
+                    <span class="slot"><span class="blank"></span><span class="lab">TOTAL</span></span>
+                    <span>=</span>
+                    <span class="slot"><span class="blank"></span><span class="lab">PART</span></span>
+                </div>
+                <div>
+                    <div class="txt" style="margin-bottom:10px"><b>Know any two, and you can find the third.</b> With only one, you can't.</div>
+                    <div class="ex"><span class="k">Example</span>1,000 students took an exam, and 30% passed.<br><span class="k">Fill it in</span>30/100 &times; 1,000 = <span class="part">300 passed</span></div>
+                </div>
+            </div>
+
+            <div class="sec">What the LSAT does</div>
+            <div class="miss" style="padding:22px 26px;margin-bottom:28px">
+                <div class="txt" style="font-size:17px;margin-bottom:6px">It gives you <b>one</b> of the three pieces, then concludes about <b>another</b>. It never tells you the third.</div>
+                <div class="txt" style="margin-bottom:16px">That missing piece is the flaw. It can be <b>any</b> of the three. Three different arguments:</div>
+                <div class="args">
+                    <div class="arg"><div class="argt">ARGUMENT 1</div>
+                        <div class="argr"><span class="tag g">GIVEN</span><span>Percent</span></div>
+                        <div class="argr"><span class="tag c">CONCLUDED</span><span>Part</span></div>
+                        <div class="argr"><span class="tag m">MISSING</span><span class="mi">Total</span></div>
+                    </div>
+                    <div class="arg"><div class="argt">ARGUMENT 2</div>
+                        <div class="argr"><span class="tag g">GIVEN</span><span>Percent</span></div>
+                        <div class="argr"><span class="tag c">CONCLUDED</span><span>Total</span></div>
+                        <div class="argr"><span class="tag m">MISSING</span><span class="mi">Part</span></div>
+                    </div>
+                    <div class="arg"><div class="argt">ARGUMENT 3</div>
+                        <div class="argr"><span class="tag g">GIVEN</span><span>Part</span></div>
+                        <div class="argr"><span class="tag c">CONCLUDED</span><span>Percent</span></div>
+                        <div class="argr"><span class="tag m">MISSING</span><span class="mi">Total</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sec">Keep in mind</div>
+            <div class="row k2"><div><div class="name">Percent &ne; Number</div></div>
+                <div><div class="head">Why</div><div class="txt">A percent tells you "out of." It never tells you "how many." To get how many, you need the total.</div><div class="trap">Trap: reading 30% as 30.</div></div>
+                <div><div class="ex">30% passed. How many?<br><span class="k">1,000 took it</span><span class="part">300 passed</span><br><span class="k">10,000 took it</span><span class="part">3,000 passed</span></div></div>
+            </div>
+            <div class="row k2"><div><div class="name">Higher Percent &ne; Bigger Part</div></div>
+                <div><div class="head">Why</div><div class="txt">Two groups can have very different totals, so the higher percent can still be the smaller part.</div><div class="trap">Trap: comparing percents as if the groups were the same size.</div></div>
+                <div><div class="ex">30% of students and 40% of teachers want recess. So more teachers do?<br><span class="k">10,000 students</span><span class="part">3,000</span><br><span class="k">1,000 teachers</span><span class="part">400</span></div></div>
+            </div>
+
+            <div class="sec" style="margin-top:26px">Every time you see a percent, ask</div>
+            <div class="ask"><div class="q"><i>1</i>What did they give me?</div><div class="q"><i>2</i>What did they conclude?</div><div class="q"><i>3</i>What's missing?</div></div>
+            <div class="miss"><b>Do I have two of the pieces?</b> If not, look for the missing third.</div>
+
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
