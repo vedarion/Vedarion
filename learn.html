@@ -33,57 +33,13 @@
         .path-stats { margin-top: 14px; padding-top: 12px; border-top: 1px solid #222; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #777; }
         .path-card:focus-visible { outline: 2px solid #C65D3B; outline-offset: 3px; }
 
-        /* ===== MASTERY WALL ===== */
-        .mastery-wall { background: #0A0A0A; padding: 22px 20px 28px; border-top: 1px solid #1A1A1A; }
-        .mastery-wall-inner { max-width: 760px; margin: 0 auto; }
-        .mastery-wall-header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
-        .mastery-wall-label { font-size: 11px; letter-spacing: 0.18em; color: #888; }
-        .mastery-wall-counts { font-size: 11px; letter-spacing: 0.04em; color: #888; }
-        .mastery-wall-counts .count-completed { color: #C65D3B; font-weight: 600; }
-        .mastery-wall-counts .count-mastered { color: #E8C76F; font-weight: 600; }
-        .mastery-progress-track { display: flex; gap: 3px; background: #1F1F1F; border-radius: 2px; overflow: hidden; height: 3px; margin-bottom: 14px; }
-        .mastery-progress-mastered { height: 100%; background: #E8C76F; transition: flex 0.4s ease; }
-        .mastery-progress-completed { height: 100%; background: #C65D3B; transition: flex 0.4s ease; }
-        .mastery-progress-remaining { height: 100%; transition: flex 0.4s ease; }
-        .mastery-section-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; flex-wrap: wrap; }
-        .mastery-section-row + .mastery-section-row { border-top: 1px solid #1A1A1A; }
-        .mastery-section-label { font-size: 9px; letter-spacing: 0.12em; color: #666; min-width: 100px; flex-shrink: 0; }
-        .mastery-slots { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
-        .mastery-slot { padding: 3px 8px; display: flex; align-items: center; gap: 5px; font-family: Georgia, 'Times New Roman', serif; font-size: 10px; line-height: 1; transition: all 0.3s ease; }
-        .mastery-slot-name { white-space: nowrap; }
-        .mastery-slot[data-tier="empty"] { border: 1.5px dashed #333; background: transparent; }
-        .mastery-slot[data-tier="empty"] .mastery-slot-name { color: #555; }
-        .mastery-slot[data-tier="empty"] .mastery-slot-icon { display: none; }
-        .mastery-slot[data-tier="started"] { border: 1.5px solid #5A3A20; background: transparent; }
-        .mastery-slot[data-tier="started"] .mastery-slot-name { color: #8A6A4A; }
-        .mastery-slot[data-tier="mastered"] { background: transparent; border: 2px double #E8C76F; padding: 5px 11px; gap: 7px; }
-        .mastery-slot[data-tier="mastered"] .mastery-slot-name { color: #E8C76F; font-weight: 600; font-size: 11px; }
-        .veda-badge { width: 14px; height: 14px; border-radius: 50%; background: #C65D3B; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .veda-badge-letter { font-family: Georgia, 'Times New Roman', serif; font-size: 10px; font-style: italic; color: #FAF8F5; font-weight: 700; line-height: 1; margin-top: -1px; }
-        .mastery-cta-link { color: #C65D3B; text-decoration: none; font-weight: 600; font-size: 11px; letter-spacing: 0.04em; transition: color 0.2s ease; white-space: nowrap; }
-        .mastery-cta-link:hover { color: #E8C76F; }
-        .mastery-locked-row .mastery-cta-link { color: #888; font-weight: 500; }
-        .mastery-locked-row .mastery-cta-link:hover { color: #C65D3B; }
-        .mastery-locked-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #1A1A1A; flex-wrap: wrap; }
-        .mastery-locked-icon { display: inline-flex; align-items: center; opacity: 0.7; flex-shrink: 0; }
-        .mastery-locked-text { color: #888; font-size: 11px; flex: 1; font-family: Georgia, 'Times New Roman', serif; font-style: italic; min-width: 0; }
-
-        /* ===== MASTERY LEGEND ===== */
-        .mastery-legend { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; font-size: 10px; color: #777; }
-        .legend-item { display: inline-flex; align-items: center; gap: 5px; }
-        .legend-swatch { width: 10px; height: 10px; flex-shrink: 0; }
-        .legend-empty { border: 1.5px dashed #333; }
-        .legend-started { border: 1.5px solid #5A3A20; }
-        .legend-mastered { background: transparent; border: 2px double #E8C76F; }
-        .legend-hint { color: #666; font-style: italic; font-family: Georgia, 'Times New Roman', serif; }
-
-        /* ===== UP NEXT BAR ===== */
-        .up-next { background: #0A0A0A; padding: 0 20px 26px; }
-        .up-next-inner { max-width: 760px; margin: 0 auto; border: 1px solid #C65D3B; background: rgba(198, 93, 59, 0.06); display: flex; align-items: center; gap: 14px; padding: 12px 16px; flex-wrap: wrap; }
-        .up-next-label { font-size: 10px; letter-spacing: 2px; color: #C65D3B; font-weight: 600; flex-shrink: 0; }
-        .up-next-title { color: #FAF8F5; font-size: 13px; flex: 1; min-width: 120px; }
-        .up-next-link { color: white; background: #C65D3B; text-decoration: none; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 8px 16px; text-transform: uppercase; transition: background 0.3s ease; white-space: nowrap; }
-        .up-next-link:hover { background: #A04D2E; }
+        /* ===== SLIM TOP LINES: sign-up (logged out) / continue (logged in) ===== */
+        .signup-line, .up-next { background: #0A0A0A; padding: 14px 20px; border-bottom: 1px solid #222; }
+        .signup-line-inner, .up-next-inner { max-width: 760px; margin: 0 auto; font-size: 13px; line-height: 1.5; color: #888; }
+        .signup-line-inner { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+        .signup-line a, .up-next-link { color: #C65D3B; text-decoration: none; font-weight: 600; transition: color 0.2s ease; }
+        .signup-line a:hover, .up-next-link:hover { color: #E07050; }
+        .up-next-link { margin-left: 6px; }
 
         /* ===== SECTIONS ===== */
         .hero-spacer { background: #FAFAFA; height: 40px; }
@@ -242,8 +198,6 @@
             .nav { padding: 20px; flex-direction: column; gap: 20px; }
             .nav-links { gap: 25px; }
             .page-title { font-size: 26px; }
-            .mastery-wall { padding: 18px 14px 22px; }
-            .mastery-section-label { min-width: 100%; margin-bottom: 4px; }
             .path-selector { flex-direction: column; align-items: center; padding: 30px 20px 40px; }
             .path-card { max-width: 100%; }
             .lesson-item.single-row .lesson-content { flex-wrap: wrap; }
@@ -270,6 +224,21 @@
         <p class="page-subtitle">Master LSAT Logical Reasoning step by step</p>
     </section>
 
+    <!-- ====== SIGN-UP LINE (logged out) ====== -->
+    <section class="signup-line" id="signupLine" style="display: none;">
+        <div class="signup-line-inner">
+            <span><a href="signup.html">Sign up free</a> to unlock every lesson.</span>
+            <a href="login.html">Log in</a>
+        </div>
+    </section>
+
+    <!-- ====== UP NEXT (logged in) ====== -->
+    <section class="up-next" id="upNextBar" style="display: none;">
+        <div class="up-next-inner">
+            Continue where you left off<a href="#" class="up-next-link" id="upNextLink"></a>
+        </div>
+    </section>
+
     <!-- ====== PATH SELECTOR ====== -->
     <div class="path-selector">
         <div class="path-card active" onclick="switchPath('core')" role="button" tabindex="0" aria-label="Switch to Core Pattern path">
@@ -285,41 +254,6 @@
             <div class="path-stats">13 lessons · 3 pattern families</div>
         </div>
     </div>
-
-    <!-- ====== MASTERY WALL ====== -->
-    <section class="mastery-wall" id="masteryWall">
-        <div class="mastery-wall-inner">
-            <div class="mastery-wall-header">
-                <div class="mastery-wall-label" id="wallLabel">YOUR COLLECTION</div>
-                <div class="mastery-wall-counts">
-                    <span class="count-completed" id="wallCountCompleted">0</span> completed ·
-                    <span class="count-mastered" id="wallCountMastered">0</span> mastered ·
-                    <span id="wallCountTotal">0</span> total
-                </div>
-            </div>
-            <div class="mastery-progress-track">
-                <div class="mastery-progress-mastered" id="wallProgressMastered" style="flex: 0;"></div>
-                <div class="mastery-progress-completed" id="wallProgressCompleted" style="flex: 0;"></div>
-                <div class="mastery-progress-remaining" id="wallProgressRemaining" style="flex: 1;"></div>
-            </div>
-            <div class="mastery-legend">
-                <span class="legend-item"><span class="legend-swatch legend-empty"></span>Not started</span>
-                <span class="legend-item"><span class="legend-swatch legend-started"></span>In progress</span>
-                <span class="legend-item"><span class="legend-swatch legend-mastered"></span>Mastered</span>
-                <span class="legend-hint">Finish every item in a card to master it.</span>
-            </div>
-            <div id="masteryWallSections"></div>
-        </div>
-    </section>
-
-    <!-- ====== UP NEXT ====== -->
-    <section class="up-next" id="upNextBar" style="display: none;">
-        <div class="up-next-inner">
-            <span class="up-next-label" id="upNextLabel">UP NEXT</span>
-            <span class="up-next-title" id="upNextTitle"></span>
-            <a href="#" class="up-next-link" id="upNextLink">Continue →</a>
-        </div>
-    </section>
 
     <!-- ====== CORE PATH ====== -->
     <div id="core-path" class="path-content active">
@@ -1055,61 +989,59 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/auth.js"></script>
     <script>
-    /* WALL CONFIGURATION — per-path */
+    /* Mastery configuration, per path: each card key and its fallback slugs */
     const WALL_DATA = {
         core: {
-            label: 'YOUR COLLECTION · CORE',
             sections: [
-                { label: 'FOUNDATIONS', items: [
-                    { key: 'premises-conclusions', name: 'Premises', slugs: ['premises-conclusions'] },
-                    { key: 'conditional-logic', name: 'Conditional Logic', slugs: ['conditional-logic', 'conditional-logic-vedamark-sn', 'conditional-logic-vedamark-cp', 'chained-conditionals'] },
-                    { key: 'translating-words', name: 'Translating', slugs: ['translating-words', 'translating-words-vedamark'] },
-                    { key: 'negation', name: 'Negation', slugs: ['negation'] }
+                { items: [
+                    { key: 'premises-conclusions', slugs: ['premises-conclusions'] },
+                    { key: 'conditional-logic', slugs: ['conditional-logic', 'conditional-logic-vedamark-sn', 'conditional-logic-vedamark-cp', 'chained-conditionals'] },
+                    { key: 'translating-words', slugs: ['translating-words', 'translating-words-vedamark'] },
+                    { key: 'negation', slugs: ['negation'] }
                 ]},
-                { label: 'ARG STRUCTURE', items: [
-                    { key: 'main-point', name: 'Main Point', slugs: ['main-point-lesson'] },
-                    { key: 'argument-part', name: 'Argument Part', slugs: ['argument-part-lesson'] },
-                    { key: 'method-of-reasoning', name: 'Method', slugs: ['method-of-reasoning-lesson'] }
+                { items: [
+                    { key: 'main-point', slugs: ['main-point-lesson'] },
+                    { key: 'argument-part', slugs: ['argument-part-lesson'] },
+                    { key: 'method-of-reasoning', slugs: ['method-of-reasoning-lesson'] }
                 ]},
-                { label: 'MOST FREQUENT', items: [
-                    { key: 'must-be-true', name: 'Must Be True', slugs: ['must-be-true-lesson'] },
-                    { key: 'most-strongly-supported', name: 'MSS', slugs: ['most-strongly-supported-lesson'] },
-                    { key: 'sufficient-assumption', name: 'Suff. Asmp.', slugs: ['sufficient-assumption-theory', 'sufficient-assumption-lesson'] },
-                    { key: 'necessary-assumption', name: 'Nec. Asmp.', slugs: ['necessary-assumption-theory', 'necessary-assumption-lesson'] },
-                    { key: 'strengthen-weaken', name: 'Str. & Wkn.', slugs: ['strengthen-weaken-lesson'] },
-                    { key: 'flaw', name: 'Flaw', slugs: ['flaw-lesson'] }
+                { items: [
+                    { key: 'must-be-true', slugs: ['must-be-true-lesson'] },
+                    { key: 'most-strongly-supported', slugs: ['most-strongly-supported-lesson'] },
+                    { key: 'sufficient-assumption', slugs: ['sufficient-assumption-theory', 'sufficient-assumption-lesson'] },
+                    { key: 'necessary-assumption', slugs: ['necessary-assumption-theory', 'necessary-assumption-lesson'] },
+                    { key: 'strengthen-weaken', slugs: ['strengthen-weaken-lesson'] },
+                    { key: 'flaw', slugs: ['flaw-lesson'] }
                 ]},
-                { label: 'TOOLKIT', requiresLogin: true, lockMessage: 'Log in to unlock the Toolkit', items: [
-                    { key: 'resolve-reconcile-explain', name: 'Paradox', slugs: ['resolve-reconcile-explain-lesson'] },
-                    { key: 'evaluate', name: 'Evaluate', slugs: [] },
-                    { key: 'agree-disagree', name: 'Agree/Disagree', slugs: ['agree-disagree-lesson'] },
-                    { key: 'parallel-reasoning', name: 'Parallel', slugs: [] }
+                { items: [
+                    { key: 'resolve-reconcile-explain', slugs: ['resolve-reconcile-explain-lesson'] },
+                    { key: 'evaluate', slugs: [] },
+                    { key: 'agree-disagree', slugs: ['agree-disagree-lesson'] },
+                    { key: 'parallel-reasoning', slugs: [] }
                 ]}
             ]
         },
         advanced: {
-            label: 'YOUR COLLECTION · ADVANCED',
             sections: [
-                { label: 'TRANSLATION', items: [
-                    { key: 'advanced-translations', name: 'Adv. Translations', slugs: ['advanced-translations', 'advanced-translations-vedamark'] },
-                    { key: 'complex-conditionals', name: 'Complex Cond.', slugs: ['complex-conditionals', 'complex-conditionals-vedamark'] },
-                    { key: 'quantifier-combinations', name: 'Quantifiers', slugs: [] }
+                { items: [
+                    { key: 'advanced-translations', slugs: ['advanced-translations', 'advanced-translations-vedamark'] },
+                    { key: 'complex-conditionals', slugs: ['complex-conditionals', 'complex-conditionals-vedamark'] },
+                    { key: 'quantifier-combinations', slugs: [] }
                 ]},
-                { label: 'CAUSE & EVIDENCE', items: [
-                    { key: 'causal-arguments', name: 'Causal', slugs: ['causal-arguments'] },
-                    { key: 'phenomenon-hypothesis', name: 'Phenom/Hypo', slugs: ['phenomenon-hypothesis-lesson'] },
-                    { key: 'samples', name: 'Samples', slugs: [] }
+                { items: [
+                    { key: 'causal-arguments', slugs: ['causal-arguments'] },
+                    { key: 'phenomenon-hypothesis', slugs: ['phenomenon-hypothesis-lesson'] },
+                    { key: 'samples', slugs: [] }
                 ]},
-                { label: 'CONDITIONAL', items: [
-                    { key: 'pc-bridge', name: 'P→C Bridge', slugs: ['pc-bridge-lesson'] },
-                    { key: 'shared-sufficient', name: 'Shared Suff.', slugs: ['shared-sufficient-lesson', 'line-up-the-sufficient'] },
-                    { key: 'link-the-premises', name: 'Link the Premises', slugs: ['link-the-premises-lesson'] },
-                    { key: 'triggering', name: 'Trigger the Rule', slugs: ['trigger-the-rule-lesson'] }
+                { items: [
+                    { key: 'pc-bridge', slugs: ['pc-bridge-lesson'] },
+                    { key: 'shared-sufficient', slugs: ['shared-sufficient-lesson', 'line-up-the-sufficient'] },
+                    { key: 'link-the-premises', slugs: ['link-the-premises-lesson'] },
+                    { key: 'triggering', slugs: ['trigger-the-rule-lesson'] }
                 ]},
-                { label: 'WEIGHING', items: [
-                    { key: 'cost-benefit', name: 'Cost-Benefit', slugs: ['cost-benefit'] },
-                    { key: 'whole-to-part', name: 'Part to Whole', slugs: ['whole-to-part'] },
-                    { key: 'percentages-raw', name: 'Percent vs #', slugs: ['percentages-vs-numbers-lesson', 'rates-lesson'] }
+                { items: [
+                    { key: 'cost-benefit', slugs: ['cost-benefit'] },
+                    { key: 'whole-to-part', slugs: ['whole-to-part'] },
+                    { key: 'percentages-raw', slugs: ['percentages-vs-numbers-lesson', 'rates-lesson'] }
                 ]}
             ]
         }
@@ -1141,70 +1073,12 @@
         return 'mastered';
     }
 
-    function getTierIcon(tier) {
-        if (tier === 'mastered') return '<span class="mastery-slot-icon"><span class="veda-badge"><span class="veda-badge-letter">V</span></span></span>';
-        if (tier === 'started') return '<span class="mastery-slot-icon"><span style="display: flex; gap: 2px;"><span style="width: 6px; height: 2px; background: #C65D3B; border-radius: 1px;"></span><span style="width: 6px; height: 2px; background: #3A2818; border-radius: 1px;"></span></span></span>';
-        return '';
-    }
-
-    function renderMasteryWall() {
-        const wallData = WALL_DATA[currentPath];
-        const container = document.getElementById('masteryWallSections');
-        if (!container || !wallData) return;
-
-        document.getElementById('wallLabel').textContent = wallData.label;
-
-        let totalItems = 0, masteredItems = 0, startedItems = 0, html = '';
-
-        wallData.sections.forEach(function(section) {
-            if (section.requiresLogin && !stateRef.isLoggedIn) {
-                html += '<div class="mastery-locked-row">';
-                html += '<span class="mastery-locked-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>';
-                html += '<span class="mastery-locked-text">' + (section.lockMessage || 'Log in to unlock more') + '</span>';
-                html += '<a href="login.html" class="mastery-cta-link">Log in →</a>';
-                html += '</div>';
-                return;
-            }
-            html += '<div class="mastery-section-row">';
-            html += '<div class="mastery-section-label">' + section.label + '</div>';
-            html += '<div class="mastery-slots">';
-            section.items.forEach(function(item) {
-                const tier = getCardTier(getItemSlugs(item), stateRef.completedSet);
-                totalItems++;
-                if (tier === 'mastered') masteredItems++;
-                if (tier === 'started') startedItems++;
-                html += '<div class="mastery-slot" data-tier="' + tier + '" data-card-key="' + item.key + '">';
-                html += getTierIcon(tier);
-                html += '<span class="mastery-slot-name">' + item.name + '</span>';
-                html += '</div>';
-            });
-            html += '</div></div>';
-        });
-
-        container.innerHTML = html;
-
-        const countsEl = document.querySelector('.mastery-wall-counts');
-        if (!stateRef.isLoggedIn) {
-            countsEl.innerHTML = '<a href="login.html" class="mastery-cta-link">Sign up free to start collecting →</a>';
-        } else {
-            countsEl.innerHTML = '<span class="count-mastered">' + masteredItems + '</span> of ' + totalItems + ' mastered';
-        }
-
-        const remaining = totalItems - masteredItems - startedItems;
-        const pm = document.getElementById('wallProgressMastered');
-        const pc = document.getElementById('wallProgressCompleted');
-        const pr = document.getElementById('wallProgressRemaining');
-        if (pm) pm.style.flex = masteredItems;
-        if (pc) pc.style.flex = startedItems;
-        if (pr) pr.style.flex = Math.max(remaining, 0.01);
-    }
-
     function renderUpNext() {
         var bar = document.getElementById('upNextBar');
         if (!bar) return;
         var container = document.getElementById(currentPath === 'core' ? 'core-path' : 'advanced-path');
         var candidates = container.querySelectorAll('a.lesson-link-wrapper[href], a.video-row[href]');
-        var next = null;
+        var next = null, anyDone = false;
         for (var i = 0; i < candidates.length; i++) {
             var el = candidates[i];
             var slug = el.getAttribute('data-slug');
@@ -1213,25 +1087,25 @@
                 if (li) slug = li.getAttribute('data-slug');
             }
             if (!slug) continue;
-            if (!stateRef.completedSet.has(slug)) { next = el; break; }
+            if (stateRef.completedSet.has(slug)) anyDone = true;
+            else if (!next) next = el;
         }
-        if (!next) { bar.style.display = 'none'; window._upNextTarget = null; return; }
+        // Only for logged-in students who have started this path and still have something left
+        if (!stateRef.isLoggedIn || !anyDone || !next) { bar.style.display = 'none'; window._upNextTarget = null; return; }
         var card = next.closest('.lesson-item');
         var cardTitle = card ? card.querySelector('.qt-card-title') : null;
         var rowTitle = next.querySelector('.video-title') || next.querySelector('.lesson-title');
         var title = '';
         var rowText = rowTitle ? rowTitle.textContent.trim() : '';
         if (cardTitle && rowText && rowText !== 'Lesson') {
-            title = cardTitle.textContent.trim() + ' — ' + rowText;
+            title = cardTitle.textContent.trim() + ': ' + rowText;
         } else if (cardTitle) {
             title = cardTitle.textContent.trim();
         } else {
             title = rowText;
         }
-        document.getElementById('upNextTitle').textContent = title;
         document.getElementById('upNextLink').setAttribute('href', next.getAttribute('href'));
-        document.getElementById('upNextLink').textContent = stateRef.isLoggedIn ? 'Continue →' : 'Start →';
-        document.getElementById('upNextLabel').textContent = stateRef.isLoggedIn ? 'UP NEXT' : 'START HERE';
+        document.getElementById('upNextLink').textContent = title;
         window._upNextTarget = next;
         bar.style.display = 'block';
     }
@@ -1335,7 +1209,6 @@
             document.querySelectorAll('.path-card')[1].classList.add('active');
             document.getElementById('advanced-path').classList.add('active');
         }
-        renderMasteryWall();
         renderUpNext();
         document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1385,7 +1258,6 @@
 
             updateChecksFromCompletions();
             updateAllCardTiers();
-            renderMasteryWall();
             renderUpNext();
 
             document.querySelectorAll('a.lesson-link-wrapper[href], a.video-row[href]').forEach(function(link) {
@@ -1401,15 +1273,13 @@
                     check.classList.add('completed');
                     stateRef.completedSet.add(slug);
                     updateAllCardTiers();
-                    renderMasteryWall();
                     await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
                     window.location.href = link.getAttribute('href');
                 });
             });
         } else {
-            // Logged out: render the wall as a preview with CTA + locked row
-            renderMasteryWall();
-            renderUpNext();
+            // Logged out: sign-up line instead of the continue line
+            document.getElementById('signupLine').style.display = 'block';
         }
     })();
     </script>
