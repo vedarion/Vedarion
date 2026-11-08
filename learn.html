@@ -92,6 +92,13 @@
         .lesson-item.locked-pattern .video-row:hover { background: transparent; }
         .lesson-item.locked-pattern .video-row:hover .play-tile { transform: none; }
         .lesson-item.locked-pattern .video-row .video-title { color: #948A7D; }
+        /* Unbuilt row inside a live card */
+        .video-row.unbuilt { cursor: default; }
+        .video-row.unbuilt:hover { background: transparent; }
+        .video-row.unbuilt .lesson-check { border-color: #D5CCBF; background: transparent; }
+        .video-row.unbuilt .play-tile { background: #E7DFD3; color: #B5AA9B; }
+        .video-row.unbuilt:hover .play-tile { transform: none; }
+        .video-row.unbuilt .video-title { color: #948A7D; }
         .video-row-label { padding: 12px 16px 4px; border-top: 1px solid #EDEBE7; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #A39889; }
         .lesson-item.locked-pattern .video-row-label { border-top-color: #E3DACD; }
         .video-row-label + .video-row { border-top: none; }
@@ -1101,7 +1108,7 @@
     </div>
 
     <!-- ====== READING COMP PATH ====== -->
-    <!-- Phenomenon & Hypothesis reuses the Advanced card's pages and slug, so progress counts in both paths -->
+    <!-- Phenomenon & Hypothesis: the Introduction row reuses the Advanced lesson page and slug, so progress counts in both paths -->
     <div id="rc-path" class="path-content">
         <div class="hero-spacer"></div>
 
@@ -1112,7 +1119,7 @@
                 <p class="section-description">Spot the pattern a passage is built on, and know what to track.</p>
                 <ul class="lessons-list">
 
-                    <li class="lesson-item multi-video" data-card-key="phenomenon-hypothesis">
+                    <li class="lesson-item multi-video" data-card-key="rc-phenomenon-hypothesis">
                         <div class="qt-card-header">
                             <div class="qt-card-title">Phenomenon &amp; Hypothesis</div>
                             <div class="qt-card-resources">
@@ -1124,10 +1131,18 @@
                                 <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                                 <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
                                 <div class="video-body">
-                                    <div class="video-title">Lesson</div>
+                                    <div class="video-title">Introduction</div>
                                 </div>
                                 <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </a>
+                            <!-- Unbuilt row: its slug counts toward this card's mastery, so the card can't be mastered until it's built and done -->
+                            <div class="video-row unbuilt" data-slug="rc-patterns-in-the-passage">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="video-body">
+                                    <div class="video-title">Patterns in the Passage</div>
+                                </div>
+                            </div>
                         </div>
                     </li>
 
@@ -1332,7 +1347,7 @@
         rc: {
             sections: [
                 { items: [
-                    { key: 'phenomenon-hypothesis', slugs: ['phenomenon-hypothesis-lesson'] },
+                    { key: 'rc-phenomenon-hypothesis', slugs: ['phenomenon-hypothesis-lesson', 'rc-patterns-in-the-passage'] },
                     { key: 'rc-old-new-view', slugs: [] },
                     { key: 'rc-problem-solution', slugs: [] },
                     { key: 'rc-competing-views', slugs: [] }
