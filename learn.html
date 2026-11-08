@@ -96,15 +96,8 @@
         .lessons-list { list-style: none; }
 
         /* ===== LESSON ITEM (CARD) ===== */
-        .lesson-item { background: white; border: 1px solid #E0E0E0; margin-bottom: 12px; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: relative; overflow: hidden; }
+        .lesson-item { background: white; border: 1px solid #E0E0E0; margin-bottom: 12px; transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: relative; overflow: hidden; }
         .lesson-item:hover { border-color: #C65D3B; }
-        .lesson-item[data-tier="mastered"] { border: 3px double #C9A55C; }
-        .lesson-item[data-tier="mastered"]:hover { border-color: #C9A55C; }
-        .lesson-item[data-tier="mastered"].frame-landing { animation: frameIn 0.6s ease; }
-        @keyframes frameIn {
-            from { border-color: #E8E2D6; }
-            to { border-color: #C9A55C; }
-        }
 
         /* SINGLE-ROW LESSON */
         .lesson-item.single-row .lesson-content { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: #0A0A0A; }
@@ -177,26 +170,43 @@
         .row-toggle-label { line-height: 1; }
         .row-toggle svg { transition: transform 0.3s ease; }
 
-        /* STAMPS */
-        .card-stamp { position: absolute; top: 14px; right: 16px; pointer-events: none; font-family: Georgia, 'Times New Roman', serif; }
-        .stamp-mastered { display: flex; align-items: center; gap: 6px; }
-        .stamp-mastered .veda-badge { width: 13px; height: 13px; }
-        .stamp-mastered .veda-badge-letter { font-size: 9px; }
-        .stamp-mastered-text { font-size: 10px; letter-spacing: 0.14em; font-weight: 700; color: #B08D45; }
-        .lesson-item:not([data-tier="mastered"]) .card-stamp { display: none; }
-        .lesson-item.single-row .card-stamp { display: none; }
+        /* ===== MASTERED CARD: dark card + rows, round orange check by the title ===== */
+        .qt-card-header, .qt-card-body, .lesson-item.single-row .lesson-content { transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .qt-card-title, .qt-card-resources a, .video-row .video-title, .lesson-item.single-row .lesson-title { transition: color 0.3s ease; }
+        .video-row { transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .lesson-item[data-tier="mastered"], #advanced-path .lesson-item[data-tier="mastered"] { background: #2A241F; border-color: #2A241F; }
+        .lesson-item[data-tier="mastered"]:hover { border-color: #2A241F; }
+        .lesson-item[data-tier="mastered"] .qt-card-header { border-bottom-color: #463D35; padding-right: 46px; }
+        .lesson-item[data-tier="mastered"] .qt-card-title { color: #FAF8F5; }
+        .lesson-item[data-tier="mastered"] .qt-card-resources a { color: #C9BFB3; }
+        .lesson-item[data-tier="mastered"] .qt-card-resources a:hover { color: #C65D3B; }
+        .lesson-item[data-tier="mastered"] .qt-card-body { background: #352E28; }
+        .lesson-item[data-tier="mastered"] .video-row { background: #352E28; border-top-color: #463D35; }
+        .lesson-item[data-tier="mastered"] .video-row:hover { background: #3D352E; }
+        .lesson-item[data-tier="mastered"] .video-row .video-title { color: #EDE6DD; }
+        .lesson-item[data-tier="mastered"] .video-row .video-chevron { color: #8A7D70; }
+        .lesson-item[data-tier="mastered"] .video-row:hover .video-chevron { color: #C65D3B; }
+        .lesson-item[data-tier="mastered"] .play-tile { background: #4A3A30; color: #C65D3B; }
+        .lesson-item[data-tier="mastered"] .lesson-check.completed { background: #C65D3B; border-color: #C65D3B; }
+        .lesson-item[data-tier="mastered"].single-row .lesson-content { background: #352E28; }
+        .lesson-item[data-tier="mastered"].single-row .lesson-title { color: #EDE6DD; }
+        .lesson-item[data-tier="mastered"].single-row .lesson-meta-row { color: #C9BFB3; }
+        .lesson-item[data-tier="mastered"].single-row .lesson-extras a { color: #C9BFB3; }
+        .lesson-item[data-tier="mastered"].single-row .lesson-extras a:hover { color: #C65D3B; }
+        .lesson-item[data-tier="mastered"] .qt-card-header::after,
+        .lesson-item[data-tier="mastered"].single-row .lesson-content::after {
+            content: ""; width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+            background: #C65D3B url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 6L5 8.5L9.5 3.5' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 10px 10px no-repeat;
+            animation: masteredCheckIn 0.3s ease;
+        }
+        .lesson-item[data-tier="mastered"] .qt-card-header::after { position: absolute; top: 12px; right: 16px; }
+        @keyframes masteredCheckIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* VEDAMARK STEP ROW */
         .vedamark-glyph { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700; font-size: 18px; line-height: 1; color: #C65D3B; }
         /* Checkboxes are display-only — completion comes from clicking the lesson link.
            VedaMark + future micro-quiz slugs are marked by their respective drill/quiz pages. */
         .lesson-check { pointer-events: none; }
-        .stamp-mastered.landing { animation: stampLandMastered 0.55s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes stampLandMastered {
-            0% { opacity: 0; transform: scale(2.2) rotate(14deg); }
-            60% { opacity: 1; transform: scale(0.92) rotate(-5deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
 
         /* HEADER-ONLY CARD (no video rows yet) */
         .lesson-item.multi-video .qt-card-header:last-child { border-bottom: none; }
@@ -239,7 +249,6 @@
             .lesson-item.single-row .lesson-content { flex-wrap: wrap; }
             .lesson-item.single-row .lesson-extras { width: 100%; padding-left: 50px; margin-top: 4px; justify-content: flex-start; }
             .qt-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .lesson-item[data-tier="mastered"] .card-stamp { position: static; transform: none; margin-top: 2px; }
             .video-row { padding: 12px 16px; }
             .video-row .video-title { font-size: 13px; }
         }
@@ -284,7 +293,7 @@
                 <div class="mastery-wall-label" id="wallLabel">YOUR COLLECTION</div>
                 <div class="mastery-wall-counts">
                     <span class="count-completed" id="wallCountCompleted">0</span> completed ·
-                    <span class="count-mastered" id="wallCountMastered">0</span> veda mastered ·
+                    <span class="count-mastered" id="wallCountMastered">0</span> mastered ·
                     <span id="wallCountTotal">0</span> total
                 </div>
             </div>
@@ -296,8 +305,8 @@
             <div class="mastery-legend">
                 <span class="legend-item"><span class="legend-swatch legend-empty"></span>Not started</span>
                 <span class="legend-item"><span class="legend-swatch legend-started"></span>In progress</span>
-                <span class="legend-item"><span class="legend-swatch legend-mastered"></span>Veda Mastered</span>
-                <span class="legend-hint">Watch the lesson, then pass its VedaMark drill to earn the stamp.</span>
+                <span class="legend-item"><span class="legend-swatch legend-mastered"></span>Mastered</span>
+                <span class="legend-hint">Finish every item in a card to master it.</span>
             </div>
             <div id="masteryWallSections"></div>
         </div>
@@ -323,7 +332,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item single-row" data-slug="premises-conclusions" data-card-key="premises-conclusions">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="lesson-content">
                             <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <a href="foundations/identifying-conclusions/lesson.html" class="lesson-link-wrapper">
@@ -336,7 +344,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="conditional-logic">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Conditional Logic Basics</div>
                         </div>
@@ -377,7 +384,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="translating-words">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Translating Words on the Test</div>
                         </div>
@@ -402,7 +408,6 @@
                     </li>
 
                     <li class="lesson-item single-row" data-slug="negation" data-card-key="negation">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="lesson-content">
                             <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <a href="foundations/negation/lesson.html" class="lesson-link-wrapper">
@@ -425,7 +430,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="main-point">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Main Point</div>
                             <div class="qt-card-resources">
@@ -447,7 +451,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="argument-part">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Argument Part / Role of Statement</div>
                             <div class="qt-card-resources">
@@ -469,7 +472,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="method-of-reasoning">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Method of Reasoning</div>
                             <div class="qt-card-resources">
@@ -506,7 +508,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="must-be-true">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Must Be True</div>
                             <div class="qt-card-resources">
@@ -528,7 +529,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="most-strongly-supported">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Most Strongly Supported</div>
                             <div class="qt-card-resources">
@@ -560,7 +560,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="sufficient-assumption">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Sufficient Assumption</div>
                             <div class="qt-card-resources">
@@ -590,7 +589,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="necessary-assumption">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Necessary Assumption</div>
                             <div class="qt-card-resources">
@@ -620,7 +618,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="strengthen-weaken">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Strengthen &amp; Weaken</div>
                             <div class="qt-card-resources">
@@ -642,7 +639,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="flaw">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Flaw</div>
                             <div class="qt-card-resources">
@@ -674,7 +670,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="resolve-reconcile-explain">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Paradox (Resolve &amp; Explain)</div>
                             <div class="qt-card-resources">
@@ -703,7 +698,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="agree-disagree">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Agree / Disagree (Point at Issue)</div>
                             <div class="qt-card-resources">
@@ -750,7 +744,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="advanced-translations">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Advanced Translations</div>
                         </div>
@@ -775,7 +768,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="complex-conditionals">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Complex Conditionals</div>
                         </div>
@@ -826,7 +818,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="causal-arguments">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Causal Arguments</div>
                             <div class="qt-card-resources">
@@ -846,7 +837,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="phenomenon-hypothesis">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Phenomenon &amp; Hypothesis</div>
                             <div class="qt-card-resources">
@@ -887,7 +877,7 @@
                 </div>
                 <ul class="lessons-list">
 
-                    <!-- Unit cheat sheet: no data-slug / data-card-key, so it never counts toward VEDA MASTERED -->
+                    <!-- Unit cheat sheet: no data-slug / data-card-key, so it never counts toward mastery -->
                     <li class="lesson-item single-row">
                         <div class="lesson-content">
                             <a href="advanced/conditional-patterns/cheatsheet.html" class="lesson-link-wrapper">
@@ -900,7 +890,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="pc-bridge">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">P → C Bridge</div>
                         </div>
@@ -917,7 +906,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="shared-sufficient">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Shared Sufficient</div>
                         </div>
@@ -942,7 +930,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="link-the-premises">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Link the Premises</div>
                         </div>
@@ -959,7 +946,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="triggering">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Trigger the Rule</div>
                         </div>
@@ -986,7 +972,6 @@
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="cost-benefit">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Cost-Benefit</div>
                             <div class="qt-card-resources">
@@ -1006,7 +991,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="whole-to-part">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Part to Whole</div>
                             <div class="qt-card-resources">
@@ -1026,7 +1010,6 @@
                     </li>
 
                     <li class="lesson-item multi-video" data-card-key="percentages-raw">
-                        <div class="card-stamp stamp-mastered"><span class="veda-badge"><span class="veda-badge-letter">V</span></span><span class="stamp-mastered-text">VEDA MASTERED</span></div>
                         <div class="qt-card-header">
                             <div class="qt-card-title">Percentages vs. Numbers</div>
                             <div class="qt-card-resources">
@@ -1136,7 +1119,7 @@
     let stateRef = { completedSet: new Set(), isLoggedIn: false };
 
     // A card's slugs come live from the rows currently in its box on the page,
-    // so adding a row automatically raises the bar for VEDA MASTERED.
+    // so adding a row automatically raises the bar for mastery.
     // WALL_DATA slugs are only a fallback for cards not rendered here.
     function getItemSlugs(item) {
         const cardEl = document.querySelector('.lesson-item[data-card-key="' + item.key + '"]');
@@ -1204,7 +1187,7 @@
         if (!stateRef.isLoggedIn) {
             countsEl.innerHTML = '<a href="login.html" class="mastery-cta-link">Sign up free to start collecting →</a>';
         } else {
-            countsEl.innerHTML = '<span class="count-mastered">' + masteredItems + '</span> of ' + totalItems + ' veda mastered';
+            countsEl.innerHTML = '<span class="count-mastered">' + masteredItems + '</span> of ' + totalItems + ' mastered';
         }
 
         const remaining = totalItems - masteredItems - startedItems;
@@ -1253,50 +1236,11 @@
         bar.style.display = 'block';
     }
 
-    function markMasteredSeen(key) {
-        if (!key) return;
-        try {
-            var seen = JSON.parse(localStorage.getItem('vedarion_mastered_seen') || '[]');
-            if (seen.indexOf(key) === -1) { seen.push(key); localStorage.setItem('vedarion_mastered_seen', JSON.stringify(seen)); }
-        } catch(e) {}
-    }
-
-    function playMasteryCeremony(cardEl) {
-        cardEl.classList.remove('frame-landing');
-        void cardEl.offsetWidth;
-        cardEl.classList.add('frame-landing');
-        var stamp = cardEl.querySelector('.stamp-mastered');
-        if (stamp) {
-            stamp.classList.remove('landing');
-            void stamp.offsetWidth;
-            stamp.classList.add('landing');
-        }
-    }
-
-    function animateNewlyMastered() {
-        var seen = [];
-        try { seen = JSON.parse(localStorage.getItem('vedarion_mastered_seen') || '[]'); } catch(e) {}
-        var current = [];
-        document.querySelectorAll('.lesson-item[data-tier="mastered"][data-card-key]').forEach(function(card) {
-            var key = card.getAttribute('data-card-key');
-            current.push(key);
-            if (seen.indexOf(key) === -1 && card.classList.contains('multi-video')) {
-                playMasteryCeremony(card);
-            }
-        });
-        try { localStorage.setItem('vedarion_mastered_seen', JSON.stringify(current)); } catch(e) {}
-    }
-
-    function applyCardTier(cardEl, tier, animate) {
-        const previousTier = cardEl.getAttribute('data-tier');
+    function applyCardTier(cardEl, tier) {
         cardEl.setAttribute('data-tier', tier);
-        if (tier === 'mastered' && cardEl.classList.contains('multi-video') && animate && previousTier !== tier) {
-            playMasteryCeremony(cardEl);
-            markMasteredSeen(cardEl.getAttribute('data-card-key'));
-        }
     }
 
-    function updateAllCardTiers(animateChanges) {
+    function updateAllCardTiers() {
         Object.keys(WALL_DATA).forEach(function(pathKey) {
             WALL_DATA[pathKey].sections.forEach(function(section) {
                 section.items.forEach(function(item) {
@@ -1304,7 +1248,7 @@
                     if (!cardEl) return;
                     if (cardEl.classList.contains('locked-pattern')) return;
                     const tier = getCardTier(getItemSlugs(item), stateRef.completedSet);
-                    applyCardTier(cardEl, tier, animateChanges);
+                    applyCardTier(cardEl, tier);
                 });
             });
         });
@@ -1440,8 +1384,7 @@
             } catch(e) {}
 
             updateChecksFromCompletions();
-            updateAllCardTiers(false);
-            animateNewlyMastered();
+            updateAllCardTiers();
             renderMasteryWall();
             renderUpNext();
 
@@ -1457,7 +1400,7 @@
                     e.preventDefault();
                     check.classList.add('completed');
                     stateRef.completedSet.add(slug);
-                    updateAllCardTiers(true);
+                    updateAllCardTiers();
                     renderMasteryWall();
                     await vedarionAuth.from('lesson_completions').upsert({ user_id: userId, lesson_slug: slug });
                     window.location.href = link.getAttribute('href');
