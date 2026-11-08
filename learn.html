@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free LSAT Logical Reasoning lessons built on pattern recognition — every question type, interactive VedaMark drills, flowcharts, and worksheets. Two paths: Core foundations and Advanced patterns.">
+    <meta name="description" content="Free LSAT Logical Reasoning lessons built on pattern recognition, with every question type, interactive VedaMark drills, flowcharts, and worksheets. Three paths: Core foundations, Advanced patterns, and Reading Comprehension.">
     <title>Learn - VEDARION</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -86,9 +86,10 @@
         .lesson-item.locked-pattern .lesson-check { border-color: #D5CCBF; background: transparent; }
 
         /* ===== ADVANCED PATH: CREAM SECTIONS ===== */
-        #advanced-path .lessons-section { background: #FAF8F5; }
-        #advanced-path .hero-spacer { background: #FAF8F5; }
-        #advanced-path .lesson-item:not(.locked-pattern):not([data-tier="mastered"]) { border-color: #E5DFD6; }
+        #advanced-path .lessons-section, #rc-path .lessons-section { background: #FAF8F5; }
+        #advanced-path .hero-spacer, #rc-path .hero-spacer { background: #FAF8F5; }
+        #advanced-path .lesson-item:not(.locked-pattern):not([data-tier="mastered"]),
+        #rc-path .lesson-item:not(.locked-pattern):not([data-tier="mastered"]) { border-color: #E5DFD6; }
 
         /* MULTI-VIDEO CARD */
         .qt-card-header { display: flex; flex-wrap: wrap; align-items: center; padding: 12px 16px; border-bottom: 1px solid #EDEBE7; row-gap: 6px; column-gap: 14px; position: relative; }
@@ -129,7 +130,7 @@
         .qt-card-header, .qt-card-body, .lesson-item.single-row .lesson-content { transition: background-color 0.3s ease, border-color 0.3s ease; }
         .qt-card-title, .qt-card-resources a, .video-row .video-title, .lesson-item.single-row .lesson-title { transition: color 0.3s ease; }
         .video-row { transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .lesson-item[data-tier="mastered"], #advanced-path .lesson-item[data-tier="mastered"] { background: #2A241F; border-color: #2A241F; }
+        .lesson-item[data-tier="mastered"], #advanced-path .lesson-item[data-tier="mastered"], #rc-path .lesson-item[data-tier="mastered"] { background: #2A241F; border-color: #2A241F; }
         .lesson-item[data-tier="mastered"]:hover { border-color: #2A241F; }
         .lesson-item[data-tier="mastered"] .qt-card-header { border-bottom-color: #463D35; padding-right: 46px; }
         .lesson-item[data-tier="mastered"] .qt-card-title { color: #FAF8F5; }
@@ -159,7 +160,7 @@
 
         /* VEDAMARK STEP ROW */
         .vedamark-glyph { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 700; font-size: 18px; line-height: 1; color: #C65D3B; }
-        /* Checkboxes are display-only — completion comes from clicking the lesson link.
+        /* Checkboxes are display-only; completion comes from clicking the lesson link.
            VedaMark + future micro-quiz slugs are marked by their respective drill/quiz pages. */
         .lesson-check { pointer-events: none; }
 
@@ -220,7 +221,7 @@
 
     <section class="hero">
         <h1 class="page-title">LEARN</h1>
-        <p class="page-subtitle">Master LSAT Logical Reasoning step by step</p>
+        <p class="page-subtitle">Master the LSAT step by step.</p>
     </section>
 
     <!-- ====== SIGN-UP LINE (logged out) ====== -->
@@ -242,7 +243,7 @@
         <div class="path-card active" onclick="switchPath('core')" role="button" tabindex="0" aria-label="Switch to Core Pattern path">
             <div class="path-label">Start Here</div>
             <div class="path-name">CORE PATTERN</div>
-            <p class="path-desc">Build your foundation. Learn the logic, the language, and every question type — one at a time.</p>
+            <p class="path-desc">Build your foundation. Learn the logic, the language, and every question type, one at a time.</p>
             <div class="path-stats">20+ lessons · every question type</div>
         </div>
         <div class="path-card" onclick="switchPath('advanced')" role="button" tabindex="0" aria-label="Switch to Advanced Pattern path">
@@ -250,6 +251,12 @@
             <div class="path-name">ADVANCED PATTERN</div>
             <p class="path-desc">Go deeper. Handle complex logic, harder translations, and learn to see the patterns beneath the questions.</p>
             <div class="path-stats">13 lessons · 3 pattern families</div>
+        </div>
+        <div class="path-card" onclick="switchPath('rc')" role="button" tabindex="0" aria-label="Switch to Reading Comp path">
+            <div class="path-label">Read Smarter</div>
+            <div class="path-name">READING COMP</div>
+            <p class="path-desc">Learn to spot passage patterns, know which details to track, and answer every question type, including comparative passages.</p>
+            <div class="path-stats">9 lessons · 3 parts</div>
         </div>
     </div>
 
@@ -672,7 +679,7 @@
         <div class="section-header"><div class="section-number">1</div><h2 class="section-title">Translation Skills</h2></div>
         <section class="lessons-section" data-requires-auth="free">
             <div class="lessons-container">
-                <p class="section-description">Turn dense LSAT language into clean logic — the foundation every pattern is built on.</p>
+                <p class="section-description">Turn dense LSAT language into clean logic, the foundation every pattern is built on.</p>
                 <ul class="lessons-list">
 
                     <li class="lesson-item multi-video" data-card-key="advanced-translations">
@@ -973,6 +980,160 @@
         </section>
     </div>
 
+    <!-- ====== READING COMP PATH ====== -->
+    <!-- Phenomenon & Hypothesis reuses the Advanced card's pages and slug, so progress counts in both paths -->
+    <div id="rc-path" class="path-content">
+        <div class="hero-spacer"></div>
+
+        <!-- SECTION 1: READING THE PASSAGE -->
+        <div class="section-header"><div class="section-number">1</div><h2 class="section-title">Reading the Passage</h2></div>
+        <section class="lessons-section" data-requires-auth="free">
+            <div class="lessons-container">
+                <p class="section-description">Spot the pattern a passage is built on, and know what to track.</p>
+                <ul class="lessons-list">
+
+                    <li class="lesson-item multi-video" data-card-key="phenomenon-hypothesis">
+                        <div class="qt-card-header">
+                            <div class="qt-card-title">Phenomenon &amp; Hypothesis</div>
+                            <div class="qt-card-resources">
+                                <a href="advanced/phenomenon-hypothesis/cheatsheet.html">Cheat Sheet</a>
+                            </div>
+                        </div>
+                        <div class="qt-card-body">
+                            <a href="advanced/phenomenon-hypothesis/lesson.html" class="video-row" data-slug="phenomenon-hypothesis-lesson">
+                                <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="video-body">
+                                    <div class="video-title">Lesson</div>
+                                </div>
+                                <svg class="video-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </a>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-old-new-view">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Old View vs. New View</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-problem-solution">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Problem &amp; Solution</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-competing-views">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Competing Views</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 2: QUESTION TYPES -->
+        <div class="section-header"><div class="section-number">2</div><h2 class="section-title">Question Types</h2></div>
+        <section class="lessons-section" data-requires-auth="free">
+            <div class="lessons-container">
+                <p class="section-description">Short lessons on each question type, each with a worked example.</p>
+                <ul class="lessons-list">
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-main-point">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Main Point</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-inference">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Inference</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-analogy">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Analogy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 3: COMPARATIVE READING -->
+        <div class="section-header"><div class="section-number">3</div><h2 class="section-title">Comparative Reading</h2></div>
+        <section class="lessons-section" data-requires-auth="free">
+            <div class="lessons-container">
+                <p class="section-description">Two passages, one set of questions. How to read them, then how to answer.</p>
+                <ul class="lessons-list">
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-how-to-read-comparative">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">How to Read Comparative Passages</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="lesson-item single-row locked-pattern" data-card-key="rc-comparative-questions">
+                        <div class="lesson-content">
+                            <div class="lesson-check"><svg class="check-svg" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="lesson-link-wrapper">
+                                <div class="play-tile"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+                                <div class="lesson-body">
+                                    <div class="lesson-title">Comparative Questions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </section>
+    </div>
+
     <section class="cta-section">
         <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
         <p class="cta-tagline" style="margin-top: 12px;">Talk to me about anything LSAT. No strings attached.</p>
@@ -1042,9 +1203,29 @@
                     { key: 'percentages-raw', slugs: ['percentages-vs-numbers-lesson', 'rates-lesson'] }
                 ]}
             ]
+        },
+        rc: {
+            sections: [
+                { items: [
+                    { key: 'phenomenon-hypothesis', slugs: ['phenomenon-hypothesis-lesson'] },
+                    { key: 'rc-old-new-view', slugs: [] },
+                    { key: 'rc-problem-solution', slugs: [] },
+                    { key: 'rc-competing-views', slugs: [] }
+                ]},
+                { items: [
+                    { key: 'rc-main-point', slugs: [] },
+                    { key: 'rc-inference', slugs: [] },
+                    { key: 'rc-analogy', slugs: [] }
+                ]},
+                { items: [
+                    { key: 'rc-how-to-read-comparative', slugs: [] },
+                    { key: 'rc-comparative-questions', slugs: [] }
+                ]}
+            ]
         }
     };
 
+    const PATH_IDS = { core: 'core-path', advanced: 'advanced-path', rc: 'rc-path' };
     let currentPath = 'core';
     let stateRef = { completedSet: new Set(), isLoggedIn: false };
 
@@ -1074,7 +1255,7 @@
     function renderUpNext() {
         var bar = document.getElementById('upNextBar');
         if (!bar) return;
-        var container = document.getElementById(currentPath === 'core' ? 'core-path' : 'advanced-path');
+        var container = document.getElementById(PATH_IDS[currentPath]);
         var candidates = container.querySelectorAll('a.lesson-link-wrapper[href], a.video-row[href]');
         var next = null, anyDone = false;
         for (var i = 0; i < candidates.length; i++) {
@@ -1116,11 +1297,11 @@
         Object.keys(WALL_DATA).forEach(function(pathKey) {
             WALL_DATA[pathKey].sections.forEach(function(section) {
                 section.items.forEach(function(item) {
-                    const cardEl = document.querySelector('.lesson-item[data-card-key="' + item.key + '"]');
-                    if (!cardEl) return;
-                    if (cardEl.classList.contains('locked-pattern')) return;
-                    const tier = getCardTier(getItemSlugs(item), stateRef.completedSet);
-                    applyCardTier(cardEl, tier);
+                    // A card can appear in more than one path (same key, same slugs); keep every copy in sync
+                    document.querySelectorAll('.lesson-item[data-card-key="' + item.key + '"]').forEach(function(cardEl) {
+                        if (cardEl.classList.contains('locked-pattern')) return;
+                        applyCardTier(cardEl, getCardTier(getItemSlugs(item), stateRef.completedSet));
+                    });
                 });
             });
         });
@@ -1198,15 +1379,11 @@
 
     function switchPath(path) {
         currentPath = path;
-        document.querySelectorAll('.path-card').forEach(function(card) { card.classList.remove('active'); });
+        document.querySelectorAll('.path-card').forEach(function(card) {
+            card.classList.toggle('active', card.getAttribute('onclick') === "switchPath('" + path + "')");
+        });
         document.querySelectorAll('.path-content').forEach(function(content) { content.classList.remove('active'); });
-        if (path === 'core') {
-            document.querySelectorAll('.path-card')[0].classList.add('active');
-            document.getElementById('core-path').classList.add('active');
-        } else {
-            document.querySelectorAll('.path-card')[1].classList.add('active');
-            document.getElementById('advanced-path').classList.add('active');
-        }
+        document.getElementById(PATH_IDS[path]).classList.add('active');
         renderUpNext();
         document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -1260,7 +1437,7 @@
 
             document.querySelectorAll('a.lesson-link-wrapper[href], a.video-row[href]').forEach(function(link) {
                 link.addEventListener('click', async function(e) {
-                    // VedaMark rows: drill page handles marking via accuracy threshold — do not auto-mark
+                    // VedaMark rows: drill page handles marking via accuracy threshold, so do not auto-mark
                     if (link.classList.contains('vedamark-row')) return;
                     var item = link.closest('[data-slug]') || link;
                     var slug = item.getAttribute('data-slug');
