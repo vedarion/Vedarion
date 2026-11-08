@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phenomenon &amp; Hypothesis Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAF8F5; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+        }
+
+        /* Cheat sheet content (from phenomenon-hypothesis-cheatsheet.html) */
+        .cs-page { --cream:#FAF8F5; --orange:#C65D3B; --ink:#1F1B16; --muted:#8A6A4A; --line:#E6DDD0; --card:#FFFDF9; background: var(--cream); color: var(--ink); font-family: "Helvetica Neue", Arial, sans-serif; }
+        .mast { background: #0B0B0B; color: #fff; padding: 44px 56px 36px; border-left: 5px solid var(--orange); }
+        .mast h1 { font-family: Georgia, serif; font-weight: 400; font-size: 38px; margin: 14px 0 6px; letter-spacing: .5px; }
+        .mast p { margin: 0; color: #bbb; font-size: 15px; }
+        .wrap { padding: 36px 56px 48px; border-left: 5px solid var(--orange); }
+        .sec { font-size: 11px; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin: 6px 0 12px; }
+        .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .def { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 12px; padding: 18px 22px; }
+        .def.h { border-left-color: var(--orange); }
+        .def .lab { font-family: Georgia, serif; font-size: 12px; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 8px; }
+        .def.h .lab { color: var(--orange); }
+        .def .t { font-family: Georgia, serif; font-size: 21px; line-height: 1.35; }
+        .def .s { font-size: 14px; color: var(--muted); margin-top: 6px; }
+        .box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin-bottom: 28px; }
+        .stim { font-family: Georgia, serif; font-size: 17px; line-height: 1.75; background: #F6F0E6; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+        .p { border-bottom: 2px solid var(--ink); }
+        .hy { color: var(--orange); border-bottom: 2px solid var(--orange); }
+        .ids { display: grid; grid-template-columns: 150px 1fr; gap: 8px 14px; font-size: 15px; line-height: 1.5; }
+        .k { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; padding-top: 3px; }
+        .txt { font-size: 15px; line-height: 1.55; }
+        .alt { margin-top: 12px; border: 1.4px dashed #A39C94; border-radius: 8px; padding: 12px 16px; font-size: 15px; }
+        .alt b { font-family: Georgia, serif; font-weight: 400; font-size: 11px; letter-spacing: 2px; color: #8A837B; display: block; margin-bottom: 4px; }
+        .ask { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; font-family: Georgia, serif; font-size: 21px; }
+        .ask span { color: var(--orange); }
+
+        /* Narrow screens: stack the two definitions and the label/answer pairs */
+        @media (max-width: 900px) {
+            .defs { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 650px) {
+            .mast { padding: 30px 20px 26px; }
+            .mast h1 { font-size: 28px; }
+            .wrap { padding: 24px 16px 32px; }
+            .box { padding: 18px 16px; }
+            .ids { grid-template-columns: 1fr; gap: 2px 0; }
+            .ids .k + div { margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>&rsaquo;</span>
+        Cause &amp; Evidence
+        <span>&rsaquo;</span>
+        Phenomenon &amp; Hypothesis
+    </div>
+
+    <div class="cs-page">
+<div class="mast"><h1>Phenomenon &amp; Hypothesis</h1><p>Two terms the LSAT uses in Logical Reasoning and Reading Comprehension answer choices.</p></div>
+<div class="wrap">
+
+<div class="sec">Memorize these</div>
+<div class="defs">
+ <div class="def"><div class="lab">PHENOMENON</div><div class="t">Something that needs to be explained.</div><div class="s">Plural: phenomena</div></div>
+ <div class="def h"><div class="lab">HYPOTHESIS</div><div class="t">Someone's explanation for that phenomenon.</div><div class="s">Their answer to why it's happening.</div></div>
+</div>
+
+<div class="sec">In a stimulus</div>
+<div class="box">
+ <div class="stim">Robins usually sing during the day. <span class="p">However, in the town of Brookdale, robins have started singing in the middle of the night.</span> <span class="hy">Ornithologists believe that the newly installed bright streetlights in Brookdale cause the robins to sing at night.</span></div>
+ <div class="ids"><div class="k">Phenomenon</div><div>Robins have started singing in the middle of the night.</div>
+ <div class="k" style="color:var(--orange)">Hypothesis</div><div>The new streetlights are causing it.</div></div>
+</div>
+
+<div class="sec">How the LSAT tests it</div>
+<div class="box">
+ <div class="txt">A hypothesis is just one possible explanation. If another explanation fits the phenomenon just as well, the hypothesis is weaker.</div>
+ <div class="alt"><b>ANOTHER EXPLANATION (WEAKENS)</b>Brookdale is very noisy during the day, so night is the only time the robins can be heard. Same phenomenon, no streetlights needed.</div>
+</div>
+
+<div class="ask">Always ask: <span>Is there another way to explain the phenomenon?</span></div>
+
+</div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
