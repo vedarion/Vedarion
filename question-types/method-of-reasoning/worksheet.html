@@ -51,15 +51,11 @@
         .response-area::placeholder { color: #CCC; }
         .step-connector { text-align: center; padding: 6px 0; color: #CCC; font-size: 16px; }
         .sentence-list { margin-left: 44px; }
-        .sentence-row { background: #FAFAF8; border: 1px solid #E8E5E0; padding: 14px; margin-bottom: 10px; position: relative; }
-        .sentence-row-top { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; }
-        .sentence-num { background: #E8E5E0; color: #888; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-        .sentence-input { flex: 1; background: white; border: 1px solid #E0E0E0; padding: 8px 10px; font-size: 13px; font-family: inherit; color: #0A0A0A; transition: border-color 0.3s; line-height: 1.5; min-height: 36px; resize: vertical; }
-        .sentence-input:focus { outline: none; border-color: #C65D3B; }
-        .sentence-input::placeholder { color: #CCC; }
+        .sentence-row { background: #FAFAF8; border: 1px solid #E8E5E0; padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; }
+        .sentence-label { font-size: 12px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; min-width: 90px; }
+        .sentence-row .role-select { flex: 1; }
         .remove-sentence { background: none; border: none; color: #CCC; font-size: 16px; cursor: pointer; padding: 4px; transition: color 0.2s; line-height: 1; }
         .remove-sentence:hover { color: #C65D3B; }
-        .role-input-row { display: flex; align-items: center; gap: 8px; margin-left: 30px; }
         .role-label { font-size: 11px; font-weight: 600; color: #BBB; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
         .role-select { background: white; border: none; border-bottom: 1px solid #E0E0E0; padding: 4px 2px; font-size: 13px; font-family: inherit; color: #C65D3B; font-weight: 600; cursor: pointer; transition: border-color 0.3s; }
         .role-select:focus { outline: none; border-color: #C65D3B; }
@@ -92,7 +88,7 @@
         .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
         .footer a { color: #C65D3B; text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
-        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .page-title { font-size: 22px; } .step-card, .step-card.compact { padding: 20px 18px; } .step-desc, .answers-container, .sentence-list, .stem-list, .add-wrap, .methods-toggle, .methods-panel { margin-left: 0 !important; } .methods-panel.open { grid-template-columns: 1fr; } .source-bar { flex-direction: column; align-items: flex-start; } .role-input-row { margin-left: 0; } }
+        @media (max-width: 650px) { .nav { padding: 20px; flex-direction: column; gap: 20px; } .page-title { font-size: 22px; } .step-card, .step-card.compact { padding: 20px 18px; } .step-desc, .answers-container, .sentence-list, .stem-list, .add-wrap, .methods-toggle, .methods-panel { margin-left: 0 !important; } .methods-panel.open { grid-template-columns: 1fr; } .source-bar { flex-direction: column; align-items: flex-start; } }
     </style>
 </head>
 <body>
@@ -154,7 +150,7 @@
                 <div class="step-number">3</div>
                 <div class="step-title">Label the Premises and Conclusion</div>
             </div>
-            <p class="step-desc">Break down each sentence and label its role.</p>
+            <p class="step-desc">Go sentence by sentence and choose each one's role.</p>
             <div class="sentence-list" id="sentenceList"></div>
             <div class="add-wrap" style="margin-left: 44px;">
                 <button class="add-sentence-btn" onclick="addSentence()">+ Add another sentence</button>
@@ -227,11 +223,9 @@
             var opts = '<option value="">Choose a role</option>' + ROLES.map(function(r) {
                 return '<option value="' + r + '">' + r + '</option>';
             }).join('');
-            return '<div class="sentence-row-top"><div class="sentence-num">' + n + '</div>' +
-                '<textarea class="sentence-input" rows="1" placeholder="Type or paste a sentence..."></textarea>' +
-                '<button class="remove-sentence" onclick="removeSentence(this)" title="Remove">×</button></div>' +
-                '<div class="role-input-row"><span class="role-label">Role:</span>' +
-                '<select class="role-select empty" onchange="this.classList.toggle(\'empty\', !this.value)">' + opts + '</select></div>';
+            return '<span class="sentence-label">Sentence <span class="sentence-num">' + n + '</span></span>' +
+                '<select class="role-select empty" onchange="this.classList.toggle(\'empty\', !this.value)">' + opts + '</select>' +
+                '<button class="remove-sentence" onclick="removeSentence(this)" title="Remove">\u00d7</button>';
         }
 
         function addSentence(noFocus) {
@@ -240,7 +234,6 @@
             row.className = 'sentence-row';
             row.innerHTML = sentenceRowHtml(list.children.length + 1);
             list.appendChild(row);
-            if (!noFocus) row.querySelector('.sentence-input').focus();
         }
 
         function removeSentence(btn) {
@@ -293,7 +286,7 @@
             document.getElementById('questionSource').value = '';
             document.querySelectorAll('.response-area').forEach(function(ta) { ta.value = ''; });
             document.getElementById('sentenceList').innerHTML = '';
-            addSentence(true);
+            addSentence(); addSentence(); addSentence();
             buildAnswers();
         }
 
