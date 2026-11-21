@@ -390,7 +390,7 @@
 
     <div class="tab-nav">
         <button class="tab-btn active" data-tab="video">Video</button>
-        <button class="tab-btn" data-tab="reference">Reference</button>
+        <a href="cheatsheet.html" class="tab-btn" style="text-decoration:none;">Cheat Sheet</a>
     </div>
 
     <!-- VIDEO TAB -->
@@ -404,58 +404,13 @@
         </div>
     </div>
 
-    <!-- REFERENCE TAB -->
-    <div id="tab-reference" class="tab-content">
-        <section class="reference-section">
-            <div class="reference-container">
-                <p class="reference-intro">Reference sheet for advanced translation words. Bookmark this page and come back to it while practicing.</p>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Quantifiers</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word">Few</td><td class="ref-meaning">Most are not<br><span style="color:#888;font-size:13px;">Few also implies some are, but the LSAT usually tests whether you know it means most are not.</span></td></tr>
-                        <tr><td class="ref-word">Not all / Not every / Not always</td><td class="ref-meaning">= Some are not (at least one is not)</td></tr>
-                        <tr><td class="ref-word">At most</td><td class="ref-meaning">Upper bound, could be zero</td></tr>
-                    </table>
-                </div>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Comparative Words</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word">Taller than / more than</td><td class="ref-meaning">Relative, not absolute. Taller than doesn't mean tall.</td></tr>
-                        <tr><td class="ref-word">The biggest / the most</td><td class="ref-meaning">Only compared to the group. The biggest doesn't mean big.</td></tr>
-                        <tr><td class="ref-word">Not faster than</td><td class="ref-meaning">Same or slower (includes the equal case)</td></tr>
-                        <tr><td class="ref-word">At least X</td><td class="ref-meaning">X or more</td></tr>
-                        <tr><td class="ref-word">At most X / No more than X</td><td class="ref-meaning">X or less, could be zero</td></tr>
-                    </table>
-                </div>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">&ldquo;Or&rdquo; and &ldquo;Not&rdquo; Pairs</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word" colspan="2" style="color: #888; font-weight: 400;">Coming soon</td></tr>
-                    </table>
-                </div>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Embedded Clauses</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word" colspan="2" style="color: #888; font-weight: 400;">Coming soon</td></tr>
-                    </table>
-                </div>
-
-                <a href="../../learn.html" class="back-link">← Back to Learn</a>
-            </div>
-        </section>
-    </div>
-
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
     <script>
         // Main tabs
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
