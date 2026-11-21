@@ -379,6 +379,8 @@
             .step-nav-btn-main { padding: 14px 16px; font-size: 10px; }
             .sub-tab-btn { padding: 12px 14px; font-size: 10px; }
         }
+        /* One view per page: rows on the Learn page link to each view */
+        .step-nav-bar, .sub-tab-nav { display: none !important; }
     </style>
 </head>
 <body>
@@ -394,7 +396,7 @@
 
     <section class="hero">
         <h1 class="page-title">CONDITIONAL LOGIC BASICS</h1>
-        <p class="page-subtitle">The if-then relationship — the backbone of LSAT reasoning</p>
+        <p class="page-subtitle">Conditional Logic Basics</p>
     </section>
 
     <div class="step-nav-bar">
@@ -415,7 +417,7 @@
                     <div class="video-container">
                         <div class="group-header">
                             <h2 class="group-title">What Are Sufficient & Necessary Conditions?</h2>
-                            <p class="group-subtitle">Watch this first. Then move to the practice tabs.</p>
+                            <p class="group-subtitle">Watch this first. Then try the Sufficient and Necessary practice.</p>
                         </div>
                         <div style="position:relative;padding-top:56.25%;"><iframe src="https://iframe.mediadelivery.net/embed/600986/29686678-984f-435d-a243-098d9220a564?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe></div>
                     </div>
@@ -548,7 +550,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">They are enrolled.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">We cannot conclude anything.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Knowing the necessary condition is true tells us nothing.</strong> Enrolled <span style="color:#C65D3B; font-weight:600;">→</span> Pay tuition. We know they paid, but paying doesn't guarantee enrollment — maybe they paid and withdrew, or payment is just one of several requirements. The arrow only goes one direction.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Knowing the necessary condition is true tells us nothing.</strong> Enrolled <span style="color:#C65D3B; font-weight:600;">→</span> Pay tuition. We know they paid, but paying doesn't guarantee enrollment. Maybe they paid and withdrew, or payment is just one of several requirements. The arrow only goes one direction.</p></div>
                         </div>
                     </div>
                 </section>
@@ -594,7 +596,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If the ground is not wet, then it did not rain.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If it does not rain, then the ground is not wet.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Rain → Wet ground becomes: NOT wet ground → NOT rain. If the ground isn't wet, it couldn't have rained. (B) negates the sufficient without flipping — that's not valid.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Rain → Wet ground becomes: NOT wet ground → NOT rain. If the ground isn't wet, it couldn't have rained. (B) negates the sufficient without flipping. That's not valid.</p></div>
                         </div>
 
                         <div class="question-card" data-correct="B">
@@ -607,7 +609,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If you cannot drive, then you do not have a license.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If you do not have a license, then you cannot drive.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>First, set up the original: Drive → License. Then flip and negate:</strong> NOT license → NOT drive. If you don't have a license, you can't drive. (A) negates the sufficient without flipping — that's not valid.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>First, set up the original: Drive → License. Then flip and negate:</strong> NOT license → NOT drive. If you don't have a license, you can't drive. (A) negates the sufficient without flipping. That's not valid.</p></div>
                         </div>
 
                         <div class="question-card" data-correct="B">
@@ -620,7 +622,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If it has been edited, then it has been published.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If it has not been edited, then it has not been published.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Published → Edited becomes: NOT edited → NOT published. (A) flips the direction but doesn't negate — knowing a book was edited doesn't mean it was published.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Published → Edited becomes: NOT edited → NOT published. (A) flips the direction but doesn't negate. Knowing a book was edited doesn't mean it was published.</p></div>
                         </div>
 
                         <div class="question-card" data-correct="B">
@@ -633,7 +635,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If it did not snow, then schools did not close.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If schools did not close, then it did not snow.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Snow → Close becomes: NOT close → NOT snow. If schools didn't close, it didn't snow. (A) negates the sufficient without flipping — schools could still close for other reasons.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Snow → Close becomes: NOT close → NOT snow. If schools didn't close, it didn't snow. (A) negates the sufficient without flipping. Schools could still close for other reasons.</p></div>
                         </div>
 
                         <div class="question-card" data-correct="B">
@@ -646,7 +648,7 @@
                                 <div class="answer-option" data-value="A"><span class="answer-letter">A</span><span class="answer-text">If a student is not enrolled, then they do not pay tuition.</span></div>
                                 <div class="answer-option" data-value="B"><span class="answer-letter">B</span><span class="answer-text">If a student has not paid tuition, then they are not enrolled.</span></div>
                             </div>
-                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Enrolled → Pay tuition becomes: NOT pay tuition → NOT enrolled. (A) negates the sufficient without flipping — a student who isn't enrolled could still owe tuition for other reasons.</p></div>
+                            <div class="explanation"><div class="explanation-label">Explanation</div><p class="explanation-text"><strong>Flip and negate.</strong> Enrolled → Pay tuition becomes: NOT pay tuition → NOT enrolled. (A) negates the sufficient without flipping. A student who isn't enrolled could still owe tuition for other reasons.</p></div>
                         </div>
                     </div>
                 </section>
@@ -685,7 +687,7 @@
                         <p class="ref-content"><strong>Flip</strong> the direction and <strong>negate</strong> both sides.</p>
                         <p class="ref-content" style="margin-top: 8px;">A <span class="ref-arrow">→</span> B &nbsp;&nbsp;becomes:</p>
                         <p class="ref-content"><strong>NOT B</strong> <span class="ref-arrow">→</span> <strong>NOT A</strong></p>
-                        <p class="ref-content" style="margin-top: 8px; color: #666; font-size: 13px;"><span class="ref-valid">✓ Always valid</span> — the contrapositive is logically identical to the original.</p>
+                        <p class="ref-content" style="margin-top: 8px; color: #666; font-size: 13px;"><span class="ref-valid">✓ Always valid</span>: the contrapositive is logically identical to the original.</p>
                     </div>
                 </div>
 
@@ -744,6 +746,31 @@
                 });
             });
         });
+
+        // Each Learn-page row opens one view: ?view=s1-lesson | s1-sufficient | s1-necessary | s2-lesson | s2-practice | ref
+        (function() {
+            const VIEWS = {
+                's1-lesson':     ['1',   's1-lesson',     'SUFFICIENT &amp; NECESSARY'],
+                's1-sufficient': ['1',   's1-sufficient', 'SUFFICIENT PRACTICE'],
+                's1-necessary':  ['1',   's1-necessary',  'NECESSARY PRACTICE'],
+                's2-lesson':     ['2',   's2-lesson',     'CONTRAPOSITIVE'],
+                's2-practice':   ['2',   's2-practice',   'CONTRAPOSITIVE PRACTICE'],
+                'ref':           ['ref', null,            'CHEAT SHEET']
+            };
+            const params = new URLSearchParams(window.location.search);
+            let view = params.get('view');
+            if (!VIEWS[view]) {
+                const step = params.get('step');
+                view = step === '2' ? 's2-lesson' : step === 'ref' ? 'ref' : 's1-lesson';
+            }
+            const v = VIEWS[view];
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.toggle('active', p.dataset.step === v[0]));
+            if (v[1]) {
+                const panel = document.querySelector('.step-panel[data-step="' + v[0] + '"]');
+                panel.querySelectorAll('.sub-tab-content').forEach(c => c.classList.toggle('active', c.dataset.subtab === v[1]));
+            }
+            document.querySelector('.page-title').innerHTML = v[2];
+        })();
     </script>
 </body>
 </html>
