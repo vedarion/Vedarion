@@ -75,8 +75,8 @@
         .lesson-item.single-row.coming-soon .lesson-meta-row { color: #AAA; }
 
         /* ===== LOCKED / UPCOMING PATTERN CARD ===== */
-        /* Unbuilt cards are hidden for now. Delete the next line to show them again as "coming soon" cards. */
-        .lesson-item.locked-pattern:not(.show-coming-soon) { display: none !important; }
+        /* Cards hidden from the site for now. Remove the hidden-for-now class from a card to show it again. */
+        .lesson-item.hidden-for-now { display: none !important; }
         .lesson-item.locked-pattern { background: #F1EBE2; border: 1px dashed #D5CCBF; box-shadow: none; cursor: default; }
         .lesson-item.locked-pattern:hover { border-color: #D5CCBF; }
         .lesson-item.locked-pattern .lesson-content { padding: 11px 16px; cursor: default; }
@@ -652,7 +652,7 @@
                         </div>
                     </li>
 
-                    <li class="lesson-item multi-video locked-pattern" data-card-key="evaluate">
+                    <li class="lesson-item multi-video hidden-for-now" data-card-key="evaluate">
                         <div class="qt-card-header">
                             <div class="qt-card-title">Evaluate</div>
                             <div class="qt-card-resources">
@@ -692,7 +692,7 @@
                     </li>
 
                     <!-- Unbuilt: when lessons exist, these rows become <a class="video-row" data-slug="..."> links and the card drops locked-pattern -->
-                    <li class="lesson-item multi-video locked-pattern show-coming-soon" data-card-key="principle">
+                    <li class="lesson-item multi-video locked-pattern" data-card-key="principle">
                         <div class="qt-card-header">
                             <div class="qt-card-title">Principle</div>
                         </div>
@@ -1075,7 +1075,7 @@
                         </div>
                     </li>
 
-                    <li class="lesson-item multi-video locked-pattern" data-card-key="advanced-timing">
+                    <li class="lesson-item multi-video locked-pattern hidden-for-now" data-card-key="advanced-timing">
                         <div class="qt-card-header">
                             <div class="qt-card-title">Advanced Timing</div>
                         </div>
@@ -1492,14 +1492,14 @@
     function updateLessonCounts() {
         document.querySelectorAll('[data-lesson-count]').forEach(function(el) {
             var path = document.getElementById(el.getAttribute('data-lesson-count'));
-            if (path) el.textContent = path.querySelectorAll('.lesson-item[data-card-key]:not(.locked-pattern)').length;
+            if (path) el.textContent = path.querySelectorAll('.lesson-item[data-card-key]:not(.hidden-for-now)').length;
         });
     }
 
     // Hide any section whose cards are all unbuilt (and its numbered header)
     function hideEmptySections() {
         document.querySelectorAll('.lessons-section').forEach(function(sec) {
-            if (sec.querySelector('.lesson-item:not(.locked-pattern), .lesson-item.show-coming-soon')) return;
+            if (sec.querySelector('.lesson-item:not(.hidden-for-now)')) return;
             sec.style.display = 'none';
             var prev = sec.previousElementSibling;
             if (prev && prev.classList.contains('section-header')) prev.style.display = 'none';
