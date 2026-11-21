@@ -75,6 +75,8 @@
         .lesson-item.single-row.coming-soon .lesson-meta-row { color: #AAA; }
 
         /* ===== LOCKED / UPCOMING PATTERN CARD ===== */
+        /* Unbuilt cards are hidden for now. Delete the next line to show them again as "coming soon" cards. */
+        .lesson-item.locked-pattern { display: none !important; }
         .lesson-item.locked-pattern { background: #F1EBE2; border: 1px dashed #D5CCBF; box-shadow: none; cursor: default; }
         .lesson-item.locked-pattern:hover { border-color: #D5CCBF; }
         .lesson-item.locked-pattern .lesson-content { padding: 11px 16px; cursor: default; }
@@ -1490,9 +1492,20 @@
     function updateLessonCounts() {
         document.querySelectorAll('[data-lesson-count]').forEach(function(el) {
             var path = document.getElementById(el.getAttribute('data-lesson-count'));
-            if (path) el.textContent = path.querySelectorAll('.lesson-item[data-card-key]').length;
+            if (path) el.textContent = path.querySelectorAll('.lesson-item[data-card-key]:not(.locked-pattern)').length;
         });
     }
+
+    // Hide any section whose cards are all unbuilt (and its numbered header)
+    function hideEmptySections() {
+        document.querySelectorAll('.lessons-section').forEach(function(sec) {
+            if (sec.querySelector('.lesson-item:not(.locked-pattern)')) return;
+            sec.style.display = 'none';
+            var prev = sec.previousElementSibling;
+            if (prev && prev.classList.contains('section-header')) prev.style.display = 'none';
+        });
+    }
+    hideEmptySections();
 
     function setupRowToggles() {
         document.querySelectorAll('.lesson-item.multi-video').forEach(function(card) {
