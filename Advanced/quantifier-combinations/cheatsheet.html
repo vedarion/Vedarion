@@ -48,6 +48,8 @@
         .def .t { font-family: Georgia, serif; font-size: 21px; line-height: 1.35; }
         .box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin-bottom: 28px; }
         .txt { font-size: 15px; line-height: 1.55; }
+        .def .qd { display:block; width:100%; max-width:360px; height:auto; margin:4px auto 2px; }
+        .def .qcap { text-align:center; font-size:13px; color:var(--muted); margin-bottom:12px; }
         .ask { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; font-family: Georgia, serif; font-size: 21px; }
         .ask span { color: var(--orange); }
 
@@ -105,10 +107,7 @@
 <div class="mast"><h1>Quantifier Combinations</h1><p>Translate first, then combine.</p></div>
 <div class="wrap">
 
-<div class="sec">Translate first</div>
-<div class="defs">
- <div class="def h"><div class="lab">FEW</div><div class="t">Some are, and most are not.</div><div class="s">Two claims in one.</div></div>
-</div>
+<div class="txt" style="margin:0 0 28px;color:#4A4038;">To combine correctly, translate each sentence correctly first.</div>
 
 <div class="sec">What combines</div>
 <div class="box">
@@ -124,8 +123,8 @@
 
 <div class="sec">Same group vs. chain</div>
 <div class="defs">
- <div class="def"><div class="lab">SAME GROUP</div><div class="t">Most students are athletes. Most students get free lunch.</div><div class="s">So some athletes get free lunch.</div></div>
- <div class="def"><div class="lab">CHAIN</div><div class="t">Most students are athletes. Most athletes get free lunch.</div><div class="s" style="color:#9C3B2F;">No conclusion.</div></div>
+ <div class="def"><div class="lab">SAME GROUP</div><svg class="qd" viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Students branches to Athletes and to Free lunch"><line x1="96" y1="85" x2="238" y2="34" stroke="#BC4A0C" stroke-width="4" stroke-linecap="round"/><line x1="96" y1="85" x2="238" y2="136" stroke="#BC4A0C" stroke-width="4" stroke-linecap="round"/><text x="88" y="91" text-anchor="end" font-family="Georgia" font-size="18" fill="#1a1a1a">Students</text><text x="246" y="40" font-family="Georgia" font-size="18" fill="#1a1a1a">Athletes</text><text x="246" y="142" font-family="Georgia" font-size="18" fill="#1a1a1a">Free lunch</text><text x="150" y="48" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#BC4A0C">most</text><text x="150" y="136" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#BC4A0C">most</text></svg><div class="qcap">Both start from Students.</div><div class="t">Most students are athletes. Most students get free lunch.</div><div class="s">So some athletes get free lunch.</div></div>
+ <div class="def"><div class="lab">CHAIN</div><svg class="qd" viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Students to Athletes to Free lunch in a row"><text x="6" y="92" font-family="Georgia" font-size="18" fill="#1a1a1a">Students</text><line x1="86" y1="86" x2="140" y2="86" stroke="#BC4A0C" stroke-width="4" stroke-linecap="round"/><text x="148" y="92" font-family="Georgia" font-size="18" fill="#1a1a1a">Athletes</text><line x1="226" y1="86" x2="262" y2="86" stroke="#BC4A0C" stroke-width="4" stroke-linecap="round"/><text x="268" y="92" font-family="Georgia" font-size="18" fill="#1a1a1a">Free lunch</text><text x="96" y="74" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#BC4A0C">most</text><text x="226" y="74" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="#BC4A0C">most</text></svg><div class="qcap">The second starts from Athletes.</div><div class="t">Most students are athletes. Most athletes get free lunch.</div><div class="s" style="color:#9C3B2F;">No conclusion.</div></div>
 </div>
 <div class="txt">When you see most and most, check whether both sentences start with the same group.</div>
 
