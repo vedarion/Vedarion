@@ -1548,16 +1548,26 @@
         });
     }
 
-    function switchPath(path) {
+    function switchPath(path, quiet) {
+        if (!PATH_IDS[path]) path = 'core';
         currentPath = path;
+        try { sessionStorage.setItem('vedarion_learn_path', path); } catch(e) {}
+        try { history.replaceState(null, '', location.pathname + location.search + (path === 'core' ? '' : '#' + path)); } catch(e) {}
         document.querySelectorAll('.path-card').forEach(function(card) {
             card.classList.toggle('active', card.getAttribute('onclick') === "switchPath('" + path + "')");
         });
         document.querySelectorAll('.path-content').forEach(function(content) { content.classList.remove('active'); });
         document.getElementById(PATH_IDS[path]).classList.add('active');
         renderUpNext();
-        document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!quiet) document.querySelector('.path-content.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    // Reopen the path the student was last on (URL #advanced / #rc, else this tab's last choice)
+    (function() {
+        var saved = location.hash.replace('#', '');
+        if (!PATH_IDS[saved]) { try { saved = sessionStorage.getItem('vedarion_learn_path'); } catch(e) { saved = null; } }
+        if (saved && saved !== 'core' && PATH_IDS[saved]) switchPath(saved, true);
+    })();
 
     (async function() {
         var session = null;
