@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Flaw Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAF8F5; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+        }
+
+        /* Cheat sheet content (layout from phenomenon-hypothesis/cheatsheet.html) */
+        .cs-page { --cream:#FAF8F5; --orange:#C65D3B; --ink:#1F1B16; --muted:#8A6A4A; --line:#E6DDD0; --card:#FFFDF9; background: var(--cream); color: var(--ink); font-family: "Helvetica Neue", Arial, sans-serif; }
+        .mast { background: #0B0B0B; color: #fff; padding: 44px 56px 36px; border-left: 5px solid var(--orange); }
+        .mast h1 { font-family: Georgia, serif; font-weight: 400; font-size: 38px; margin: 14px 0 6px; letter-spacing: .5px; }
+        .mast p { margin: 0; color: #bbb; font-size: 15px; }
+        .wrap { padding: 36px 56px 48px; border-left: 5px solid var(--orange); }
+        .sec { font-size: 11px; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin: 6px 0 12px; }
+        .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .def { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 12px; padding: 18px 22px; }
+        .def.h { border-left-color: var(--orange); }
+        .def .lab { font-family: Georgia, serif; font-size: 12px; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 8px; }
+        .def.h .lab { color: var(--orange); }
+        .def .t { font-family: Georgia, serif; font-size: 21px; line-height: 1.35; }
+        .box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin-bottom: 28px; }
+        .txt { font-size: 15px; line-height: 1.55; }
+        .ask { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; font-family: Georgia, serif; font-size: 21px; }
+        .ask span { color: var(--orange); }
+
+        /* Checklist: one card per group, numbered checks inside */
+        .checks { display: grid; gap: 14px; margin-bottom: 28px; }
+        .grp { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 12px; padding: 18px 22px; }
+        .grp.h { border-left-color: var(--orange); }
+        .grp .lab { font-family: Georgia, serif; font-size: 12px; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 12px; }
+        .grp.h .lab { color: var(--orange); }
+        .grp .lab small { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 12px; letter-spacing: 0; text-transform: none; margin-left: 8px; color: var(--muted); }
+        .chk { display: grid; grid-template-columns: 28px 1fr; gap: 0 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+        .lab + .chk { border-top: none; padding-top: 0; }
+        .chk .n { font-family: Georgia, serif; font-size: 18px; color: var(--orange); line-height: 1.3; }
+        .chk .q { font-family: Georgia, serif; font-size: 18px; line-height: 1.3; }
+        .chk .a { grid-column: 2; font-size: 15px; line-height: 1.5; color: #4A4038; margin-top: 4px; }
+        .box .lbl { font-size: 11px; letter-spacing: 2px; font-weight: 700; color: var(--ink); text-transform: uppercase; margin: 16px 0 6px; }
+
+        /* Narrow screens: stack the definitions */
+        @media (max-width: 900px) {
+            .defs { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 650px) {
+            .mast { padding: 30px 20px 26px; }
+            .mast h1 { font-size: 28px; }
+            .wrap { padding: 24px 16px 32px; }
+            .box { padding: 18px 16px; }
+            .grp { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>&rsaquo;</span>
+        Advanced Strategy
+        <span>&rsaquo;</span>
+        <a href="lesson.html">Advanced Flaw</a>
+    </div>
+
+    <div class="cs-page">
+<div class="mast"><h1>Advanced Flaw</h1><p>The first few words of the answer choice tell you which test to use.</p></div>
+<div class="wrap">
+<div class="sec">Three types of answer choices</div>
+<div class="checks">
+ <div class="grp">
+  <div class="lab">DESCRIPTIVELY ACCURATE<small>concludes, infers, argues, treats, confuses (not a complete list)</small></div>
+  <div class="chk"><div class="n">1</div><div class="q">Is it descriptively accurate?</div><div class="a">Every word of the answer choice has to match what happens in the stimulus.</div></div>
+  <div class="chk"><div class="n">2</div><div class="q">Is it a flaw?</div><div class="a">An answer can describe the argument perfectly and still be wrong if what it describes isn't a problem. You need a yes on both.</div></div>
+ </div>
+ <div class="grp">
+  <div class="lab">NECESSARY ASSUMPTION<small>assumes, presumes, takes for granted</small></div>
+  <div class="chk"><div class="n">1</div><div class="q">Must be true test</div><div class="a">Is every single word of the answer choice supported by the stimulus?</div></div>
+  <div class="chk"><div class="n">or</div><div class="q">Negation test</div><div class="a">Negate the answer, add it as a premise, and see if the conclusion falls apart. Either test does the job. You don't need to check whether it's unstated. It almost always is.</div></div>
+ </div>
+ <div class="grp h">
+  <div class="lab">WEAKEN<small>fails to consider, ignores the possibility, overlooks</small></div>
+  <div class="chk"><div class="n">1</div><div class="q">Did the argument leave it out?</div><div class="a">If the argument addressed it, eliminate. If it didn't, don't call it out of scope. Being left out is the whole point. Go to step 2.</div></div>
+  <div class="chk"><div class="n">2</div><div class="q">Add the fact to the argument. Does the conclusion get weaker?</div><div class="a">It only has to weaken, not destroy. You may have to work with the answer. For example, with &ldquo;whether or not X,&rdquo; try it both ways. If either way weakens, the answer can work.</div></div>
+ </div>
+</div>
+<div class="sec">Watch out</div>
+<div class="box">
+ <div class="lbl">Not every &ldquo;fails to&rdquo; is Weaken</div>
+ <div class="txt">&ldquo;Fails to establish&rdquo; and &ldquo;provides no evidence&rdquo; describe what the argument did, so use the Descriptively Accurate test. To check whether it's a flaw, ask: was the missing piece important? Would leaving it out weaken the argument?</div>
+ <div class="lbl">Struggling with a Weaken answer?</div>
+ <div class="txt">Leave it alone. Don't eliminate it, and check the rest. On a hard question, it will be the one left, so you can be more confident it's right. On an easier one, another answer may be correct without the extra work.</div>
+</div>
+<div class="ask">Always ask: <span>What do the first few words tell me to test?</span></div>
+</div>
+    </div>
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
