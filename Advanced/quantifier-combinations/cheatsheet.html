@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantifier Combinations Cheat Sheet - VEDARION</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #FAF8F5; color: #0A0A0A; min-height: 100vh; }
+        .nav { background: #0A0A0A; display: flex; justify-content: space-between; align-items: center; padding: 25px 50px; border-bottom: 1px solid #222; }
+        .nav-brand { font-size: 24px; font-weight: 300; letter-spacing: 4px; color: white; text-decoration: none; }
+        .nav-brand .v-accent { color: #C65D3B; font-weight: 700; }
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 14px; letter-spacing: 1px; transition: color 0.3s ease; }
+        .nav-links a:hover { color: white; }
+        .breadcrumb { background: #F5F5F5; padding: 12px 50px; font-size: 13px; color: #888; border-bottom: 1px solid #E0E0E0; }
+        .breadcrumb a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .breadcrumb a:hover { color: #C65D3B; }
+        .breadcrumb span { margin: 0 8px; color: #CCC; }
+        .cta-section { background: #0A0A0A; padding: 40px 20px; text-align: center; }
+        .cta-button { background: #C65D3B; color: white; padding: 14px 30px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.3s ease; letter-spacing: 1px; text-transform: uppercase; }
+        .cta-button:hover { background: #A04D2E; }
+        .cta-section .cta-tagline { color: #B0B0B0; font-size: 14px; margin-top: 12px; }
+        .cta-secondary { display: block; margin-top: 15px; color: #666; font-size: 13px; }
+        .cta-secondary a { color: #888; text-decoration: none; transition: color 0.3s ease; }
+        .cta-secondary a:hover { color: white; }
+        .footer { background: #0A0A0A; border-top: 1px solid #222; color: #555; text-align: center; padding: 30px 20px; font-size: 13px; }
+        .footer a { color: #C65D3B; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 650px) {
+            .nav { padding: 20px; flex-direction: column; gap: 20px; }
+            .nav-links { gap: 25px; }
+            .breadcrumb { padding: 12px 20px; }
+        }
+
+        /* Cheat sheet content (layout from phenomenon-hypothesis/cheatsheet.html) */
+        .cs-page { --cream:#FAF8F5; --orange:#C65D3B; --ink:#1F1B16; --muted:#8A6A4A; --line:#E6DDD0; --card:#FFFDF9; background: var(--cream); color: var(--ink); font-family: "Helvetica Neue", Arial, sans-serif; }
+        .mast { background: #0B0B0B; color: #fff; padding: 44px 56px 36px; border-left: 5px solid var(--orange); }
+        .mast h1 { font-family: Georgia, serif; font-weight: 400; font-size: 38px; margin: 14px 0 6px; letter-spacing: .5px; }
+        .mast p { margin: 0; color: #bbb; font-size: 15px; }
+        .wrap { padding: 36px 56px 48px; border-left: 5px solid var(--orange); }
+        .sec { font-size: 11px; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin: 6px 0 12px; }
+        .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .def { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 12px; padding: 18px 22px; }
+        .def.h { border-left-color: var(--orange); }
+        .def .lab { font-family: Georgia, serif; font-size: 12px; letter-spacing: 2.5px; color: var(--muted); margin-bottom: 8px; }
+        .def.h .lab { color: var(--orange); }
+        .def .t { font-family: Georgia, serif; font-size: 21px; line-height: 1.35; }
+        .box { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; margin-bottom: 28px; }
+        .txt { font-size: 15px; line-height: 1.55; }
+        .ask { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; font-family: Georgia, serif; font-size: 21px; }
+        .ask span { color: var(--orange); }
+
+        /* Combination table, two-box comparison and no-conclusion list */
+        .tbl { width: 100%; border-collapse: collapse; }
+        .tbl th { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; font-weight: 400; text-align: left; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+        .tbl td { font-family: Georgia, serif; font-size: 19px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+        .tbl tr:last-child td { border-bottom: none; }
+        .tbl td:first-child { width: 55%; }
+        .tbl td.c { color: var(--orange); }
+        .tbl td small { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 13px; color: var(--muted); margin-left: 6px; }
+        .note { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 15px; line-height: 1.55; color: #4A4038; }
+        .defs + .txt { margin: -14px 0 28px; color: #4A4038; }
+        .def .t + .s { color: var(--orange); font-family: Georgia, serif; font-size: 17px; }
+        .nolist .r { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); font-family: Georgia, serif; font-size: 19px; }
+        .nolist .r:first-child { border-top: none; padding-top: 0; }
+        .nolist .r:last-child { padding-bottom: 0; }
+        .nolist .r span { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #9C3B2F; align-self: center; }
+        .nolist .r small { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 13px; color: var(--muted); margin-left: 6px; }
+
+        /* Narrow screens: stack the definitions */
+        @media (max-width: 900px) {
+            .defs { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 650px) {
+            .mast { padding: 30px 20px 26px; }
+            .mast h1 { font-size: 28px; }
+            .wrap { padding: 24px 16px 32px; }
+            .box { padding: 18px 16px; }
+            .tbl td { font-size: 17px; }
+            .nolist .r { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="../../index.html" class="nav-brand"><span class="v-accent">V</span>EDARION</a>
+        <div class="nav-links">
+            <a href="../../about.html">About</a>
+            <a href="../../pricing.html">Pricing</a>
+            <a href="../../learn.html">Learn</a>
+            <a href="../../testimonials.html">Testimonials</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../../learn.html">Learn</a>
+        <span>&rsaquo;</span>
+        Translation Skills
+        <span>&rsaquo;</span>
+        <a href="lesson.html">Quantifier Combinations</a>
+    </div>
+
+    <div class="cs-page">
+<div class="mast"><h1>Quantifier Combinations</h1><p>Translate first, then combine.</p></div>
+<div class="wrap">
+
+<div class="sec">Translate first</div>
+<div class="defs">
+ <div class="def h"><div class="lab">FEW</div><div class="t">Some are, and most are not.</div><div class="s">Two claims in one.</div></div>
+</div>
+
+<div class="sec">What combines</div>
+<div class="box">
+ <table class="tbl">
+  <tr><th>Combination</th><th>Conclusion</th></tr>
+  <tr><td>All + All</td><td class="c">All</td></tr>
+  <tr><td>Most + All</td><td class="c">Most</td></tr>
+  <tr><td>Some + All</td><td class="c">Some</td></tr>
+  <tr><td>Most + Most<small>(same group)</small></td><td class="c">Some</td></tr>
+ </table>
+ <div class="note">In a chain, the smaller piece comes before the all. The conclusion keeps the first word.</div>
+</div>
+
+<div class="sec">Same group vs. chain</div>
+<div class="defs">
+ <div class="def"><div class="lab">SAME GROUP</div><div class="t">Most students are athletes. Most students get free lunch.</div><div class="s">So some athletes get free lunch.</div></div>
+ <div class="def"><div class="lab">CHAIN</div><div class="t">Most students are athletes. Most athletes get free lunch.</div><div class="s" style="color:#9C3B2F;">No conclusion.</div></div>
+</div>
+<div class="txt">When you see most and most, check whether both sentences start with the same group.</div>
+
+<div class="sec">What doesn't combine</div>
+<div class="box nolist">
+ <div class="r">All + Some<span>No conclusion</span></div>
+ <div class="r">All + Most<span>No conclusion</span></div>
+ <div class="r">Some + Some<span>No conclusion</span></div>
+ <div class="r">Some + Most<span>No conclusion</span></div>
+ <div class="r">Most + Some<span>No conclusion</span></div>
+ <div class="r"><div>Most + Most<small>(chain)</small></div><span>No conclusion</span></div>
+</div>
+
+<div class="ask">If an answer choice concludes something from a combination that doesn't work, <span>it's wrong, even if it could be true.</span></div>
+
+</div>
+    </div>
+
+    <section class="cta-section">
+        <a href="https://calendly.com/vedarion-tutoring/free-30min-lsatgameplancall" class="cta-button">Book a Free 30-Min Session</a>
+        <p class="cta-tagline">Talk to me about anything LSAT.</p>
+        <p class="cta-secondary">or <a href="../../pricing.html">view pricing</a></p>
+    </section>
+
+    <footer class="footer">
+        <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script data-cfasync="false" src="/auth.js"></script>
+</body>
+</html>
