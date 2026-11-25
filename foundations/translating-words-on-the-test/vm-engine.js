@@ -85,7 +85,7 @@ function submitQuiz(){
     var el=document.getElementById('vm-results');
     var h='<div class="results-card"><div class="results-score">'+correct+'/'+quizQs.length+'</div><div class="results-label">VedaMark · Translating Words</div>';
     if(passed){h+='<div class="results-pass">✓ You hit the Mark!</div><div class="results-msg">Great work. Retry for fresh questions from different categories.</div>'}
-    else{h+='<div class="results-fail">✗ Not quite — you need 80%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>'}
+    else{h+='<div class="results-fail">✗ Not quite. You need 80%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>'}
     h+='<div class="results-actions"><button class="results-btn primary" onclick="retryQuiz()">TRY AGAIN</button></div></div>';
     el.innerHTML=h;el.classList.add('visible');
     window.scrollTo({top:el.offsetTop-20,behavior:'smooth'});
