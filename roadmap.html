@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VEDARION — Roadmap</title>
+  <title>VEDARION | Roadmap</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script>
     /* A password-recovery link must never land on the dashboard. If we arrived
@@ -330,7 +330,7 @@
     .ws-synthesis{background:rgba(201,122,69,.03);border:1px solid rgba(201,122,69,.08);border-radius:12px;padding:18px;margin-top:8px}
     .ws-synth-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
     .ws-unflagged{margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
-    /* Insight to Action — clean mockup styling */
+    /* Insight to Action, clean mockup styling */
     .ita-card{background:rgba(18,16,14,.6);border:1px solid var(--border-hi);border-left:3px solid var(--accent);border-radius:14px;padding:28px 32px;margin-bottom:14px}
     .ita-source-row{display:flex;align-items:center;gap:18px;padding-bottom:18px;border-bottom:1px dashed var(--border);margin-bottom:4px}
     .ita-source-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase}
@@ -411,185 +411,185 @@ const TEMPLATES={};
    QUESTION TYPE DRILLS (Beginner)
    Steps pulled from the live VEDARION flowchart/worksheet pages.
    Each card = one question type. Attached worksheet type:
-   'question_type_drill' — one entry per question, add more anytime.
+   'question_type_drill', one entry per question, add more anytime.
    ============================================================ */
 const QT_BASE='https://vedarion.com/question-types/';
-/* Each entry: steps (cheat sheet lines for card + key box), links, and `form` —
+/* Each entry: steps (cheat sheet lines for card + key box), links, and `form`, 
    the per-type worksheet structure mirroring the live vedarion.com worksheet pages.
    Field types: ta (textarea), inp (small input), tags (single-select), ac (A-E grid).
    ac modes: 'explain' (select + one explanation per letter) | 'twostep' (two sub-questions
    per letter; states 'ke' = Keep/Eliminate, 'sep' = Skip/Eliminate/Pick & Go). */
 const QT_DRILLS={
 'main-point':{name:'Main Point',links:{flowchart:null,worksheet:QT_BASE+'main-point/worksheet',lesson:QT_BASE+'main-point/lesson'},steps:[
-'Read the stimulus and find the conclusion — use a conclusion indicator, process of elimination, or the Why Test',
-'Without looking back, restate the main point in your own words — noun, verb, predicate',
+'Read the stimulus and find the conclusion, use a conclusion indicator, process of elimination, or the Why Test',
+'Without looking back, restate the main point in your own words, noun, verb, predicate',
 'Go to the answer choices and hunt for your prediction',
 'For each answer choice, say why it is right or wrong',
-'Check the winner: descriptively accurate — every word reflects the stimulus'
+'Check the winner: descriptively accurate, every word reflects the stimulus'
 ],form:[
-{sec:'Step 1 — Find the Main Point',note:'Read the stimulus and identify the conclusion.',fields:[
+{sec:'Step 1: Find the Main Point',note:'Read the stimulus and identify the conclusion.',fields:[
 {t:'tags',f:'method',lbl:'Which method did you use?',opts:['Conclusion Indicator','Process of Elimination','The Why Test']}]},
-{sec:'Step 2 — Note the Details',fields:[
-{t:'ta',f:'main_point',lbl:'Without looking back at the stimulus, restate the main point in your own words. Be specific — say the noun, verb, and predicate.',ph:'The main point is...',r:2}]},
-{sec:'Step 3 — Find the Best Match',note:'Select the answer you think is correct. For each choice, explain why it\'s right or wrong.',fields:[
+{sec:'Step 2: Note the Details',fields:[
+{t:'ta',f:'main_point',lbl:'Without looking back at the stimulus, restate the main point in your own words. Be specific, say the noun, verb, and predicate.',ph:'The main point is...',r:2}]},
+{sec:'Step 3: Find the Best Match',note:'Select the answer you think is correct. For each choice, explain why it\'s right or wrong.',fields:[
 {t:'ac',mode:'explain'}]}
 ]},
 'argument-part':{name:'Argument Part',links:{flowchart:QT_BASE+'argument-part/flowchart',worksheet:QT_BASE+'argument-part/worksheet',lesson:QT_BASE+'argument-part/lesson'},steps:[
-'Read the question stem first — identify and highlight the referenced sentence',
+'Read the question stem first, identify and highlight the referenced sentence',
 'Read the stimulus and label each sentence: conclusion, support, or background',
 'Describe the referenced sentence\'s job BEFORE looking at the answer choices',
 'Hunt for the answer that matches your prediction',
 'Check: does every word accurately capture the role of that sentence?'
 ],form:[
-{sec:'Step 1 — Read the Question Stem',fields:[
+{sec:'Step 1: Read the Question Stem',fields:[
 {t:'ta',f:'referenced',lbl:'Identify the referenced sentence.',ph:'The sentence the stem points to...',r:1}]},
-{sec:'Step 2 — Read the Stimulus',note:'Break down each sentence and label its role in the argument.',fields:[
-{t:'ta',f:'sentences',lbl:'One sentence per line — the sentence, then its role (conclusion, support, background).',ph:'1. ... — support\n2. ... — conclusion',r:3}]},
-{sec:'Step 3 — Describe the Referenced Sentence',fields:[
+{sec:'Step 2: Read the Stimulus',note:'Break down each sentence and label its role in the argument.',fields:[
+{t:'ta',f:'sentences',lbl:'One sentence per line, the sentence, then its role (conclusion, support, background).',ph:'1. ..., support\n2. ..., conclusion',r:3}]},
+{sec:'Step 3: Describe the Referenced Sentence',fields:[
 {t:'ta',f:'function',lbl:'Predict: what is its function in the argument? Always describe it BEFORE looking at the answer choices.',ph:'This sentence is doing...',r:2}]},
-{sec:'Step 4 — Find the Best Match',note:'Hunt for the answer choice that matches your prediction. For each choice, explain why it\'s right or wrong.',fields:[
+{sec:'Step 4: Find the Best Match',note:'Hunt for the answer choice that matches your prediction. For each choice, explain why it\'s right or wrong.',fields:[
 {t:'ac',mode:'explain'}]}
 ]},
 'method-of-reasoning':{name:'Method of Reasoning',links:{flowchart:QT_BASE+'method-of-reasoning/flowchart',worksheet:null,lesson:QT_BASE+'method-of-reasoning/lesson'},steps:[
-'Identify the stem — "the argument proceeds by..." asks HOW the author argues',
+'Identify the stem, "the argument proceeds by..." asks HOW the author argues',
 'Read the stimulus and label the premises and the conclusion',
-'Describe how the premises support the conclusion — what is the author doing?',
+'Describe how the premises support the conclusion: what is the author doing?',
 'Predict the move in your own words before the answer choices',
 'Check each answer word by word: does every word accurately describe the reasoning?'
 ],form:[
-{sec:'Step 1 — Premises & Conclusion',fields:[
+{sec:'Step 1: Premises & Conclusion',fields:[
 {t:'ta',f:'premise',lbl:'Premise(s)',ph:'The author\'s evidence...',r:2},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'What the author concludes...',r:1}]},
-{sec:'Step 2 — What Is the Author Doing?',fields:[
-{t:'ta',f:'move',lbl:'Describe how the premises support the conclusion — the author\'s move, in your own words, BEFORE the answer choices.',ph:'The author argues by...',r:2}]},
-{sec:'Step 3 — Check Every Word',note:'For each answer: does every word accurately describe the reasoning?',fields:[
+{sec:'Step 2: What Is the Author Doing?',fields:[
+{t:'ta',f:'move',lbl:'Describe how the premises support the conclusion, the author\'s move, in your own words, BEFORE the answer choices.',ph:'The author argues by...',r:2}]},
+{sec:'Step 3: Check Every Word',note:'For each answer: does every word accurately describe the reasoning?',fields:[
 {t:'ac',mode:'explain'}]}
 ]},
 'must-be-true':{name:'Must Be True',links:{flowchart:QT_BASE+'must-be-true/flowchart',worksheet:QT_BASE+'must-be-true/worksheet',lesson:QT_BASE+'must-be-true/lesson'},steps:[
-'Identify the stem — everything in the stimulus is fact; don\'t look for gaps',
+'Identify the stem, everything in the stimulus is fact; don\'t look for gaps',
 'Simplify each sentence in your own words as you read',
-'Connect each new sentence to what came before — do the facts combine?',
+'Connect each new sentence to what came before, do the facts combine?',
 'Ask: is there an overall inference? A → B and B → C gives A → C',
 'Check: every word of the correct answer must be 100% proven by the stimulus'
 ],form:[
-{sec:'Step 1 — Connect the Dots',note:'Treat everything in the stimulus as fact — even if it looks like an argument.',fields:[
+{sec:'Step 1: Connect the Dots',note:'Treat everything in the stimulus as fact, even if it looks like an argument.',fields:[
 {t:'ta',f:'sentences',lbl:'Simplify each sentence in your own words (one per line), then connect it to prior sentences. Look for overlapping ideas.',ph:'1. ...\n2. ...\n3. ...',r:3}]},
-{sec:'Step 2 — Overall Inference',fields:[
+{sec:'Step 2: Overall Inference',fields:[
 {t:'ta',f:'inference',lbl:'Do the facts combine into a bigger conclusion? The answer could be an inference, a summary, or a restatement of a single sentence.',ph:'A → B and B → C gives A → C...',r:2}]},
-{sec:'Step 3 — Answer Choices',note:'For each answer: is every word 100% supported by the stimulus?',fields:[
+{sec:'Step 3: Answer Choices',note:'For each answer: is every word 100% supported by the stimulus?',fields:[
 {t:'ac',mode:'twostep',states:'ke',q1:'1. Is every word 100% supported by the stimulus?',q2:'2. What type is it? (inference, summary, restatement)'}]},
 {sec:'Final Selection',fields:[
-{t:'inp',f:'final',lbl:'Final Answer — the one where every word is 100% supported'}]}
+{t:'inp',f:'final',lbl:'Final Answer, the one where every word is 100% supported'}]}
 ]},
 'most-strongly-supported':{name:'Most Strongly Supported',links:{flowchart:QT_BASE+'most-strongly-supported/flowchart',worksheet:QT_BASE+'most-strongly-supported/worksheet',lesson:QT_BASE+'most-strongly-supported/lesson'},steps:[
-'Identify the stem — the bar is lower than Must Be True: strongly supported, not proven',
+'Identify the stem, the bar is lower than Must Be True: strongly supported, not proven',
 'Simplify each sentence and connect the dots as you read',
 'For each answer, ask: could I make a reasonable case this is supported?',
-'If you don\'t love an answer, don\'t eliminate it — keep it and compare',
+'If you don\'t love an answer, don\'t eliminate it, keep it and compare',
 'Pick the answer with the strongest support and the smallest assumption'
 ],form:[
-{sec:'Step 1 — Connect the Dots',note:'Same reading habits as Must Be True: simplify and connect as you go.',fields:[
+{sec:'Step 1: Connect the Dots',note:'Same reading habits as Must Be True: simplify and connect as you go.',fields:[
 {t:'ta',f:'sentences',lbl:'Simplify each sentence in your own words (one per line) and connect the dots.',ph:'1. ...\n2. ...',r:3}]},
-{sec:'Step 2 — Answer Choices',note:'The bar is lower than Must Be True: strongly supported, not proven.',fields:[
-{t:'ac',mode:'twostep',states:'ke',q1:'1. Could you make a reasonable case this is supported?',q2:'2. If you don\'t love it, don\'t eliminate it — keep and compare. Notes:'}]},
+{sec:'Step 2: Answer Choices',note:'The bar is lower than Must Be True: strongly supported, not proven.',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Could you make a reasonable case this is supported?',q2:'2. If you don\'t love it, don\'t eliminate it, keep and compare. Notes:'}]},
 {sec:'Final Selection',fields:[
-{t:'inp',f:'final',lbl:'Final Answer — strongest support, smallest assumption'}]}
+{t:'inp',f:'final',lbl:'Final Answer, strongest support, smallest assumption'}]}
 ]},
 'sufficient-assumption':{name:'Sufficient Assumption',links:{flowchart:QT_BASE+'sufficient-assumption/flowchart',worksheet:QT_BASE+'sufficient-assumption/worksheet',lesson:QT_BASE+'sufficient-assumption/lesson'},steps:[
-'Identify the stem — you\'re looking for the answer that makes the conclusion 100% follow',
-'Identify the premise(s) and conclusion — write the core argument',
+'Identify the stem. You\'re looking for the answer that makes the conclusion 100% follow',
+'Identify the premise(s) and conclusion, write the core argument',
 'Identify the gap and express it as Premise → Conclusion',
-'Hunt Mode first: scan for your predicted bridge — P → C or /C → /P',
+'Hunt Mode first: scan for your predicted bridge, P → C or /C → /P',
 'If hunting fails, Process of Elimination: Premise + Answer = Conclusion?',
 'Verify: Answer Choice + Premise = Conclusion, 100%'
 ],form:[
-{sec:'Step 1 — Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
+{sec:'Step 1: Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
 {t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
-{sec:'Step 2 — Core Argument & Gap (Mandatory)',note:'Express in Premise → Conclusion form. What concept in the premise doesn\'t connect to the conclusion?',fields:[
+{sec:'Step 2: Core Argument & Gap (Mandatory)',note:'Express in Premise → Conclusion form. What concept in the premise doesn\'t connect to the conclusion?',fields:[
 {t:'ta',f:'gap',lbl:'The Gap: Premise → Conclusion',ph:'P → C',r:2}]},
-{sec:'Step 3 — Answer Choices',note:'Hunt Mode first — scan for your prediction: P → C or /C → /P. If hunting fails, Process of Elimination: Premise + Answer Choice = Conclusion 100%?',fields:[
+{sec:'Step 3: Answer Choices',note:'Hunt Mode first, scan for your prediction: P → C or /C → /P. If hunting fails, Process of Elimination: Premise + Answer Choice = Conclusion 100%?',fields:[
 {t:'ac',mode:'explain'}]}
 ]},
 'necessary-assumption':{name:'Necessary Assumption',links:{flowchart:QT_BASE+'necessary-assumption/flowchart',worksheet:QT_BASE+'necessary-assumption/worksheet',lesson:QT_BASE+'necessary-assumption/lesson'},steps:[
-'Identify the stem — "requires," "depends on," "assumes"',
-'Read the stimulus — identify the premise(s) and conclusion',
+'Identify the stem, "requires," "depends on," "assumes"',
+'Read the stimulus, identify the premise(s) and conclusion',
 'Write the core argument: simplified Premise → Conclusion',
-'Identify the gap — what is the author taking for granted?',
+'Identify the gap: what is the author taking for granted?',
 'Lead with the Must Be True test: if the argument works, this answer has to be true',
-'Fallback: Negation Test — if this answer were false, the argument falls apart'
+'Fallback: Negation Test, if this answer were false, the argument falls apart'
 ],form:[
-{sec:'Step 1 — Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
+{sec:'Step 1: Premises & Conclusion',note:'Read the stimulus. What is the author\'s evidence? What are they concluding?',fields:[
 {t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
-{sec:'Step 2 — Core Argument & Gap',note:'Simplify the argument down to its core. What concept is missing between premise and conclusion?',fields:[
+{sec:'Step 2: Core Argument & Gap',note:'Simplify the argument down to its core. What concept is missing between premise and conclusion?',fields:[
 {t:'ta',f:'core',lbl:'Simplified Argument',ph:'Premise → Conclusion',r:1},
 {t:'ta',f:'gap',lbl:'Identify the Gap (Predict)',ph:'What is the author taking for granted?',r:1}]},
-{sec:'Step 3 — Answer Choices',note:'Must Be True test — start here. Embrace the conclusion: if the premises and conclusion are true, does this answer choice HAVE to be true? Or the Negation Test: if this answer were false, would the argument fall apart? See a negative word like "none"? Use this test to get rid of it.',fields:[
+{sec:'Step 3: Answer Choices',note:'Must Be True test, start here. Embrace the conclusion: if the premises and conclusion are true, does this answer choice HAVE to be true? Or the Negation Test: if this answer were false, would the argument fall apart? See a negative word like "none"? Use this test to get rid of it.',fields:[
 {t:'ac',mode:'explain'}]}
 ]},
 'strengthen-weaken':{name:'Strengthen & Weaken',links:{flowchart:QT_BASE+'strengthen-weaken/flowchart',worksheet:QT_BASE+'strengthen-weaken/worksheet',lesson:QT_BASE+'strengthen-weaken/lesson'},steps:[
-'Read the stem — are you strengthening or weakening?',
-'Break down the stimulus — find the conclusion and the support',
+'Read the stem, are you strengthening or weakening?',
+'Break down the stimulus, find the conclusion and the support',
 'Write the core argument: Premise → Conclusion',
 'Predict: why does the support fall short of the conclusion?',
-'Relevance Test: does the answer connect to the argument? Low bar — keep it',
+'Relevance Test: does the answer connect to the argument? Low bar, keep it',
 'Impact Test: Premise + Answer = what happens to the conclusion?',
 'Pick the answer with the clearest impact and fewest language issues'
 ],form:[
-{sec:'Core Argument — From Memory',note:'Cannot look back at the stimulus. Write in as few words as possible — this trains you to internalize the argument rather than copy words. Clearly note: noun, verb, predicate. No referential phrasing ("they," "it") — use the actual noun.',fields:[
+{sec:'Core Argument: From Memory',note:'Cannot look back at the stimulus. Write in as few words as possible. This trains you to internalize the argument rather than copy words. Clearly note: noun, verb, predicate. No referential phrasing ("they," "it"), use the actual noun.',fields:[
 {t:'ta',f:'premise',lbl:'Premise',ph:'...',r:1},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
 {sec:'Prediction',note:'Keep in mind: these questions are not prediction-friendly. Spotting the gap is helpful, but don\'t get married to your phrasing.',fields:[
 {t:'ta',f:'gap',lbl:'What\'s the gap between Premise & Conclusion?',ph:'...',r:2},
-{t:'tags',f:'framework',lbl:'Framework (if recognizable) — Part to Whole: does the part represent the whole? · Cost vs. Benefit: hidden costs or overlooked benefits? · Correlation to Causation: reversed cause, third cause, coincidence? · Other: identify the specific assumption.',opts:['Part to Whole','Cost vs. Benefit','Correlation to Causation','Other']}]},
-{sec:'Answer Choices — Two-Step Test',fields:[
-{t:'ac',mode:'twostep',states:'ke',q1:'1. Is the answer choice relevant? Could this apply to the context or premise? (Low bar — if not, move on.)',q2:'2. Does AC + Premise strengthen or weaken the Conclusion? Combine them — more likely or less likely?'}]},
+{t:'tags',f:'framework',lbl:'Framework (if recognizable): Part to Whole: does the part represent the whole? · Cost vs. Benefit: hidden costs or overlooked benefits? · Correlation to Causation: reversed cause, third cause, coincidence? · Other: identify the specific assumption.',opts:['Part to Whole','Cost vs. Benefit','Correlation to Causation','Other']}]},
+{sec:'Answer Choices: Two-Step Test',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Is the answer choice relevant? Could this apply to the context or premise? (Low bar, if not, move on.)',q2:'2. Does AC + Premise strengthen or weaken the Conclusion? Combine them, more likely or less likely?'}]},
 {sec:'Final Selection',fields:[
-{t:'inp',f:'final',lbl:'Final Answer — AC + Premise with the strongest impact in the right direction'}]}
+{t:'inp',f:'final',lbl:'Final Answer: AC + Premise with the strongest impact in the right direction'}]}
 ]},
 'flaw':{name:'Flaw',links:{flowchart:QT_BASE+'flaw/flowchart',worksheet:QT_BASE+'flaw/worksheet',lesson:QT_BASE+'flaw/lesson'},steps:[
-'Identify the stem — "the argument is vulnerable to criticism because..."',
-'Identify the premise(s) and conclusion — write the core argument',
+'Identify the stem, "the argument is vulnerable to criticism because..."',
+'Identify the premise(s) and conclusion, write the core argument',
 'Predict the flaw and name it in your own words BEFORE the answer choices',
 'Check each answer: is it descriptively accurate? Noun, verb, predicate',
 'If it\'s accurate, ask: is it actually the flaw in THIS argument?'
 ],form:[
-{sec:'Core Argument — From Memory',note:'Cannot look back at the stimulus. As few words as possible — noun, verb, predicate. No referential phrasing.',fields:[
+{sec:'Core Argument: From Memory',note:'Cannot look back at the stimulus. As few words as possible, noun, verb, predicate. No referential phrasing.',fields:[
 {t:'ta',f:'premise',lbl:'Premise',ph:'...',r:1},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
-{sec:'Prediction',note:'Prediction helps a lot here. Flaw questions are prediction-friendly — if you can name the flaw before looking at the answers, you\'re very likely to find it.',fields:[
-{t:'ta',f:'flaw',lbl:'State the flaw in your own words — what\'s the gap? Why doesn\'t the premise support the conclusion?',ph:'...',r:2}]},
-{sec:'Answer Choices — Two-Step Test',fields:[
-{t:'ac',mode:'twostep',states:'ke',q1:'1. Is it descriptively accurate? Does every word match what the argument actually does — noun, verb, predicate?',q2:'2. If accurate, is it actually a flaw? A real weakness in the reasoning?'}]},
+{sec:'Prediction',note:'Prediction helps a lot here. Flaw questions are prediction-friendly, if you can name the flaw before looking at the answers, you\'re very likely to find it.',fields:[
+{t:'ta',f:'flaw',lbl:'State the flaw in your own words: what\'s the gap? Why doesn\'t the premise support the conclusion?',ph:'...',r:2}]},
+{sec:'Answer Choices: Two-Step Test',fields:[
+{t:'ac',mode:'twostep',states:'ke',q1:'1. Is it descriptively accurate? Does every word match what the argument actually does, noun, verb, predicate?',q2:'2. If accurate, is it actually a flaw? A real weakness in the reasoning?'}]},
 {sec:'Final Selection',fields:[
-{t:'inp',f:'final',lbl:'Final Answer — descriptively accurate AND a real flaw'}]}
+{t:'inp',f:'final',lbl:'Final Answer, descriptively accurate AND a real flaw'}]}
 ]},
 'parallel-reasoning':{name:'Parallel Reasoning',links:{flowchart:QT_BASE+'parallel-reasoning/flowchart',worksheet:QT_BASE+'parallel-reasoning/worksheet',lesson:null},steps:[
 'Identify from the stem: Parallel Reasoning or Parallel Flaw',
 'Find the conclusion first, then all the premises',
 'Ask: what would YOU conclude from these premises?',
-'Write the abstract structure — do not skip this step',
+'Write the abstract structure, do not skip this step',
 'Pick markers from your structure and shallow dip each answer',
-'No markers in an answer? Move on — don\'t fully eliminate yet',
-'Read close matches in small pieces — predict what it needs to say next',
-'Pick and go — don\'t second-guess'
+'No markers in an answer? Move on, don\'t fully eliminate yet',
+'Read close matches in small pieces, predict what it needs to say next',
+'Pick and go, don\'t second-guess'
 ],form:[
 {sec:'Question Type',fields:[
 {t:'tags',f:'pr_type',lbl:'From the stem',opts:['Parallel Reasoning','Parallel Flaw']}]},
 {sec:'Premise & Conclusion',fields:[
 {t:'ta',f:'premise',lbl:'Premise(s)',ph:'...',r:2},
 {t:'ta',f:'conclusion',lbl:'Conclusion',ph:'...',r:1}]},
-{sec:'Evaluate the Argument',note:'Do the premises connect to each other? YES → what\'s the valid inference from the combination? Use that to evaluate the conclusion. NO → think about each premise separately. Note: no gaps in Parallel Reasoning — gaps = Parallel Flaw.',fields:[
+{sec:'Evaluate the Argument',note:'Do the premises connect to each other? YES → what\'s the valid inference from the combination? Use that to evaluate the conclusion. NO → think about each premise separately. Note: no gaps in Parallel Reasoning, gaps = Parallel Flaw.',fields:[
 {t:'ta',f:'evaluate',lbl:'What would YOU conclude from these premises?',ph:'...',r:2},
 {t:'ta',f:'pflaw',lbl:'For Parallel Flaw: what is the flaw?',ph:'Skip if Parallel Reasoning...',r:1}]},
 {sec:'Abstract Structure',note:'DO NOT SKIP THIS. If you struggle here, it will be worse in the answer choices.',fields:[
-{t:'ta',f:'abstract',lbl:'Write the argument pattern in abstract terms — nothing to do with the actual content. Example: "All A are B. X is A. Therefore, X is B."',ph:'All A are B...',r:2}]},
+{t:'ta',f:'abstract',lbl:'Write the argument pattern in abstract terms, nothing to do with the actual content. Example: "All A are B. X is A. Therefore, X is B."',ph:'All A are B...',r:2}]},
 {sec:'Shallow Dip Strategy',note:'Shallow dip = quick scan before committing to a full read.',fields:[
 {t:'ta',f:'markers',lbl:'Based on your abstract structure, what markers will you look for?',ph:'...',r:1}]},
-{sec:'Answer Choices',note:'Shallow dip first. If markers exist, read piece by piece and predict what comes next — predicting helps you spot subtle trap answer choices.',fields:[
-{t:'ac',mode:'twostep',states:'sep',q1:'1. Shallow Dip — does this answer have your markers?',q2:'2. Piece-by-Piece — read the first part. What does it need to say NEXT to match your structure?'}]},
-{sec:'Final Answer',note:'If an answer matches your structure/flaw: select it and move on. Don\'t second-guess — saves significant time.',fields:[
+{sec:'Answer Choices',note:'Shallow dip first. If markers exist, read piece by piece and predict what comes next, predicting helps you spot subtle trap answer choices.',fields:[
+{t:'ac',mode:'twostep',states:'sep',q1:'1. Shallow Dip, does this answer have your markers?',q2:'2. Piece-by-Piece, read the first part. What does it need to say NEXT to match your structure?'}]},
+{sec:'Final Answer',note:'If an answer matches your structure/flaw: select it and move on. Don\'t second-guess, saves significant time.',fields:[
 {t:'inp',f:'final',lbl:'Final Answer'}]}
 ]}
 };
@@ -598,11 +598,11 @@ function qtCardDesc(q){
   const lines=['--Steps:'];
   q.steps.forEach(s=>lines.push(s));
   lines.push('--Drill:');
-  lines.push('Do 4 fresh '+q.name+' questions — log each one in the worksheet below');
+  lines.push('Do 4 fresh '+q.name+' questions, log each one in the worksheet below');
   lines.push('Follow the steps above on every single question. No skipping steps.');
   lines.push('Feeling good? Add a 5th question with + Add Another Question');
   lines.push('--Pace:');
-  lines.push('Untimed while you learn the steps — accuracy first');
+  lines.push('Untimed while you learn the steps, accuracy first');
   lines.push('Once the steps feel automatic, aim for about {per_q_time} per question');
   lines.push('--Resources:');
   if(q.links.flowchart)lines.push('[Flowchart]('+q.links.flowchart+')');
@@ -615,10 +615,10 @@ function lessonCardDesc(q){
   const lines=[];
   if(q.links.lesson)lines.push('Read the '+q.name+' Cheat Sheet (linked below)');
   else lines.push('Review the '+q.name+' steps using the flowchart (linked below)');
-  lines.push('Write the steps out from memory — then check yourself against the sheet');
+  lines.push('Write the steps out from memory, then check yourself against the sheet');
   lines.push('Re-do any step you missed until you can write all of them without looking');
   lines.push('--Goal:');
-  lines.push('Know the steps cold — next up is the '+q.name+' drill');
+  lines.push('Know the steps cold, next up is the '+q.name+' drill');
   lines.push('--Resources:');
   if(q.links.lesson)lines.push('[Cheat Sheet]('+q.links.lesson+')');
   if(q.links.flowchart)lines.push('[Flowchart]('+q.links.flowchart+')');
@@ -641,33 +641,33 @@ function qtFromLabel(label){
 const HW_CARDS={
 'timing':{group:'Timing',cards:[
 {label:'Timed LR Section',desc:'Take a fresh timed LR section ({section_time})\nLog your time on every question in the worksheet below\n--Goals:\nFirst 10 in {first10_time}: spot the pattern, predict, pick, and go\nMost questions in {per_q_time}\nNo question approaching over {max_q_time}\nHard questions: pick at least two to let go on first round'},
-{label:'Timed RC Section',desc:'Take a fresh timed RC section ({section_time})\n--Reading habits:\nAfter paragraph 1: predict the main point of the passage\nAfter paragraph 1: predict the structure\nAfter paragraph 1: sneak peek — skim the opening words of remaining paragraphs\n{per_rc_q_time} per question\n--Tracking:\nFlag any question where you were between two answers\nNo passage over {passage_time} total'},
+{label:'Timed RC Section',desc:'Take a fresh timed RC section ({section_time})\n--Reading habits:\nAfter paragraph 1: predict the main point of the passage\nAfter paragraph 1: predict the structure\nAfter paragraph 1: sneak peek, skim the opening words of remaining paragraphs\n{per_rc_q_time} per question\n--Tracking:\nFlag any question where you were between two answers\nNo passage over {passage_time} total'},
 {label:'Practice Test',desc:'Take a full PT under test conditions\nComplete Blind Review after\nComplete Insight to Action after'},
 {label:'Timing Log + LR Section',tiers:['m','a'],desc:'Take a fresh timed LR section ({section_time})\nLog your time on every question in the worksheet below\n--Goals:\nFirst 10 questions done in {first10_time}\nNo single question over {max_q_time} on first pass\nMark any question you let go and came back to\n--After:\nIf you went over time, which questions caused it?\nBring your timing log to our next session'},
 {label:'1 LR Section (timed)',tiers:['m','a'],desc:'Take a full timed LR section ({section_time})\nFlag every question you weren\'t 100% sure about\nLog flagged questions in the worksheet below\nSame Insight to Action process for any misses: strategy or knowledge?'},
 {label:'1 RC Section (timed)',tiers:['m','a'],desc:'Full RC section under the clock ({section_time})\nTrack which passage took the most time and which questions you flagged\nFill out the Claim Tracking worksheet for any passage where you flagged a question'},
-{label:'2 Hard RC Passages (untimed)',tiers:['m','a'],desc:'Pick 2 passages rated difficult from any PT\nUntimed — focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nFill out the Claim Tracking worksheet as you go\nReview every miss'},
-{label:'Pacing Drill: LR Sections',tiers:['m','a'],desc:'Do 2 full LR sections, each timed at {section_time}\nOn the first: use your normal approach — note where you feel rushed\nOn the second: apply the pacing strategy from our session (flag and move, return later)\nLog your times in the worksheet below\nCompare accuracy and how you felt — which approach left fewer questions unanswered?\nBring both results to our next session'}
+{label:'2 Hard RC Passages (untimed)',tiers:['m','a'],desc:'Pick 2 passages rated difficult from any PT\nUntimed, focus purely on accuracy\nWrite a one-sentence summary of each paragraph as you read\nFill out the Claim Tracking worksheet as you go\nReview every miss'},
+{label:'Pacing Drill: LR Sections',tiers:['m','a'],desc:'Do 2 full LR sections, each timed at {section_time}\nOn the first: use your normal approach, note where you feel rushed\nOn the second: apply the pacing strategy from our session (flag and move, return later)\nLog your times in the worksheet below\nCompare accuracy and how you felt: which approach left fewer questions unanswered?\nBring both results to our next session'}
 ]},
 'review':{group:'Review',cards:[
 {label:'Blind Review',desc:'Complete your Strategic Review for flagged questions\nComplete your Knowledge Review for flagged questions\nGrade and review missed unflagged questions\nCreate parallel arguments for any questions missed\nTake your findings to Insight to Action'},
 {label:'RC Blind Review',desc:'Complete your Strategic Review for flagged questions\nFor each passage where you flagged a question: fill out a Claim Tracking Worksheet\nGrade and review missed unflagged questions\nTake your findings to Insight to Action'},
-{label:'Insight to Action: LR',desc:'Open the worksheet below\nLog every missed question and tag each as Strategy or Knowledge\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Not the question — the trap or concept behind it.\nWhat will you do differently next time?\nDrill 3 similar questions. Note your result.\nDecide: move on, repeat drills, or email tutor'},
+{label:'Insight to Action: LR',desc:'Open the worksheet below\nLog every missed question and tag each as Strategy or Knowledge\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Not the question, the trap or concept behind it.\nWhat will you do differently next time?\nDrill 3 similar questions. Note your result.\nDecide: move on, repeat drills, or email tutor'},
 {label:'Insight to Action: RC',desc:'Open the worksheet below\nLog every missed question and tag each as Reading or Question Strategy\nFor each miss: why did you miss it? (Be specific)\nWhat\'s the pattern across these misses? Passage type, question type, or a comprehension issue\nWhat will you do differently next time?\nDo 2 similar passage types. Note your result.\nDecide: move on, repeat drills, or email tutor'},
 {label:'LR Section Reset',tiers:['m','a'],desc:'Take a fresh LR section when ready\nReview every miss: strategy or knowledge?\nSame reason as last session\'s misses, or different?\nComplete Insight to Action in the worksheet below\nDrill similar questions\nClean section → you\'re ready for a PT. If not → keep doing sections'},
 {label:'Insight to Action: Timing Leak Audit',tiers:['m','a'],desc:'Open the worksheet below\nReview your last 2 PTs and look at your timing patterns\nWhich sections did you run out of time on? Which passages or question sets ate the most time?\nFor each time crunch: was it one hard question that ate 4 minutes, or gradual slowness across many questions?\nWrite down 2-3 specific timing rules for yourself (e.g. "if I\'m not making progress after 90 seconds, flag and move")'},
 {label:'Final Insight to Action Review',tiers:['m','a'],desc:'Go through all your Insight to Action notes from previous sessions\nWhat patterns have you fixed? What\'s still showing up?\nComplete the worksheet below with your remaining patterns\nBuild your plan: what gets drilled between now and test day?'}
 ]},
 'drills':{group:'Drills',cards:[
-{label:'Stimulus Breakdown Drill',desc:'Take every question you missed OR spent over 3 minutes on\nFor each one: write down the premise, the conclusion, and the gap\nFor every answer choice: write why it\'s right or wrong\nIf you can\'t identify the gap, mark it — that\'s what we fix together'},
-{label:'First 10 in 10 Drill',desc:'Take the first 10 questions of a fresh LR section\nTimed: {first10_time}\nLog your time on each question in the worksheet below\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
-{label:'Pattern Recognition Drill',desc:'Select questions from these types only: Main Point, Argument Part, Flaw, Sufficient Assumption, Must Be True, Must Be False\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices — does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
-{label:'RC Passage Breakdown',desc:'Complete passage untimed — focus purely on accuracy\nFill out the Claim Tracking Worksheet as you read'},
-{label:'Assumption Recognition Practice',tiers:['f','m'],desc:'Do 10 LR questions that ask you to find what the argument depends on\nFor each: before looking at answers, predict the assumption in your own words\nLog each one in the worksheet below\nTrack how often your prediction matched — aim for at least 6/10'},
-{label:'Conditional Translation Drill',tiers:['f','m'],desc:'Take the 20 translation sentences from our session handout\nTranslate each one into conditional notation — write it out fully\nFor every unless/without/except: identify the sufficient condition, negate it, and write the full arrow\nFor every no/none: identify the necessary condition and negate it\nCheck against the answer key — aim for 16/20 or better\nRe-do any you missed until you can get them right without looking'}
+{label:'Stimulus Breakdown Drill',desc:'Take every question you missed OR spent over 3 minutes on\nFor each one: write down the premise, the conclusion, and the gap\nFor every answer choice: write why it\'s right or wrong\nIf you can\'t identify the gap, mark it, that\'s what we fix together'},
+{label:'First 10 in 10 Drill',desc:'Take the first 10 questions of a fresh LR section\nTimed: {first10_time}\nLog your time on each question in the worksheet below\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices, does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
+{label:'Pattern Recognition Drill',desc:'Select questions from these types only: Main Point, Argument Part, Flaw, Sufficient Assumption, Must Be True, Must Be False\n--For each question:\nPredict the answer after reading the stimulus\nScan the answer choices, does one jump out?\nIf yes, start there. If it works, pick and go\nIf no, start at answer choice A\nFor each answer choice: follow your procedure for the question type'},
+{label:'RC Passage Breakdown',desc:'Complete passage untimed, focus purely on accuracy\nFill out the Claim Tracking Worksheet as you read'},
+{label:'Assumption Recognition Practice',tiers:['f','m'],desc:'Do 10 LR questions that ask you to find what the argument depends on\nFor each: before looking at answers, predict the assumption in your own words\nLog each one in the worksheet below\nTrack how often your prediction matched, aim for at least 6/10'},
+{label:'Conditional Translation Drill',tiers:['f','m'],desc:'Take the 20 translation sentences from our session handout\nTranslate each one into conditional notation, write it out fully\nFor every unless/without/except: identify the sufficient condition, negate it, and write the full arrow\nFor every no/none: identify the necessary condition and negate it\nCheck against the answer key, aim for 16/20 or better\nRe-do any you missed until you can get them right without looking'}
 ]},
-'lessonf':{group:'Lesson Review — Foundations',cards:LESSON_F.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
-'lessonm':{group:'Lesson Review — Mastery',cards:LESSON_M.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
+'lessonf':{group:'Lesson Review: Foundations',cards:LESSON_F.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
+'lessonm':{group:'Lesson Review: Mastery',cards:LESSON_M.map(k=>({label:'Review Lesson: '+QT_DRILLS[k].name,desc:lessonCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
 'qtypes':{group:'Question Type Drills',cards:Object.keys(QT_DRILLS).map(k=>({label:'Drill: '+QT_DRILLS[k].name,desc:qtCardDesc(QT_DRILLS[k]),tiers:['f','m']}))},
 'advanced':{group:'Advanced',cards:[
 {label:'Confidence Log',tiers:['a'],desc:'--Key:\nRe-read one line from stimulus → not a good flag, 10-second fix\nRe-read 1-2 answer choices → not a good flag, do it right there\nRe-read 4-5 answer choices → good flag, need full second pass\nRe-start full process (stimulus + answer choices) → good flag\nDidn\'t understand stimulus (below 70% on first read) → skip it, re-read the one line giving you trouble, if whole stimulus unclear move on\n--For each flagged question:\nWhat caused you to flag this question?\nAfter coming back, did you change your answer?\nIf yes: were you right the first time?\nUnder timed conditions, what did you think you needed to do to improve your confidence to 90%?\nWas the decision to flag correct?'},
@@ -684,44 +684,44 @@ function hwCardByLabel(label){
   return null;
 }
 
-/* Session blueprints — pull a prefilled session (title, subtitle, description, goals)
+/* Session blueprints, pull a prefilled session (title, subtitle, description, goals)
    with its matching drill homework auto-attached. Everything is editable after adding,
    exactly like homework cards: one-shot copies, no live link back to the blueprint.
-   SESS_TABS maps picker tabs to groups. Tab names are tutor-only — students never
+   SESS_TABS maps picker tabs to groups. Tab names are tutor-only, students never
    see the picker, and no session title or subtitle ever labels a student's level. */
 const SESSION_CARDS={
-'beginner':{group:'Foundation Roadmap — Combo Sessions',cards:[
-{title:'Argument Anatomy',subtitle:'Main Point + Argument Part',description:'Every LSAT argument has parts — a conclusion and the support for it. This session builds the habit of seeing that structure instantly, because every question type that follows depends on it.',goals:['Find the conclusion fast: indicators, process of elimination, and the Why Test','Label what every sentence is doing: conclusion, support, or background','Restate the main point in your own words — noun, verb, predicate'],hw:['Drill: Main Point','Drill: Argument Part','Book Your Next Session']},
-{title:'Reading for Structure',subtitle:'Method of Reasoning + Must Be True + MSS',description:'Two skills this session: describing HOW an author argues, and combining facts into what must follow. Both are pure reading discipline — simplify, connect, predict.',goals:['Describe the author\'s move in your own words before the answer choices','Connect the dots: simplify each sentence and combine the facts','Know the difference between proven (Must Be True) and strongly supported (MSS)'],hw:['Drill: Method of Reasoning','Drill: Must Be True','Drill: Most Strongly Supported']},
-{title:'The Gap',subtitle:'Necessary + Sufficient Assumption',description:'The most important idea in LR: the space between what the premises prove and what the conclusion claims. This session makes gaps visible — then teaches the two tests for closing them.',goals:['Write the core argument: simplified Premise → Conclusion','Spot the gap and say it out loud before the answer choices','Necessary: Must Be True test + Negation Test. Sufficient: hunt for the bridge'],hw:['Drill: Necessary Assumption','Drill: Sufficient Assumption']},
-{title:'Attack & Defend',subtitle:'Strengthen & Weaken + Flaw',description:'Now we use the gap. Strengthen it, attack it, or name it — three question types, one skill. Core arguments from memory, frameworks, and the two-step answer choice test.',goals:['Write the core argument from memory — noun, verb, predicate','Recognize the frameworks: Part to Whole, Cost vs. Benefit, Correlation to Causation','Run the two-step test on every answer choice: relevant? impact?'],hw:['Drill: Strengthen & Weaken','Drill: Flaw','Stimulus Breakdown Drill']},
-{title:'Putting It Together',subtitle:'Parallel Reasoning + First Timed Section',description:'Parallel Reasoning forces you to see arguments in the abstract — the ultimate test of everything so far. Then we take the training wheels off with your first timed section and full review cycle.',goals:['Abstract the structure — content out, pattern in','Shallow dip: scan for markers before committing to a full read','Complete the full review loop: timed section → Blind Review → Insight to Action'],hw:['Drill: Parallel Reasoning','Timed LR Section','Blind Review','Insight to Action: LR']}
+'beginner':{group:'Foundation Roadmap: Combo Sessions',cards:[
+{title:'Argument Anatomy',subtitle:'Main Point + Argument Part',description:'Every LSAT argument has parts, a conclusion and the support for it. This session builds the habit of seeing that structure instantly, because every question type that follows depends on it.',goals:['Find the conclusion fast: indicators, process of elimination, and the Why Test','Label what every sentence is doing: conclusion, support, or background','Restate the main point in your own words, noun, verb, predicate'],hw:['Drill: Main Point','Drill: Argument Part','Book Your Next Session']},
+{title:'Reading for Structure',subtitle:'Method of Reasoning + Must Be True + MSS',description:'Two skills this session: describing HOW an author argues, and combining facts into what must follow. Both are pure reading discipline, simplify, connect, predict.',goals:['Describe the author\'s move in your own words before the answer choices','Connect the dots: simplify each sentence and combine the facts','Know the difference between proven (Must Be True) and strongly supported (MSS)'],hw:['Drill: Method of Reasoning','Drill: Must Be True','Drill: Most Strongly Supported']},
+{title:'The Gap',subtitle:'Necessary + Sufficient Assumption',description:'The most important idea in LR: the space between what the premises prove and what the conclusion claims. This session makes gaps visible, then teaches the two tests for closing them.',goals:['Write the core argument: simplified Premise → Conclusion','Spot the gap and say it out loud before the answer choices','Necessary: Must Be True test + Negation Test. Sufficient: hunt for the bridge'],hw:['Drill: Necessary Assumption','Drill: Sufficient Assumption']},
+{title:'Attack & Defend',subtitle:'Strengthen & Weaken + Flaw',description:'Now we use the gap. Strengthen it, attack it, or name it, three question types, one skill. Core arguments from memory, frameworks, and the two-step answer choice test.',goals:['Write the core argument from memory, noun, verb, predicate','Recognize the frameworks: Part to Whole, Cost vs. Benefit, Correlation to Causation','Run the two-step test on every answer choice: relevant? impact?'],hw:['Drill: Strengthen & Weaken','Drill: Flaw','Stimulus Breakdown Drill']},
+{title:'Putting It Together',subtitle:'Parallel Reasoning + First Timed Section',description:'Parallel Reasoning forces you to see arguments in the abstract, the ultimate test of everything so far. Then we take the training wheels off with your first timed section and full review cycle.',goals:['Abstract the structure, content out, pattern in','Shallow dip: scan for markers before committing to a full read','Complete the full review loop: timed section → Blind Review → Insight to Action'],hw:['Drill: Parallel Reasoning','Timed LR Section','Blind Review','Insight to Action: LR']}
 ]},
-'rcfoundation':{group:'Foundation Roadmap — Reading Comprehension',cards:[
+'rcfoundation':{group:'Foundation Roadmap: Reading Comprehension',cards:[
 {title:'Passage Structure',subtitle:'Reading Comprehension',description:'Reading Comprehension is won before the questions start. This session builds the active reading habits that make every passage predictable: track the claims, predict the structure, and know the main point before you\'re asked for it.',goals:['Predict the passage\'s main point and structure after paragraph 1','Sneak peek: skim the opening words of the remaining paragraphs to confirm or adjust','Track the author\'s claims paragraph by paragraph and name each paragraph\'s job'],hw:['RC Passage Breakdown','Timed RC Section','RC Blind Review']},
-{title:'RC Question Types',subtitle:'Reading Comprehension',description:'Every RC question type points back to the passage differently. This session maps each type to where its answer lives — main point, structure, inference, author\'s attitude — so you stop rereading and start retrieving.',goals:['Know what each RC question type is really asking and where the answer lives','Predict before reading the answer choices — same discipline as LR','Use your claim tracking to answer from the passage map, not from rereading'],hw:['RC Passage Breakdown','Insight to Action: RC','Timed RC Section']}
+{title:'RC Question Types',subtitle:'Reading Comprehension',description:'Every RC question type points back to the passage differently. This session maps each type to where its answer lives, main point, structure, inference, author\'s attitude, so you stop rereading and start retrieving.',goals:['Know what each RC question type is really asking and where the answer lives','Predict before reading the answer choices, same discipline as LR','Use your claim tracking to answer from the passage map, not from rereading'],hw:['RC Passage Breakdown','Insight to Action: RC','Timed RC Section']}
 ]},
 'qtsess':{group:'Single Question Type Sessions',cards:Object.keys(QT_DRILLS).map(k=>{const q=QT_DRILLS[k];return{
 title:q.name,
 subtitle:'Question Type Deep Dive',
-description:'What '+q.name+' questions are really testing, and the exact steps to run every single time — so the homework drills feel like repetition, not guesswork.',
+description:'What '+q.name+' questions are really testing, and the exact steps to run every single time, so the homework drills feel like repetition, not guesswork.',
 goals:['Learn the '+q.name+' steps and why each one matters','Walk through real questions together using the flowchart','Leave knowing exactly what to do before you drill on your own'],
 hw:['Drill: '+q.name]};})},
 'midrange':{group:'Mid-Range Roadmap',cards:[
-{title:'Diagnostic Deep Dive',subtitle:'Diagnostic',description:'Work through the last 10 questions of an LR section together in real time — where the hardest material lives. The goal is to see exactly where breakdowns happen: reasoning gaps, reading issues, or timing pressure.',goals:['Pinpoint the root cause of errors on hard questions','Assess timing patterns under pressure','Build a targeted plan for the remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','Practice Test']},
+{title:'Diagnostic Deep Dive',subtitle:'Diagnostic',description:'Work through the last 10 questions of an LR section together in real time: where the hardest material lives. The goal is to see exactly where breakdowns happen: reasoning gaps, reading issues, or timing pressure.',goals:['Pinpoint the root cause of errors on hard questions','Assess timing patterns under pressure','Build a targeted plan for the remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','Practice Test']},
 {title:'Conditional Logic & Translations',subtitle:'Building the Foundation',description:'Conditional reasoning shows up everywhere on the LSAT. This session teaches you how to translate conditional statements into a consistent notation, how to find the contrapositive, and how to avoid the traps the test sets. We use real language patterns, not jargon.',goals:['Translate if/then, only if, unless, without, except, and no/none into conditional notation','For unless/without/except: identify the sufficient condition, negate it, show the full translation','For no/none: identify the necessary condition and negate it','Apply translations to at least 15 LR problems with 75%+ accuracy'],hw:['Conditional Translation Drill','Insight to Action: LR']},
-{title:'The Assumption Pattern',subtitle:'Sufficient + Necessary Assumption',description:'Sufficient and necessary assumptions are the same skill pointed in two directions: both start with the gap between premise and conclusion. This session teaches you to find the gap first, then apply the right test — hunt for the bridge that closes it completely, or find what the argument can\'t live without.',goals:['Write the core argument and name the gap before touching the answer choices','Sufficient: hunt for the bridge — P → C or /C → /P — that makes the conclusion follow 100%','Necessary: lead with the Must Be True test, fall back to the Negation Test','Know from the stem which job you\'re doing — and why the tests are different'],hw:['Drill: Sufficient Assumption','Drill: Necessary Assumption','Assumption Recognition Practice'],},
-{title:'Passage Pattern Recognition',subtitle:'Reading Comprehension',description:'Passages repeat themselves — the same structures, the same argument moves, the same trap answers. This session trains you to recognize the pattern of a passage early and use it to predict where the questions will go.',goals:['Recognize recurring passage structures and argument patterns across topics','Predict question targets from the passage\'s structure before you see them','Compare timed vs. untimed accuracy to isolate reading vs. pacing issues'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
-{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy — know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol" — what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']}
+{title:'The Assumption Pattern',subtitle:'Sufficient + Necessary Assumption',description:'Sufficient and necessary assumptions are the same skill pointed in two directions: both start with the gap between premise and conclusion. This session teaches you to find the gap first, then apply the right test, hunt for the bridge that closes it completely, or find what the argument can\'t live without.',goals:['Write the core argument and name the gap before touching the answer choices','Sufficient: hunt for the bridge: P → C or /C → /P, that makes the conclusion follow 100%','Necessary: lead with the Must Be True test, fall back to the Negation Test','Know from the stem which job you\'re doing, and why the tests are different'],hw:['Drill: Sufficient Assumption','Drill: Necessary Assumption','Assumption Recognition Practice'],},
+{title:'Passage Pattern Recognition',subtitle:'Reading Comprehension',description:'Passages repeat themselves, the same structures, the same argument moves, the same trap answers. This session trains you to recognize the pattern of a passage early and use it to predict where the questions will go.',goals:['Recognize recurring passage structures and argument patterns across topics','Predict question targets from the passage\'s structure before you see them','Compare timed vs. untimed accuracy to isolate reading vs. pacing issues'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
+{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy, know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol": what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']}
 ]},
-'advanced':{group:'Advanced Roadmap — 168+',cards:[
-{title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up — straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','2 Hard RC Passages (untimed)','Practice Test']},
+'advanced':{group:'Advanced Roadmap, 168+',cards:[
+{title:'LR Stress Test',subtitle:'Diagnostic',description:'Targeted run through the hardest LR questions from a recent section. No warm-up, straight to 4-5 star. The goal isn\'t to get them right, it\'s to see exactly where and how you break down under pressure.',goals:['Identify specific LR question types causing breakdowns at 4-5 star','Pinpoint whether issues are comprehension, reasoning, or timing','Build a targeted plan for remaining sessions'],hw:['Insight to Action: LR','Timing Log + LR Section','Stimulus Breakdown Drill','2 Hard RC Passages (untimed)','Practice Test']},
 {title:'The Passage That Breaks You',subtitle:'Diagnostic',description:'Work through a hard Reading Comprehension passage together in real time. We\'ll slow down and examine how you read, what you notice, what you miss, and where time disappears.',goals:['Identify RC reading habits that cost time or accuracy','Test passage structure recognition on a difficult passage','Determine whether issues are comprehension, question strategy, or pacing'],hw:['Insight to Action: RC','2 Hard RC Passages (untimed)','1 RC Section (timed)','1 LR Section (timed)','Practice Test']},
-{title:'LR Under the Clock',subtitle:'Timed Review',description:'Take a full timed LR section that day, then review it together question by question. Every miss and every hesitation gets examined.',goals:['Complete a timed LR section to simulate real test pressure','Review every flagged and missed question together','Identify patterns in errors — are they the same types from your diagnostic?'],hw:['Insight to Action: LR','LR Section Reset','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
-{title:'RC Under the Clock',subtitle:'Timed Review',description:'Same approach as LR Under the Clock but for Reading Comprehension. Full timed RC section followed by a detailed walkthrough of every passage and question.',goals:['Complete a timed RC section under test conditions','Review passage approach and question strategy for each passage','Compare weaknesses to earlier findings — what\'s improved, what hasn\'t'],hw:['Insight to Action: RC','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
-{title:'Advanced RC Reading',subtitle:'Reading Comprehension',description:'Precision work for strong readers. Low-res summaries while you read (not after), a highlighting discipline for the answer choices, and knowing when to pick and go — capitalize on your reading instead of second-guessing it.',goals:['Build low-res paragraph summaries while reading, not after','Be surgical in the answer choices — trust your reading, verify the words','Know when to pick and go: no spiraling on close calls'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
-{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy — know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol" — what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']},
-{title:'Test Day Strategy & Review',subtitle:'Final Calibration',description:'Last session: we look at your full arc of improvement, lock in your test-day plan, and address anything that\'s still shaky. If you\'re continuing with more sessions, this becomes the pivot point. If this is it, you leave with a clear self-study roadmap and the confidence that you know exactly what to do on test day.',goals:['Review progress from diagnostic to now — quantify improvement and remaining gaps','Finalize a test-day plan: section order preferences, pacing rules, skip strategy, and mental reset routine','Build a self-study or next-phase plan targeting the remaining point gaps'],hw:['Final Insight to Action Review','Practice Test']}
+{title:'LR Under the Clock',subtitle:'Timed Review',description:'Take a full timed LR section that day, then review it together question by question. Every miss and every hesitation gets examined.',goals:['Complete a timed LR section to simulate real test pressure','Review every flagged and missed question together','Identify patterns in errors, are they the same types from your diagnostic?'],hw:['Insight to Action: LR','LR Section Reset','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
+{title:'RC Under the Clock',subtitle:'Timed Review',description:'Same approach as LR Under the Clock but for Reading Comprehension. Full timed RC section followed by a detailed walkthrough of every passage and question.',goals:['Complete a timed RC section under test conditions','Review passage approach and question strategy for each passage','Compare weaknesses to earlier findings: what\'s improved, what hasn\'t'],hw:['Insight to Action: RC','2 Hard RC Passages (untimed)','1 RC Section (timed)','Practice Test']},
+{title:'Advanced RC Reading',subtitle:'Reading Comprehension',description:'Precision work for strong readers. Low-res summaries while you read (not after), a highlighting discipline for the answer choices, and knowing when to pick and go, capitalize on your reading instead of second-guessing it.',goals:['Build low-res paragraph summaries while reading, not after','Be surgical in the answer choices, trust your reading, verify the words','Know when to pick and go: no spiraling on close calls'],hw:['2 Hard RC Passages (untimed)','1 RC Section (timed)','RC Blind Review','Insight to Action: RC']},
+{title:'Pacing & Consistency',subtitle:'Timing',description:'This session focuses on pacing strategy, section management, and building the consistency to perform on test day the way you perform in practice. We also address the mental game: what happens when you hit a hard question and start spiraling.',goals:['Develop a section-level pacing strategy, know when to push, when to skip, when to guess','Reduce the gap between timed and blind review scores to under 3 points per section','Build a "hard question protocol": what to do when you\'re stuck so you don\'t burn 4 minutes'],hw:['Pacing Drill: LR Sections','Insight to Action: Timing Leak Audit','1 RC Section (timed)','Practice Test']},
+{title:'Test Day Strategy & Review',subtitle:'Final Calibration',description:'Last session: we look at your full arc of improvement, lock in your test-day plan, and address anything that\'s still shaky. If you\'re continuing with more sessions, this becomes the pivot point. If this is it, you leave with a clear self-study roadmap and the confidence that you know exactly what to do on test day.',goals:['Review progress from diagnostic to now, quantify improvement and remaining gaps','Finalize a test-day plan: section order preferences, pacing rules, skip strategy, and mental reset routine','Build a self-study or next-phase plan targeting the remaining point gaps'],hw:['Final Insight to Action Review','Practice Test']}
 ]},
 'blanksess':{group:'Other',cards:[
 {title:'Introduction',subtitle:'Session 0',n0:true,description:'Get to know your tutor, talk through where you are, and walk through your roadmap together so you know exactly what\'s coming.',goals:['Get to know your tutor','Walk through your roadmap and what each session covers','Set expectations and next steps'],hw:['Book Your Next Session']},
@@ -758,7 +758,7 @@ function parseClock(s){
   return null;
 }
 function fmtClock(sec){
-  if(sec==null||isNaN(sec))return'—';
+  if(sec==null||isNaN(sec))return'-';
   const m=Math.floor(sec/60),s=Math.round(sec%60);
   return m+':'+String(s).padStart(2,'0');
 }
@@ -938,10 +938,10 @@ function wsType(label){
 }
 
 /* Rename-proof worksheet attachment.
-   hwTypeCode(label): computed ONCE when a card is inserted — stores the worksheet
+   hwTypeCode(label): computed ONCE when a card is inserted, stores the worksheet
    identity in homework.hw_type ('blind_review', 'qt:flaw', 'timing_log', ...) so the
    label becomes purely cosmetic afterward.
-   hwWs(h): render-time resolver — reads hw_type first; legacy rows that just say
+   hwWs(h): render-time resolver, reads hw_type first; legacy rows that just say
    'drill' fall back to the old label matching, so existing cards behave
    exactly as before. No data migration needed. */
 function hwTypeCode(label){
@@ -1068,7 +1068,7 @@ function dashHTML(){
         </div>
         <div style="text-align:right">
           <div class="p-goal-lbl">Goal</div>
-          <div class="p-goal">${t?ed(st.goal_score,'st:goal_score','false'):esc(st.goal_score||'—')}</div>
+          <div class="p-goal">${t?ed(st.goal_score,'st:goal_score','false'):esc(st.goal_score||'-')}</div>
           ${t&&st?`<a class="tc-btn" href="/admin-review.html?student=${esc(st.id)}" style="display:inline-flex;margin:10px 0 0">View analytics</a>`:''}
         </div>
       </div>
@@ -1182,7 +1182,7 @@ function ldRow(d){
   }
   const brLink=(d.status==='in_progress'||d.status==='completed')
     ?`<a class="ld-link" href="/drills.html?student=${esc(S.selId)}&drill=${esc(d.id)}">Blind review →</a>`
-    :`<span class="ld-link" style="opacity:.35;cursor:default" title="Not started yet — nothing to review">Blind review →</span>`;
+    :`<span class="ld-link" style="opacity:.35;cursor:default" title="Not started yet, nothing to review">Blind review →</span>`;
   links=links+brLink;
   return`<div class="ld-row${dim?' ld-dim':''}">
     <div class="ld-info">
@@ -1195,7 +1195,7 @@ function ldRow(d){
 
 function statBox(lbl,field,t){
   const v=S.student?S.student[field]:'';
-  return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(v,'st:'+field,'false'):esc(v||'—')}</div></div>`;
+  return`<div class="stat"><div class="stat-lbl">${lbl}</div><div class="stat-val">${t?ed(v,'st:'+field,'false'):esc(v||'-')}</div></div>`;
 }
 
 function sessHTML(s,i){
@@ -1362,7 +1362,7 @@ function wsInp(entryId,field,val,ph,cls){
 
 function wsDrop(entryId,field,val,opts){
   return`<select class="ws-sel" data-wsdrop="${entryId}" data-wsf="${field}">
-    <option value="">—</option>
+    <option value="">-</option>
     ${opts.map(o=>`<option value="${o}" ${val===o?'selected':''}>${o}</option>`).join('')}
   </select>`;
 }
@@ -1380,7 +1380,7 @@ function wsQuestionTypeDrillHTML(v,name){
   const correct=entries.filter(e=>e.data&&e.data.result==='Correct').length;
   const missed=entries.filter(e=>e.data&&e.data.result==='Missed').length;
   return`<div class="ws-wrap">
-    <div class="ws-title">${esc(q.name)} — Drill Worksheet</div>
+    <div class="ws-title">${esc(q.name)}: Drill Worksheet</div>
     <div class="ws-subtitle">${esc(name)}</div>
     <div class="ws-key-box">
       <div class="ws-key-title">The Steps</div>
@@ -1391,7 +1391,7 @@ function wsQuestionTypeDrillHTML(v,name){
       <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${correct}</div><div class="ws-stat-lbl">Correct</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${missed}</div><div class="ws-stat-lbl">Missed</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${entries.length>0?Math.round(correct/entries.length*100)+'%':'—'}</div><div class="ws-stat-lbl">Accuracy</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${entries.length>0?Math.round(correct/entries.length*100)+'%':'-'}</div><div class="ws-stat-lbl">Accuracy</div></div>
     </div>
     ${list.map(e=>{
       const d=wsEntryData(e);
@@ -1476,11 +1476,11 @@ function wsTimingLogHTML(v,name){
   return`<div class="ws-wrap">
     <div class="ws-title">Timing Log</div>
     <div class="ws-subtitle">${esc(name)} · your pace: max ${esc(T.max_q_time)} per question, first 10 in ${esc(T.first10_time)}</div>
-    <div class="ws-desc">One row per question. Enter time as m:ss (like 1:25). Anything over ${esc(T.max_q_time)} gets flagged automatically. Mark "let go" on questions you skipped on first pass and came back to — that's the discipline we're building.</div>
+    <div class="ws-desc">One row per question. Enter time as m:ss (like 1:25). Anything over ${esc(T.max_q_time)} gets flagged automatically. Mark "let go" on questions you skipped on first pass and came back to. That's the discipline we're building.</div>
     <div class="ws-stats">
       <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Logged</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${over}</div><div class="ws-stat-lbl">Over ${esc(T.max_q_time)}</div></div>
-      <div class="ws-stat"><div class="ws-stat-num">${f10n>0?fmtClock(f10):'—'}</div><div class="ws-stat-lbl">First 10 Total</div></div>
+      <div class="ws-stat"><div class="ws-stat-num">${f10n>0?fmtClock(f10):'-'}</div><div class="ws-stat-lbl">First 10 Total</div></div>
       <div class="ws-stat"><div class="ws-stat-num">${letgo}</div><div class="ws-stat-lbl">Let Go</div></div>
     </div>
     ${entries.map(e=>{
@@ -1512,11 +1512,11 @@ function wsInsightToActionHTML(v,name){
   const d=main?main.data:{};
   const mid=main?main.id:'new:'+v.hwId;
   const steps=[
-    {n:'Step 1',f:'misses',title:'Log every missed question',cap:'Question numbers plus a few words each — what happened?',ph:'Q7 — fell for the reversal. Q14 — didn\'t see the gap...'},
+    {n:'Step 1',f:'misses',title:'Log every missed question',cap:'Question numbers plus a few words each: what happened?',ph:'Q7, fell for the reversal. Q14, didn\'t see the gap...'},
     {n:'Step 2',f:'why',title:'Why did you miss each one? Be specific',cap:'Strategy (rushed, didn\'t predict, second-guessed) or Knowledge (didn\'t know the concept)?',ph:'...'},
-    {n:'Step 3',f:'pattern',title:'What\'s the pattern?',cap:'Not the question — the trap or concept behind it.',ph:'The pattern across my misses is...'},
+    {n:'Step 3',f:'pattern',title:'What\'s the pattern?',cap:'Not the question, the trap or concept behind it.',ph:'The pattern across my misses is...'},
     {n:'Step 4',f:'differently',title:'What will you do differently next time?',cap:'A concrete rule you can actually follow under time pressure.',ph:'Next time I will...'},
-    {n:'Step 5',f:'drill_result',title:'Drill similar questions. Note your result.',cap:'Did the fix hold up?',ph:'Drilled 3 similar — got...'}
+    {n:'Step 5',f:'drill_result',title:'Drill similar questions. Note your result.',cap:'Did the fix hold up?',ph:'Drilled 3 similar, got...'}
   ];
   return`<div class="ws-wrap">
     <div class="ws-title">Insight to Action</div>
@@ -1547,7 +1547,7 @@ function wsInsightToActionHTML(v,name){
           <span class="ita-step-cb ${d.done_decision===true?'checked':''}" data-itacb="${mid}" data-wsf="done_decision">${d.done_decision===true?'✓':''}</span>
           <div class="ita-step-title-wrap">
             <div class="ita-step-title-line"><span class="ita-step-num">Step 6</span><span class="ita-step-title">Decide</span></div>
-            <div class="ita-step-caption">Based on your drill result — what's the move?</div>
+            <div class="ita-step-caption">Based on your drill result, what's the move?</div>
           </div>
         </div>
         <div class="ita-step-body"><div class="ita-decision">
@@ -1587,7 +1587,7 @@ function wsBlindReviewHTML(v,name){
         </div>
         ${wsToggle(e.id,'changed_answer','Did you change your answer in review?',d.changed_answer)}
         ${wsToggle(e.id,'got_it_right','Did you get it right in blind review?',d.got_it_right)}
-        ${wsField(e.id,'why','Why did you miss it (or flag it)?',d.why,2,'Be specific — the trap, the gap, the misread...')}
+        ${wsField(e.id,'why','Why did you miss it (or flag it)?',d.why,2,'Be specific, the trap, the gap, the misread...')}
         ${wsField(e.id,'takeaway','Takeaway',d.takeaway,1,'One rule to carry forward')}
       </div>`;
     }).join('')}
@@ -1605,11 +1605,11 @@ function wsConfidenceLogHTML(v,name){
     <div class="ws-subtitle">${esc(name)}</div>
     <div class="ws-key-box">
       <div class="ws-key-title">Flag Quality Key</div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read one line from stimulus — not a good flag, 10-second fix</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 1-2 answer choices — not a good flag, do it right there</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 4-5 answer choices — good flag, need full second pass</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-start full process — good flag</span></div>
-      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Didn't understand stimulus (below 70% on first read) — skip it, re-read the one line giving you trouble</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read one line from stimulus, not a good flag, 10-second fix</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 1-2 answer choices, not a good flag, do it right there</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-read 4-5 answer choices, good flag, need full second pass</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Re-start full process, good flag</span></div>
+      <div class="ws-key-row"><span class="ws-key-arrow">→</span><span>Didn't understand stimulus (below 70% on first read), skip it, re-read the one line giving you trouble</span></div>
     </div>
     <div class="ws-stats">
       <div class="ws-stat"><div class="ws-stat-num">${entries.length}</div><div class="ws-stat-lbl">Flagged</div></div>
@@ -1627,7 +1627,7 @@ function wsConfidenceLogHTML(v,name){
           ${wsInp(e.id,'question_num',d.question_num,'#')}
           <button class="rm-btn" data-delentry="${e.id}" style="margin-left:auto">×</button>
         </div>
-        ${wsField(e.id,'flag_reason','What caused you to flag this question?',d.flag_reason,2,'Concrete reason — if there isn\'t one, that\'s the answer')}
+        ${wsField(e.id,'flag_reason','What caused you to flag this question?',d.flag_reason,2,'Concrete reason, if there isn\'t one, that\'s the answer')}
         ${wsToggle(e.id,'changed_answer','After coming back, did you change your answer?',d.changed_answer)}
         ${wsToggle(e.id,'right_first_time','If yes: were you right the first time?',d.right_first_time)}
         ${wsField(e.id,'fix','Under timed conditions, what did you think you needed to do to get to 90% confidence?',d.fix,2,'')}
@@ -1664,7 +1664,7 @@ function wsRCClaimHTML(v,name){
         ${claims.map((c,ci)=>`<div class="ws-claim-row"><span class="ws-claim-num">${ci+1}</span><input class="ws-claim-inp" data-claiminp="${e.id}" data-ci="${ci}" value="${esc(c||'')}" placeholder="The author claims..."></div>`).join('')}
         <button class="ws-add-claim" data-addclaim="${e.id}">+ Add claim</button>
         ${wsField(e.id,'job','This paragraph\'s job in the passage',d.job,1,'Introduces the phenomenon / presents the counter / ...')}
-        ${wsField(e.id,'prediction','Prediction — where is this passage going?',d.prediction,1,'')}
+        ${wsField(e.id,'prediction','Prediction: where is this passage going?',d.prediction,1,'')}
       </div>`;
     }).join('')}
     <button class="ws-add-btn" data-wsadd="${v.hwId}" data-wsaddtype="rc_claim_tracking">+ Add Paragraph</button>
@@ -1780,7 +1780,7 @@ async function openDrillPicker(sessId){
   });
 }
 
-/* Edit an existing live drill — same overlay styling as Assign Live Drill, prefilled. */
+/* Edit an existing live drill, same overlay styling as Assign Live Drill, prefilled. */
 async function openDrillEditPicker(drillId){
   if(document.getElementById('drill-picker-overlay'))return;
   const d=(S.studentDrills||[]).find(x=>x.id===drillId);
@@ -1877,7 +1877,7 @@ async function deleteLiveDrill(drillId){
   const title=d.title||'this drill';
   const ok=d.status==='assigned'
     ?confirm(`Remove "${title}"? The student has not started it.`)
-    :confirm(`Delete "${title}"? The student has answered questions in it — their answers will be erased. This cannot be undone.`);
+    :confirm(`Delete "${title}"? The student has answered questions in it, their answers will be erased. This cannot be undone.`);
   if(!ok)return;
   await db.from('homework').update({drill_id:null}).eq('drill_id',drillId);
   await db.from('drill_items').delete().eq('drill_id',drillId);
@@ -1914,7 +1914,7 @@ function openPicker(sessId){
     }).join('');
     return`<div class="picker-panel">
       <div class="picker-title">Add Homework</div>
-      <div class="picker-sub">Pick one or more cards — everything is editable after adding</div>
+      <div class="picker-sub">Pick one or more cards, everything is editable after adding</div>
       ${tabsHTML}
       <div id="hw-picker-groups">${groupsHTML}</div>
       <div class="picker-footer">
@@ -2109,7 +2109,7 @@ function openSessPicker(){
     }).join('');
     return`<div class="picker-panel">
       <div class="picker-title">Add Sessions</div>
-      <div class="picker-sub">Selection order sets session order — numbered chips show the sequence</div>
+      <div class="picker-sub">Selection order sets session order, numbered chips show the sequence</div>
       ${tabsHTML}
       <div id="sess-picker-groups">${groupsHTML}</div>
       <div class="picker-footer">
@@ -2184,7 +2184,7 @@ function openSessPicker(){
 }
 
 /* Two-phase renumber: park every session at a temporary out-of-range number first,
-   then assign the real sequence — avoids unique-constraint collisions mid-update. */
+   then assign the real sequence, avoids unique-constraint collisions mid-update. */
 async function renumberSessions(ordered){
   const base=ordered.length>0?Math.min(...ordered.map(s=>s.session_number)):1;
   let err=null;
@@ -2247,7 +2247,7 @@ function bind(){
     S.student.time_factor=tfs.value;showSaved(!error);
   });
 
-  /* expand/collapse sessions — ignore clicks on interactive elements */
+  /* expand/collapse sessions, ignore clicks on interactive elements */
   document.querySelectorAll('[data-tog]').forEach(el=>el.addEventListener('click',e=>{
     if(e.target.closest('.ed,.ed-inp,.ed-ta,.reorder-btn,.hw-reorder,.tc-btn,.rm-btn,input,select,textarea,a,button'))return;
     const i=parseInt(el.dataset.tog);
@@ -2341,7 +2341,7 @@ function bind(){
     const sid=b.dataset.addgoal;
     const sess=S.sessions.find(x=>x.id===sid);
     const so2=(sess&&sess.goals&&sess.goals.length>0)?Math.max(...sess.goals.map(g=>g.sort_order||0))+1:0;
-    const{error}=await db.from('session_goals').insert({session_id:sid,goal_text:'New goal — click to edit',sort_order:so2});
+    const{error}=await db.from('session_goals').insert({session_id:sid,goal_text:'New goal, click to edit',sort_order:so2});
     await loadStudent(S.selId);R();showSaved(!error);
   }));
   document.querySelectorAll('[data-delgoal]').forEach(b=>b.addEventListener('click',async e=>{

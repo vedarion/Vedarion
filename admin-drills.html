@@ -113,7 +113,7 @@
 
       <div class="matchbar">
         <span>Fresh questions available for this student right now:</span>
-        <span class="n" id="matchCount">—</span>
+        <span class="n" id="matchCount">-</span>
         <span class="sub" id="matchNote"></span>
       </div>
 
@@ -283,7 +283,7 @@ async function refreshMatch() {
   matched = [...ids].filter(x => !excluded.has(x)).length;
   $('matchCount').textContent = String(matched);
   if (excluded.size) $('matchNote').textContent = `(excludes questions this student has already seen)`;
-  $('matchNote').textContent += matched === 0 && ids.size === 0 ? ' — tag some questions of this type first' : '';
+  $('matchNote').textContent += matched === 0 && ids.size === 0 ? ', tag some questions of this type first' : '';
 }
 
 // ---------- CREATE (recipe) ----------
@@ -296,7 +296,7 @@ $('createBtn').addEventListener('click', async () => {
   if (!studentId) { $('buildError').textContent = 'Pick a student.'; return; }
   if (!qt.value) { $('buildError').textContent = 'Pick a question type.'; return; }
   if (matched === 0) {
-    $('buildError').textContent = 'No fresh questions exist for this combination yet — tag more first.';
+    $('buildError').textContent = 'No fresh questions exist for this combination yet, tag more first.';
     return;
   }
 
@@ -342,7 +342,7 @@ async function loadDrills() {
   data.forEach(d => {
     const row = document.createElement('div');
     row.className = 'drillrow';
-    const who = d.students?.profiles?.first_name || '—';
+    const who = d.students?.profiles?.first_name || '-';
     const when = new Date(d.created_at).toLocaleDateString();
     const canWithdraw = d.created_by === 'tutor' && d.status === 'assigned';
     row.innerHTML = `

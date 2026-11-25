@@ -245,7 +245,7 @@ function updateStats() {
   $('progressFill').style.width = totalFiles ? `${(processed / totalFiles) * 100}%` : '0%';
   $('statLeft').textContent = processed < totalFiles
     ? `Processing ${processed} of ${totalFiles}…`
-    : `Done — ${totalFiles} files processed`;
+    : `Done, ${totalFiles} files processed`;
   $('statRight').textContent =
     `${doneCount} loaded · ${skipCount} skipped · ${errCount} errors`;
 }
@@ -289,7 +289,7 @@ async function ingestFile(file, existingIds) {
 
   if (existingIds.has(moduleId)) {
     skipCount++;
-    logRow(moduleName, 'already in database — skipped', 'warn', '⚠');
+    logRow(moduleName, 'already in database, skipped', 'warn', '⚠');
     return;
   }
 

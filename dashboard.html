@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VEDARION — Dashboard</title>
+  <title>VEDARION | Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -126,7 +126,7 @@ const db=window.supabase.createClient(SB_URL,SB_KEY);
 
 let H={user:null,profile:null,isTutor:false,student:null,sessions:[],tutorStudents:[],methodDone:new Set()};
 
-/* mirrors learn.html WALL_DATA — update both.
+/* mirrors learn.html WALL_DATA, update both.
    Core "Method" lessons in learn.html order. Multi-video cards use their primary
    lesson slug; entries with an empty slug are not-yet-built lessons (skipped when
    picking the next lesson). Slugs match lesson_completions.lesson_slug. */
@@ -203,7 +203,7 @@ function render(){
         <div class="roadmap-preview">
           <div class="rm-row">
             <span class="rm-key">Goal</span>
-            <span class="rm-val accent">${esc(s.goal_score||'—')}</span>
+            <span class="rm-val accent">${esc(s.goal_score||'-')}</span>
           </div>
           <div class="rm-row">
             <span class="rm-key">Sessions</span>
@@ -290,7 +290,7 @@ function render(){
           <a href="/learn.html" class="method-section">
             <div class="method-tag">Foundation</div>
             <div class="method-section-title">Core Pattern Recognition</div>
-            <div class="method-section-body">Start here. Master the foundations — conditional logic and question types.</div>
+            <div class="method-section-body">Start here. Master the foundations, conditional logic and question types.</div>
             ${methodCtaHTML()}
           </a>
           <div class="method-sep"></div>

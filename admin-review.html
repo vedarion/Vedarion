@@ -112,10 +112,10 @@
 
     <div class="card">
       <div class="statgrid">
-        <div class="stat"><div class="k">Drills completed</div><div class="v" id="stCompleted">—</div></div>
-        <div class="stat"><div class="k">Questions answered</div><div class="v" id="stAnswered">—</div></div>
-        <div class="stat"><div class="k">Overall accuracy</div><div class="v" id="stAccuracy">—</div></div>
-        <div class="stat"><div class="k">Flagged for session</div><div class="v flag" id="stFlagged">—</div></div>
+        <div class="stat"><div class="k">Drills completed</div><div class="v" id="stCompleted">-</div></div>
+        <div class="stat"><div class="k">Questions answered</div><div class="v" id="stAnswered">-</div></div>
+        <div class="stat"><div class="k">Overall accuracy</div><div class="v" id="stAccuracy">-</div></div>
+        <div class="stat"><div class="k">Flagged for session</div><div class="v flag" id="stFlagged">-</div></div>
       </div>
     </div>
 
@@ -198,7 +198,7 @@ async function loadStudents() {
       loadStudent(preselect);
     } else {
       sel.value = '';
-      $('loadState').textContent = 'Student not found — pick one from the list.';
+      $('loadState').textContent = 'Student not found, pick one from the list.';
     }
   }
 }
@@ -266,7 +266,7 @@ function renderStats() {
   const correct = graded.filter(r => r.is_correct).length;
   $('stCompleted').textContent = completed;
   $('stAnswered').textContent = resp.length;
-  $('stAccuracy').textContent = graded.length ? Math.round(100 * correct / graded.length) + '%' : '—';
+  $('stAccuracy').textContent = graded.length ? Math.round(100 * correct / graded.length) + '%' : '-';
   $('stFlagged').textContent = resp.filter(r => r.flagged).length;
 }
 
@@ -316,7 +316,7 @@ function renderDrills() {
         <div class="meta">${d.created_by === 'student' ? 'Self-created' : 'Assigned'} · ${when}${flags ? ` · <span style="color:var(--orange-dark)">${flags} flagged ⚑</span>` : ''}</div>
       </div>
       <div style="display:flex; align-items:center;">
-        <span class="score">${graded.length ? `${correct}/${graded.length}` : '—'}</span>
+        <span class="score">${graded.length ? `${correct}/${graded.length}` : '-'}</span>
         <span class="pill ${d.status}">${d.status.replace('_',' ')}</span>
       </div>`;
     const actions = document.createElement('div');
@@ -356,12 +356,12 @@ function fillQuestions(drill, container) {
     const correct = answersByKey[it.module_id + '|' + it.item_id];
     const row = document.createElement('div');
     row.className = 'qrow';
-    let res = '—', resCls = '';
+    let res = '-', resCls = '';
     if (r) { res = r.is_correct ? 'correct' : 'incorrect'; resCls = r.is_correct ? 'ok' : 'bad'; }
     row.innerHTML = `
       <span class="pos">${it.position}</span>
       <span class="res ${resCls}">${res}</span>
-      <span class="ans">${r ? `${escapeHtml(r.selected_answer ?? '—')} · key ${escapeHtml(correct ?? '?')}` : ''}</span>
+      <span class="ans">${r ? `${escapeHtml(r.selected_answer ?? '-')} · key ${escapeHtml(correct ?? '?')}` : ''}</span>
       <span class="time">${r?.time_spent_seconds != null ? r.time_spent_seconds + 's' : ''}</span>
       <span class="flagmark">${r?.flagged ? '⚑' : ''}</span>
       <span class="sub" style="flex:1;">${escapeHtml(qtypeByItem[it.item_id] || '')}</span>

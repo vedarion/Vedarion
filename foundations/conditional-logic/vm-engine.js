@@ -151,7 +151,7 @@ async function submitQuiz() {
     var passed = correct === quizQs.length; // perfect score required (PASS_THRESHOLD = 100)
 
     // On pass: write the tier-specific slug to lesson_completions so the learn page can update.
-    // If user isn't logged in or auth.js failed to load, just skip the write — the UI still shows the pass.
+    // If user isn't logged in or auth.js failed to load, just skip the write, the UI still shows the pass.
     if (passed && typeof vedarionAuth !== 'undefined') {
         try {
             var sessionRes = await vedarionAuth.auth.getSession();
@@ -168,7 +168,7 @@ async function submitQuiz() {
     var el = document.getElementById('vm-results');
     var h = '<div class="results-card"><div class="results-score">' + correct + '/' + quizQs.length + '</div><div class="results-label">VedaMark ' + TIER_CONFIG[currentTier].name + '</div>';
     if (passed) { h += '<div class="results-pass">✓ You hit the Mark!</div><div class="results-msg">Great work. Try another level or retry for fresh questions.</div>' }
-    else { h += '<div class="results-fail">✗ Not quite — you need ' + PASS_THRESHOLD + '%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>' }
+    else { h += '<div class="results-fail">✗ Not quite. You need ' + PASS_THRESHOLD + '%</div><div class="results-msg">Review the explanations above, then try again with fresh questions.</div>' }
     h += '<div class="results-actions"><button class="results-btn primary" onclick="retryTier()">TRY AGAIN</button><button class="results-btn secondary" onclick="backToLevels()">CHANGE LEVEL</button></div></div>';
     el.innerHTML = h; el.classList.add('visible');
     window.scrollTo({ top: el.offsetTop - 20, behavior: 'smooth' });
@@ -182,7 +182,7 @@ function retryTier() {
 
 function backToLevels() {
     // In focused-tier mode (?tier=N), "Change level" navigates to the other tier directly
-    // — there's no hub to fall back to since the unselected card is hidden.
+    // there's no hub to fall back to since the unselected card is hidden.
     try {
         var params = new URLSearchParams(window.location.search);
         var paramTier = parseInt(params.get('tier'), 10);

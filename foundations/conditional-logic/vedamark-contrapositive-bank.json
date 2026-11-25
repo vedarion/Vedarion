@@ -11,7 +11,7 @@
           "question": "What is the contrapositive?",
           "correct": "If the picnic is not cancelled, it did not rain.",
           "wrong": "If it does not rain, the picnic is not cancelled.",
-          "explanation": "Rain → Cancelled. Flip and negate: NOT cancelled → NOT rain. (B) negates the sufficient without flipping — that tells us nothing."
+          "explanation": "Rain → Cancelled. Flip and negate: NOT cancelled → NOT rain. (B) negates the sufficient without flipping, that tells us nothing."
         },
         {
           "id": 2,

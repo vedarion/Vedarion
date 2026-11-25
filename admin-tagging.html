@@ -197,7 +197,7 @@ const $ = id => document.getElementById(id);
 let dimensions = [];        // [{id, name, allows_multiple, values: [{id, value}]}]
 let allModuleItems = [];    // all items of the current module, in section/position order
 let tagsByItem = {};        // item_id -> Set(tag_value_id)
-let idx = 0;                // index into allModuleItems — navigation is NEVER filtered
+let idx = 0;                // index into allModuleItems, navigation is NEVER filtered
 let selected = {};          // dimension_id -> Set(tag_value_id)
 
 // ---------- AUTH ----------
@@ -351,7 +351,7 @@ async function setSectionType(type) {
   if (error) { st.style.color = 'var(--red)'; st.textContent = error.message; return; }
   if (!data || !data.length) {
     st.style.color = 'var(--red)';
-    st.textContent = 'Write blocked — no row came back. This is almost always an RLS policy issue on module_sections.';
+    st.textContent = 'Write blocked, no row came back. This is almost always an RLS policy issue on module_sections.';
     return;
   }
   st.style.color = 'var(--green)';
@@ -453,7 +453,7 @@ function renderItem() {
   const c = it.content || {};
   const opts = extractOptions(c);
 
-  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · section ${sectionOf(it)}${sectionLabels[sectionOf(it)] ? ' · ' + sectionLabels[sectionOf(it)] : ''} · position ${it.item_position ?? '—'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
+  let html = `<div class="itemmeta">Item ${escapeHtml(it.item_id)} · section ${sectionOf(it)}${sectionLabels[sectionOf(it)] ? ' · ' + sectionLabels[sectionOf(it)] : ''} · position ${it.item_position ?? '-'} · ${isTagged(it.item_id) ? 'tagged' : 'untagged'}</div>`;
 
   const stim = renderContentValue(c.stimulusText);
   const stem = renderContentValue(c.stemText);
@@ -466,7 +466,7 @@ function renderItem() {
     ).join('');
   }
   if (!stim && !stem && !opts) {
-    html += `<p class="sub">Unrecognized item structure — raw fields below. Tell Claude which fields hold the text (field names only).</p>
+    html += `<p class="sub">Unrecognized item structure, raw fields below. Tell Claude which fields hold the text (field names only).</p>
              <div class="rawfallback">${escapeHtml(Object.keys(c).join(', '))}</div>`;
   }
   $('itemBox').innerHTML = html;

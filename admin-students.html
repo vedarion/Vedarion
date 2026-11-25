@@ -65,7 +65,7 @@
   <div id="accessView" class="hidden">
     <div class="card">
       <h1>Drill access</h1>
-      <p class="sub">The checkbox authorizes a student to open and create drills containing LSAC content. The date is optional: leave it blank for open-ended access, or set it to the end of their package and access shuts off automatically the day after. Turning access off never deletes anything — their history stays, and re-checking the box restores everything instantly.</p>
+      <p class="sub">The checkbox authorizes a student to open and create drills containing LSAC content. The date is optional: leave it blank for open-ended access, or set it to the end of their package and access shuts off automatically the day after. Turning access off never deletes anything, their history stays, and re-checking the box restores everything instantly.</p>
       <table>
         <thead>
           <tr>
@@ -147,10 +147,10 @@ async function loadStudents() {
     const lw = lawhubCell(s.lawhub_expires_on);
     tr.innerHTML = `
       <td>
-        <div class="name">${escapeHtml(s.profiles?.first_name || '—')}</div>
+        <div class="name">${escapeHtml(s.profiles?.first_name || '-')}</div>
         <div class="meta">${escapeHtml(s.profiles?.email || '')}</div>
       </td>
-      <td class="meta">${escapeHtml(s.package_type || '—')}<br>${escapeHtml(s.status || '')}</td>
+      <td class="meta">${escapeHtml(s.package_type || '-')}<br>${escapeHtml(s.status || '')}</td>
       <td><input type="checkbox" class="toggle" ${s.drill_access_enabled ? 'checked' : ''}></td>
       <td><input type="date" value="${s.drill_access_until || ''}"></td>
       <td><input type="date" class="lawhub" value="${s.lawhub_expires_on || ''}"><div class="meta ${lw.cls}">${lw.text}</div></td>

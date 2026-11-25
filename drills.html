@@ -478,7 +478,7 @@
         </div>
         <div id="optsEl"></div>
         <div class="feedback" id="feedback"></div>
-        <p class="hint hidden" id="reviewHint">Answers stay hidden while you review. Tap a choice to record a review pick — your timed answer is kept too, and both are compared when you show results.</p>
+        <p class="hint hidden" id="reviewHint">Answers stay hidden while you review. Tap a choice to record a review pick, your timed answer is kept too, and both are compared when you show results.</p>
       </div>
 
       <div class="wspanel hidden" id="wsPanel">
@@ -543,73 +543,73 @@ const TYPE_META = {
 };
 
 /* ---------- CHEAT SHEET STEPS (rendered natively in the side panel) ----------
-   Keyed by TYPE_META slug. Mirrors the steps arrays in roadmap.html QT_DRILLS —
+   Keyed by TYPE_META slug. Mirrors the steps arrays in roadmap.html QT_DRILLS, 
    if a step is reworded there, reword it here too. Types with no entry get no
    cheat sheet button. */
 const CHEAT_STEPS = {
 'main-point': [
-'Read the stimulus and find the conclusion — use a conclusion indicator, process of elimination, or the Why Test',
-'Without looking back, restate the main point in your own words — noun, verb, predicate',
+'Read the stimulus and find the conclusion, use a conclusion indicator, process of elimination, or the Why Test',
+'Without looking back, restate the main point in your own words, noun, verb, predicate',
 'Go to the answer choices and hunt for your prediction',
 'For each answer choice, say why it is right or wrong',
-'Check the winner: descriptively accurate — every word reflects the stimulus'
+'Check the winner: descriptively accurate, every word reflects the stimulus'
 ],
 'argument-part': [
-'Read the question stem first — identify and highlight the referenced sentence',
+'Read the question stem first, identify and highlight the referenced sentence',
 'Read the stimulus and label each sentence: conclusion, support, or background',
 'Describe the referenced sentence\u2019s job BEFORE looking at the answer choices',
 'Hunt for the answer that matches your prediction',
 'Check: does every word accurately capture the role of that sentence?'
 ],
 'method-of-reasoning': [
-'Identify the stem — "the argument proceeds by..." asks HOW the author argues',
+'Identify the stem, "the argument proceeds by..." asks HOW the author argues',
 'Read the stimulus and label the premises and the conclusion',
-'Describe how the premises support the conclusion — what is the author doing?',
+'Describe how the premises support the conclusion: what is the author doing?',
 'Predict the move in your own words before the answer choices',
 'Check each answer word by word: does every word accurately describe the reasoning?'
 ],
 'must-be-true': [
-'Identify the stem — everything in the stimulus is fact; don\u2019t look for gaps',
+'Identify the stem, everything in the stimulus is fact; don\u2019t look for gaps',
 'Simplify each sentence in your own words as you read',
-'Connect each new sentence to what came before — do the facts combine?',
+'Connect each new sentence to what came before, do the facts combine?',
 'Ask: is there an overall inference? A \u2192 B and B \u2192 C gives A \u2192 C',
 'Check: every word of the correct answer must be 100% proven by the stimulus'
 ],
 'most-strongly-supported': [
-'Identify the stem — the bar is lower than Must Be True: strongly supported, not proven',
+'Identify the stem, the bar is lower than Must Be True: strongly supported, not proven',
 'Simplify each sentence and connect the dots as you read',
 'For each answer, ask: could I make a reasonable case this is supported?',
-'If you don\u2019t love an answer, don\u2019t eliminate it — keep it and compare',
+'If you don\u2019t love an answer, don\u2019t eliminate it, keep it and compare',
 'Pick the answer with the strongest support and the smallest assumption'
 ],
 'sufficient-assumption': [
-'Identify the stem — you\u2019re looking for the answer that makes the conclusion 100% follow',
-'Identify the premise(s) and conclusion — write the core argument',
+'Identify the stem. You\u2019re looking for the answer that makes the conclusion 100% follow',
+'Identify the premise(s) and conclusion, write the core argument',
 'Identify the gap and express it as Premise \u2192 Conclusion',
-'Hunt Mode first: scan for your predicted bridge — P \u2192 C or /C \u2192 /P',
+'Hunt Mode first: scan for your predicted bridge, P \u2192 C or /C \u2192 /P',
 'If hunting fails, Process of Elimination: Premise + Answer = Conclusion?',
 'Verify: Answer Choice + Premise = Conclusion, 100%'
 ],
 'necessary-assumption': [
-'Identify the stem — "requires," "depends on," "assumes"',
-'Read the stimulus — identify the premise(s) and conclusion',
+'Identify the stem, "requires," "depends on," "assumes"',
+'Read the stimulus, identify the premise(s) and conclusion',
 'Write the core argument: simplified Premise \u2192 Conclusion',
-'Identify the gap — what is the author taking for granted?',
+'Identify the gap: what is the author taking for granted?',
 'Lead with the Must Be True test: if the argument works, this answer has to be true',
-'Fallback: Negation Test — if this answer were false, the argument falls apart'
+'Fallback: Negation Test, if this answer were false, the argument falls apart'
 ],
 'strengthen-weaken': [
-'Read the stem — are you strengthening or weakening?',
-'Break down the stimulus — find the conclusion and the support',
+'Read the stem, are you strengthening or weakening?',
+'Break down the stimulus, find the conclusion and the support',
 'Write the core argument: Premise \u2192 Conclusion',
 'Predict: why does the support fall short of the conclusion?',
-'Relevance Test: does the answer connect to the argument? Low bar — keep it',
+'Relevance Test: does the answer connect to the argument? Low bar, keep it',
 'Impact Test: Premise + Answer = what happens to the conclusion?',
 'Pick the answer with the clearest impact and fewest language issues'
 ],
 'flaw': [
-'Identify the stem — "the argument is vulnerable to criticism because..."',
-'Identify the premise(s) and conclusion — write the core argument',
+'Identify the stem, "the argument is vulnerable to criticism because..."',
+'Identify the premise(s) and conclusion, write the core argument',
 'Predict the flaw and name it in your own words BEFORE the answer choices',
 'Check each answer: is it descriptively accurate? Noun, verb, predicate',
 'If it\u2019s accurate, ask: is it actually the flaw in THIS argument?'
@@ -618,11 +618,11 @@ const CHEAT_STEPS = {
 'Identify from the stem: Parallel Reasoning or Parallel Flaw',
 'Find the conclusion first, then all the premises',
 'Ask: what would YOU conclude from these premises?',
-'Write the abstract structure — do not skip this step',
+'Write the abstract structure, do not skip this step',
 'Pick markers from your structure and shallow dip each answer',
-'No markers in an answer? Move on — don\u2019t fully eliminate yet',
-'Read close matches in small pieces — predict what it needs to say next',
-'Pick and go — don\u2019t second-guess'
+'No markers in an answer? Move on, don\u2019t fully eliminate yet',
+'Read close matches in small pieces, predict what it needs to say next',
+'Pick and go, don\u2019t second-guess'
 ]
 };
 
@@ -630,17 +630,17 @@ const CHEAT_STEPS = {
 const WS_TEMPLATES = {
   'main-point': { title: 'Main Point worksheet', fields: [
     { label: 'Question source', kind: 'text', auto: 'identity' },
-    { label: 'Step 1 — Find the Main Point: Which method did you use?', kind: 'checkbox', options: ['Conclusion Indicator', 'Process of Elimination', 'The Why Test'] },
-    { label: 'Step 1 — Find the Main Point: What is the main point of the argument?', kind: 'textarea' },
-    { label: 'Step 2 — Note the Details: Restate the main point in your own words (Noun, verb, predicate)', kind: 'textarea' },
-    { label: 'Step 3 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea' }
+    { label: 'Step 1: Find the Main Point: Which method did you use?', kind: 'checkbox', options: ['Conclusion Indicator', 'Process of Elimination', 'The Why Test'] },
+    { label: 'Step 1: Find the Main Point: What is the main point of the argument?', kind: 'textarea' },
+    { label: 'Step 2: Note the Details: Restate the main point in your own words (Noun, verb, predicate)', kind: 'textarea' },
+    { label: 'Step 3: Find the Best Match: Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea' }
   ]},
   'argument-part': { title: 'Argument Part worksheet', fields: [
     { label: 'Question source', kind: 'text', auto: 'identity', key: 'f0' },
-    { label: 'Step 1 — Highlight the referenced sentence in the stimulus', kind: 'note', key: 'step1_done', done: 'Done — I highlighted it' },
-    { label: 'Step 2 — Read the stimulus. For each sentence, describe its role: conclusion, support, or background. Start there, add more detail if needed.', kind: 'textarea', key: 'roles', h: 96 },
-    { label: 'Step 3 — Describe the role of the referenced sentence: premise, conclusion, or background. Add more detail if necessary.', kind: 'textarea', key: 'f4', h: 64 },
-    { label: 'Step 4 — Find the Best Match: Answer choice reasoning (A–E) — Why is each right or wrong?', kind: 'textarea', key: 'f5', h: 130 }
+    { label: 'Step 1: Highlight the referenced sentence in the stimulus', kind: 'note', key: 'step1_done', done: 'Done: I highlighted it' },
+    { label: 'Step 2: Read the stimulus. For each sentence, describe its role: conclusion, support, or background. Start there, add more detail if needed.', kind: 'textarea', key: 'roles', h: 96 },
+    { label: 'Step 3: Describe the role of the referenced sentence: premise, conclusion, or background. Add more detail if necessary.', kind: 'textarea', key: 'f4', h: 64 },
+    { label: 'Step 4: Find the Best Match: Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea', key: 'f5', h: 130 }
   ], legacy: {
     'f1': 'Copy or describe the referenced sentence',
     'f2': 'Sentence text',
@@ -648,67 +648,67 @@ const WS_TEMPLATES = {
   }},
   'must-be-true': { title: 'Must Be True worksheet', fields: [
     { label: '', kind: 'sentences', key: 'sentences' },
-    { label: 'Overall inference — the biggest conclusion from combining all of these facts (if none, the answer restates a single sentence)', kind: 'textarea', key: 'f7', h: 56 },
-    { label: 'Answer choices (A–E) — is every word 100% supported by the stimulus? Supported / Not supported — why?', kind: 'textarea', key: 'f8', h: 100 },
-    { label: 'For the answer you picked — what type is it?', kind: 'tags', key: 'anstype', options: ['Inference', 'Summary', 'Restatement'] },
-    { label: 'Final answer — every word 100% supported', kind: 'text', key: 'f10' }
+    { label: 'Overall inference, the biggest conclusion from combining all of these facts (if none, the answer restates a single sentence)', kind: 'textarea', key: 'f7', h: 56 },
+    { label: 'Answer choices (A–E), is every word 100% supported by the stimulus? Supported / Not supported: why?', kind: 'textarea', key: 'f8', h: 100 },
+    { label: 'For the answer you picked: what type is it?', kind: 'tags', key: 'anstype', options: ['Inference', 'Summary', 'Restatement'] },
+    { label: 'Final answer, every word 100% supported', kind: 'text', key: 'f10' }
   ], legacy: {
     'f9': 'What type is it'
   }},
   'most-strongly-supported': { title: 'Most Strongly Supported worksheet', fields: [
     { label: '', kind: 'sentences', key: 'sentences' },
-    { label: 'Overall inference — the biggest conclusion from combining all of these facts (the answer only needs strong support, not proof)', kind: 'textarea', key: 'f7', h: 56 },
-    { label: 'Answer choices (A–E) — could you make a reasonable case that each word of the answer choice is supported?', sub: 'It\u2019s okay if the support isn\u2019t 100% — it just has to be reasonable. If you don\u2019t love it but think you have good support, don\u2019t eliminate it. Pick the one with the best support at the end.', kind: 'textarea', key: 'f8', h: 100 },
-    { label: 'For the answer you picked — how big is the gap?', kind: 'tags', key: 'gapsize', options: ['No gap', 'Small gap', 'Large gap'] },
-    { label: 'Final answer — strongest support, smallest assumption', kind: 'text', key: 'f10' }
+    { label: 'Overall inference, the biggest conclusion from combining all of these facts (the answer only needs strong support, not proof)', kind: 'textarea', key: 'f7', h: 56 },
+    { label: 'Answer choices (A–E), could you make a reasonable case that each word of the answer choice is supported?', sub: 'It\u2019s okay if the support isn\u2019t 100%. It just has to be reasonable. If you don\u2019t love it but think you have good support, don\u2019t eliminate it. Pick the one with the best support at the end.', kind: 'textarea', key: 'f8', h: 100 },
+    { label: 'For the answer you picked: how big is the gap?', kind: 'tags', key: 'gapsize', options: ['No gap', 'Small gap', 'Large gap'] },
+    { label: 'Final answer, strongest support, smallest assumption', kind: 'text', key: 'f10' }
   ], legacy: {
     'f9': 'How big is the gap'
   }},
   'sufficient-assumption': { title: 'Sufficient Assumption worksheet', fields: [
     { label: 'Question', kind: 'text', auto: 'identity' },
-    { label: 'Identify Premise(s) & Conclusion — Premise(s): What evidence does the author give?', kind: 'textarea' },
-    { label: 'Identify Premise(s) & Conclusion — Conclusion: What is the author concluding?', kind: 'textarea' },
-    { label: 'Core Argument — Simplify & Identify the Gap (Mandatory): Simplified Premise', kind: 'textarea' },
-    { label: 'Core Argument — Simplify & Identify the Gap (Mandatory): Simplified Conclusion', kind: 'textarea' },
-    { label: 'Answer Choices — Hunt Mode: The correct answer bridges the gap (select pattern)', kind: 'checkbox', options: ['P → C', '/C → /P'] },
+    { label: 'Identify Premise(s) & Conclusion · Premise(s): What evidence does the author give?', kind: 'textarea' },
+    { label: 'Identify Premise(s) & Conclusion · Conclusion: What is the author concluding?', kind: 'textarea' },
+    { label: 'Core Argument · Simplify & Identify the Gap (Mandatory): Simplified Premise', kind: 'textarea' },
+    { label: 'Core Argument · Simplify & Identify the Gap (Mandatory): Simplified Conclusion', kind: 'textarea' },
+    { label: 'Answer Choices · Hunt Mode: The correct answer bridges the gap (select pattern)', kind: 'checkbox', options: ['P → C', '/C → /P'] },
     { label: 'Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea' }
   ]},
   'necessary-assumption': { title: 'Necessary Assumption worksheet', fields: [
     { label: 'Question', kind: 'text', auto: 'identity' },
-    { label: 'Identify Premise(s) & Conclusion — Premise(s): What evidence does the author give?', kind: 'textarea' },
-    { label: 'Identify Premise(s) & Conclusion — Conclusion: What is the author concluding?', kind: 'textarea' },
-    { label: 'Core Argument & Gap — Simplified Premise', kind: 'textarea' },
-    { label: 'Core Argument & Gap — Simplified Conclusion', kind: 'textarea' },
-    { label: 'Core Argument & Gap — Identify the Gap: What must the author be assuming to connect premise to conclusion? (A → B if helpful)', kind: 'textarea' },
+    { label: 'Identify Premise(s) & Conclusion · Premise(s): What evidence does the author give?', kind: 'textarea' },
+    { label: 'Identify Premise(s) & Conclusion · Conclusion: What is the author concluding?', kind: 'textarea' },
+    { label: 'Core Argument & Gap: Simplified Premise', kind: 'textarea' },
+    { label: 'Core Argument & Gap: Simplified Conclusion', kind: 'textarea' },
+    { label: 'Core Argument & Gap · Identify the Gap: What must the author be assuming to connect premise to conclusion? (A → B if helpful)', kind: 'textarea' },
     { label: 'Answer choice reasoning (A–E): Why is each right or wrong?', kind: 'textarea' }
   ]},
   'strengthen-weaken': { title: 'Strengthen/Weaken worksheet', fields: [
-    { label: 'Core Argument — Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
-    { label: 'Core Argument — Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
-    { label: "Prediction — What's the gap between Premise & Conclusion?", kind: 'textarea' },
+    { label: 'Core Argument · Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: 'Core Argument · Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: "Prediction: What's the gap between Premise & Conclusion?", kind: 'textarea' },
     { label: 'Framework (if recognizable)', kind: 'checkbox', options: ['Part to Whole', 'Cost vs. Benefit', 'Correlation to Causation', 'Other'] },
-    { label: 'Answer choice reasoning (A–E) — Step 1: Is the answer choice relevant? If yes, how does it connect?', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E) — Step 2: Does AC + Premise strengthen or weaken the Conclusion? Strengthens / Weakens / No impact', kind: 'textarea' },
-    { label: 'Final Selection — Strongest impact in the right direction. Final Answer', kind: 'text' }
+    { label: 'Answer choice reasoning (A–E): Step 1: Is the answer choice relevant? If yes, how does it connect?', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Step 2: Does AC + Premise strengthen or weaken the Conclusion? Strengthens / Weakens / No impact', kind: 'textarea' },
+    { label: 'Final Selection: Strongest impact in the right direction. Final Answer', kind: 'text' }
   ]},
   'flaw': { title: 'Flaw worksheet', fields: [
-    { label: 'Core Argument — Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
-    { label: 'Core Argument — Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
-    { label: "Prediction — What's the gap? Why doesn't the premise support the conclusion?", kind: 'textarea' },
-    { label: 'Prediction — State the flaw in your own words (The argument assumes that... / The problem is...)', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E) — Step 1: Is the answer choice descriptively accurate? (Accurate / Not accurate — why?)', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E) — Step 2: If accurate, is it actually a flaw? (Flaw / Not a flaw)', kind: 'textarea' },
-    { label: 'Final Selection — Final Answer: descriptively accurate AND identifies a real flaw', kind: 'text' }
+    { label: 'Core Argument · Premise: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: 'Core Argument · Conclusion: From memory, in as few words as possible (Noun + Verb + Predicate)', kind: 'text' },
+    { label: "Prediction: What's the gap? Why doesn't the premise support the conclusion?", kind: 'textarea' },
+    { label: 'Prediction: State the flaw in your own words (The argument assumes that... / The problem is...)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Step 1: Is the answer choice descriptively accurate? (Accurate / Not accurate: why?)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Step 2: If accurate, is it actually a flaw? (Flaw / Not a flaw)', kind: 'textarea' },
+    { label: 'Final Selection: Final Answer: descriptively accurate AND identifies a real flaw', kind: 'text' }
   ]},
   'parallel-reasoning': { title: 'Parallel Reasoning worksheet', fields: [
-    { label: 'Premise and Conclusion — Premise(s): What evidence or facts does the argument provide?', kind: 'textarea' },
-    { label: 'Premise and Conclusion — Conclusion: What is the argument trying to prove?', kind: 'text' },
-    { label: 'Evaluate the Argument — What would YOU conclude from these premises?', kind: 'text' },
-    { label: 'Evaluate the Argument — For Parallel Flaw: What is the flaw? (part to whole, sufficient/necessary, correlation to causation...)', kind: 'text' },
-    { label: 'Abstract Structure — Write the argument pattern in abstract terms', kind: 'textarea' },
-    { label: 'Shallow Dip Strategy — What markers will you look for?', kind: 'text' },
-    { label: 'Answer choice reasoning (A–E): Shallow Dip — Does this answer have your markers? (Yes/No — if no, skip)', kind: 'textarea' },
-    { label: 'Answer choice reasoning (A–E): Piece-by-Piece — Does it match your prediction?', kind: 'textarea' },
+    { label: 'Premise and Conclusion · Premise(s): What evidence or facts does the argument provide?', kind: 'textarea' },
+    { label: 'Premise and Conclusion · Conclusion: What is the argument trying to prove?', kind: 'text' },
+    { label: 'Evaluate the Argument: What would YOU conclude from these premises?', kind: 'text' },
+    { label: 'Evaluate the Argument · For Parallel Flaw: What is the flaw? (part to whole, sufficient/necessary, correlation to causation...)', kind: 'text' },
+    { label: 'Abstract Structure: Write the argument pattern in abstract terms', kind: 'textarea' },
+    { label: 'Shallow Dip Strategy: What markers will you look for?', kind: 'text' },
+    { label: 'Answer choice reasoning (A–E): Shallow Dip: Does this answer have your markers? (Yes/No, if no, skip)', kind: 'textarea' },
+    { label: 'Answer choice reasoning (A–E): Piece-by-Piece: Does it match your prediction?', kind: 'textarea' },
     { label: 'Final Answer: If an answer matches your structure/flaw, select it', kind: 'text' }
   ]},
   '__review': { title: 'Review worksheet', fields: [
@@ -789,7 +789,7 @@ function tgInit() {
 
 /* Switch the targeted builder between LR (question/type) and RC (passage)
    modes. Clears the current results and tray so picks from one mode never
-   mix with the other — an LR drill and an RC passage drill are different
+   mix with the other, an LR drill and an RC passage drill are different
    RPCs. */
 function tgSetMode(mode) {
   if (mode === tgMode) return;
@@ -831,7 +831,7 @@ async function tgSearch() {
   try {
     if (ref) {
       const p = tgParseRef(ref);
-      if (!p) { box.innerHTML = '<p class="sub">Could not read that — try the form "PT 101 S2 Q13".</p>'; return; }
+      if (!p) { box.innerHTML = '<p class="sub">Could not read that, try the form "PT 101 S2 Q13".</p>'; return; }
       const modId = 'LSAC' + p.pt;
       const { data } = await db.from('lsac_items')
         .select('module_id, item_id, item_position, content')
@@ -883,7 +883,7 @@ async function tgPassageSearch() {
   let modId = null, wantSection = null, wantPassage = null;
   if (ref) {
     const p = tgParsePassageRef(ref);
-    if (!p) { box.innerHTML = '<p class="sub">Could not read that — try "PT 101 S1" or "PT 101 S1 P3".</p>'; return; }
+    if (!p) { box.innerHTML = '<p class="sub">Could not read that, try "PT 101 S1" or "PT 101 S1 P3".</p>'; return; }
     modId = 'LSAC' + p.pt; wantSection = p.section; wantPassage = p.passage;
   } else {
     const t = $('tgTest').value.trim();
@@ -1268,8 +1268,8 @@ async function boot() {
       o.value = s.id;
       const nm = s.profiles?.first_name || s.profiles?.email || s.id.slice(0,8);
       const isMine = myStudentIds.includes(s.id);
-      o.textContent = isMine ? ('Tutor — ' + nm) : nm;
-      o.dataset.name = isMine ? ('Tutor — ' + nm) : (s.profiles?.first_name || s.profiles?.email || 'student');
+      o.textContent = isMine ? ('Tutor, ' + nm) : nm;
+      o.dataset.name = isMine ? ('Tutor, ' + nm) : (s.profiles?.first_name || s.profiles?.email || 'student');
       sel.appendChild(o);
     });
     sel.addEventListener('change', () => { setViewingStudent(sel.value); loadDrillList(); });
@@ -1295,7 +1295,7 @@ function setViewingStudent(sid) {
     const sel = $('previewStudent');
     const name = sel.selectedOptions[0]?.dataset?.name || 'student';
     window.__viewName = name;
-    $('viewBarText').textContent = 'Viewing as ' + name + ' — read only. Nothing you click is submitted for them.';
+    $('viewBarText').textContent = 'Viewing as ' + name + ', read only. Nothing you click is submitted for them.';
     bar.classList.add('on');
   } else {
     bar.classList.remove('on');
@@ -1392,7 +1392,7 @@ async function loadDrillList() {
     .eq('student_id', viewingStudentId)
     .order('created_at', { ascending: false });
   if (error) { list.innerHTML = `<p class="sub">${escapeHtml(error.message)}</p>`; return; }
-  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet — create one above.</p>'; return; }
+  if (!data || !data.length) { list.innerHTML = '<p class="sub">No drills yet, create one above.</p>'; return; }
 
   let wsByDrill = {};
   try {
@@ -1514,7 +1514,7 @@ function syncViewTo(sid) {
   loadDrillList();
 }
 
-/* The drills list belongs to whoever is being viewed — retitle it so a tutor
+/* The drills list belongs to whoever is being viewed, retitle it so a tutor
    always knows whose drills they're looking at. */
 function updateDrillsHeading() {
   const h = $('drillsHeading'); if (!h) return;
@@ -1677,7 +1677,7 @@ function enterReviewMode(fresh) {
   const srb = $('showResultsBtn');
   srb.classList.remove('hidden');
   srb.disabled = false;
-  if (readOnly) { srb.disabled = true; srb.title = 'Read only — the student reveals their own results'; }
+  if (readOnly) { srb.disabled = true; srb.title = 'Read only, the student reveals their own results'; }
   const firstFlagged = drillItems.findIndex(d => responses[d.item_id]?.flagged);
   qi = fresh && firstFlagged !== -1 ? firstFlagged : Math.max(0, Math.min(qi, drillItems.length - 1));
   if (fresh) qi = firstFlagged !== -1 ? firstFlagged : 0;
@@ -1706,8 +1706,8 @@ function enterResultsQuestionView(index) {
 /* ---------- CLOCK (count-up) ----------
    One clock for every drill, always counting up from 0:00. Timed drills run
    up to the limit and auto-submit there (red in the final minute); untimed
-   drills run forever. Students can hide it — the clock keeps running
-   underneath — and the choice sticks across sessions (localStorage). */
+   drills run forever. Students can hide it, the clock keeps running
+   underneath, and the choice sticks across sessions (localStorage). */
 let drillElapsed = 0;
 let clockShown = true;
 try { clockShown = localStorage.getItem('vd_clock') !== 'off'; } catch (e) {}
@@ -1809,7 +1809,7 @@ function buildChips() {
    cleanAnnotationHtml: a saved annotation is trusted only if it adds no
    tags beyond <mark> (plus whatever inline tags the clean source itself
    contains) AND its visible text still matches the clean source. Anything
-   else is corruption — fall back to the clean text, so previously broken
+   else is corruption, fall back to the clean text, so previously broken
    questions heal themselves the next time they are opened. */
 function sweepStrayMarks(zone) {
   const boxes = zone ? [zone] : [$('stimBox'), $('rcPassagePane')];
@@ -2011,7 +2011,7 @@ async function setReviewAnswer(it, letter) {
   prior.review_answer = send;
   $('feedback').textContent = send
     ? (send === prior.selected_answer ? 'Review pick: kept ' + send + '.' : 'Review pick saved: ' + send + '.')
-    : 'Review pick cleared — your timed answer stands.';
+    : 'Review pick cleared, your timed answer stands.';
   $('feedback').className = 'feedback good';
   renderQuestion();
 }
@@ -2067,7 +2067,7 @@ async function logAccess(it, type) {
 /* ---------- SIDE PANEL: WORKSHEET + CHEAT SHEET ----------
    One panel, two modes. panelMode 'ws' shows the worksheet (tabs, fields,
    autosave). panelMode 'cheat' shows the current question type's steps,
-   rendered natively — no iframe, no autosave. The two toolbar buttons swap
+   rendered natively, no iframe, no autosave. The two toolbar buttons swap
    modes; clicking the active one closes the panel. */
 $('wsToggleBtn').addEventListener('click', () => {
   if (wsOpen && panelMode === 'ws') { closeWorksheet(); return; }
@@ -2121,7 +2121,7 @@ function renderCheat() {
   if (!cs) { panelMode = 'ws'; syncPanelButtons(); renderWorksheet(); return; }
   $('wsTitle').textContent = cs.typeName + ' cheat sheet';
   $('wsTabs').innerHTML = '';
-  $('wsNote').textContent = 'The steps — run these every single time';
+  $('wsNote').textContent = 'The steps, run these every single time';
   const box = $('wsFields');
   box.innerHTML = '';
   cs.steps.forEach((s, i) => {
@@ -2182,7 +2182,7 @@ function renderWorksheet() {
   const chosen = wsActiveKind === 'type' ? typeOption : { slug: '__review', tpl: WS_TEMPLATES['__review'] };
   $('wsTitle').textContent = chosen.tpl.title;
   $('wsNote').textContent = readOnly
-    ? 'Read only — this is the student\u2019s worksheet'
+    ? 'Read only. This is the student\u2019s worksheet'
     : 'Fill this out for your flagged questions · saves as you type';
 
   const entryKey = it.item_id + '|' + wsActiveKind;
@@ -2341,7 +2341,7 @@ function buildSentBlock(i, val) {
   block.className = 'wssent';
   const lab = document.createElement('p');
   lab.className = 'wsfield-label';
-  lab.textContent = 'Step ' + (i + 1) + ' — Simplify sentence ' + (i + 1) + ' in your own words (try not to look back)';
+  lab.textContent = 'Step ' + (i + 1) + ', Simplify sentence ' + (i + 1) + ' in your own words (try not to look back)';
   block.appendChild(lab);
   const ta = document.createElement('textarea');
   ta.className = 'wsfield wssent-s';
@@ -2377,7 +2377,7 @@ function buildSentBlock(i, val) {
     con.appendChild(qrow);
     const cl = document.createElement('div');
     cl.className = 'wscon-sub';
-    cl.textContent = 'If yes — what\u2019s the combination?';
+    cl.textContent = 'If yes: what\u2019s the combination?';
     con.appendChild(cl);
     const combo = document.createElement('textarea');
     combo.className = 'wsfield wscombo';
@@ -2517,7 +2517,7 @@ function splitRangeBoundaries(range) {
   }
 }
 
-/* Text nodes fully covered by the range that live inside a highlight zone —
+/* Text nodes fully covered by the range that live inside a highlight zone, 
    the stimulus, the stem, the RC passage, or any answer choice's text.
    Nothing else on the screen is ever eligible for a mark. */
 function highlightZones() {
@@ -2740,7 +2740,7 @@ function showResults() {
     return r.review_answer ? r.review_is_correct === true : r.is_correct === true;
   }).length;
   const anyReview = drillItems.some(d => resultsByItem?.[d.item_id]?.review_answer);
-  $('resultTitle').textContent = 'Results — ' + currentDrill.title;
+  $('resultTitle').textContent = 'Results, ' + currentDrill.title;
   $('resultSummary').textContent = anyReview
     ? `Timed: ${timedCorrect} of ${drillItems.length} · After review: ${finalCorrect} of ${drillItems.length} · ${flaggedCount} flagged for session`
     : `${timedCorrect} of ${drillItems.length} correct · ${flaggedCount} flagged for session`;
@@ -2753,13 +2753,13 @@ function showResults() {
     const row = document.createElement('div');
     row.className = 'resultrow';
     const wsDone = hasContent(wsEntries[d.item_id + '|type']) || hasContent(wsEntries[d.item_id + '|review']);
-    let verdict = '<span>—</span>';
+    let verdict = '<span></span>';
     if (res) {
       const changed = res.review_answer && res.review_answer !== res.selected;
       const finalOk = res.review_answer ? res.review_is_correct : res.is_correct;
       const pickPath = changed
-        ? `${escapeHtml(res.selected || '—')} → ${escapeHtml(res.review_answer)}`
-        : escapeHtml(res.selected || '—');
+        ? `${escapeHtml(res.selected || '-')} → ${escapeHtml(res.review_answer)}`
+        : escapeHtml(res.selected || '-');
       verdict = finalOk
         ? `<span class="verdict-good">✓ ${pickPath}</span>`
         : `<span class="verdict-bad">✕ ${pickPath} (correct: ${escapeHtml(res.correct_answer || '?')})</span>`;
