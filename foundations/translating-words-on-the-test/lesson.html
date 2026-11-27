@@ -390,11 +390,20 @@
 
     <div class="tab-nav">
         <button class="tab-btn active" data-tab="video">Video</button>
+        <button class="tab-btn" data-tab="practice">Practice</button>
         <button class="tab-btn" data-tab="reference">Reference</button>
     </div>
 
     <!-- VIDEO TAB -->
     <div id="tab-video" class="tab-content active">
+        <section class="video-section">
+            <div class="video-container">
+                <div style="position:relative;padding-top:56.25%;"><iframe src="https://player.mediadelivery.net/embed/600986/360af07d-caf2-4846-a90a-5a14f0ff9716?autoplay=false&loop=false&muted=false&preload=true&responsive=true" loading="lazy" style="border:0;position:absolute;top:0;height:100%;width:100%;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowfullscreen="true"></iframe></div>
+            </div>
+        </section>
+    </div>
+
+    <div id="tab-practice" class="tab-content">
         <div class="stepper">
             <button class="step-btn active" data-step="1">1</button>
             <div class="step-line"></div>
@@ -409,7 +418,7 @@
                 <div class="video-container">
                     <div class="group-header">
                         <h2 class="group-title">Some, Most, All</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                        <p class="group-subtitle">Practice what you learned in the video.</p>
                     </div>
 
                     <div class="question-card" data-correct="A">
@@ -451,8 +460,6 @@
                         <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Every" = all = 100%.</strong> No exceptions. Every single employee must complete it. (B) directly contradicts the statement. If every employee must, then none are exempt.</p></div>
                     </div>
 
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 1: Some, Most, All (coming soon)</p></div>
-
                     <div class="step-nav">
                         <button class="step-nav-btn hidden">← Previous</button>
                         <button class="step-nav-btn" onclick="goToStep(2)">Next →</button>
@@ -467,7 +474,7 @@
                 <div class="video-container">
                     <div class="group-header">
                         <h2 class="group-title">Many, Nearly All</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                        <p class="group-subtitle">Practice what you learned in the video.</p>
                     </div>
 
                     <div class="question-card" data-correct="B">
@@ -496,8 +503,6 @@
                         <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Nearly all" = at least most, close to 100%.</strong> We can definitely say most were qualified. But "nearly" tells us it's not quite all, so (B) goes too far.</p></div>
                     </div>
 
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 2: Many, Nearly All (coming soon)</p></div>
-
                     <div class="step-nav">
                         <button class="step-nav-btn" onclick="goToStep(1)">← Previous</button>
                         <button class="step-nav-btn" onclick="goToStep(3)">Next →</button>
@@ -512,7 +517,7 @@
                 <div class="video-container">
                     <div class="group-header">
                         <h2 class="group-title">Generally, Usually, Frequently</h2>
-                        <p class="group-subtitle">Try these first, then watch the video below.</p>
+                        <p class="group-subtitle">Practice what you learned in the video.</p>
                     </div>
 
                     <div class="question-card" data-correct="B">
@@ -553,8 +558,6 @@
                         </div>
                         <div class="explanation"><div class="explanation-label">Translation</div><p class="explanation-text"><strong>"Frequently" = at least some.</strong> We know accidents happen there, but "frequently" is ambiguous: it's unclear whether it reaches 50%. Safely translate it as "some" on the LSAT.</p></div>
                     </div>
-
-                    <div class="video-placeholder"><div class="play-icon">▶</div><p>Video 3: Generally, Usually, Frequently (coming soon)</p></div>
 
                     <div class="step-nav">
                         <button class="step-nav-btn" onclick="goToStep(2)">← Previous</button>
