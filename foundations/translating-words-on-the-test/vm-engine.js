@@ -1,7 +1,7 @@
 var BANK = null;
 var quizQs = [], userAns = {}, emailUnlocked = false;
 
-var ALL_CATS = ['all','some','many','most','nearly_all','usually','generally','frequently','always','never'];
+var ALL_CATS = ['all','some','many','most','nearly_all','usually','generally','frequently','always'];
 
 fetch('translating-words-bank.json')
 .then(function(r){return r.json()})
