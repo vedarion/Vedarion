@@ -173,6 +173,24 @@
             transform: translateY(-3px);
         }
         
+        .pricing-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card .pricing-badge {
+            align-self: center;
+        }
+
+        .pricing-badge-spacer {
+            visibility: hidden;
+        }
+
+        .pricing-card > a {
+            margin-top: auto;
+            align-self: center;
+        }
+
         .pricing-card.featured {
             border-top-color: #C65D3B;
         }
@@ -393,6 +411,10 @@
             .pricing-grid {
                 grid-template-columns: 1fr;
             }
+
+            .pricing-badge-spacer {
+                display: none;
+            }
             
             .pricing-card {
                 padding: 35px 30px;
@@ -447,11 +469,13 @@
             <div class="pricing-grid">
                 <!-- Single Session -->
                 <div class="pricing-card">
+                    <div class="pricing-badge pricing-badge-spacer" aria-hidden="true">&nbsp;</div>
                     <h3 class="pricing-name">Single Session</h3>
                     <div class="pricing-price">$300</div>
                     <div class="pricing-period">per session</div>
                     <ul class="pricing-features">
                         <li>Live diagnosis of weaknesses</li>
+                        <li>Real-time feedback on your process</li>
                         <li>Post-session action plan & takeaways</li>
                         <li>Customized homework</li>
                     </ul>
@@ -466,8 +490,9 @@
                     <div class="pricing-period">$280 per session &middot; Save $100</div>
                     <ul class="pricing-features">
                         <li>Free weakness diagnosis before you start</li>
-                        <li>Post-session action plan & takeaways</li>
+                        <li>Live diagnosis of weaknesses</li>
                         <li>Real-time feedback on your process</li>
+                        <li>Post-session action plan & takeaways</li>
                         <li>Customized homework</li>
                     </ul>
                     <a href="https://buy.stripe.com/8x27sE03z78XcpTdmv7bW07" target="_blank" class="book-button">Book Now</a>
