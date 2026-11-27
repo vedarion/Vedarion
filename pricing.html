@@ -191,6 +191,16 @@
             align-self: center;
         }
 
+        .pricing-note {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .pricing-note-spacer {
+            visibility: hidden;
+        }
+
         .pricing-card.featured {
             border-top-color: #C65D3B;
         }
@@ -412,7 +422,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .pricing-badge-spacer {
+            .pricing-badge-spacer,
+            .pricing-note-spacer {
                 display: none;
             }
             
@@ -480,6 +491,7 @@
                         <li>Customized homework</li>
                     </ul>
                     <a href="https://buy.stripe.com/00w4gs17DcthahLeqz7bW06" target="_blank" class="book-button-dark">Book Now</a>
+                    <p class="pricing-note pricing-note-spacer" aria-hidden="true">&nbsp;</p>
                 </div>
 
                 <!-- 5-Session Package -->
@@ -496,6 +508,7 @@
                         <li>Customized homework</li>
                     </ul>
                     <a href="https://buy.stripe.com/8x27sE03z78XcpTdmv7bW07" target="_blank" class="book-button">Book Now</a>
+                    <p class="pricing-note">Pay over time with Klarna or Affirm at checkout.</p>
                 </div>
             </div>
             
