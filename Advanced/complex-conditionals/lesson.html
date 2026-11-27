@@ -415,7 +415,7 @@
 
     <div class="tab-nav">
         <button class="tab-btn active" data-tab="video">Practice</button>
-        <button class="tab-btn" data-tab="reference">Reference</button>
+        <a href="cheatsheet.html" class="tab-btn" style="text-decoration:none;">Cheat Sheet</a>
     </div>
 
     <!-- VIDEO TAB -->
@@ -486,56 +486,13 @@
 
     </div>
 
-    <!-- REFERENCE TAB -->
-    <div id="tab-reference" class="tab-content">
-        <section class="reference-section">
-            <div class="reference-container">
-                <p class="reference-intro">Quick reference for complex conditional indicators. Bookmark this page and come back to it while practicing.</p>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Negate the Sufficient</div>
-                    <div class="ref-card">
-                        <div class="ref-label">Unless / Without / Except</div>
-                        <p class="ref-content">Identify the sufficient condition, then negate it.</p>
-                        <p class="ref-content" style="margin-top: 8px;">Example: "A unless B"</p>
-                        <p class="ref-content" style="color: #666;">A is sufficient, so negate it:</p>
-                        <p class="ref-content"><strong>NOT A</strong> <span style="color:#C65D3B; font-weight:600;">→</span> <strong>B</strong></p>
-                    </div>
-                </div>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Negate the Necessary</div>
-                    <div class="ref-card">
-                        <div class="ref-label">No / None / Never / Cannot</div>
-                        <p class="ref-content">Identify the necessary condition, then negate it.</p>
-                        <p class="ref-content" style="margin-top: 8px;">Example: "No A is B"</p>
-                        <p class="ref-content" style="color: #666;">B is necessary, so negate it:</p>
-                        <p class="ref-content"><strong>A</strong> <span style="color:#C65D3B; font-weight:600;">→</span> <strong>NOT B</strong></p>
-                    </div>
-                </div>
-
-                <div class="ref-group">
-                    <div class="ref-group-title">Combined Negations</div>
-                    <div class="ref-card">
-                        <div class="ref-label">Cannot + Unless / Without</div>
-                        <p class="ref-content">Two negation indicators cancel each other out. Read it as a straightforward conditional.</p>
-                        <p class="ref-content" style="margin-top: 8px;">Example: "Cannot A without B"</p>
-                        <p class="ref-content">A <span style="color:#C65D3B; font-weight:600;">→</span> B</p>
-                    </div>
-                </div>
-
-                <a href="../../learn.html" class="back-link">← Back to Learn</a>
-            </div>
-        </section>
-    </div>
-
     <footer class="footer">
         <p>Questions? <a href="mailto:vedarion.tutoring@gmail.com">vedarion.tutoring@gmail.com</a></p>
     </footer>
 
     <script>
         // Main tabs
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
