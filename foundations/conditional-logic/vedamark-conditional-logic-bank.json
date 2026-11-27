@@ -11,7 +11,7 @@
           "question": "What is the sufficient condition?",
           "correct": "You eat the cake",
           "wrong": "You will feel full",
-          "explanation": "\"If\" introduces the sufficient condition. Eating the cake is enough to guarantee feeling full. Eat cake \u2192 Feel full."
+          "explanation": "\"If\" introduces the sufficient condition. Eating the cake is enough to guarantee feeling full. Eat cake → Feel full."
         },
         {
           "id": 2,
@@ -19,7 +19,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The alarm rings",
           "wrong": "Everyone evacuates",
-          "explanation": "\"If\" introduces the sufficient condition. The alarm ringing is enough to trigger evacuation. Alarm rings \u2192 Evacuate."
+          "explanation": "\"If\" introduces the sufficient condition. The alarm ringing is enough to trigger evacuation. Alarm rings → Evacuate."
         },
         {
           "id": 3,
@@ -27,7 +27,7 @@
           "question": "What is the sufficient condition?",
           "correct": "She calls",
           "wrong": "I will answer",
-          "explanation": "\"If\" introduces the sufficient condition. Her calling is enough to guarantee an answer. Calls \u2192 Answer."
+          "explanation": "\"If\" introduces the sufficient condition. Her calling is enough to guarantee an answer. Calls → Answer."
         },
         {
           "id": 4,
@@ -35,7 +35,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The temperature drops",
           "wrong": "The lake freezes",
-          "explanation": "\"If\" introduces the sufficient condition. The temperature dropping is enough to freeze the lake. Temperature drops \u2192 Lake freezes."
+          "explanation": "\"If\" introduces the sufficient condition. The temperature dropping is enough to freeze the lake. Temperature drops → Lake freezes."
         },
         {
           "id": 5,
@@ -43,7 +43,7 @@
           "question": "What is the sufficient condition?",
           "correct": "You press the button",
           "wrong": "The door opens",
-          "explanation": "\"If\" introduces the sufficient condition. Pressing the button is enough to open the door. Press button \u2192 Door opens."
+          "explanation": "\"If\" introduces the sufficient condition. Pressing the button is enough to open the door. Press button → Door opens."
         }
       ]
     },
@@ -58,7 +58,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Dog",
           "wrong": "Loves treats",
-          "explanation": "\"All\" introduces the sufficient condition. Dog is enough to guarantee loving treats. Dog \u2192 Loves treats."
+          "explanation": "\"All\" introduces the sufficient condition. Dog is enough to guarantee loving treats. Dog → Loves treats."
         },
         {
           "id": 7,
@@ -66,7 +66,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Manager",
           "wrong": "Attends the weekly meeting",
-          "explanation": "\"All\" introduces the sufficient condition. Manager is enough to guarantee attendance. Manager \u2192 Attends meeting."
+          "explanation": "\"All\" introduces the sufficient condition. Manager is enough to guarantee attendance. Manager → Attends meeting."
         },
         {
           "id": 8,
@@ -74,7 +74,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Citizen",
           "wrong": "Pays taxes",
-          "explanation": "\"All\" introduces the sufficient condition. Citizen is enough to trigger the requirement. Citizen \u2192 Pay taxes."
+          "explanation": "\"All\" introduces the sufficient condition. Citizen is enough to trigger the requirement. Citizen → Pay taxes."
         },
         {
           "id": 9,
@@ -82,7 +82,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Flight from Gate B",
           "wrong": "Delayed",
-          "explanation": "\"All\" introduces the sufficient condition. Flight from Gate B is enough to guarantee a delay. Gate B flight \u2192 Delayed."
+          "explanation": "\"All\" introduces the sufficient condition. Flight from Gate B is enough to guarantee a delay. Gate B flight → Delayed."
         },
         {
           "id": 10,
@@ -90,7 +90,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Swimmer",
           "wrong": "Wears goggles",
-          "explanation": "\"All\" introduces the sufficient condition. Swimmer is enough to guarantee wearing goggles. Swimmer \u2192 Wears goggles."
+          "explanation": "\"All\" introduces the sufficient condition. Swimmer is enough to guarantee wearing goggles. Swimmer → Wears goggles."
         }
       ]
     },
@@ -105,7 +105,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Guest",
           "wrong": "Gift bag",
-          "explanation": "\"Every\" introduces the sufficient condition. Guest is enough to guarantee a gift bag. Guest \u2192 Gift bag."
+          "explanation": "\"Every\" introduces the sufficient condition. Guest is enough to guarantee a gift bag. Guest → Gift bag."
         },
         {
           "id": 12,
@@ -113,7 +113,7 @@
           "question": "What is the sufficient condition?",
           "correct": "House on this street",
           "wrong": "Garage",
-          "explanation": "\"Every\" introduces the sufficient condition. House on this street is enough to guarantee a garage. House on street \u2192 Garage."
+          "explanation": "\"Every\" introduces the sufficient condition. House on this street is enough to guarantee a garage. House on street → Garage."
         },
         {
           "id": 13,
@@ -121,7 +121,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Applicant",
           "wrong": "Submitted a resume",
-          "explanation": "\"Every\" introduces the sufficient condition. Applicant is enough to guarantee a resume was submitted. Applicant \u2192 Submitted resume."
+          "explanation": "\"Every\" introduces the sufficient condition. Applicant is enough to guarantee a resume was submitted. Applicant → Submitted resume."
         },
         {
           "id": 14,
@@ -129,7 +129,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Teacher",
           "wrong": "Degree",
-          "explanation": "\"Every\" introduces the sufficient condition. Teacher is enough to guarantee having a degree. Teacher \u2192 Has degree."
+          "explanation": "\"Every\" introduces the sufficient condition. Teacher is enough to guarantee having a degree. Teacher → Has degree."
         },
         {
           "id": 15,
@@ -137,7 +137,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Member",
           "wrong": "Signed the agreement",
-          "explanation": "\"Every\" introduces the sufficient condition. Member is enough to guarantee signing. Member \u2192 Signed agreement."
+          "explanation": "\"Every\" introduces the sufficient condition. Member is enough to guarantee signing. Member → Signed agreement."
         }
       ]
     },
@@ -152,7 +152,7 @@
           "question": "What is the sufficient condition?",
           "correct": "It rains",
           "wrong": "She brings an umbrella",
-          "explanation": "\"Whenever\" introduces the sufficient condition. Rain is enough to guarantee she brings an umbrella. Rains \u2192 Umbrella."
+          "explanation": "\"Whenever\" introduces the sufficient condition. Rain is enough to guarantee she brings an umbrella. Rains → Umbrella."
         },
         {
           "id": 17,
@@ -160,7 +160,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The boss is away",
           "wrong": "The team relaxes",
-          "explanation": "\"Whenever\" introduces the sufficient condition. The boss being away is enough to guarantee the team relaxes. Boss away \u2192 Team relaxes."
+          "explanation": "\"Whenever\" introduces the sufficient condition. The boss being away is enough to guarantee the team relaxes. Boss away → Team relaxes."
         },
         {
           "id": 18,
@@ -168,7 +168,7 @@
           "question": "What is the sufficient condition?",
           "correct": "He exercises",
           "wrong": "He feels better",
-          "explanation": "\"Whenever\" introduces the sufficient condition. Exercising is enough to guarantee feeling better. Exercises \u2192 Feels better."
+          "explanation": "\"Whenever\" introduces the sufficient condition. Exercising is enough to guarantee feeling better. Exercises → Feels better."
         },
         {
           "id": 19,
@@ -176,7 +176,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The store has a sale",
           "wrong": "The parking lot fills up",
-          "explanation": "\"Whenever\" introduces the sufficient condition. A sale is enough to guarantee a full lot. Sale \u2192 Lot fills up."
+          "explanation": "\"Whenever\" introduces the sufficient condition. A sale is enough to guarantee a full lot. Sale → Lot fills up."
         },
         {
           "id": 20,
@@ -184,7 +184,7 @@
           "question": "What is the sufficient condition?",
           "correct": "She sings",
           "wrong": "The audience claps",
-          "explanation": "\"Whenever\" introduces the sufficient condition. Her singing is enough to guarantee applause. Sings \u2192 Audience claps."
+          "explanation": "\"Whenever\" introduces the sufficient condition. Her singing is enough to guarantee applause. Sings → Audience claps."
         }
       ]
     },
@@ -199,7 +199,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The bell rings",
           "wrong": "Class is over",
-          "explanation": "\"When\" introduces the sufficient condition. The bell ringing is enough to guarantee class is over. Bell rings \u2192 Class over."
+          "explanation": "\"When\" introduces the sufficient condition. The bell ringing is enough to guarantee class is over. Bell rings → Class over."
         },
         {
           "id": 22,
@@ -207,7 +207,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The sun sets",
           "wrong": "The lights turn on",
-          "explanation": "\"When\" introduces the sufficient condition. The sun setting is enough to trigger the lights. Sun sets \u2192 Lights on."
+          "explanation": "\"When\" introduces the sufficient condition. The sun setting is enough to trigger the lights. Sun sets → Lights on."
         },
         {
           "id": 23,
@@ -215,7 +215,7 @@
           "question": "What is the sufficient condition?",
           "correct": "He arrives",
           "wrong": "The meeting starts",
-          "explanation": "\"When\" introduces the sufficient condition. His arrival is enough to start the meeting. Arrives \u2192 Meeting starts."
+          "explanation": "\"When\" introduces the sufficient condition. His arrival is enough to start the meeting. Arrives → Meeting starts."
         },
         {
           "id": 24,
@@ -223,7 +223,7 @@
           "question": "What is the sufficient condition?",
           "correct": "The oven beeps",
           "wrong": "The food is ready",
-          "explanation": "\"When\" introduces the sufficient condition. The beep is enough to guarantee the food is ready. Oven beeps \u2192 Food ready."
+          "explanation": "\"When\" introduces the sufficient condition. The beep is enough to guarantee the food is ready. Oven beeps → Food ready."
         },
         {
           "id": 25,
@@ -231,7 +231,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Traffic is heavy",
           "wrong": "He takes the train",
-          "explanation": "\"When\" introduces the sufficient condition. Heavy traffic is enough to guarantee he takes the train. Heavy traffic \u2192 Takes train."
+          "explanation": "\"When\" introduces the sufficient condition. Heavy traffic is enough to guarantee he takes the train. Heavy traffic → Takes train."
         }
       ]
     },
@@ -246,7 +246,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Volunteering",
           "wrong": "Gains experience",
-          "explanation": "\"People who\" introduces the sufficient condition. Volunteering is enough to guarantee gaining experience. Volunteer \u2192 Gain experience."
+          "explanation": "\"People who\" introduces the sufficient condition. Volunteering is enough to guarantee gaining experience. Volunteer → Gain experience."
         },
         {
           "id": 27,
@@ -254,7 +254,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Reading daily",
           "wrong": "Expands vocabulary",
-          "explanation": "\"People who\" introduces the sufficient condition. Reading daily is enough to guarantee vocabulary expansion. Read daily \u2192 Expand vocabulary."
+          "explanation": "\"People who\" introduces the sufficient condition. Reading daily is enough to guarantee vocabulary expansion. Read daily → Expand vocabulary."
         },
         {
           "id": 28,
@@ -262,7 +262,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Littering",
           "wrong": "Fine",
-          "explanation": "\"People who\" introduces the sufficient condition. Littering is enough to guarantee a fine. Litter \u2192 Fine."
+          "explanation": "\"People who\" introduces the sufficient condition. Littering is enough to guarantee a fine. Litter → Fine."
         },
         {
           "id": 29,
@@ -270,7 +270,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Arriving late",
           "wrong": "Misses the opening act",
-          "explanation": "\"People who\" introduces the sufficient condition. Arriving late is enough to guarantee missing the opener. Arrive late \u2192 Miss opening act."
+          "explanation": "\"People who\" introduces the sufficient condition. Arriving late is enough to guarantee missing the opener. Arrive late → Miss opening act."
         },
         {
           "id": 30,
@@ -278,7 +278,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Subscribing",
           "wrong": "Free shipping",
-          "explanation": "\"People who\" introduces the sufficient condition. Subscribing is enough to guarantee free shipping. Subscribe \u2192 Free shipping."
+          "explanation": "\"People who\" introduces the sufficient condition. Subscribing is enough to guarantee free shipping. Subscribe → Free shipping."
         }
       ]
     },
@@ -293,7 +293,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Participant",
           "wrong": "Certificate",
-          "explanation": "\"Each\" introduces the sufficient condition. Participant is enough to guarantee a certificate. Participant \u2192 Certificate."
+          "explanation": "\"Each\" introduces the sufficient condition. Participant is enough to guarantee a certificate. Participant → Certificate."
         },
         {
           "id": 32,
@@ -301,7 +301,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Room",
           "wrong": "Window",
-          "explanation": "\"Each\" introduces the sufficient condition. Room is enough to guarantee a window. Room \u2192 Window."
+          "explanation": "\"Each\" introduces the sufficient condition. Room is enough to guarantee a window. Room → Window."
         },
         {
           "id": 33,
@@ -309,7 +309,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Student",
           "wrong": "Mentor",
-          "explanation": "\"Each\" introduces the sufficient condition. Student is enough to guarantee a mentor. Student \u2192 Mentor."
+          "explanation": "\"Each\" introduces the sufficient condition. Student is enough to guarantee a mentor. Student → Mentor."
         },
         {
           "id": 34,
@@ -317,7 +317,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Floor",
           "wrong": "Fire extinguisher",
-          "explanation": "\"Each\" introduces the sufficient condition. Floor is enough to guarantee a fire extinguisher. Floor \u2192 Fire extinguisher."
+          "explanation": "\"Each\" introduces the sufficient condition. Floor is enough to guarantee a fire extinguisher. Floor → Fire extinguisher."
         },
         {
           "id": 35,
@@ -325,7 +325,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Chapter",
           "wrong": "Summary",
-          "explanation": "\"Each\" introduces the sufficient condition. Chapter is enough to guarantee a summary. Chapter \u2192 Summary."
+          "explanation": "\"Each\" introduces the sufficient condition. Chapter is enough to guarantee a summary. Chapter → Summary."
         }
       ]
     },
@@ -340,7 +340,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Student caught cheating",
           "wrong": "Expelled",
-          "explanation": "\"Any\" introduces the sufficient condition. Caught cheating is enough to guarantee expulsion. Caught cheating \u2192 Expelled."
+          "explanation": "\"Any\" introduces the sufficient condition. Caught cheating is enough to guarantee expulsion. Caught cheating → Expelled."
         },
         {
           "id": 37,
@@ -348,7 +348,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Package over 50 pounds",
           "wrong": "Extra postage",
-          "explanation": "\"Any\" introduces the sufficient condition. Over 50 pounds is enough to require extra postage. Over 50 lbs \u2192 Extra postage."
+          "explanation": "\"Any\" introduces the sufficient condition. Over 50 pounds is enough to require extra postage. Over 50 lbs → Extra postage."
         },
         {
           "id": 38,
@@ -356,7 +356,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Dog that bites",
           "wrong": "Quarantined",
-          "explanation": "\"Any\" introduces the sufficient condition. Biting is enough to guarantee quarantine. Dog bites \u2192 Quarantined."
+          "explanation": "\"Any\" introduces the sufficient condition. Biting is enough to guarantee quarantine. Dog bites → Quarantined."
         },
         {
           "id": 39,
@@ -364,7 +364,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Employee with five years of service",
           "wrong": "Bonus",
-          "explanation": "\"Any\" introduces the sufficient condition. Five years of service is enough to guarantee a bonus. Five years \u2192 Bonus."
+          "explanation": "\"Any\" introduces the sufficient condition. Five years of service is enough to guarantee a bonus. Five years → Bonus."
         },
         {
           "id": 40,
@@ -372,7 +372,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Car parked here overnight",
           "wrong": "Towed",
-          "explanation": "\"Any\" introduces the sufficient condition. Parking overnight is enough to guarantee towing. Parked overnight \u2192 Towed."
+          "explanation": "\"Any\" introduces the sufficient condition. Parking overnight is enough to guarantee towing. Parked overnight → Towed."
         }
       ]
     },
@@ -387,7 +387,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Passed",
           "wrong": "Senior",
-          "explanation": "\"The only\" introduces the sufficient condition. Passed is enough to guarantee being a senior. Passed \u2192 Senior."
+          "explanation": "\"The only\" introduces the sufficient condition. Passed is enough to guarantee being a senior. Passed → Senior."
         },
         {
           "id": 42,
@@ -395,7 +395,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Fruit she eats",
           "wrong": "Banana",
-          "explanation": "\"The only\" introduces the sufficient condition. Fruit she eats is enough to guarantee it's a banana. Fruit she eats \u2192 Banana."
+          "explanation": "\"The only\" introduces the sufficient condition. Fruit she eats is enough to guarantee it's a banana. Fruit she eats → Banana."
         },
         {
           "id": 43,
@@ -403,7 +403,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Cars allowed",
           "wrong": "Electric",
-          "explanation": "\"The only\" introduces the sufficient condition. Allowed car is enough to guarantee it's electric. Allowed car \u2192 Electric."
+          "explanation": "\"The only\" introduces the sufficient condition. Allowed car is enough to guarantee it's electric. Allowed car → Electric."
         },
         {
           "id": 44,
@@ -411,7 +411,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Day he works from home",
           "wrong": "Friday",
-          "explanation": "\"The only\" introduces the sufficient condition. Day he works from home is enough to guarantee it's Friday. Works from home \u2192 Friday."
+          "explanation": "\"The only\" introduces the sufficient condition. Day he works from home is enough to guarantee it's Friday. Works from home → Friday."
         },
         {
           "id": 45,
@@ -419,7 +419,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Students exempt",
           "wrong": "Athlete",
-          "explanation": "\"The only\" introduces the sufficient condition. Being exempt is enough to guarantee being an athlete. Exempt \u2192 Athlete."
+          "explanation": "\"The only\" introduces the sufficient condition. Being exempt is enough to guarantee being an athlete. Exempt → Athlete."
         },
         {
           "id": 46,
@@ -427,7 +427,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Restaurant open late",
           "wrong": "The diner",
-          "explanation": "\"The only\" introduces the sufficient condition. Restaurant open late is enough to guarantee it's the diner. Open late \u2192 The diner."
+          "explanation": "\"The only\" introduces the sufficient condition. Restaurant open late is enough to guarantee it's the diner. Open late → The diner."
         },
         {
           "id": 47,
@@ -435,7 +435,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Language taught here",
           "wrong": "Spanish",
-          "explanation": "\"The only\" introduces the sufficient condition. Language taught here is enough to guarantee it's Spanish. Taught here \u2192 Spanish."
+          "explanation": "\"The only\" introduces the sufficient condition. Language taught here is enough to guarantee it's Spanish. Taught here → Spanish."
         },
         {
           "id": 48,
@@ -443,7 +443,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Drink she orders",
           "wrong": "Coffee",
-          "explanation": "\"The only\" introduces the sufficient condition. Drink she orders is enough to guarantee it's coffee. Drink she orders \u2192 Coffee."
+          "explanation": "\"The only\" introduces the sufficient condition. Drink she orders is enough to guarantee it's coffee. Drink she orders → Coffee."
         },
         {
           "id": 49,
@@ -451,7 +451,7 @@
           "question": "What is the sufficient condition?",
           "correct": "Team that qualified",
           "wrong": "The home team",
-          "explanation": "\"The only\" introduces the sufficient condition. Qualifying is enough to guarantee being the home team. Qualified \u2192 Home team."
+          "explanation": "\"The only\" introduces the sufficient condition. Qualifying is enough to guarantee being the home team. Qualified → Home team."
         },
         {
           "id": 50,
@@ -459,14 +459,14 @@
           "question": "What is the sufficient condition?",
           "correct": "Shoes permitted",
           "wrong": "Sneakers",
-          "explanation": "\"The only\" introduces the sufficient condition. Permitted shoe is enough to guarantee it's sneakers. Permitted shoe \u2192 Sneakers."
+          "explanation": "\"The only\" introduces the sufficient condition. Permitted shoe is enough to guarantee it's sneakers. Permitted shoe → Sneakers."
         }
       ]
     },
     {
       "id": "then",
-      "name": "Then",
-      "description": "\"Then\" introduces the necessary condition.",
+      "name": "If…then",
+      "description": "Find the sufficient after \"if.\" Whatever remains is the necessary.",
       "questions": [
         {
           "id": 51,
@@ -474,7 +474,7 @@
           "question": "What is the necessary condition?",
           "correct": "You will pass",
           "wrong": "You study hard",
-          "explanation": "\"Then\" introduces the necessary condition. Passing is what must follow from studying. Study hard \u2192 Pass."
+          "explanation": "\"If\" introduces the sufficient: \"you study hard.\" Whatever remains is the necessary: \"you will pass.\" Study hard → Pass."
         },
         {
           "id": 52,
@@ -482,7 +482,7 @@
           "question": "What is the necessary condition?",
           "correct": "The alarm sounds",
           "wrong": "The power goes out",
-          "explanation": "\"Then\" introduces the necessary condition. The alarm sounding is what must follow. Power out \u2192 Alarm sounds."
+          "explanation": "\"If\" introduces the sufficient: \"the power goes out.\" Whatever remains is the necessary: \"the alarm sounds.\" Power out → Alarm sounds."
         },
         {
           "id": 53,
@@ -490,7 +490,7 @@
           "question": "What is the necessary condition?",
           "correct": "The team celebrates",
           "wrong": "She wins",
-          "explanation": "\"Then\" introduces the necessary condition. The celebration must follow from winning. Wins \u2192 Team celebrates."
+          "explanation": "\"If\" introduces the sufficient: \"she wins.\" Whatever remains is the necessary: \"the team celebrates.\" Wins → Team celebrates."
         },
         {
           "id": 54,
@@ -498,7 +498,7 @@
           "question": "What is the necessary condition?",
           "correct": "Traffic is rerouted",
           "wrong": "The bridge is closed",
-          "explanation": "\"Then\" introduces the necessary condition. Rerouting must follow from the closure. Bridge closed \u2192 Traffic rerouted."
+          "explanation": "\"If\" introduces the sufficient: \"the bridge is closed.\" Whatever remains is the necessary: \"traffic is rerouted.\" Bridge closed → Traffic rerouted."
         },
         {
           "id": 55,
@@ -506,7 +506,7 @@
           "question": "What is the necessary condition?",
           "correct": "You may leave",
           "wrong": "You finish early",
-          "explanation": "\"Then\" introduces the necessary condition. Being allowed to leave must follow from finishing early. Finish early \u2192 May leave."
+          "explanation": "\"If\" introduces the sufficient: \"you finish early.\" Whatever remains is the necessary: \"you may leave.\" Finish early → May leave."
         }
       ]
     },
@@ -521,7 +521,7 @@
           "question": "What is the necessary condition?",
           "correct": "Signing in at the front desk",
           "wrong": "Visitor",
-          "explanation": "\"Must\" introduces the necessary condition. Signing in is required of all visitors. Visitor \u2192 Must sign in."
+          "explanation": "\"Must\" introduces the necessary condition. Signing in is required of all visitors. Visitor → Must sign in."
         },
         {
           "id": 57,
@@ -529,7 +529,7 @@
           "question": "What is the necessary condition?",
           "correct": "Submitting two references",
           "wrong": "Applicant",
-          "explanation": "\"Must\" introduces the necessary condition. Submitting references is required. Applicant \u2192 Must submit references."
+          "explanation": "\"Must\" introduces the necessary condition. Submitting references is required. Applicant → Must submit references."
         },
         {
           "id": 58,
@@ -537,7 +537,7 @@
           "question": "What is the necessary condition?",
           "correct": "Wearing a seatbelt",
           "wrong": "Driver",
-          "explanation": "\"Must\" introduces the necessary condition. Wearing a seatbelt is required of all drivers. Driver \u2192 Must wear seatbelt."
+          "explanation": "\"Must\" introduces the necessary condition. Wearing a seatbelt is required of all drivers. Driver → Must wear seatbelt."
         },
         {
           "id": 59,
@@ -545,7 +545,7 @@
           "question": "What is the necessary condition?",
           "correct": "Attending orientation",
           "wrong": "Student",
-          "explanation": "\"Must\" introduces the necessary condition. Attending orientation is required. Student \u2192 Must attend orientation."
+          "explanation": "\"Must\" introduces the necessary condition. Attending orientation is required. Student → Must attend orientation."
         },
         {
           "id": 60,
@@ -553,7 +553,7 @@
           "question": "What is the necessary condition?",
           "correct": "Giving 30 days notice",
           "wrong": "Tenant",
-          "explanation": "\"Must\" introduces the necessary condition. Giving notice is required of tenants. Tenant \u2192 Must give 30 days notice."
+          "explanation": "\"Must\" introduces the necessary condition. Giving notice is required of tenants. Tenant → Must give 30 days notice."
         }
       ]
     },
@@ -568,7 +568,7 @@
           "question": "What is the necessary condition?",
           "correct": "You are registered",
           "wrong": "You can vote",
-          "explanation": "\"Only if\" introduces the necessary condition. Being registered is required for voting. Vote \u2192 Registered."
+          "explanation": "\"Only if\" introduces the necessary condition. Being registered is required for voting. Vote → Registered."
         },
         {
           "id": 62,
@@ -576,7 +576,7 @@
           "question": "What is the necessary condition?",
           "correct": "He goes",
           "wrong": "She will go",
-          "explanation": "\"Only if\" introduces the necessary condition. His going is required for her to go. She goes \u2192 He goes."
+          "explanation": "\"Only if\" introduces the necessary condition. His going is required for her to go. She goes → He goes."
         },
         {
           "id": 63,
@@ -584,7 +584,7 @@
           "question": "What is the necessary condition?",
           "correct": "The budget is approved",
           "wrong": "The project moves forward",
-          "explanation": "\"Only if\" introduces the necessary condition. Budget approval is required. Project moves forward \u2192 Budget approved."
+          "explanation": "\"Only if\" introduces the necessary condition. Budget approval is required. Project moves forward → Budget approved."
         },
         {
           "id": 64,
@@ -592,7 +592,7 @@
           "question": "What is the necessary condition?",
           "correct": "It includes relocation support",
           "wrong": "He will accept the job",
-          "explanation": "\"Only if\" introduces the necessary condition. Relocation support is required for acceptance. Accepts job \u2192 Relocation support."
+          "explanation": "\"Only if\" introduces the necessary condition. Relocation support is required for acceptance. Accepts job → Relocation support."
         },
         {
           "id": 65,
@@ -600,7 +600,7 @@
           "question": "What is the necessary condition?",
           "correct": "Both teams agree",
           "wrong": "The game continues",
-          "explanation": "\"Only if\" introduces the necessary condition. Agreement from both teams is required. Game continues \u2192 Both teams agree."
+          "explanation": "\"Only if\" introduces the necessary condition. Agreement from both teams is required. Game continues → Both teams agree."
         }
       ]
     },
@@ -615,7 +615,7 @@
           "question": "What is the necessary condition?",
           "correct": "She is happy",
           "wrong": "She smiles",
-          "explanation": "\"Only when\" introduces the necessary condition. Being happy is required for her to smile. Smiles \u2192 Happy."
+          "explanation": "\"Only when\" introduces the necessary condition. Being happy is required for her to smile. Smiles → Happy."
         },
         {
           "id": 67,
@@ -623,7 +623,7 @@
           "question": "What is the necessary condition?",
           "correct": "Guests are coming",
           "wrong": "He cooks",
-          "explanation": "\"Only when\" introduces the necessary condition. Guests coming is required for him to cook. Cooks \u2192 Guests coming."
+          "explanation": "\"Only when\" introduces the necessary condition. Guests coming is required for him to cook. Cooks → Guests coming."
         },
         {
           "id": 68,
@@ -631,7 +631,7 @@
           "question": "What is the necessary condition?",
           "correct": "Smoke is detected",
           "wrong": "The sprinklers activate",
-          "explanation": "\"Only when\" introduces the necessary condition. Smoke detection is required for activation. Sprinklers activate \u2192 Smoke detected."
+          "explanation": "\"Only when\" introduces the necessary condition. Smoke detection is required for activation. Sprinklers activate → Smoke detected."
         },
         {
           "id": 69,
@@ -639,7 +639,7 @@
           "question": "What is the necessary condition?",
           "correct": "A position is open",
           "wrong": "They hire",
-          "explanation": "\"Only when\" introduces the necessary condition. An open position is required for hiring. Hire \u2192 Position open."
+          "explanation": "\"Only when\" introduces the necessary condition. An open position is required for hiring. Hire → Position open."
         },
         {
           "id": 70,
@@ -647,7 +647,7 @@
           "question": "What is the necessary condition?",
           "correct": "The code is entered",
           "wrong": "The gate opens",
-          "explanation": "\"Only when\" introduces the necessary condition. Entering the code is required. Gate opens \u2192 Code entered."
+          "explanation": "\"Only when\" introduces the necessary condition. Entering the code is required. Gate opens → Code entered."
         }
       ]
     },
@@ -662,7 +662,7 @@
           "question": "What is the necessary condition?",
           "correct": "A thesis",
           "wrong": "Graduation",
-          "explanation": "\"Requires\" introduces the necessary condition. A thesis is required for graduation. Graduation \u2192 Thesis."
+          "explanation": "\"Requires\" introduces the necessary condition. A thesis is required for graduation. Graduation → Thesis."
         },
         {
           "id": 72,
@@ -670,7 +670,7 @@
           "question": "What is the necessary condition?",
           "correct": "Butter",
           "wrong": "This recipe",
-          "explanation": "\"Requires\" introduces the necessary condition. Butter is required for the recipe. Make this recipe \u2192 Butter."
+          "explanation": "\"Requires\" introduces the necessary condition. Butter is required for the recipe. Make this recipe → Butter."
         },
         {
           "id": 73,
@@ -678,7 +678,7 @@
           "question": "What is the necessary condition?",
           "correct": "A background check",
           "wrong": "The job",
-          "explanation": "\"Requires\" introduces the necessary condition. A background check is required for the job. Get the job \u2192 Background check."
+          "explanation": "\"Requires\" introduces the necessary condition. A background check is required for the job. Get the job → Background check."
         },
         {
           "id": 74,
@@ -686,7 +686,7 @@
           "question": "What is the necessary condition?",
           "correct": "A valid ID",
           "wrong": "Entry",
-          "explanation": "\"Requires\" introduces the necessary condition. A valid ID is required for entry. Entry \u2192 Valid ID."
+          "explanation": "\"Requires\" introduces the necessary condition. A valid ID is required for entry. Entry → Valid ID."
         },
         {
           "id": 75,
@@ -694,7 +694,7 @@
           "question": "What is the necessary condition?",
           "correct": "Parental consent",
           "wrong": "The experiment",
-          "explanation": "\"Requires\" introduces the necessary condition. Parental consent is required. Participate in experiment \u2192 Parental consent."
+          "explanation": "\"Requires\" introduces the necessary condition. Parental consent is required. Participate in experiment → Parental consent."
         }
       ]
     },
@@ -709,7 +709,7 @@
           "question": "What is the necessary condition?",
           "correct": "Preparation",
           "wrong": "Success",
-          "explanation": "\"Depends on\" introduces the necessary condition. Preparation is required for success. Success \u2192 Preparation."
+          "explanation": "\"Depends on\" introduces the necessary condition. Preparation is required for success. Success → Preparation."
         },
         {
           "id": 82,
@@ -717,7 +717,7 @@
           "question": "What is the necessary condition?",
           "correct": "The jury's decision",
           "wrong": "The outcome",
-          "explanation": "\"Depends on\" introduces the necessary condition. The jury's decision is required. Outcome \u2192 Jury's decision."
+          "explanation": "\"Depends on\" introduces the necessary condition. The jury's decision is required. Outcome → Jury's decision."
         },
         {
           "id": 83,
@@ -725,7 +725,7 @@
           "question": "What is the necessary condition?",
           "correct": "Water",
           "wrong": "Plant growth",
-          "explanation": "\"Depends on\" introduces the necessary condition. Water is required for growth. Plant growth \u2192 Water."
+          "explanation": "\"Depends on\" introduces the necessary condition. Water is required for growth. Plant growth → Water."
         },
         {
           "id": 84,
@@ -733,7 +733,7 @@
           "question": "What is the necessary condition?",
           "correct": "His performance review",
           "wrong": "His promotion",
-          "explanation": "\"Depends on\" introduces the necessary condition. A performance review is required. Promotion \u2192 Performance review."
+          "explanation": "\"Depends on\" introduces the necessary condition. A performance review is required. Promotion → Performance review."
         },
         {
           "id": 85,
@@ -741,7 +741,7 @@
           "question": "What is the necessary condition?",
           "correct": "The weather",
           "wrong": "The trip",
-          "explanation": "\"Depends on\" introduces the necessary condition. The weather is required to be favorable. Trip happens \u2192 Weather cooperates."
+          "explanation": "\"Depends on\" introduces the necessary condition. The weather is required to be favorable. Trip happens → Weather cooperates."
         }
       ]
     }
