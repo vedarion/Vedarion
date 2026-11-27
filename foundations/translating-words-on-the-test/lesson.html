@@ -318,6 +318,17 @@
             line-height: 1.6;
         }
         
+        .qb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 10px 0 26px; }
+        .qb-card { background: #fff; border: 1px solid #E8E2D9; border-top: 4px solid #C65D3B; border-radius: 12px; padding: 22px 20px; }
+        .qb-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; color: #0A0A0A; line-height: 1; }
+        .qb-def { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; font-weight: 600; margin: 8px 0 12px; }
+        .qb-note { font-size: 13px; color: #666; line-height: 1.55; margin: 0 0 16px; }
+        .qb-words { display: flex; flex-wrap: wrap; gap: 6px; }
+        .qb-words span { font-size: 13px; color: #0A0A0A; background: #FAF8F5; border: 1px solid #E8E2D9; border-radius: 999px; padding: 4px 11px; }
+        .qb-tip { background: #FAF8F5; border-left: 3px solid #C65D3B; border-radius: 8px; padding: 16px 20px; margin-bottom: 28px; }
+        .qb-tip-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #C65D3B; font-weight: 600; margin-bottom: 6px; }
+        .qb-tip p { margin: 0; font-size: 14px; color: #333; line-height: 1.6; }
+        @media (max-width: 760px) { .qb-grid { grid-template-columns: 1fr; } }
         .ref-group { margin-bottom: 30px; }
         
         .ref-group-title {
@@ -561,7 +572,7 @@
 
                     <div class="step-nav">
                         <button class="step-nav-btn" onclick="goToStep(2)">← Previous</button>
-                        <a href="../../learn.html" class="step-nav-btn">Back to Learn →</a>
+                        <a href="../../learn.html" class="step-nav-btn">Back to Learn</a>
                     </div>
                 </div>
             </section>
@@ -574,21 +585,33 @@
             <div class="reference-container">
                 <p class="reference-intro">Your cheat sheet for translating LSAT language. Bookmark this page and come back to it while practicing.</p>
 
-                <div class="ref-group">
-                    <div class="ref-group-title">Quantifiers</div>
-                    <table class="ref-table">
-                        <tr><td class="ref-word">All, every, each, any, whoever, anything that, whatever</td><td class="ref-meaning">100%, no exceptions</td></tr>
-                        <tr><td class="ref-word">Always, invariably, inevitably</td><td class="ref-meaning">= All (100%)</td></tr>
-                        <tr><td class="ref-word">Nearly all</td><td class="ref-meaning">At least most, close to 100% but not all</td></tr>
-                        <tr><td class="ref-word">Most</td><td class="ref-meaning">More than 50%</td></tr>
-                        <tr><td class="ref-word">Generally, usually</td><td class="ref-meaning">= Most (more than 50%)</td></tr>
-                        <tr><td class="ref-word">Some, at least one</td><td class="ref-meaning">At least one, could be 1, could be all</td></tr>
-                        <tr><td class="ref-word">Many</td><td class="ref-meaning">= Some (at least one)</td></tr>
-                        <tr><td class="ref-word">Frequently</td><td class="ref-meaning">At least some, unclear if it reaches 50%</td></tr>
-                    </table>
+                <div class="qb-grid">
+                    <div class="qb-card">
+                        <div class="qb-name">Some</div>
+                        <div class="qb-def">At least one</div>
+                        <p class="qb-note">Could be one, could be all. What we know for certain: at least one.</p>
+                        <div class="qb-words"><span>some</span><span>at least one</span><span>many</span><span>frequently</span><span>often</span></div>
+                    </div>
+                    <div class="qb-card">
+                        <div class="qb-name">Most</div>
+                        <div class="qb-def">More than half</div>
+                        <p class="qb-note">Never less than half, could be all. What we know for certain: more than half.</p>
+                        <div class="qb-words"><span>most</span><span>nearly all</span><span>generally</span><span>usually</span></div>
+                    </div>
+                    <div class="qb-card">
+                        <div class="qb-name">All</div>
+                        <div class="qb-def">100%</div>
+                        <p class="qb-note">Every single one, no exceptions.</p>
+                        <div class="qb-words"><span>all</span><span>every</span><span>each</span><span>any</span><span>whoever</span><span>whatever</span><span>anything that</span><span>always</span><span>invariably</span><span>inevitably</span></div>
+                    </div>
                 </div>
 
-                <a href="../../learn.html" class="back-link">← Back to Learn</a>
+                <div class="qb-tip">
+                    <div class="qb-tip-label">Not sure about a word?</div>
+                    <p>Ask yourself: do I know this is more than half? Do I know it's all? Translate only what you know for certain.</p>
+                </div>
+
+                <a href="../../learn.html" class="back-link">Back to Learn</a>
             </div>
         </section>
     </div>
